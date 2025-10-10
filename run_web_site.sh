@@ -24,4 +24,7 @@ docker compose exec backend python manage.py createsuperuser
 
 # Returning to the original project path to be able to run the test again with new changes, if there are any
 cd "$ORIGINAL_PROJECT_PATH"
-wait
+
+# Hit Ctrl+C to stop
+docker compose down frontend
+docker compose down backend

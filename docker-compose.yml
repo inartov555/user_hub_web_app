@@ -8,18 +8,25 @@ services:
     ports: ["5432:5432"]
     volumes:
       - pgdata:/var/lib/postgresql/data
+    stop_signal: SIGINT  # Django dev server handles Ctrl+C nicely
+    stop_grace_period: 5s
   backend:
     build: { context: ., dockerfile: backend/Dockerfile }
     env_file: backend/.env
     depends_on: [db]
     ports: ["8000:8000"]
     volumes: ["./backend:/app"]
+    stop_signal: SIGINT  # Django dev server handles Ctrl+C nicely
+    stop_grace_period: 5s
   frontend:
     build: { context: ., dockerfile: frontend/Dockerfile }
+    env_file: backend/.env
     environment:
       - VITE_API_URL=http://localhost:8000/api
     ports: ["5173:5173"]
-    volumes: ["./frontend:/app:delegated", "node_modules_frontend:/app/node_modules"]
+    volumes: ["./frontend:/app"]
     command: ["npm","run","dev","--","--host"]
+    stop_signal: SIGINT  # Django dev server handles Ctrl+C nicely
+    stop_grace_period: 5s
 volumes:
   pgdata:
