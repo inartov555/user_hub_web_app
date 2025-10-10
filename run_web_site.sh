@@ -3,11 +3,11 @@
 # Input parameters:
 #   - NONE
 
-set -euo pipefail
+# set -euo pipefail
 # When this terminal/tab closes (or you press Ctrl-C), stop everything we started.
 # trap 'echo "Shutting down…"; kill 0' EXIT INT TERM
-pids=()
-grace=8
+# pids=()
+# grace=8
 
 cleanup() {
   echo "Stopping services…"
@@ -33,7 +33,7 @@ fi
 
 cp backend/.env.example backend/.env
 docker compose build --no-cache
-docker compose up --build -d
+docker compose up
 # docker compose exec backend python manage.py createsuperuser & pids+=($!)
 docker compose exec backend python manage.py migrate
 docker compose exec backend python manage.py createsuperuser
