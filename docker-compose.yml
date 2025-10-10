@@ -1,2 +1,37 @@
 version: '3.9'
-services: {}
+services:
+  db:
+    image: postgres:16
+    environment:
+      POSTGRES_DB: usermgr
+      POSTGRES_USER: usermgr
+      POSTGRES_PASSWORD: usermgr
+    ports: ["5432:5432"]
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+  backend:
+    build: ./backend
+    environment:
+      DEBUG: "True"
+      DJANGO_SECRET_KEY: dev-secret
+      POSTGRES_DB: usermgr
+      POSTGRES_USER: usermgr
+      POSTGRES_PASSWORD: usermgr
+      POSTGRES_HOST: db
+      CORS_ALLOWED_ORIGINS: http://localhost:5173
+    ports: ["8000:8000"]
+    depends_on: [db]
+    volumes:
+      - ./backend:/app
+      - ./media:/media
+  frontend:
+    image: node:20
+    working_dir: /app
+    command: bash -lc "npm i && npm run dev -- --host"
+    ports: ["5173:5173"]
+    environment:
+      - VITE_API_URL=http://localhost:8000/api
+    volumes:
+      - ./frontend:/app
+volumes:
+  pgdata:
