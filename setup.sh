@@ -5,23 +5,6 @@
 # Exported variables: HOST_ARTIFACTS, ROOT_VENV, TEST_VENV, COPIED_PROJECT_PATH
 
 ARTIFACTS_ROOT_FOLDER="TEST1"
-# DEFAULT_REPO_PATH="$HOME/python-e2e-test"
-
-# Repo path defaults to $DEFAULT_REPO_PATH
-# if [[ -z "$1" ]]; then
-#  echo "WARNING: no path passed for the project, defaulting to $DEFAULT_REPO_PATH"
-#  REPO="$DEFAULT_REPO_PATH"
-#  if [[ ! -d "$REPO" ]]; then
-#    echo "ERROR: Default path $DEFAULT_REPO_PATH for the repo does not exist"
-#    return 1
-#  fi
-# elif [[ ! -d "$1" ]]; then
-#  echo "ERROR: Provided path $1 for the repo does not exist"
-#  return 1
-# else
-#  REPO="$1"
-#  echo "Using $REPO path for the repo"
-# fi
 
 REPO="$(pwd)"
 echo "REPO = '$REPO'"
@@ -51,18 +34,15 @@ if [ $? -ne 0 ]; then
   return 1
 fi
 echo "$REPO is copied to $COPIED_PROJECT_PATH"
-echo "Entering the $COPIED_PROJECT_PATH directory"
-cd "$COPIED_PROJECT_PATH"
 
 echo "Root env set up to: $(pwd)"
 export ROOT_VENV="$COPIED_PROJECT_PATH"
 echo "Entering the '$COPIED_PROJECT_PATH' module"
 cd "$COPIED_PROJECT_PATH"
+echo "Entering the backend folder"
+cd "backend"
 
 # Activating venv
-
-MODULE_PATH="$ROOT_VENV"
-cd "$MODULE_PATH"
 
 if python3 -m venv --help > /dev/null 2>&1; then
     echo "venv module is available"
@@ -72,12 +52,15 @@ fi
 python3 -m venv venv
 . venv/bin/activate
 
-BASE_REQ_FILE="$MODULE_PATH/requirements.txt"
-echo "Installing module requirements..."
+# python -m venv .venv && source .venv/bin/activate
+# pip install -r requirements.txt
+# cp .env.example .env
+
+BASE_REQ_FILE="$COPIED_PROJECT_PATH/backend/requirements.txt"
+echo "Installing module requirements from '$BASE_REQ_FILE' file..."
 echo ""
 python3 -m pip install --upgrade pip
 python3 -m pip install -r "$BASE_REQ_FILE"
-playwright install
 
 echo "Virtual env set up to: $(pwd)"
 export TEST_VENV=$(pwd)

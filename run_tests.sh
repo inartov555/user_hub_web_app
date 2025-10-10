@@ -10,24 +10,28 @@ if [[ $? -ne 0 ]]; then
   return 1
 fi
 
-DEFAULT_INI_CONFIG_FILE="pytest.ini"
-if [[ -z "$1" ]]; then
-  echo "WARNING: no path passed for the project, defaulting to $DEFAULT_INI_CONFIG_FILE"
-  INI_CONFIG_FILE="$DEFAULT_INI_CONFIG_FILE"
-  if [[ ! -f "$INI_CONFIG_FILE" ]]; then
-    echo "ERROR: Default path $DEFAULT_INI_CONFIG_FILE for the repo does not exist"
-    return 1
-  fi
-elif [[ ! -d "$1" ]]; then
-  echo "ERROR: Provided path '$2' for the repo does not exist"
-  return 1
-else
-  INI_CONFIG_FILE="$1"
-  echo "Using $INI_CONFIG_FILE ini config file"
-fi
+# DEFAULT_INI_CONFIG_FILE="pytest.ini"
+# if [[ -z "$1" ]]; then
+#  echo "WARNING: no path passed for the project, defaulting to $DEFAULT_INI_CONFIG_FILE"
+#  INI_CONFIG_FILE="$DEFAULT_INI_CONFIG_FILE"
+#  if [[ ! -f "$INI_CONFIG_FILE" ]]; then
+#    echo "ERROR: Default path $DEFAULT_INI_CONFIG_FILE for the repo does not exist"
+#    return 1
+#  fi
+# elif [[ ! -d "$1" ]]; then
+#  echo "ERROR: Provided path '$2' for the repo does not exist"
+#  return 1
+# else
+#  INI_CONFIG_FILE="$1"
+#  echo "Using $INI_CONFIG_FILE ini config file"
+# fi
 
-python3 -m pytest -v --tb=short -s --reruns 2 --reruns-delay 2 --ini-config "$INI_CONFIG_FILE" --html=$HOST_ARTIFACTS/test_report_$(date +%Y-%m-%d_%H-%M-%S).html
+python manage.py migrate
+python manage.py createsuperuser
+python manage.py runserver
+
+# python3 -m pytest -v --tb=short -s --reruns 2 --reruns-delay 2 --ini-config "$INI_CONFIG_FILE" --html=$HOST_ARTIFACTS/test_report_$(date +%Y-%m-%d_%H-%M-%S).html
 # Now, let's deactivate venv
-deactivate
+# deactivate
 # Returning to the original project path to be able to run the test again with new changes, if there are any
 cd "$ORIGINAL_PROJECT_PATH"
