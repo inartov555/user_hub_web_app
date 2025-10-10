@@ -1,10 +1,12 @@
-You are a senior full-stack developer. You implement your web apps with the best practices and good scalable architecture.
+This is a simple web site.
 
-The task:
 
-generate a project. stack: back-end - Python + Django (maybe, something additional from best practices, if needed), and front-end - React (feel free to add something more from best practices, if required).
+Stack:
 
-The web app itself should contain the following pages:
+ - Back-end: Python + Django
+ - Front-end: React
+
+Creating plan in short:
  - Login page.
  - Signup page.
  - Reset password page.
@@ -14,9 +16,9 @@ The web app itself should contain the following pages:
  - And a page with a table that shows all registered users. This table can be scrolled left/right (same table page to show all the columns, if there are a lot of columns). Also, there's the ability to scroll the pages of the table, so you can see the next or previous table page (but only table table change, the page itself is not reloaded).
  - The table with user details can be filtered, sorted by a single or multiple columns.
  - The design of the table is next:
-   a) One row is with and the next one is grey (but very light grey, just for readability).
-   b) There is the ability to show a different number of rows on a page, 20 rows by default.
-   c) There is the ability to configure what columns will be displayed on a table, all by default.
+    a) One row is with and the next one is grey (but very light grey, just for readability).
+    b) There is the ability to show a different number of rows on a page, 20 rows by default.
+    c) There is the ability to configure what columns will be displayed on a table, all by default.
  - There should also be a page with user statistics, so you can see the currently logged-in users.
 
 Additionally, the pages feature a simple and attractive design. Some background. 
