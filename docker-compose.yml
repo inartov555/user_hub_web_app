@@ -9,9 +9,8 @@ services:
     ports: ["5432:5432"]
     volumes:
       - pgdata:/var/lib/postgresql/data
-    stop_signal: SIGINT  # Django dev server handles Ctrl+C nicely
-    stop_grace_period: 5s
-    # healthcheck: wait until Postgres accepts connections
+    stop_signal: SIGINT
+    stop_grace_period: 60s
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U users -d usersdb"]
       interval: 2s
@@ -26,20 +25,23 @@ services:
         condition: service_healthy
     ports: ["8000:8000"]
     volumes: ["./backend:/app"]
-    stop_signal: SIGINT  # Django dev server handles Ctrl+C nicely
+    stop_signal: SIGINT
     stop_grace_period: 5s
 
   frontend:
     build: { context: ., dockerfile: frontend/Dockerfile }
     environment:
       - VITE_API_URL=http://localhost:8000/api
+      - CHOKIDAR_USEPOLLING=1
     ports: ["5173:5173"]
     volumes:
       - ./frontend:/app
       - /app/node_modules
-    entrypoint: ["/bin/sh","-lc"]  # turning off entrypoint Node
-    command: npm ci --no-audit --no-fund && npm run dev -- --host --port 5173
-    stop_signal: SIGINT  # Django dev server handles Ctrl+C nicely
+    working_dir: /app
+    command: >
+      npm ci --no-audit --no-fund
+      && npm run dev -- --host 0.0.0.0 --port 5173
+    stop_signal: SIGINT
     stop_grace_period: 5s
 
 volumes:
