@@ -3,8 +3,17 @@
 # Input parameters:
 #   - NONE
 
-set -euo pipefail
-trap 'docker compose down -v --remove-orphans' EXIT
+set -Eeuo pipefail
+
+cleanup() {
+  echo -e "\nCleaning up..."
+  # Stop log stream, if alive
+  [[ "${LOGS_PID:-}" ]] && kill "${LOGS_PID}" 2>/dev/null || true
+  # Shutting down services
+  docker compose down -v --remove-orphans
+  echo "Done."
+}
+trap cleanup SIGINT SIGTERM
 
 ORIGINAL_PROJECT_PATH="$(pwd)"
 eval source ./setup.sh
@@ -14,17 +23,11 @@ fi
 
 cp backend/.env.example backend/.env
 
-docker compose build frontend --no-cache
-docker compose build backend --no-cache
-docker compose up --build frontend
-docker compose up --build backend
+docker compose build --no-cache
+docker compose up --build
 
 docker compose exec backend python manage.py migrate
 docker compose exec backend python manage.py createsuperuser
 
 # Returning to the original project path to be able to run the test again with new changes, if there are any
 cd "$ORIGINAL_PROJECT_PATH"
-
-# Hit Ctrl+C to stop
-docker compose down frontend
-docker compose down backend
