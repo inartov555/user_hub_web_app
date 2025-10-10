@@ -1,4 +1,3 @@
-version: "3.9"
 services:
   db:
     image: postgres:16
@@ -16,7 +15,7 @@ services:
     ports: ["8000:8000"]
     volumes: ["./backend:/app"]
   frontend:
-    build: { context: ./frontend }
+    build: { context: ., dockerfile: frontend/Dockerfile }
     environment:
       - VITE_API_URL=http://localhost:8000/api
     ports: ["5173:5173"]
