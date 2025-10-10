@@ -1,31 +1,35 @@
-import * as React from 'react';
-import { register } from '../lib/auth';
-import { Link, useNavigate } from 'react-router-dom';
+import { useState } from "react";
+import { api } from "../lib/axios";
+import FormInput from "../components/FormInput";
+import { useNavigate } from "react-router-dom";
 
 export default function Signup() {
-  const nav = useNavigate();
-  const [username, setU] = React.useState('');
-  const [email, setE] = React.useState('');
-  const [password, setP] = React.useState('');
+  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState<string | null>(null);
+  const navigate = useNavigate();
 
-  async function submit(e: React.FormEvent) {
+  async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
-    await register(username, email, password);
-    nav('/login');
+    try {
+      await api.post("/auth/users/", { email, username, password });
+      navigate("/login");
+    } catch (err: any) {
+      setError("Signup failed");
+    }
   }
 
   return (
-    <div className="max-w-sm mx-auto p-6 bg-white rounded-2xl shadow">
-      <h1 className="text-xl font-semibold mb-4">Sign up</h1>
-      <form onSubmit={submit} className="space-y-3">
-        <input className="w-full border rounded px-3 py-2" placeholder="Username" value={username} onChange={e=>setU(e.target.value)} />
-        <input className="w-full border rounded px-3 py-2" placeholder="Email" value={email} onChange={e=>setE(e.target.value)} />
-        <input type="password" className="w-full border rounded px-3 py-2" placeholder="Password" value={password} onChange={e=>setP(e.target.value)} />
-        <button className="w-full px-4 py-2 rounded bg-black text-white">Create account</button>
+    <div className="max-w-md mx-auto card">
+      <h1 className="text-2xl font-semibold mb-4">Sign up</h1>
+      <form onSubmit={onSubmit} className="space-y-3">
+        <FormInput placeholder="Email" type="email" value={email} onChange={e=>setEmail(e.target.value)} required />
+        <FormInput placeholder="Username" value={username} onChange={e=>setUsername(e.target.value)} required />
+        <FormInput placeholder="Password" type="password" value={password} onChange={e=>setPassword(e.target.value)} required />
+        {error && <p className="text-red-600 text-sm">{error}</p>}
+        <button className="btn w-full" type="submit">Create account</button>
       </form>
-      <div className="text-sm mt-3">
-        Have an account? <Link to="/login" className="underline">Log in</Link>
-      </div>
     </div>
   );
 }

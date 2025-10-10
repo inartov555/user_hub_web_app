@@ -2,10 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-.card { @apply bg-white rounded-2xl shadow p-6; }
-.btn { @apply rounded-xl px-4 py-2 font-medium shadow hover:shadow-md transition; }
-.btn-primary { @apply bg-blue-600 text-white; }
-.input { @apply border rounded-xl px-3 py-2 w-full; }
-.label { @apply text-sm text-slate-600; }
-.link { @apply text-blue-700 hover:underline; }
-.page { @apply max-w-5xl mx-auto p-4 md:p-8; }
+body { @apply bg-gradient-to-br from-slate-50 to-slate-100 text-slate-800; }
+.card { @apply bg-white/80 backdrop-blur rounded-2xl shadow-md p-6; }
+.btn  { @apply inline-flex items-center justify-center rounded-xl px-4 py-2 border border-slate-200 hover:bg-slate-50; }
+.input{ @apply w-full rounded-xl border border-slate-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-slate-300; }

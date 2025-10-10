@@ -1,77 +1,44 @@
-import * as React from 'react';
-import api from '../lib/api';
-
-type Me = { username:string; email:string; first_name:string; last_name:string; title:string; avatar?: string };
+import { useEffect, useState } from "react";
+import { api } from "../lib/axios";
 
 export default function Profile() {
-  const [me, setMe] = React.useState<Me | null>(null);
-  const [first_name, setFirst] = React.useState('');
-  const [last_name, setLast] = React.useState('');
-  const [title, setTitle] = React.useState('');
+  const [data, setData] = useState<any>(null);
+  const [first_name, setFirstName] = useState("");
+  const [last_name, setLastName] = useState("");
+  const [bio, setBio] = useState("");
+  const [avatarFile, setAvatarFile] = useState<File | null>(null);
 
-  React.useEffect(() => {
-    (async () => {
-      const { data } = await api.get('/users/me/');
-      setMe(data);
-      setFirst(data.first_name || '');
-      setLast(data.last_name || '');
-      setTitle(data.title || '');
-    })();
-  }, []);
+  useEffect(() => { (async () => {
+    const { data } = await api.get("/me/profile/");
+    setData(data); setFirstName(data.user.first_name || ""); setLastName(data.user.last_name || ""); setBio(data.bio || "");
+  })(); }, []);
 
-  async function saveProfile(e: React.FormEvent) {
-    e.preventDefault();
-    const { data } = await api.patch('/users/me/', { first_name, last_name, title });
-    setMe(data);
+  async function onSave() {
+    const form = new FormData();
+    form.append("first_name", first_name);
+    form.append("last_name", last_name);
+    form.append("bio", bio);
+    if (avatarFile) form.append("avatar", avatarFile);
+    const { data } = await api.patch("/me/profile/", form, { headers: { "Content-Type": "multipart/form-data" }});
+    setData(data);
   }
 
-  async function onAvatarChange(e: React.ChangeEvent<HTMLInputElement>) {
-    const f = e.target.files?.[0]; if (!f) return;
-    const form = new FormData(); form.append('avatar', f);
-    await api.patch('/users/me/avatar/', form, { headers: { 'Content-Type': 'multipart/form-data' }});
-    const { data } = await api.get('/users/me/'); setMe(data);
-  }
-
-  async function onExcelChange(e: React.ChangeEvent<HTMLInputElement>) {
-    const f = e.target.files?.[0]; if (!f) return;
-    const form = new FormData(); form.append('file', f);
-    const { data } = await api.post('/users/import-excel/', form);
-    alert(`Created: ${data.created}, Updated: ${data.updated}`);
-  }
-
-  if (!me) return <div className="p-6">Loading...</div>;
-
+  if (!data) return <div className="card">Loading...</div>;
+  const mediaBase = (import.meta.env.VITE_API_URL ?? "http://localhost:8000/api").replace(/\/api$/, "");
   return (
-    <div className="p-6 space-y-6">
-      <h1 className="text-2xl font-semibold">My Profile</h1>
-
-      <form onSubmit={saveProfile} className="space-y-4 max-w-xl">
-        <div className="grid grid-cols-2 gap-4">
-          <label className="block">
-            <span className="text-sm">First name</span>
-            <input className="w-full border rounded px-3 py-2" value={first_name} onChange={(e)=>setFirst(e.target.value)} />
-          </label>
-          <label className="block">
-            <span className="text-sm">Last name</span>
-            <input className="w-full border rounded px-3 py-2" value={last_name} onChange={(e)=>setLast(e.target.value)} />
-          </label>
+    <div className="card grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div>
+        <img className="w-40 h-40 rounded-full object-cover border" src={data.avatar ? mediaBase + data.avatar : `https://placehold.co/160x160?text=Avatar`} />
+      </div>
+      <div className="md:col-span-2 space-y-3">
+        <div className="grid grid-cols-2 gap-3">
+          <input className="input" placeholder="First name" value={first_name} onChange={e=>setFirstName(e.target.value)} />
+          <input className="input" placeholder="Last name" value={last_name} onChange={e=>setLastName(e.target.value)} />
         </div>
-        <label className="block">
-          <span className="text-sm">Title</span>
-          <input className="w-full border rounded px-3 py-2" value={title} onChange={(e)=>setTitle(e.target.value)} />
-        </label>
-        <button className="px-4 py-2 rounded bg-black text-white">Save</button>
-      </form>
-
-      <div className="max-w-xl space-y-4">
-        <div>
-          <div className="text-sm font-medium mb-1">Avatar</div>
-          <input type="file" accept="image/*" onChange={onAvatarChange} />
-          {me.avatar && <img src={me.avatar} alt="avatar" className="mt-2 w-24 h-24 rounded-full object-cover" />}
-        </div>
-        <div>
-          <div className="text-sm font-medium mb-1">Import users via Excel (.xlsx)</div>
-          <input type="file" accept=".xlsx" onChange={onExcelChange} />
+        <textarea className="input min-h-[120px]" placeholder="Bio" value={bio} onChange={e=>setBio(e.target.value)} />
+        <input type="file" accept="image/*" onChange={(e)=>setAvatarFile(e.target.files?.[0] || null)} />
+        <div className="flex gap-2">
+          <button className="btn" onClick={onSave}>Save</button>
         </div>
       </div>
     </div>
