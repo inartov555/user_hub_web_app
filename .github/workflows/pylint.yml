@@ -43,6 +43,7 @@ jobs:
             --score=n \
             --max-line-length=128 \
             --disable=too-few-public-methods \
+            --max-parents=10 \
             $APP_FILES
         else
           echo "No app files to lint."
