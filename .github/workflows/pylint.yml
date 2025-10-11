@@ -7,7 +7,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: backend   # run all commands inside backend/
+        working-directory: backend
     strategy:
       matrix:
         python-version: ["3.12"]
@@ -32,7 +32,7 @@ jobs:
     - name: Analysing the code with pylint-django
       env:
         DJANGO_SETTINGS_MODULE: core.settings
-        PYTHONPATH: .  # treat backend/ as project root
+        PYTHONPATH: .
       run: |
         APP_FILES="$(git ls-files '*.py' | grep -vE '(^|/)(venv|\.venv)/|/migrations/')" || true
         if [ -n "$APP_FILES" ]; then
