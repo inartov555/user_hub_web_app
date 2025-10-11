@@ -24,7 +24,7 @@ jobs:
         pylint $(git ls-files '*.py')
     - name: Lint app code (strict)
       run: |
-        APP_FILES="$(git ls-files -- '*.py' | grep -vE '^backend/')" || true
+        APP_FILES="$(git ls-files -- '*.py' | grep '^backend/')" || true
         if [ -n "$APP_FILES" ]; then
           pylint --max-line-length=128 \
                  $APP_FILES
