@@ -18,6 +18,17 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install pylint
+        if [ -f backend/requirements.txt ]; then pip install -r backend/requirements.txt; fi
     - name: Analysing the code with pylint
       run: |
         pylint $(git ls-files '*.py')
+    - name: Lint app code (strict)
+        run: |
+          APP_FILES="$(git ls-files -- '*.py' | grep -vE '(^|/)tests/|^web/src/pages/')" || true
+          if [ -n "$APP_FILES" ]; then
+            pylint --max-line-length=128 \
+                   --disable=too-many-arguments,too-many-positional-arguments \
+                   $APP_FILES
+          else
+            echo "No app files to lint."
+          fi
