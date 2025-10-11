@@ -34,10 +34,10 @@ services:
       dockerfile: frontend/Dockerfile
       # Pass Vite env at build time if needed:
       args:
-        - VITE_API_URL=http://backend:8000/api
+        - VITE_API_URL=http://localhost:8000/api
     environment:
       # Optional; only used by your nginx if you read it at runtime (usually not needed)
-      - VITE_API_URL=http://backend:8000/api
+      - VITE_API_URL=http://localhost:8000/api
     ports:
       - "5173:80"  # open nginx port 80 on host 5173
     depends_on:
