@@ -1,4 +1,6 @@
-# Users App (Django + React)
+## This project is being developed
+
+## Users App (Django + React)
 
 ## Setup (Docker)
 ```bash
