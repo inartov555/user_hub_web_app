@@ -49,7 +49,7 @@ export function extractApiError(err: unknown): { message: string; fields?: Recor
     } else if (fields.email?.length) {
       topMessage = fields.email.join(" ");
     }
-    // topMessage = topMessage + " # " + String(typeof data)
+    topMessage = topMessage + " # " + String(typeof data)
 
     return { message: topMessage || "Validation error.", fields: Object.keys(fields).length ? fields : undefined };
   }
