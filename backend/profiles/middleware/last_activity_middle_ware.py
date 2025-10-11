@@ -1,5 +1,7 @@
 from django.utils import timezone
-from .models import Profile
+
+from .models.profile import Profile
+
 
 class LastActivityMiddleware:
     def __init__(self, get_response):
