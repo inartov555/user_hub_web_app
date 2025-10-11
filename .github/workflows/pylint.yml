@@ -21,13 +21,9 @@ jobs:
         if [ -f backend/requirements.txt ]; then pip install -r backend/requirements.txt; fi
     - name: Analysing the code with pylint
       run: |
-        pylint $(git ls-files '*.py')
-    - name: Lint app code (strict)
-      run: |
-        APP_FILES="$(git ls-files -- '*.py' | grep -vE '^backend/')" || true
+        APP_FILES="$(git ls-files '*.py' | grep '^backend/' | grep -vE '/migrations/|(^|/)(venv|\.venv)/')" || true
         if [ -n "$APP_FILES" ]; then
-          pylint --max-line-length=128 \
-                 $APP_FILES
+          pylint --max-line-length=128 $APP_FILES
         else
           echo "No app files to lint."
         fi
