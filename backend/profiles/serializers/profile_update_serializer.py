@@ -3,7 +3,6 @@ DRF serializer used to update a user’s Profile together with a couple of field
 on the related User in one request.
 """
 
-from django.contrib.auth.models import User
 from rest_framework import serializers
 
 from ..models.profile import Profile

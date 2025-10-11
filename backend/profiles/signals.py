@@ -10,7 +10,7 @@ from .models.profile import Profile
 
 
 @receiver(post_save, sender=User)
-def create_profile(sender, instance, created, **kwargs):
+def create_profile(sender, instance, created, **kwargs):  # pylint: disable=unused-argument
     """
     Every time a new User is created, a matching Profile row is created automatically.
     """

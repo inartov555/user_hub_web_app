@@ -18,7 +18,7 @@ class ExcelUploadView(generics.GenericAPIView):
     permission_classes = [permissions.IsAdminUser]
     parser_classes = [MultiPartParser]
 
-    def post(self, request, *args, **kwargs):
+    def post(self, request, *args, **kwargs):  # pylint: disable=unused-argument
         """
         Ingest an Excel file and create or update users (and their profiles).
 
