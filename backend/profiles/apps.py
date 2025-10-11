@@ -17,4 +17,4 @@ class ProfilesConfig(AppConfig):
         Importing signals registers signal receivers. It's imported here (not at module top)
         to avoid import-order issues and ensure models are loaded before connecting signals.
         """
-        from .signals import *  # noqa
+        from .signals import create_profile  # pylint: disable=import-outside-toplevel

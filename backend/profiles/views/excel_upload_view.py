@@ -3,19 +3,12 @@ DRF endpoint that lets an admin upload an Excel file to bulk create/update users
 """
 
 from django.contrib.auth.models import User
-from django_filters.rest_framework import DjangoFilterBackend
-from django.utils import timezone
 import pandas as pd
-from rest_framework import viewsets, permissions, generics
-from rest_framework.parsers import MultiPartParser, FormParser
+from rest_framework import permissions, generics
+from rest_framework.parsers import MultiPartParser
 from rest_framework.response import Response
-from rest_framework.pagination import PageNumberPagination
-from rest_framework.filters import OrderingFilter, SearchFilter
 
-from .models.profile import Profile
-from .serializers.profile_serializer import ProfileSerializer
-from .serializers.profile_update_serializer import ProfileUpdateSerializer
-from .serializers.user_serializer import UserSerializer
+from ..models.profile import Profile
 
 
 class ExcelUploadView(generics.GenericAPIView):
@@ -26,6 +19,12 @@ class ExcelUploadView(generics.GenericAPIView):
     parser_classes = [MultiPartParser]
 
     def post(self, request, *args, **kwargs):
+        """
+        Ingest an Excel file and create or update users (and their profiles).
+
+        Returns:
+            Response
+        """
         file = request.FILES.get("file")
         if not file:
             return Response({"detail": "No file provided"}, status=400)
@@ -36,7 +35,7 @@ class ExcelUploadView(generics.GenericAPIView):
             if not email:
                 continue
             user, was_created = User.objects.get_or_create(email=email, defaults={
-                "username": row.get("username") or email.split("@")[0],
+                "username": row.get("username") or email.split('@', maxsplit=1)[0],
                 "first_name": row.get("first_name", ""),
                 "last_name": row.get("last_name", ""),
             })

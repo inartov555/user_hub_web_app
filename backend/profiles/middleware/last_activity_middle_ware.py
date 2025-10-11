@@ -4,7 +4,7 @@ This is a Django middleware that records the user’s last activity timestamp on
 
 from django.utils import timezone
 
-from .models.profile import Profile
+from ..models.profile import Profile
 
 
 class LastActivityMiddleware:

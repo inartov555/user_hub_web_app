@@ -6,7 +6,7 @@ on the related User in one request.
 from django.contrib.auth.models import User
 from rest_framework import serializers
 
-from .models.profile import Profile
+from ..models.profile import Profile
 
 
 class ProfileUpdateSerializer(serializers.ModelSerializer):
@@ -18,10 +18,24 @@ class ProfileUpdateSerializer(serializers.ModelSerializer):
     last_name = serializers.CharField(source="user.last_name", required=False)
 
     class Meta:
+        """
+        Serializer configuration for the Profile update operation.
+        """
         model = Profile
         fields = ["bio", "avatar", "first_name", "last_name"]
 
     def update(self, instance, validated_data):
+        """
+        Persist updates to the Profile and selected fields on the related User.
+
+        Args:
+            instance: The existing Profile instance to update.
+            validated_data: Data already validated by DRF, potentially including a
+                nested `user` dict produced by the `source="user.*"` mappings.
+
+        Returns:
+            The updated Profile instance.
+        """
         user_data = validated_data.pop("user", {})
         for attr, value in user_data.items():
             setattr(instance.user, attr, value)
