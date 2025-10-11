@@ -2,7 +2,7 @@
 Active user
 """
 
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 from django.utils import timezone
 from rest_framework import permissions, generics
 
@@ -15,10 +15,11 @@ class OnlineUsersView(generics.ListAPIView):
     """
     serializer_class = UserSerializer
     permission_classes = [permissions.IsAuthenticated]
+    User = get_user_model()
 
     def get_queryset(self):
         """
         Read-only DRF endpoint that returns the list of users who have been active in the last 5 minutes.
         """
         cutoff = timezone.now() - timezone.timedelta(minutes=5)
-        return User.objects.filter(profile__last_activity__gte=cutoff).order_by("-profile__last_activity")
+        return self.User.objects.filter(profile__last_activity__gte=cutoff).order_by("-profile__last_activity")

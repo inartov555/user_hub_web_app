@@ -2,7 +2,7 @@
 DRF endpoint that lets an admin upload an Excel file to bulk create/update users (and their profiles).
 """
 
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 import pandas as pd
 from rest_framework import permissions, generics
 from rest_framework.parsers import MultiPartParser
@@ -25,6 +25,10 @@ class ExcelUploadView(generics.GenericAPIView):
         Returns:
             Response
         """
+        User = get_user_model()
+        user, was_created = User.objects.get_or_create(
+            email=email,
+            defaults={
         file = request.FILES.get("file")
         if not file:
             return Response({"detail": "No file provided"}, status=400)
