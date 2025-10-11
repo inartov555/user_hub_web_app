@@ -30,28 +30,28 @@ services:
 
   frontend:
     build: { context: ., dockerfile: frontend/Dockerfile }
-  environment:
-    VITE_API_URL: http://localhost:8000/api
-    CHOKIDAR_USEPOLLING: "1"
-  ports: ["5173:5173"]
-  volumes:
-    - ./frontend:/app
-    - /app/node_modules
-  working_dir: /app
-  command:
-    - /bin/sh
-    - -lc
-    - |
-      if [ -f package-lock.json ]; then npm ci --no-audit --no-fund; else npm i --no-audit --no-fund; fi
-      if npm run | grep -qE '^  dev'; then
-        npm run dev -- --host 0.0.0.0 --port 5173
-      elif npm run | grep -qE '^  start'; then
-        npm run start -- --host 0.0.0.0 --port 5173
-      else
-        echo "No dev/start script found in package.json"; cat package.json; exit 1
-      fi
-  stop_signal: SIGINT
-  stop_grace_period: 5s
+    environment:
+      VITE_API_URL: http://localhost:8000/api
+      CHOKIDAR_USEPOLLING: "1"
+    ports: ["5173:5173"]
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    working_dir: /app
+    command:
+      - /bin/sh
+      - -lc
+      - |
+        if [ -f package-lock.json ]; then npm ci --no-audit --no-fund; else npm i --no-audit --no-fund; fi
+        if npm run | grep -qE '^  dev'; then
+          npm run dev -- --host 0.0.0.0 --port 5173
+        elif npm run | grep -qE '^  start'; then
+          npm run start -- --host 0.0.0.0 --port 5173
+        else
+          echo "No dev/start script found in package.json"; cat package.json; exit 1
+        fi
+    stop_signal: SIGINT
+    stop_grace_period: 5s
 
 volumes:
   pgdata:
