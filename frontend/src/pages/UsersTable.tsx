@@ -1,5 +1,11 @@
 import { useMemo, useState } from "react";
-import { ColumnDef, flexRender, getCoreRowModel, getSortedRowModel, getFilteredRowModel, useReactTable, getPaginationRowModel } from "@tanstack/react-table";
+# import { ColumnDef, flexRender, getCoreRowModel, getSortedRowModel, getFilteredRowModel, useReactTable, getPaginationRowModel } from "@tanstack/react-table";
+import {
+  ColumnDef,
+  flexRender,
+  getCoreRowModel,
+  useReactTable,
+} from "@tanstack/react-table";
 import { api } from "../lib/axios";
 import { useQuery } from "@tanstack/react-query";
 import ColumnVisibilityMenu from "../components/ColumnVisibilityMenu";
@@ -20,7 +26,7 @@ export default function UsersTable() {
       return data; // { results, count }
     }
   });
-
+/*
   const columns = useMemo<ColumnDef<any>[]>(() => [
     { header: "ID", accessorKey: "id" },
     { header: "Username", accessorKey: "username" },
@@ -43,7 +49,26 @@ export default function UsersTable() {
     manualPagination: true,
     pageCount: data ? Math.ceil(data.count / pageSize) : -1,
   });
+*/
 
+  const columns: ColumnDef<any>[] = [
+    {
+      accessorKey: "username",
+      header: "Username",                       // string is fine
+      cell: info => info.getValue(),            // cell renderer
+    },
+    {
+      accessorKey: "email",
+      header: ctx => <span>Email</span>,        // header renderer (HeaderContext)
+      cell: ctx => <span>{ctx.getValue()}</span>, // cell renderer (CellContext)
+    },
+  ];
+
+  const table = useReactTable({
+    data,                // your row data
+    columns,
+    getCoreRowModel: getCoreRowModel(),
+  });
   function onHeaderClick(colId: string, multi: boolean) {
     let next = [...sort];
     const i = next.findIndex(s => s.replace("-", "") === colId);
@@ -52,7 +77,34 @@ export default function UsersTable() {
     if (!multi) next = [next[next.length - 1]];
     setSort(next);
   }
-
+  
+  return (<thead>
+  {table.getHeaderGroups().map(hg => (
+    <tr key={hg.id}>
+      {hg.headers.map(h => (
+        <th key={h.id}>
+          {h.isPlaceholder
+            ? null
+            : flexRender(h.column.columnDef.header, h.getContext())}
+          {/* ^^^^^^^^^ header renderer + HeaderContext */}
+        </th>
+      ))}
+    </tr>
+  ))}
+</thead>
+<tbody>
+  {table.getRowModel().rows.map(row => (
+    <tr key={row.id}>
+      {row.getVisibleCells().map(cell => (
+        <td key={cell.id}>
+          {flexRender(cell.column.columnDef.cell, cell.getContext())}
+          {/* ^^^^^ cell renderer + CellContext */}
+        </td>
+      ))}
+    </tr>
+  ))}
+</tbody>);
+/*
   return (
     <div className="card">
       <div className="flex items-center justify-between mb-3 gap-2">
@@ -107,3 +159,4 @@ export default function UsersTable() {
     </div>
   );
 }
+*/
