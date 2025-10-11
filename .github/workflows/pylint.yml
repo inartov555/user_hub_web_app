@@ -20,6 +20,8 @@ jobs:
       uses: actions/setup-python@v5
       with:
         python-version: ${{ matrix.python-version }}
+        cache: 'pip'
+        cache-dependency-path: backend/requirements.txt
 
     - name: Install dependencies
       run: |
@@ -30,13 +32,15 @@ jobs:
     - name: Analysing the code with pylint-django
       env:
         DJANGO_SETTINGS_MODULE: core.settings
-        PYTHONPATH: .
+        PYTHONPATH: .  # treat backend/ as project root
       run: |
-        APP_FILES="$(git ls-files '*.py' | grep -vE '(venv|\.venv)/')" || true
+        APP_FILES="$(git ls-files '*.py' | grep -vE '(^|/)(venv|\.venv)/|/migrations/')" || true
         if [ -n "$APP_FILES" ]; then
           pylint \
             --load-plugins=pylint_django \
             --django-settings-module=core.settings \
+            --output-format=colorized \
+            --score=n \
             --max-line-length=128 \
             --disable=too-few-public-methods \
             $APP_FILES
