@@ -4,26 +4,40 @@ import FormInput from "../components/FormInput";
 import { useNavigate } from "react-router-dom";
 import { extractApiError } from "../lib/httpErrors";
 
+type FieldErrors = {
+  email?: string;
+  username?: string;
+  password?: string;
+  detail?: string;
+};
+
 export default function Signup() {
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
+  const [submitError, setSubmitError] = useState<string | null>(null);
+  const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
   const navigate = useNavigate();
 
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
+    setSubmitError(null);
+    setFieldErrors({});
     try {
       await api.post("/auth/users/", {
-        email: form.email,
-        username: form.username || form.email.split("@")[0], // if you derive username
-        password: form.password,
+        email,
+        username,
+        password,
       });
+      // Optionally clear the form:
+      // const formEl = e.currentTarget;
+      // formEl.reset();
       navigate("/login");
     } catch (err: any) {
       const { message, fields } = extractApiError(err);
-      setSubmitError("Signup failed: " + message);
-      if (fields) setFieldErrors("Signup failed: " + fields);
+      setSubmitError("Signup failed: " + String(message));
+      if (fields) setFieldErrors(fields);
     }
   }
 
