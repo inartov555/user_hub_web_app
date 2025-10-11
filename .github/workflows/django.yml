@@ -3,16 +3,8 @@ name: Docker CI (frontend & backend)
 on:
   push:
     branches: [ "main" ]
-    paths:
-      - "backend/**"
-      - "frontend/**"
-      - ".github/workflows/docker-ci.yml"
   pull_request:
     branches: [ "main" ]
-    paths:
-      - "backend/**"
-      - "frontend/**"
-      - ".github/workflows/docker-ci.yml"
 
 jobs:
   backend:
