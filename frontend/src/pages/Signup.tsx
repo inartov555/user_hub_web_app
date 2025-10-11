@@ -36,7 +36,8 @@ export default function Signup() {
       navigate("/login");
     } catch (err: any) {
       const { message, fields } = extractApiError(err);
-      setSubmitError("Signup failed: " + String(message));
+      setError("Signup failed: " + String(message))
+      setSubmitError(message);
       if (fields) setFieldErrors(fields);
     }
   }
