@@ -1,3 +1,5 @@
+# pylint: disable=missing-module-docstring
+
 from .user_serializer import UserSerializer
 from .profile_serializer import ProfileSerializer
 from .profile_update_serializer import ProfileUpdateSerializer
