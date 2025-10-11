@@ -2,6 +2,7 @@ import { useState } from "react";
 import { api } from "../lib/axios";
 import FormInput from "../components/FormInput";
 import { useNavigate } from "react-router-dom";
+import { extractApiError } from "../lib/httpErrors";
 
 export default function Signup() {
   const [email, setEmail] = useState("");
@@ -13,10 +14,16 @@ export default function Signup() {
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
     try {
-      await api.post("/auth/users/", { email, username, password });
+      await api.post("/auth/users/", {
+        email: form.email,
+        username: form.username || form.email.split("@")[0], // if you derive username
+        password: form.password,
+      });
       navigate("/login");
     } catch (err: any) {
-      setError("Signup failed");
+      const { message, fields } = extractApiError(err);
+      setSubmitError("Signup failed: " + message);
+      if (fields) setFieldErrors("Signup failed: " + fields);
     }
   }
 
