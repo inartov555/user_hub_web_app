@@ -5,6 +5,9 @@ on: [push]
 jobs:
   build:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend
     strategy:
       matrix:
         python-version: ["3.12"]
@@ -30,7 +33,7 @@ jobs:
         DJANGO_SETTINGS_MODULE: core.settings
         PYTHONPATH: .
       run: |
-        APP_FILES="$(git ls-files '*.py' | grep '^backend/' | grep -vE '(^|/)(venv|\.venv)/|/migrations/')" || true
+        APP_FILES="$(git ls-files '*.py' | grep -vE '(^|/)(venv|\.venv)/|/migrations/')" || true
         if [ -n "$APP_FILES" ]; then
           pylint \
             --load-plugins=pylint_django \
