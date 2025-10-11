@@ -1,6 +1,16 @@
+"""
+This is the URL routing module for the profiles app (DRF + Django).
+It exposes the app’s API endpoints.
+"""
+
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from .views import UsersViewSet, MeProfileView, ExcelUploadView, OnlineUsersView
+
+from .views.excel_upload_view import ExcelUploadView
+from .views.me_profile_view import MeProfileView
+from .views.online_users_view import OnlineUsersView
+from .views.users_view_set import UsersViewSet
+
 
 router = DefaultRouter()
 router.register(r"users", UsersViewSet, basename="users")

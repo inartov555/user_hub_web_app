@@ -1,8 +1,20 @@
+"""
+App configuration
+"""
+
 from django.apps import AppConfig
 
+
 class ProfilesConfig(AppConfig):
+    """
+    Custom config for the profiles app
+    """
     default_auto_field = "django.db.models.BigAutoField"
     name = "profiles"
 
     def ready(self):
-        from . import signals  # noqa
+        """
+        Importing signals registers signal receivers. It's imported here (not at module top)
+        to avoid import-order issues and ensure models are loaded before connecting signals.
+        """
+        from .signals import *  # noqa
