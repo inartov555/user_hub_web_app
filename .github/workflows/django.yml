@@ -1,41 +1,57 @@
-name: Django CI
+name: Docker CI (frontend & backend)
 
 on:
   push:
     branches: [ "main" ]
-    paths: [ "backend/**", ".github/workflows/django-ci.yml" ]
+    paths:
+      - "backend/**"
+      - "frontend/**"
+      - ".github/workflows/docker-ci.yml"
   pull_request:
     branches: [ "main" ]
-    paths: [ "backend/**", ".github/workflows/django-ci.yml" ]
+    paths:
+      - "backend/**"
+      - "frontend/**"
+      - ".github/workflows/docker-ci.yml"
+  workflow_dispatch:
 
 jobs:
-  build:
-
+  backend:
+    name: Build backend image
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: backend
-    strategy:
-      max-parallel: 4
-      matrix:
-        python-version: ["3.12"]
-
     steps:
-    - uses: actions/checkout@v4
-    - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v5
-      with:
-        python-version: ${{ matrix.python-version }}
-        cache: pip
-        cache-dependency-path: backend/requirements.txt
+      - name: Checkout
+        uses: actions/checkout@v4
 
-    - name: Install Dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install -r requirements.txt
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
 
-    - name: Run Tests
-      env:
-        DJANGO_SETTINGS_MODULE: core.settings
-      run: |
-        python manage.py test --noinput -v 2
+      - name: Build backend (no push)
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: backend/Dockerfile
+          push: false
+          tags: ghcr.io/${{ github.repository }}-backend:ci
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+  frontend:
+    name: Build frontend image
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build frontend (no push)
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: frontend/Dockerfile
+          push: false
+          tags: ghcr.io/${{ github.repository }}-frontend:ci
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
