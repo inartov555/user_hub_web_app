@@ -7,35 +7,10 @@ from rest_framework.pagination import PageNumberPagination
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import OrderingFilter, SearchFilter
 import pandas as pd
+
 from .models import Profile
 from .serializers import UserSerializer, ProfileSerializer, ProfileUpdateSerializer
 
-class StandardResultsSetPagination(PageNumberPagination):
-    page_size = 20
-    page_size_query_param = "page_size"
-    max_page_size = 200
-
-class UsersViewSet(viewsets.ReadOnlyModelViewSet):
-    queryset = User.objects.select_related("profile").all().order_by("id")
-    serializer_class = UserSerializer
-    permission_classes = [permissions.IsAdminUser]
-    pagination_class = StandardResultsSetPagination
-    filter_backends = [DjangoFilterBackend, OrderingFilter, SearchFilter]
-    filterset_fields = ["is_active", "date_joined"]
-    search_fields = ["username", "email", "first_name", "last_name"]
-    ordering_fields = ["id", "username", "email", "first_name", "last_name", "date_joined"]
-
-class MeProfileView(generics.RetrieveUpdateAPIView):
-    permission_classes = [permissions.IsAuthenticated]
-    parser_classes = [MultiPartParser, FormParser]
-
-    def get_serializer_class(self):
-        if self.request.method in ["PUT", "PATCH"]:
-            return ProfileUpdateSerializer
-        return ProfileSerializer
-
-    def get_object(self):
-        return Profile.objects.select_related("user").get(user=self.request.user)
 
 class ExcelUploadView(generics.GenericAPIView):
     permission_classes = [permissions.IsAdminUser]
@@ -74,11 +49,3 @@ class ExcelUploadView(generics.GenericAPIView):
                 profile.bio = row.get("bio")
                 profile.save()
         return Response({"created": created, "updated": updated})
-
-class OnlineUsersView(generics.ListAPIView):
-    serializer_class = UserSerializer
-    permission_classes = [permissions.IsAuthenticated]
-
-    def get_queryset(self):
-        cutoff = timezone.now() - timezone.timedelta(minutes=5)
-        return User.objects.filter(profile__last_activity__gte=cutoff).order_by("-profile__last_activity")
