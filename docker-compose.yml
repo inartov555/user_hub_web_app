@@ -29,27 +29,19 @@ services:
     stop_grace_period: 5s
 
   frontend:
-    build: { context: ., dockerfile: frontend/Dockerfile }
+    build:
+      context: .
+      dockerfile: frontend/Dockerfile
+      # Pass Vite env at build time if needed:
+      args:
+        - VITE_API_URL=http://backend:8000/api
     environment:
-      VITE_API_URL: http://localhost:8000/api
-      CHOKIDAR_USEPOLLING: "1"
-    ports: ["5173:5173"]
-    volumes:
-      - ./frontend:/app
-      - /app/node_modules
-    working_dir: /app
-    command:
-      - /bin/sh
-      - -lc
-      - |
-        if [ -f package-lock.json ]; then npm ci --no-audit --no-fund; else npm i --no-audit --no-fund; fi
-        if npm run | grep -qE '^  dev'; then
-          npm run dev -- --host 0.0.0.0 --port 5173
-        elif npm run | grep -qE '^  start'; then
-          npm run start -- --host 0.0.0.0 --port 5173
-        else
-          echo "No dev/start script found in package.json"; cat package.json; exit 1
-        fi
+      # Optional; only used by your nginx if you read it at runtime (usually not needed)
+      - VITE_API_URL=http://backend:8000/api
+    ports:
+      - "5173:80"  # open nginx port 80 on host 5173
+    depends_on:
+      - backend
     stop_signal: SIGINT
     stop_grace_period: 5s
 
