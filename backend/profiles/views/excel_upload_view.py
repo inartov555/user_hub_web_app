@@ -25,7 +25,7 @@ class ExcelUploadView(generics.GenericAPIView):
         Returns:
             Response
         """
-        User = get_user_model()
+        _user = get_user_model()
         file = request.FILES.get("file")
         if not file:
             return Response({"detail": "No file provided"}, status=400)
@@ -35,7 +35,7 @@ class ExcelUploadView(generics.GenericAPIView):
             email = str(row.get("email", "")).strip().lower()
             if not email:
                 continue
-            user, was_created = User.objects.get_or_create(email=email, defaults={
+            user, was_created = _user.objects.get_or_create(email=email, defaults={
                 "username": row.get("username") or email.split('@', maxsplit=1)[0],
                 "first_name": row.get("first_name", ""),
                 "last_name": row.get("last_name", ""),
