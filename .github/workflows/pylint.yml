@@ -23,12 +23,11 @@ jobs:
       run: |
         pylint $(git ls-files '*.py')
     - name: Lint app code (strict)
-        run: |
-          APP_FILES="$(git ls-files -- '*.py' | grep -vE '(^|/)tests/|^web/src/pages/')" || true
-          if [ -n "$APP_FILES" ]; then
-            pylint --max-line-length=128 \
-                   --disable=too-many-arguments,too-many-positional-arguments \
-                   $APP_FILES
-          else
-            echo "No app files to lint."
-          fi
+      run: |
+        APP_FILES="$(git ls-files -- '*.py' | grep -vE '(^|/)^backend')" || true
+        if [ -n "$APP_FILES" ]; then
+          pylint --max-line-length=128 \
+                 $APP_FILES
+        else
+          echo "No app files to lint."
+        fi
