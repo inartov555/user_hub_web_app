@@ -26,9 +26,6 @@ class ExcelUploadView(generics.GenericAPIView):
             Response
         """
         User = get_user_model()
-        user, was_created = User.objects.get_or_create(
-            email=email,
-            defaults={
         file = request.FILES.get("file")
         if not file:
             return Response({"detail": "No file provided"}, status=400)

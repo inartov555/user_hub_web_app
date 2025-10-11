@@ -3,7 +3,7 @@ Read-only DRF viewset that lets admins list and view Django users with paginatio
 filtering, sorting, and search.
 """
 
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets, permissions
 from rest_framework.filters import OrderingFilter, SearchFilter
@@ -17,6 +17,7 @@ class UsersViewSet(viewsets.ReadOnlyModelViewSet):
     Read-only DRF viewset that lets admins list and view Django users with pagination,
     filtering, sorting, and search.
     """
+    User = get_user_model()
     queryset = User.objects.select_related("profile").all().order_by("id")
     serializer_class = UserSerializer
     permission_classes = [permissions.IsAdminUser]
