@@ -28,12 +28,11 @@ jobs:
         if [ -f backend/requirements.txt ]; then pip install -r backend/requirements.txt; fi
 
     - name: Analysing the code with pylint-django
-      if: steps.files.outputs.files != ''
-        env:
-          DJANGO_SETTINGS_MODULE: core.settings
-          PYTHONPATH: .
+      env:
+        DJANGO_SETTINGS_MODULE: core.settings
+        PYTHONPATH: .
       run: |
-        APP_FILES="$(git ls-files '*.py' | grep '^backend/' | grep -vE '(venv|\.venv)/')" || true
+        APP_FILES="$(git ls-files '*.py' | grep -vE '(venv|\.venv)/')" || true
         if [ -n "$APP_FILES" ]; then
           pylint \
             --load-plugins=pylint_django \
