@@ -137,7 +137,7 @@ DJOSER = {
         "jwt_create": ["rest_framework.permissions.AllowAny"],
         "jwt_refresh": ["rest_framework.permissions.AllowAny"],
         "user_list": ["rest_framework.permissions.IsAuthenticated"],
-        "user": ["rest_framework.permissions.IsAdminUser"],
+        "user": ["rest_framework.permissions.IsAuthenticated"],
         "current_user": ["rest_framework.permissions.IsAuthenticated"],
     },
 }

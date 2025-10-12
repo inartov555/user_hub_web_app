@@ -18,7 +18,7 @@ class UsersViewSet(viewsets.ReadOnlyModelViewSet):
     filtering, sorting, and search.
     """
     serializer_class = UserSerializer
-    permission_classes = [permissions.IsAdminUser]
+    permission_classes = [permissions.IsAuthenticated]
     pagination_class = StandardResultsSetPagination
     filter_backends = [DjangoFilterBackend, OrderingFilter, SearchFilter]
     filterset_fields = ["is_active", "date_joined"]
