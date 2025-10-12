@@ -29,6 +29,7 @@ docker compose up --build
 
 echo "Applying migrations..."
 docker compose exec backend python manage.py makemigrations
+docker compose exec backend python manage.py makemigrations profiles
 docker compose exec backend python manage.py migrate --noinput
 echo "Testing..."
 docker compose exec backend python manage.py test --noinput -v 2
