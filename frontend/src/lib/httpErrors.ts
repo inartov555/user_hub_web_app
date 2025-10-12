@@ -20,8 +20,7 @@ export function extractApiError(err: unknown): { message: string; fields?: Recor
   if (!data) return { message: `Server error (${status}).` };
 
   // DRF common shapes
-  // if (typeof data === "object") {
-  if (true) {
+  if (typeof data === "object") {
     const fields: Record<string, string[]> = {};
 
     // detail
@@ -49,7 +48,6 @@ export function extractApiError(err: unknown): { message: string; fields?: Recor
     } else if (fields.email?.length) {
       topMessage = fields.email.join(" ");
     }
-    topMessage = topMessage + " # " + String(typeof data)
 
     return { message: topMessage || "Validation error.", fields: Object.keys(fields).length ? fields : undefined };
   }
