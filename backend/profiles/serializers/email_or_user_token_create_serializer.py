@@ -8,7 +8,6 @@ from typing import Any, Dict
 from django.conf import settings
 from djoser.serializers import TokenCreateSerializer as BaseTokenCreateSerializer
 from rest_framework import serializers
-from rest_framework.fields import empty as DRF_EMPTY
 
 
 class EmailOrUsernameTokenCreateSerializer(BaseTokenCreateSerializer):
@@ -20,7 +19,7 @@ class EmailOrUsernameTokenCreateSerializer(BaseTokenCreateSerializer):
         """
         Taking email as username
         """
-        data = getattr(self, "initial_data", {}) or {}
+        data = getattr(self, "initial_data", {})
         login = (data.get("email") or data.get("username") or "").strip()
         password = data.get("password") or attrs.get("password")
 
