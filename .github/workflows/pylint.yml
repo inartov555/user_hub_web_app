@@ -47,5 +47,5 @@ jobs:
             --max-locals=20 \
             $APP_FILES
         else
-          echo "No app files to lint."
+          echo "No app files to pylint."
         fi
