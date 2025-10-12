@@ -126,9 +126,13 @@ DJOSER = {
             "profiles.serializers.email_or_user_token_create_serializer.EmailOrUsernameTokenCreateSerializer",
         "user_create": "profiles.serializers.user_create_serializer.UserCreateSerializer",
         "user": "profiles.serializers.user_serializer.UserSerializer",
-        "current_user": "profiles.serializers.user_serializer.UserSerializer",
+        "current_user": "profiles.serializers.user_serializer.UserSerializer"
+    },
+    "PERMISSIONS": {
+        "token_create": ["rest_framework.permissions.AllowAny"],
+        "token_destroy": ["rest_framework.permissions.IsAuthenticated"],
         "jwt_create": ["rest_framework.permissions.AllowAny"],
-        "jwt_refresh": ["rest_framework.permissions.AllowAny"],
+        "jwt_refresh": ["rest_framework.permissions.AllowAny"]
     },
 }
 
