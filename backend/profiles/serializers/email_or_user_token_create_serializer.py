@@ -5,7 +5,10 @@ It defines which user fields are exposed through your API and which of them are 
 
 from typing import Any, Dict
 
+from django.conf import settings
 from djoser.serializers import TokenCreateSerializer as BaseTokenCreateSerializer
+from rest_framework import serializers
+from rest_framework.fields import empty as DRF_EMPTY
 
 
 class EmailOrUsernameTokenCreateSerializer(BaseTokenCreateSerializer):
