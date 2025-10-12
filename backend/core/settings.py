@@ -28,6 +28,7 @@ INSTALLED_APPS = [
     "djoser",
     "drf_spectacular",
     "profiles",
+    "profiles.apps.ProfilesConfig",
 ]
 
 MIDDLEWARE = [

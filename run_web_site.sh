@@ -42,9 +42,10 @@ docker compose build --no-cache
 docker compose up --build
 
 # docker compose exec backend python manage.py migrate --database default
+docker compose exec backend python manage.py migrate
 # docker compose exec backend python manage.py migrate contenttypes
 # docker compose exec backend python manage.py migrate auth
-docker compose exec backend python manage.py migrate
+# docker compose exec backend python manage.py migrate profiles
 # docker compose exec backend python manage.py makemigrations profiles
 docker compose exec backend python manage.py createsuperuser
 
