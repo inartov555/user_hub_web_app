@@ -6,7 +6,7 @@ export default function ResetPassword() {
   const [email, setEmail] = useState("");
   const [sent, setSent] = useState(false);
 
-  async function onSubmit(e: React.FormEvent) {
+  async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     await api.post("/auth/users/reset_password/", { email });
     setSent(true);
