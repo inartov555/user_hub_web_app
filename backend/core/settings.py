@@ -18,7 +18,6 @@ ALLOWED_HOSTS = ["*"]
 INSTALLED_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",
-    "profiles.apps.ProfilesConfig",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
@@ -28,6 +27,7 @@ INSTALLED_APPS = [
     "django_filters",
     "djoser",
     "drf_spectacular",
+    "profiles.apps.ProfilesConfig",
 ]
 
 MIDDLEWARE = [
@@ -118,8 +118,11 @@ SPECTACULAR_SETTINGS = {
     "VERSION": "1.0.0",
 }
 
+AUTH_USER_MODEL = "auth.User"
+
 DJOSER = {
     "LOGIN_FIELD": "email",
+    "SEND_ACTIVATION_EMAIL": False,   # dev: no activation step
     "SERIALIZERS": {
         "token_create": "profiles.serializers.EmailOrUsernameTokenCreateSerializer",
         "user_create": "profiles.serializers.UserCreateSerializer",

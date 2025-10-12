@@ -22,20 +22,34 @@ if [[ $? -ne 0 ]]; then
 fi
 
 echo "Building images..."
-docker compose build --no-cache
+docker compose build db --no-cache
+docker compose build backend --no-cache
+docker compose build frontend --no-cache
 
-echo "Starting services..."
-docker compose up --build
+echo "Starting Postgres..."
+# docker compose up -d db
+
+echo "Making migrations (one-off container)..."
+docker compose run --rm backend python manage.py makemigrations profiles
 
 echo "Applying migrations..."
-docker compose exec backend python manage.py makemigrations
-docker compose exec backend python manage.py makemigrations profiles
-docker compose exec backend python manage.py migrate --noinput
-echo "Testing..."
-docker compose exec backend python manage.py test --noinput -v 2
+docker compose run --rm backend python manage.py migrate --noinput
 
-echo "Collecting statistics..."
-docker compose exec backend python manage.py collectstatic --noinput
+# OPTIONAL: fix a bad state where migration was recorded but table missing
+# docker compose run --rm backend python manage.py migrate profiles zero --fake
+# docker compose run --rm backend python manage.py migrate --noinput
 
-echo "Creating superuser..."
-docker compose exec backend python manage.py createsuperuser
+echo "Starting backend & frontend..."
+# docker compose up -d backend
+# docker compose up -d frontend
+
+docker compose up
+
+# echo "Testing..."
+# docker compose exec backend python manage.py test --noinput -v 2
+
+# echo "Collecting statistics..."
+# docker compose exec backend python manage.py collectstatic --noinput
+
+# echo "Creating superuser..."
+# docker compose exec backend python manage.py createsuperuser --noinput

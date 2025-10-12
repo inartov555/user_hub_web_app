@@ -12,7 +12,7 @@ services:
     stop_signal: SIGINT
     stop_grace_period: 60s
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U users -d usersdb || exit 1"]
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
       interval: 2s
       timeout: 3s
       retries: 20
@@ -24,7 +24,9 @@ services:
       db:
         condition: service_healthy
     environment:
-      DATABASE_URL: postgres://users:users@usersdb:5432/usersdb
+      DJANGO_SUPERUSER_USERNAME: admin
+      DJANGO_SUPERUSER_EMAIL: admin@example.com
+      DJANGO_SUPERUSER_PASSWORD: changeme123
     ports: ["8000:8000"]
     volumes: ["./backend:/app"]
     stop_signal: SIGINT
