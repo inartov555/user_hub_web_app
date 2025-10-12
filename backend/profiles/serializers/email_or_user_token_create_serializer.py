@@ -16,6 +16,17 @@ class EmailOrUsernameTokenCreateSerializer(BaseTokenCreateSerializer):
     Django REST Framework ModelSerializer for Django’s built-in User model.
     It defines which user fields are exposed through your API and which of them are writable.
     """
+    class Meta(BaseTokenCreateSerializer.Meta):
+        """
+        Allow any of these; none required at field level
+        """
+        fields = ("password", "email", "username", "login")
+        extra_kwargs = {
+            "email": {"required": False, "allow_blank": True},
+            "username": {"required": False, "allow_blank": True},
+            "login": {"required": False, "allow_blank": True},
+        }
+
     def _resolve_login_field(self) -> str:
         """
         Prefer the underlying user's USERNAME_FIELD (what auth actually uses).
