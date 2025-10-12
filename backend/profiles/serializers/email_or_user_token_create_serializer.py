@@ -19,7 +19,7 @@ class EmailOrUsernameTokenCreateSerializer(BaseTokenCreateSerializer):
         login = (data.get("email") or data.get("username") or "").strip()
         if login:
             # Inject into the field Djoser expects (self.username_field)
-            attrs[self.username_field] = login
+            attrs["username"] = login
             if "password" in data:
                 attrs["password"] = data["password"]
         return super().validate(attrs)
