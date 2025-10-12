@@ -24,27 +24,6 @@ fi
 
 cp backend/.env.example backend/.env
 
-# Refreshing Docker groups in the currect shell
-# echo ""
-# echo "Debug info before starting docker"
-# echo ""
-# newgrp docker
-
-# For debug reasons
-# echo "DOCKER_HOST = '$DOCKER_HOST'"
-# echo "$(docker context ls)"
-# echo "$(docker version)"
-# echo ""
-# echo "End of debug info"
-# echo ""
-
-# docker compose build --no-cache
-# docker compose up --build
-
-# docker compose exec backend python manage.py migrate
-# docker compose exec backend python manage.py makemigrations profiles
-# docker compose exec backend python manage.py createsuperuser
-
 echo "Building images..."
 docker compose build --no-cache
 
@@ -52,18 +31,18 @@ echo "Starting services..."
 docker compose up --build
 
 # Wait for DB to be ready (Postgres example; adjust service name/command if needed)
-echo "Waiting for database..."
-if docker compose ps db >/dev/null 2>&1; then
+# echo "Waiting for database..."
+# if docker compose ps db >/dev/null 2>&1; then
   # shellcheck disable=SC2016
-  until docker compose exec -T db pg_isready -U "${POSTGRES_USER:-postgres}" >/dev/null 2>&1; do
-    sleep 1
-    printf '.'
-  done
-  echo
-else
+#  until docker compose exec -T db pg_isready -U "${POSTGRES_USER:-postgres}" >/dev/null 2>&1; do
+#    sleep 1
+#    printf '.'
+#  done
+#  echo
+# else
   # Fallback: give containers a moment if no dedicated db service
-  sleep 5
-fi
+#  sleep 5
+# fi
 
 echo "Applying migrations..."
 docker compose exec -T backend python manage.py migrate --noinput
