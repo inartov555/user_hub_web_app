@@ -3,7 +3,6 @@ import { api } from "../lib/axios";
 import { useAuthStore } from "../auth/store";
 import FormInput from "../components/FormInput";
 import { Link, useNavigate } from "react-router-dom";
-import { extractApiError } from "../lib/httpErrors";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -12,7 +11,7 @@ export default function Login() {
   const navigate = useNavigate();
   const { setTokens, setUser } = useAuthStore();
 
-  async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
+  async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
     try {
       const { data: tokens } = await api.post("/auth/jwt/create/", { email, password });
@@ -21,8 +20,7 @@ export default function Login() {
       setUser(me);
       navigate("/users");
     } catch (err: any) {
-      const parsed = extractApiError(err as unknown);
-      setError(`Signup failure: ${parsed.message}`);
+      setError(err?.response?.data?.detail || "Login failed");
     }
   }
 

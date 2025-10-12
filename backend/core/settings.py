@@ -18,7 +18,6 @@ ALLOWED_HOSTS = ["*"]
 INSTALLED_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",
-    "profiles",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
@@ -28,6 +27,7 @@ INSTALLED_APPS = [
     "django_filters",
     "djoser",
     "drf_spectacular",
+    "profiles",
 ]
 
 MIDDLEWARE = [
@@ -39,7 +39,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    "profiles.middleware.last_activity_middle_ware.LastActivityMiddleware",
+    "profiles.middleware.LastActivityMiddleware",
 ]
 
 ROOT_URLCONF = "core.urls"
@@ -120,12 +120,7 @@ SPECTACULAR_SETTINGS = {
 
 DJOSER = {
     "LOGIN_FIELD": "email",
-    "SERIALIZERS": {
-        "token_create": "profiles.serializers.EmailOrUsernameTokenCreateSerializer",
-        "user_create": "profiles.serializers.UserCreateSerializer",
-        "user": "profiles.serializers.user_serializer.UserSerializer",
-        "current_user": "profiles.serializers.user_serializer.UserSerializer"
-    },
+    "SERIALIZERS": {"user": "profiles.serializers.UserSerializer", "current_user": "profiles.serializers.UserSerializer"},
 }
 
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"

@@ -2,7 +2,6 @@ import { useState } from "react";
 import { api } from "../lib/axios";
 import FormInput from "../components/FormInput";
 import { useNavigate } from "react-router-dom";
-import { extractApiError } from "../lib/httpErrors";
 
 export default function Signup() {
   const [email, setEmail] = useState("");
@@ -11,14 +10,13 @@ export default function Signup() {
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
 
-  async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
+  async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
     try {
       await api.post("/auth/users/", { email, username, password });
       navigate("/login");
     } catch (err: any) {
-      const parsed = extractApiError(err as unknown);
-      setError(`Signup failure: ${parsed.message}`);
+      setError("Signup failed");
     }
   }
 
