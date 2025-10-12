@@ -4,10 +4,11 @@ This module wires up a Django signal.
 
 from django.contrib.auth import get_user_model
 from django.db import connection
-from django.db.models.signals import post_save
+from django.db.models.signals import post_save, post_migrate
 from django.dispatch import receiver
 
 from .models.profile import Profile
+from .utils import _table_exists
 
 
 User = get_user_model()
