@@ -8,8 +8,6 @@ from django.contrib.auth import get_user_model
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
-from .models.profile import Profile
-
 
 user_mod = get_user_model()
 
@@ -29,8 +27,11 @@ def create_profile_on_user_create(sender, instance, created, **kwargs):  # pylin
     """
     if not created:
         return
-    _profile = apps.get_model("profiles", "Profile")
-    _profile.objects.get_or_create(user=instance)
+    # Create after commit so we never run during migrations/flush/fixtures
+    def _make():
+        profile_model = apps.get_model("profiles", "Profile")
+        profile_model.objects.get_or_create(user=instance)
+    transaction.on_commit(_make)
 
 
 def backfill_profiles(sender, app_config, **kwargs):  # pylint: disable=unused-argument
