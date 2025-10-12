@@ -135,7 +135,10 @@ DJOSER = {
         "token_create": ["rest_framework.permissions.AllowAny"],
         "token_destroy": ["rest_framework.permissions.IsAuthenticated"],
         "jwt_create": ["rest_framework.permissions.AllowAny"],
-        "jwt_refresh": ["rest_framework.permissions.AllowAny"]
+        "jwt_refresh": ["rest_framework.permissions.AllowAny"],
+        "user_list": ["rest_framework.permissions.IsAuthenticated"],
+        "user": ["rest_framework.permissions.IsAdminUser"],
+        "current_user": ["rest_framework.permissions.IsAuthenticated"],
     },
 }
 
