@@ -121,6 +121,7 @@ SPECTACULAR_SETTINGS = {
 DJOSER = {
     "LOGIN_FIELD": "email",
     "SERIALIZERS": {
+        "token_create": "profiles.serializers.EmailOrUsernameTokenCreateSerializer",
         "user_create": "profiles.serializers.UserCreateSerializer",
         "user": "profiles.serializers.user_serializer.UserSerializer",
         "current_user": "profiles.serializers.user_serializer.UserSerializer"

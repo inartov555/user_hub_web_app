@@ -21,7 +21,6 @@ export default function Login() {
       setUser(me);
       navigate("/users");
     } catch (err: any) {
-      // setError(err?.response?.data?.detail || "Login failed");
       const parsed = extractApiError(err as unknown);
       setError(`Signup failure: ${parsed.message}`);
     }
