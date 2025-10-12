@@ -2,21 +2,43 @@ import { useState } from "react";
 import { api } from "../lib/axios";
 import FormInput from "../components/FormInput";
 import { useNavigate } from "react-router-dom";
+import { extractApiError } from "../lib/httpErrors";
+
+type FieldErrors = {
+  email?: string;
+  username?: string;
+  password?: string;
+  detail?: string;
+};
 
 export default function Signup() {
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
+  const [submitError, setSubmitError] = useState<string | null>(null);
+  const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
   const navigate = useNavigate();
 
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
+    setSubmitError(null);
+    setFieldErrors({});
     try {
-      await api.post("/auth/users/", { email, username, password });
+      await api.post("/auth/users/", {
+        email,
+        username,
+        password,
+      });
+      // Optionally clear the form:
+      // const formEl = e.currentTarget;
+      // formEl.reset();
       navigate("/login");
     } catch (err: any) {
-      setError("Signup failed");
+      const { message, fields } = extractApiError(err);
+      // setSubmitError(message); // overrides the error field and makes it empty
+      // if (fields) setFieldErrors(fields); // overrides the error field and makes it empty
+      setError("Signup failed: " + String(message) + "; fields: " + String (fields))
     }
   }
 
