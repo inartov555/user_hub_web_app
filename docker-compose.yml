@@ -3,16 +3,16 @@ services:
   db:
     image: postgres:16
     environment:
-      POSTGRES_DB: usersdb
-      POSTGRES_USER: users
-      POSTGRES_PASSWORD: users
+      POSTGRES_DB: ${POSTGRES_DB:-app}
+      POSTGRES_USER: ${POSTGRES_USER:-app}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-app}
     ports: ["5432:5432"]
     volumes:
       - pgdata:/var/lib/postgresql/data
     stop_signal: SIGINT
     stop_grace_period: 60s
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U users -d usersdb"]
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
       interval: 2s
       timeout: 3s
       retries: 20

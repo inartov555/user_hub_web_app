@@ -29,7 +29,8 @@ echo "Starting services..."
 docker compose up --build
 
 echo "Applying migrations..."
-docker compose exec -T backend python manage.py migrate --noinput
+docker compose exec backend python manage.py makemigrations
+docker compose exec backend python manage.py migrate --noinput
 
 echo "Creating superuser..."
 docker compose exec backend python manage.py createsuperuser
