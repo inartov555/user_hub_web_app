@@ -10,7 +10,6 @@ from django.db.models.signals import post_save, post_migrate
 from django.dispatch import receiver
 
 from .models.profile import Profile
-from .utils import _table_exists
 
 
 User = get_user_model()
