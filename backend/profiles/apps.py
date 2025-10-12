@@ -21,12 +21,12 @@ class ProfilesConfig(AppConfig):
         """
         # Get models safely after apps are loaded
         app_label, model_name = settings.AUTH_USER_MODEL.split(".")
-        User = apps.get_model(app_label, model_name)
-        from .signals import create_profile_on_user_create, backfill_profiles
+        _user = apps.get_model(app_label, model_name)
+        from .signals import *  # pylint: disable=import-outside-toplevel, unused-import
         # Connect with stable dispatch_uids to prevent duplicate connections
         post_save.connect(
             create_profile_on_user_create,
-            sender=User,
+            sender=_user,
             dispatch_uid="profiles.create_profile_on_user_create",
         )
         post_migrate.connect(
