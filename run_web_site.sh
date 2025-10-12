@@ -6,13 +6,12 @@
 set -Eeuo pipefail
 
 cleanup() {
-  echo -e "\nCleaning up..."
-  # Stop log stream, if alive
-  # [[ "${LOGS_PID:-}" ]] && kill "${LOGS_PID}" 2>/dev/null || true
+  echo "Cleaning up..."
   # Shutting down services
   docker compose down -v --remove-orphans
-  sudo systemctl start docker
   echo "Done."
+  echo "Returning to the original project path to be able to run the test again with new changes, if there are any"
+  cd "$ORIGINAL_PROJECT_PATH"
 }
 trap cleanup SIGINT SIGTERM
 
@@ -31,9 +30,11 @@ docker compose up --build
 echo "Applying migrations..."
 docker compose exec backend python manage.py makemigrations
 docker compose exec backend python manage.py migrate --noinput
+echo "Testing..."
+docker compose exec backend python manage.py test --noinput -v 2
+
+echo "Collecting statistics..."
+docker compose exec backend python manage.py collectstatic --noinput
 
 echo "Creating superuser..."
 docker compose exec backend python manage.py createsuperuser
-
-# Returning to the original project path to be able to run the test again with new changes, if there are any
-cd "$ORIGINAL_PROJECT_PATH"

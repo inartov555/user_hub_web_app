@@ -18,6 +18,7 @@ ALLOWED_HOSTS = ["*"]
 INSTALLED_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",
+    "profiles",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
@@ -27,7 +28,6 @@ INSTALLED_APPS = [
     "django_filters",
     "djoser",
     "drf_spectacular",
-    "profiles.apps.ProfilesConfig",
 ]
 
 MIDDLEWARE = [

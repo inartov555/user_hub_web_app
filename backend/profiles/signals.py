@@ -6,13 +6,16 @@ from django.apps import apps
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.db.models.signals import post_save
+from django.db import transaction
 from django.dispatch import receiver
+
+from .models.profile import Profile
 
 
 user_mod = get_user_model()
 
 
-@receiver(post_save, sender=user_mod)
+# @receiver(post_save, sender=user_mod)
 def create_profile(sender, instance, created, **kwargs):  # pylint: disable=unused-argument
     """
     Every time a new User is created, a matching Profile row is created automatically.
@@ -39,14 +42,25 @@ def backfill_profiles(sender, app_config, **kwargs):  # pylint: disable=unused-a
     After migrations, ensure every user has a Profile.
     Only run when *this* app (profiles) finishes migrating.
     """
-    if app_config.label != "profiles":
+    if app_config.label not in {"auth", "profiles"}:
+        return
+
+    # Make sure the necessary tables exist before querying
+    from django.db import connection  # pylint: disable=import-outside-toplevel
+    with connection.cursor() as cursor:
+        tables = set(connection.introspection.table_names(cursor))
+    if not {"auth_user", "profiles_profile"}.issubset(tables):
         return
 
     # Resolve models lazily
     app_label, model_name = settings.AUTH_USER_MODEL.split(".")
-    _user = apps.get_model(app_label, model_name)
-    _profile = apps.get_model("profiles", "Profile")
+    user_model = apps.get_model(app_label, model_name)
+    profile_model = apps.get_model("profiles", "Profile")
 
     # Create profiles only for users missing one
-    missing = _user.objects.filter(profile__isnull=True).only("id")
-    _profile.objects.bulk_create([_profile(user=u) for u in missing])
+    missing_users = user_model.objects.filter(profile__isnull=True).only("id")
+    # idempotent; safe to run multiple times
+    profile_model.objects.bulk_create(
+        [profile_model(user=u) for u in missing_users],
+        ignore_conflicts=True,
+    )
