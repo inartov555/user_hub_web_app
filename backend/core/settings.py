@@ -118,8 +118,6 @@ SPECTACULAR_SETTINGS = {
     "VERSION": "1.0.0",
 }
 
-AUTH_USER_MODEL = "auth.User"
-
 DJOSER = {
     "LOGIN_FIELD": "email",
     "SEND_ACTIVATION_EMAIL": False,   # dev: no activation step

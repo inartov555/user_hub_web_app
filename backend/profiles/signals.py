@@ -5,9 +5,7 @@ This module wires up a Django signal.
 from django.apps import apps
 from django.conf import settings
 from django.contrib.auth import get_user_model
-from django.db.models.signals import post_save
 from django.db import transaction
-from django.dispatch import receiver
 
 from .models.profile import Profile
 
@@ -15,7 +13,6 @@ from .models.profile import Profile
 user_mod = get_user_model()
 
 
-# @receiver(post_save, sender=user_mod)
 def create_profile(sender, instance, created, **kwargs):  # pylint: disable=unused-argument
     """
     Every time a new User is created, a matching Profile row is created automatically.

@@ -12,14 +12,6 @@ class Profile(models.Model):
     This defines a model named Profile - an extension of Django’s built-in User data.
     Each user has exactly one profile.
     """
-    '''
-    user = models.OneToOneField(
-        settings.AUTH_USER_MODEL,
-        on_delete=models.CASCADE,
-        related_name="profile",
-        unique=True
-    )
-    '''
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, unique=True)
     bio = models.TextField(blank=True)
     avatar = models.ImageField(upload_to="avatars/", blank=True, null=True)

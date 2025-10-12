@@ -7,11 +7,11 @@ from typing import Any, Dict
 
 from django.conf import settings
 from django.contrib.auth import get_user_model
-from djoser.serializers import TokenCreateSerializer as BaseTokenCreateSerializer
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework import serializers
 
 
-class EmailOrUsernameTokenCreateSerializer(BaseTokenCreateSerializer):
+class EmailOrUsernameTokenCreateSerializer(TokenObtainPairSerializer):
     """
     Django REST Framework ModelSerializer for Django’s built-in User model.
     It defines which user fields are exposed through your API and which of them are writable.
@@ -74,3 +74,12 @@ class EmailOrUsernameTokenCreateSerializer(BaseTokenCreateSerializer):
 
         # 5) delegate to Djoser (this will validate credentials & active user)
         return super().validate(attrs)
+
+    # DRF's BaseSerializer declares abstract create/update; implement stubs for pylint.
+    def create(self, validated_data: Dict[str, Any]) -> Dict[str, Any]:
+        # Not used by Djoser token creation; present to satisfy linter.
+        return validated_data
+
+    def update(self, instance: Any, validated_data: Dict[str, Any]) -> Any:
+        # Not applicable for token creation.
+        raise NotImplementedError("Update is not supported for this serializer.")
