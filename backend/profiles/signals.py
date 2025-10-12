@@ -29,3 +29,22 @@ def create_profile(sender, instance, created, **kwargs):  # pylint: disable=unus
     """
     if created:
         Profile.objects.create(user=instance)
+
+
+@receiver(post_save, sender=get_user_model())
+def create_profile_on_user_create(sender, instance, created, **kwargs):
+    """
+    Ensure a Profile exists for each newly-created user.
+    """
+    if created and _table_exists("profiles_profile"):
+        Profile.objects.get_or_create(user=instance)
+
+
+@receiver(post_migrate)
+def backfill_profiles(sender, **kwargs):
+    """
+    After migrations, ensure all users have profiles
+    """
+    if _table_exists("profiles_profile"):
+        for user in get_user_model().objects.all():
+            Profile.objects.get_or_create(user=user)
