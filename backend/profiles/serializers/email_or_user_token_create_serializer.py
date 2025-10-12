@@ -19,31 +19,19 @@ class EmailOrUsernameTokenCreateSerializer(BaseTokenCreateSerializer):
         """
         Taking email as username
         """
-        data = getattr(self, "initial_data", {})
-        login = (data.get("email") or data.get("username") or "").strip()
-        password = data.get("password") or attrs.get("password")
-
-        raw = getattr(self, "initial_data", None)
-        data: Dict[str, Any] = raw if isinstance(raw, dict) else {}
-        email_val = data["email"] if "email" in data and isinstance(data["email"], str) else ""
-        username_val = data["username"] if "username" in data and isinstance(data["username"], str) else ""
-        login = (email_val or username_val).strip()
-        login_field = settings.DJOSER.get("LOGIN_FIELD", "email")
-        # Put the value into whichever field Djoser expects
-        attrs[login_field] = login
-        attrs["password"] = data["password"] if "password" in data else None
-
+        login = (attrs.get("email") or attrs.get("username") or "").strip()
+        password = attrs.get("password")
         if not login or not password:
             raise serializers.ValidationError(
                 {"detail": 'Must include "username" or "email" and "password".'}
             )
-
+        login_field = getattr(settings, "DJOSER", {}).get("LOGIN_FIELD", "email")
+        attrs[login_field] = login
         # Avoid confusing the base serializer with extra fields
         if login_field == "email":
             attrs.pop("username", None)
         else:
             attrs.pop("email", None)
-
         return super().validate(attrs)
 
     # DRF's BaseSerializer declares abstract create/update; implement stubs for pylint.
