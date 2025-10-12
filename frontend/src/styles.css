@@ -6,3 +6,25 @@ body { @apply bg-gradient-to-br from-slate-50 to-slate-100 text-slate-800; }
 .card { @apply bg-white/80 backdrop-blur rounded-2xl shadow-md p-6; }
 .btn  { @apply inline-flex items-center justify-center rounded-xl px-4 py-2 border border-slate-200 hover:bg-slate-50; }
 .input{ @apply w-full rounded-xl border border-slate-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-slate-300; }
+
+table {
+  table-layout: auto; /* or "fixed" if you prefer truncation/ellipsis behavior */
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th, td {
+  padding: 8px;
+  vertical-align: top;
+}
+
+th {
+  text-align: left;
+  white-space: normal;
+  overflow-wrap: anywhere; /* lets very long strings (emails, hashes) wrap */
+}
+
+td {
+  white-space: normal;
+  overflow-wrap: anywhere;
+}

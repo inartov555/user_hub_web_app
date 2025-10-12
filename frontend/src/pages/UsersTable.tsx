@@ -31,8 +31,10 @@ export default function UsersTable() {
 
   const columns = useMemo<ColumnDef<User>[]>(
     () => [
-      { accessorKey: "username", header: "Username", cell: info => info.getValue() as string },
+      { accessorKey: "username", header: () => <span>Username</span>, cell: ctx => <span>{ctx.getValue<string>()}</span> },
       { accessorKey: "email", header: () => <span>Email</span>, cell: ctx => <span>{ctx.getValue<string>()}</span> },
+      { accessorKey: "first_name", header: () => <span>First Name</span>, cell: ctx => <span>{ctx.getValue<string>()}</span> },
+      { accessorKey: "last_name", header: () => <span>Last Name</span>, cell: ctx => <span>{ctx.getValue<string>()}</span> },
     ],
     []
   );
