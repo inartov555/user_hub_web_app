@@ -40,21 +40,7 @@ export ROOT_VENV="$COPIED_PROJECT_PATH"
 echo "Entering the '$COPIED_PROJECT_PATH' module"
 cd "$COPIED_PROJECT_PATH"
 
-# Activating venv
+echo "Copying .env file..."
+cp backend/.env.example backend/.env
 
-# if python3 -m venv --help > /dev/null 2>&1; then
-#    echo "venv module is available"
-# else
-#    python3 -m pip install --user virtualenv
-# fi
-# python3 -m venv venv
-# . venv/bin/activate
-
-# BASE_REQ_FILE="$COPIED_PROJECT_PATH/backend/requirements.txt"
-# echo "Installing module requirements from the '$BASE_REQ_FILE' file..."
-# echo ""
-# python3 -m pip install --upgrade pip
-# python3 -m pip install -r "$BASE_REQ_FILE"
-
-echo "Virtual env set up to: $(pwd)"
 export TEST_VENV=$(pwd)

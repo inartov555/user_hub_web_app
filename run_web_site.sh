@@ -22,8 +22,6 @@ if [[ $? -ne 0 ]]; then
   return 1
 fi
 
-cp backend/.env.example backend/.env
-
 echo "Building images..."
 docker compose build --no-cache
 
