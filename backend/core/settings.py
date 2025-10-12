@@ -27,7 +27,6 @@ INSTALLED_APPS = [
     "django_filters",
     "djoser",
     "drf_spectacular",
-    "profiles",
     "profiles.apps.ProfilesConfig",
 ]
 
