@@ -120,7 +120,11 @@ SPECTACULAR_SETTINGS = {
 
 DJOSER = {
     "LOGIN_FIELD": "email",
-    "SERIALIZERS": {"user": "profiles.serializers.UserSerializer", "current_user": "profiles.serializers.UserSerializer"},
+    "SERIALIZERS": {
+        "user_create": "profiles.serializers.UserCreateSerializer",
+        "user": "profiles.serializers.user_serializer.UserSerializer",
+        "current_user": "profiles.serializers.user_serializer.UserSerializer"
+    },
 }
 
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"

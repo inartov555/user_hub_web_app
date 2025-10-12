@@ -4,41 +4,21 @@ import FormInput from "../components/FormInput";
 import { useNavigate } from "react-router-dom";
 import { extractApiError } from "../lib/httpErrors";
 
-type FieldErrors = {
-  email?: string;
-  username?: string;
-  password?: string;
-  detail?: string;
-};
-
 export default function Signup() {
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
-  const [submitError, setSubmitError] = useState<string | null>(null);
-  const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
   const navigate = useNavigate();
 
-  async function onSubmit(e: React.FormEvent) {
+  async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    setSubmitError(null);
-    setFieldErrors({});
     try {
-      await api.post("/auth/users/", {
-        email,
-        username,
-        password,
-      });
-      // Optionally clear the form:
-      // const formEl = e.currentTarget;
-      // formEl.reset();
+      await api.post("/auth/users/", { email, username, password });
       navigate("/login");
     } catch (err: any) {
-      const { message, fields } = extractApiError(err);
-      // setSubmitError(message); // overrides the error field and makes it empty
-      // if (fields) setFieldErrors(fields); // overrides the error field and makes it empty
-      setError("Signup failed: " + String(message) + "; fields: " + String (fields))
+      const parsed = extractApiError(err as unknown);
+      setError(`Signup failure: ${parsed.message}`);
     }
   }
 
