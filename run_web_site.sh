@@ -45,7 +45,7 @@ echo "Starting backend & frontend..."
 
 docker compose up
 
-# cleanup()
+cleanup()
 
 # echo "Testing..."
 # docker compose exec backend python manage.py test --noinput -v 2
