@@ -23,15 +23,20 @@ class EmailOrUsernameTokenCreateSerializer(BaseTokenCreateSerializer):
         login = (data.get("email") or data.get("username") or "").strip()
         password = data.get("password") or attrs.get("password")
 
+        raw = getattr(self, "initial_data", None)
+        data: Dict[str, Any] = raw if isinstance(raw, dict) else {}
+        email_val = data["email"] if "email" in data and isinstance(data["email"], str) else ""
+        username_val = data["username"] if "username" in data and isinstance(data["username"], str) else ""
+        login = (email_val or username_val).strip()
+        login_field = settings.DJOSER.get("LOGIN_FIELD", "email")
+        # Put the value into whichever field Djoser expects
+        attrs[login_field] = login
+        attrs["password"] = data["password"] if "password" in data else None
+
         if not login or not password:
             raise serializers.ValidationError(
                 {"detail": 'Must include "username" or "email" and "password".'}
             )
-
-        login_field = settings.DJOSER.get("LOGIN_FIELD", "email")
-        # Put the value into whichever field Djoser expects
-        attrs[login_field] = login
-        attrs["password"] = password
 
         # Avoid confusing the base serializer with extra fields
         if login_field == "email":
