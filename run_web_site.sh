@@ -42,6 +42,7 @@ docker compose build --no-cache
 docker compose up --build
 
 docker compose exec backend python manage.py migrate --database default
+docker compose exec backend python manage.py makemigrations profiles
 docker compose exec backend python manage.py createsuperuser
 
 # Returning to the original project path to be able to run the test again with new changes, if there are any
