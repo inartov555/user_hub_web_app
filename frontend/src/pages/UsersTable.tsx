@@ -1,11 +1,10 @@
 import * as React from "react";
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
 import {
   ColumnDef,
   flexRender,
   getCoreRowModel,
   getPaginationRowModel,
-  getSortedRowModel,
   SortingState,
   VisibilityState,
   useReactTable,
@@ -16,14 +15,6 @@ import { api } from "../lib/axios";
 import { Button } from "../components/button";
 import { Card, CardContent, CardHeader, CardTitle } from "../components/card";
 import { Input } from "../components/input";
-import {
-  DropdownMenu,
-  DropdownMenuCheckboxItem,
-  DropdownMenuContent,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "../components/dropdown-menu";
 import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight, Columns, ArrowUpDown } from "lucide-react";
 
 type User = {
@@ -34,6 +25,9 @@ type User = {
   last_name?: string;
 };
 
+// NEW: helper to turn TanStack sorting -> DRF `ordering` (e.g. ["username", "-email"])
+const toOrdering = (s: SortingState) => s.map(({ id, desc }) => (desc ? `-${id}` : id));
+
 export default function UsersTable() {
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState<number>(() => Number(localStorage.getItem("pageSize")) || 20);
@@ -41,6 +35,7 @@ export default function UsersTable() {
   const [globalFilter, setGlobalFilter] = useState("");
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
+  const [showColumns, setShowColumns] = useState(false); // NEW: controls menu visibility
 
   const { data, isLoading } = useQuery({
     queryKey: ["users", page, pageSize, sort, globalFilter],
@@ -62,8 +57,11 @@ export default function UsersTable() {
         <button
           type="button"
           className="inline-flex items-center gap-1"
-          onClick={(e) => column.toggleSorting(column.getIsSorted() === "asc", e.shiftKey)}
-          title="Click to sort. Shift+Click for multi-sort"
+          // NEW: allow Shift OR Ctrl/⌘ for multi-sort
+          onClick={(e) =>
+            column.toggleSorting(column.getIsSorted() === "asc", e.shiftKey || e.ctrlKey || e.metaKey)
+          }
+          title="Click to sort; hold Shift/Ctrl/⌘ to multi-sort"
         >
           Username <ArrowUpDown className="h-4 w-4" />
         </button>
@@ -78,8 +76,10 @@ export default function UsersTable() {
         <button
           type="button"
           className="inline-flex items-center gap-1"
-          onClick={(e) => column.toggleSorting(column.getIsSorted() === "asc", e.shiftKey)}
-          title="Click to sort. Shift+Click for multi-sort"
+          onClick={(e) =>
+            column.toggleSorting(column.getIsSorted() === "asc", e.shiftKey || e.ctrlKey || e.metaKey)
+          }
+          title="Click to sort; hold Shift/Ctrl/⌘ to multi-sort"
         >
           Email <ArrowUpDown className="h-4 w-4" />
         </button>
@@ -94,8 +94,10 @@ export default function UsersTable() {
         <button
           type="button"
           className="inline-flex items-center gap-1"
-          onClick={(e) => column.toggleSorting(column.getIsSorted() === "asc", e.shiftKey)}
-          title="Click to sort. Shift+Click for multi-sort"
+          onClick={(e) =>
+            column.toggleSorting(column.getIsSorted() === "asc", e.shiftKey || e.ctrlKey || e.metaKey)
+          }
+          title="Click to sort; hold Shift/Ctrl/⌘ to multi-sort"
         >
           First name <ArrowUpDown className="h-4 w-4" />
         </button>
@@ -110,8 +112,10 @@ export default function UsersTable() {
         <button
           type="button"
           className="inline-flex items-center gap-1"
-          onClick={(e) => column.toggleSorting(column.getIsSorted() === "asc", e.shiftKey)}
-          title="Click to sort. Shift+Click for multi-sort"
+          onClick={(e) =>
+            column.toggleSorting(column.getIsSorted() === "asc", e.shiftKey || e.ctrlKey || e.metaKey)
+          }
+          title="Click to sort; hold Shift/Ctrl/⌘ to multi-sort"
         >
           Last name <ArrowUpDown className="h-4 w-4" />
         </button>
@@ -122,6 +126,14 @@ export default function UsersTable() {
     },
   ], []);
 
+  // NEW: keep server 'ordering' in sync with TanStack multi-sort
+  const handleSortingChange = (updater: React.SetStateAction<SortingState>) => {
+    const next = typeof updater === "function" ? (updater as (prev: SortingState) => SortingState)(sorting) : updater;
+    setSorting(next);
+    setSort(toOrdering(next));
+    setPage(1);
+  };
+
   const table = useReactTable({
     data: rows,
     columns,
@@ -130,18 +142,19 @@ export default function UsersTable() {
       columnVisibility,
       pagination: { pageIndex: page - 1, pageSize },
     },
-    onSortingChange: setSorting,
+    onSortingChange: handleSortingChange, // NEW
     onColumnVisibilityChange: setColumnVisibility,
     getCoreRowModel: getCoreRowModel(),
-    getSortedRowModel: getSortedRowModel(),
+    // IMPORTANT: server-side sorting – don't sort on client
+    manualSorting: true, // NEW
+    // keep pagination + resizing
     getPaginationRowModel: getPaginationRowModel(),
-    // column resizing
     columnResizeMode: "onChange",
     enableColumnResizing: true,
   });
 
   // keep localStorage in sync for pageSize
-  React.useEffect(() => {
+  useEffect(() => {
     localStorage.setItem("pageSize", String(pageSize));
   }, [pageSize]);
 
@@ -158,33 +171,49 @@ export default function UsersTable() {
             onChange={(e) => setGlobalFilter(e.target.value)}
             className="w-48"
           />
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="outline" size="sm" className="gap-2">
-                <Columns className="h-4 w-4" /> Columns
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-56">
-              <DropdownMenuLabel>Toggle columns</DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              {table.getAllLeafColumns().map((col) => {
-                // Render a readable label for the menu
-                const label =
-                  typeof col.columnDef.header === "string"
-                    ? col.columnDef.header
-                    : col.id;
-                return (
-                  <DropdownMenuCheckboxItem
-                    key={col.id}
-                    checked={col.getIsVisible()}
-                    onCheckedChange={(v) => col.toggleVisibility(Boolean(v))}
-                  >
-                    {label}
-                  </DropdownMenuCheckboxItem>
-                );
-              })}
-            </DropdownMenuContent>
-          </DropdownMenu>
+
+          {/* Columns menu (headless) */}
+          <div className="relative">
+            <Button variant="outline" size="sm" className="gap-2" onClick={() => setShowColumns((v) => !v)}>
+              <Columns className="h-4 w-4" /> Columns
+            </Button>
+            {showColumns && (
+              <div
+                className="absolute right-0 z-10 mt-2 w-56 rounded-md border bg-white p-2 shadow-lg"
+                role="menu"
+              >
+                <div className="px-2 py-1 text-xs font-medium text-slate-500">Toggle columns</div>
+                <div className="my-2 h-px bg-slate-200" />
+                {table.getAllLeafColumns().map((col) => {
+                  const label = typeof col.columnDef.header === "string" ? col.columnDef.header : col.id;
+                  return (
+                    <label key={col.id} className="flex cursor-pointer items-center gap-2 rounded px-2 py-1.5 hover:bg-slate-50">
+                      <input
+                        type="checkbox"
+                        checked={col.getIsVisible()}
+                        onChange={(e) => col.toggleVisibility(e.target.checked)}
+                      />
+                      <span>{label}</span>
+                    </label>
+                  );
+                })}
+              </div>
+            )}
+          </div>
+
+          {/* NEW: Clear sort button */}
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => {
+              setSorting([]);
+              setSort([]);
+              setPage(1);
+              table.resetSorting();
+            }}
+          >
+            Clear sort
+          </Button>
         </div>
       </CardHeader>
 
@@ -207,8 +236,13 @@ export default function UsersTable() {
                         {header.isPlaceholder ? null : (
                           <div
                             className="inline-flex items-center gap-1 cursor-pointer"
-                            onClick={(e) => header.column.toggleSorting(isSorted === "asc", e.shiftKey)}
-                            title="Click to sort. Shift+Click for multi-sort"
+                            onClick={(e) =>
+                              header.column.toggleSorting(
+                                header.column.getIsSorted() === "asc",
+                                e.shiftKey || e.ctrlKey || e.metaKey // NEW
+                              )
+                            }
+                            title="Click to sort; hold Shift/Ctrl/⌘ to multi-sort"
                           >
                             {flexRender(header.column.columnDef.header, header.getContext())}
                             {typeof sortIndex === "number" && (

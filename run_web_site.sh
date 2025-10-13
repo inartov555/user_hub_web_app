@@ -5,6 +5,9 @@
 
 set -Eeuo pipefail
 
+SUPERUSER_EMAIL="${DJANGO_SUPERUSER_EMAIL:-admin@example.com}"
+SUPERUSER_PASSWORD="${DJANGO_SUPERUSER_PASSWORD:-changeme123}"
+
 cleanup() {
   echo "Cleaning up..."
   # Shutting down services
@@ -34,6 +37,10 @@ docker compose run --rm backend python manage.py makemigrations profiles
 
 echo "Applying migrations..."
 docker compose run --rm backend python manage.py migrate --noinput
+docker compose run --rm \
+  -e DJANGO_SUPERUSER_EMAIL="$SUPERUSER_EMAIL" \
+  -e DJANGO_SUPERUSER_PASSWORD="$SUPERUSER_PASSWORD" \
+  backend python manage.py createsuperuser --noinput
 
 # OPTIONAL: fix a bad state where migration was recorded but table missing
 # docker compose run --rm backend python manage.py migrate profiles zero --fake
