@@ -36,7 +36,7 @@ cleanup() {
 # trap cleanup EXIT ERR SIGINT SIGTERM
 
 ORIGINAL_PROJECT_PATH="$(pwd)"
-source source ./setup.sh || { echo "setup.sh failed"; exit 1; }
+source ./setup.sh || { echo "setup.sh failed"; exit 1; }
 if [[ $? -ne 0 ]]; then
   return 1
 fi
@@ -48,7 +48,7 @@ echo "Building images..."
 
 docker compose build db
 docker compose build backend
-docker compose build frontend
+docker compose build frontend --no-cache
 
 echo "Starting Postgres..."
 # docker compose up -d db
