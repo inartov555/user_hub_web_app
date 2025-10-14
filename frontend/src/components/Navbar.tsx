@@ -13,7 +13,7 @@ export default function Navbar() {
           <Link className={navCls(pathname, "/users")} to="/users">Users</Link>
           <Link className={navCls(pathname, "/stats")} to="/stats">Stats</Link>
           <Link className={navCls(pathname, "/profile")} to="/profile">Profile</Link>
-          <Link className={navCls(pathname, "/import")} to="/profile">Import from Excel</Link>
+          <Link className={navCls(pathname, "/import-excel")} to="/import-excel">Import from Excel</Link>
         </nav>
         <div className="flex items-center gap-3">
           {user ? <span className="text-sm">Hi, {user.username}</span> : <Link to="/login" className="btn">Login</Link>}

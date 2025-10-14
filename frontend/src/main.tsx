@@ -32,7 +32,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
             <Route path="profile" element={<PrivateRoute><Profile /></PrivateRoute>} />
             <Route path="users" element={<PrivateRoute><UsersTable /></PrivateRoute>} />
             <Route path="stats" element={<PrivateRoute><Stats /></PrivateRoute>} />
-            <Route path="/import" element={<ExcelImport />} />
+            <Route path="/import-excel" element={<ExcelImport />} />
           </Route>
         </Routes>
       </BrowserRouter>

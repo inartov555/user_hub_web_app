@@ -2,21 +2,84 @@
 DRF endpoint that lets an admin upload an Excel file to bulk create/update users (and their profiles).
 """
 
+from datetime import datetime
+from io import BytesIO
+
+from django.http import HttpResponse
 from django.contrib.auth import get_user_model
 import pandas as pd
-from rest_framework import permissions, generics
+from rest_framework import permissions
+from rest_framework.views import APIView
 from rest_framework.parsers import MultiPartParser
 from rest_framework.response import Response
 
 from ..models.profile import Profile
 
 
-class ExcelUploadView(generics.GenericAPIView):
+class ExcelUploadView(APIView):
     """
     DRF endpoint that lets an admin upload an Excel file to bulk create/update users (and their profiles).
     """
-    permission_classes = [permissions.IsAdminUser]
+    permission_classes = [permissions.IsAuthenticated]
     parser_classes = [MultiPartParser]
+
+    def get_permissions(self):
+        if self.request.method == "GET":
+            return [permissions.AllowAny()]
+        return [permissions.IsAuthenticated()]
+
+    def get(self, request, *args, **kwargs):  # pylint: disable=unused-argument
+        User = get_user_model()
+
+        # Pull users + profiles efficiently
+        # If Profile is OneToOne, select_related is fine; if not, use prefetch.
+        qs = (
+            User.objects.all()
+            .select_related()  # will bring one-to-one (like profile) if declared on User
+            .order_by("id")
+        )
+
+        # Build rows with safe profile access
+        rows = []
+        # If your Profile is not reachable as user.profile, adjust accessor below.
+        # e.g. if Profile has FK user=OneToOne(User), Django default accessor is user.profile
+        for u in qs:
+            try:
+                # If Profile may not exist yet, this won't crash thanks to try/except
+                p: Profile = u.profile  # adjust if related_name is different
+                bio = getattr(p, "bio", "")
+            except Exception:
+                bio = ""
+
+            rows.append({
+                "email": (u.email or "").strip().lower(),
+                "username": u.username or "",
+                "first_name": u.first_name or "",
+                "last_name": u.last_name or "",
+                "is_active": bool(u.is_active),
+                "bio": bio or "",
+            })
+
+        # Create DataFrame and write to in-memory Excel
+        df = pd.DataFrame(rows, columns=[
+            "email", "username", "first_name", "last_name", "is_active", "bio"
+        ])
+        buf = BytesIO()
+        # Use openpyxl (installed alongside pandas in many stacks). You can swap to xlsxwriter if you prefer.
+        with pd.ExcelWriter(buf, engine="openpyxl") as writer:
+            df.to_excel(writer, index=False, sheet_name="users")
+
+        buf.seek(0)
+        ts = datetime.now().strftime("%Y%m%d_%H%M%S.%f")
+        filename = f"users_{ts}.xlsx"
+
+        resp = HttpResponse(
+            buf.read(),
+            content_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+            headers={"Content-Disposition": f'attachment; filename="{filename}"'},
+        )
+        resp["Content-Disposition"] = f'attachment; filename="{filename}"'
+        return resp
 
     def post(self, request, *args, **kwargs):  # pylint: disable=unused-argument
         """

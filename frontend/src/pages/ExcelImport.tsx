@@ -1,151 +1,165 @@
-import { useState, useRef } from "react";
-import { api } from "../lib/axios";
-import { extractApiError } from "../lib/httpErrors";
+import React, { useState, useRef } from "react";
 
-const ACCEPT = [
-  ".xlsx",
-  ".xls",
-  ".csv"
-].join(",");
+// Tailwind + shadcn/ui-style minimal UI without extra deps
+// Drop this component anywhere in your frontend. It provides:
+// - File picker + submit to POST /api/import-excel/
+// - "Download template" that calls GET /api/import-excel/ (same endpoint) and downloads the .xlsx
+// - Works with either cookie-based auth (simple link) or Bearer token (programmatic fetch)
+// - Shows success summary (created/updated/errors)
 
-// Change this if your backend uses a different URL:
-const IMPORT_ENDPOINT = "/import/excel/"; // e.g. "/profiles/import/" or "/admin/import/"
-
-export default function ExcelImport() {
+export default function ExcelImportPanel({ apiBase = "/api", authToken }: { apiBase?: string; authToken?: string; }) {
   const [file, setFile] = useState<File | null>(null);
-  const [progress, setProgress] = useState<number>(0);
   const [submitting, setSubmitting] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
-  const [error, setError] = useState<string | null>(null);
+  const [summary, setSummary] = useState<null | {
+    created: number;
+    updated: number;
+    processed: number;
+    errors: { row: number; msg: string }[];
+  }>(null);
   const inputRef = useRef<HTMLInputElement | null>(null);
 
-  function onPickFile(e: React.ChangeEvent<HTMLInputElement>) {
+  const onFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setMessage(null);
-    setError(null);
-    setProgress(0);
+    setSummary(null);
     const f = e.target.files?.[0] || null;
     setFile(f);
-  }
-
-  function onDrop(e: React.DragEvent<HTMLDivElement>) {
-    e.preventDefault();
-    setMessage(null);
-    setError(null);
-    setProgress(0);
-    const f = e.dataTransfer.files?.[0] || null;
-    setFile(f);
-  }
-
-  function onDragOver(e: React.DragEvent<HTMLDivElement>) {
-    e.preventDefault();
-  }
+  };
 
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
-    setMessage(null);
-    setError(null);
-
-    if (!file) {
-      setError("Please choose a file first.");
-      return;
-    }
-
-    const form = new FormData();
-    // Most DRF endpoints expect 'file' as the key. Change if your backend uses a different name.
-    form.append("file", file, file.name);
-
+    if (!file || submitting) return;
     setSubmitting(true);
+    setMessage(null);
+    setSummary(null);
+
     try {
-      await api.post(IMPORT_ENDPOINT, form, {
-        headers: { "Content-Type": "multipart/form-data" },
-        onUploadProgress: (evt) => {
-          if (!evt.total) return;
-          setProgress(Math.round((evt.loaded / evt.total) * 100));
-        },
+      const form = new FormData();
+      form.append("file", file);
+
+      const res = await fetch(`${apiBase}/import-excel/`, {
+        method: "POST",
+        headers: authToken ? { Authorization: `Bearer ${authToken}` } : undefined,
+        body: form,
+        // If using Django session + CSRF, include credentials and add X-CSRFToken from cookies
+        credentials: authToken ? "omit" : "include",
       });
-      setMessage("Import completed successfully.");
-      setFile(null);
-      setProgress(0);
-      if (inputRef.current) inputRef.current.value = "";
-    } catch (err: any) {
-      const { message, fields } = extractApiError(err);
-      let top = message || "Import failed.";
-      if (fields) {
-        // If backend returns row-level errors, collapse them for display
-        const extra = Object.entries(fields)
-          .map(([k, v]) => `${k}: ${(Array.isArray(v) ? v.join(" ") : String(v))}`)
-          .join(" | ");
-        if (extra) top += ` — ${extra}`;
+
+      const text = await res.text();
+      let data: any;
+      try { data = JSON.parse(text); } catch {
+        throw new Error(text || `Unexpected ${res.status} ${res.statusText}`);
       }
-      setError(top);
+
+      if (!res.ok) {
+        throw new Error(data?.detail || `Import failed (${res.status})`);
+      }
+
+      setSummary(data.result);
+      setMessage("Import finished successfully");
+      // Clear chosen file
+      if (inputRef.current) inputRef.current.value = "";
+      setFile(null);
+    } catch (err: any) {
+      setMessage(err.message || "Import failed");
     } finally {
       setSubmitting(false);
     }
   }
 
-  return (
-    <div className="max-w-xl mx-auto card">
-      <h1 className="text-2xl font-semibold mb-4">Import from Excel/CSV</h1>
+  async function downloadTemplate(e: React.MouseEvent<HTMLButtonElement>) {
+    e.preventDefault();
+    try {
+      const res = await fetch(`${apiBase}/import-excel/`, {
+        method: "GET",
+        headers: authToken ? { Authorization: `Bearer ${authToken}` } : undefined,
+        credentials: authToken ? "omit" : "include",
+      });
+      if (!res.ok) throw new Error(`Failed to download template (${res.status})`);
+      const blob = await res.blob();
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `import_template.xlsx`;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      window.URL.revokeObjectURL(url);
+    } catch (err) {
+      setMessage((err as Error).message);
+    }
+  }
 
-      <div
-        className="border-2 border-dashed rounded-lg p-6 text-center mb-3 hover:bg-gray-50"
-        onDrop={onDrop}
-        onDragOver={onDragOver}
-      >
-        <p className="mb-2">Drag & drop a file here</p>
-        <p className="text-xs text-gray-500 mb-4">Accepted: .xlsx, .xls, .csv</p>
-        <button
-          type="button"
-          className="btn"
-          onClick={() => inputRef.current?.click()}
-        >
-          Choose file
-        </button>
+  return (
+    <div className="max-w-xl mx-auto p-4 rounded-2xl shadow bg-white border">
+      <h2 className="text-xl font-semibold mb-3">Excel import</h2>
+      <p className="text-sm text-gray-600 mb-4">Upload an .xlsx file with columns: <code>first_name</code>, <code>last_name</code>, <code>email</code>, <code>phone</code>.</p>
+
+      <form onSubmit={onSubmit} className="space-y-3">
         <input
           ref={inputRef}
           type="file"
-          accept={ACCEPT}
-          onChange={onPickFile}
-          className="hidden"
+          accept=".xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+          onChange={onFileChange}
+          className="block w-full text-sm file:mr-3 file:py-2 file:px-3 file:rounded-xl file:border file:bg-gray-50 file:hover:bg-gray-100 file:cursor-pointer"
         />
-      </div>
 
-      {file && (
-        <div className="mb-3 text-sm">
-          <span className="font-medium">Selected:</span> {file.name} ({Math.round(file.size / 1024)} KB)
-        </div>
-      )}
-
-      {submitting && (
-        <div className="w-full bg-gray-200 rounded h-2 mb-3 overflow-hidden">
-          <div
-            className="bg-blue-600 h-2 transition-all"
-            style={{ width: `${progress}%` }}
-          />
-        </div>
-      )}
-
-      {message && <p className="text-green-700 text-sm mb-2">{message}</p>}
-      {error && <p className="text-red-600 text-sm mb-2">{error}</p>}
-
-      <form onSubmit={onSubmit}>
         <div className="flex gap-2">
-          <button className="btn" type="submit" disabled={!file || submitting}>
+          <button className="btn px-4 py-2 rounded-xl bg-black text-white disabled:opacity-50" type="submit" disabled={!file || submitting}>
             {submitting ? "Uploading…" : "Start import"}
           </button>
-          <a
-            className="btn btn-ghost"
-            href="/templates/import_template.xlsx"
-            download
-          >
-            Download template
-          </a>
+
+          {/* If you rely on cookie auth, a plain anchor works: href={`${apiBase}/import-excel/`} */}
+          {authToken ? (
+            <button className="btn btn-ghost px-4 py-2 rounded-xl border" onClick={downloadTemplate}>
+              Download template
+            </button>
+          ) : (
+            <a className="btn btn-ghost px-4 py-2 rounded-xl border" href={`${apiBase}/import-excel/`} download>
+              Download template
+            </a>
+          )}
         </div>
       </form>
 
-      <p className="text-xs text-gray-500 mt-4">
-        Tip: make sure your columns match the backend importer’s expectations (e.g. headers, date formats).
-      </p>
+      {message && (
+        <div className="mt-4 text-sm p-2 rounded-xl border bg-gray-50">{message}</div>
+      )}
+
+      {summary && (
+        <div className="mt-4 p-3 rounded-2xl border">
+          <div className="font-medium mb-2">Result</div>
+          <ul className="text-sm space-y-1">
+            <li>Processed: <span className="font-semibold">{summary.processed}</span></li>
+            <li>Created: <span className="font-semibold">{summary.created}</span></li>
+            <li>Updated: <span className="font-semibold">{summary.updated}</span></li>
+          </ul>
+
+          {summary.errors?.length ? (
+            <div className="mt-3">
+              <div className="font-medium mb-1">Errors ({summary.errors.length})</div>
+              <div className="max-h-48 overflow-auto border rounded-xl">
+                <table className="w-full text-sm">
+                  <thead className="sticky top-0 bg-white">
+                    <tr>
+                      <th className="text-left p-2 border-b w-24">Row</th>
+                      <th className="text-left p-2 border-b">Message</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {summary.errors.map((e, idx) => (
+                      <tr key={idx} className="odd:bg-gray-50">
+                        <td className="p-2 border-b">{e.row}</td>
+                        <td className="p-2 border-b">{e.msg}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          ) : null}
+        </div>
+      )}
     </div>
   );
 }

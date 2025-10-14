@@ -48,7 +48,7 @@ echo "Building images..."
 
 docker compose build db
 docker compose build backend
-docker compose build frontend --no-cache
+docker compose build frontend
 
 echo "Starting Postgres..."
 # docker compose up -d db
