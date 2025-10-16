@@ -24,17 +24,26 @@ class ExcelUploadView(APIView):
     parser_classes = [MultiPartParser]
 
     def get_permissions(self):
+        """
+        Getting permissions needed for requests
+        """
         if self.request.method == "GET":
             return [permissions.AllowAny()]
         return [permissions.IsAuthenticated()]
 
     def get(self, request, *args, **kwargs):  # pylint: disable=unused-argument
-        User = get_user_model()
+        """
+        Ingest an Excel file and create or update users (and their profiles).
+
+        Returns:
+            Response
+        """
+        user_model = get_user_model()
 
         # Pull users + profiles efficiently
         # If Profile is OneToOne, select_related is fine; if not, use prefetch.
         qs = (
-            User.objects.all()
+            user_model.objects.all()
             .select_related()  # will bring one-to-one (like profile) if declared on User
             .order_by("id")
         )
@@ -88,7 +97,7 @@ class ExcelUploadView(APIView):
         Returns:
             Response
         """
-        _user = get_user_model()
+        user_model = get_user_model()
         file = request.FILES.get("file")
         if not file:
             return Response({"detail": "No file provided"}, status=400)
@@ -98,7 +107,7 @@ class ExcelUploadView(APIView):
             email = str(row.get("email", "")).strip().lower()
             if not email:
                 continue
-            user, was_created = _user.objects.get_or_create(email=email, defaults={
+            user, was_created = user_model.objects.get_or_create(email=email, defaults={
                 "username": row.get("username") or email.split('@', maxsplit=1)[0],
                 "first_name": row.get("first_name", ""),
                 "last_name": row.get("last_name", ""),
