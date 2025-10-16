@@ -1,4 +1,5 @@
 import React, { useState, useRef } from "react";
+import { api } from "../lib/axios";
 
 // Tailwind + shadcn/ui-style minimal UI without extra deps
 // Drop this component anywhere in your frontend. It provides:
@@ -37,7 +38,7 @@ export default function ExcelImportPanel({ apiBase = "/api", authToken }: { apiB
       const form = new FormData();
       form.append("file", file);
 
-      const res = await fetch(`${apiBase}/import-excel/`, {
+      const res = await api.get(`/import-excel/`, {
         method: "POST",
         headers: authToken ? { Authorization: `Bearer ${authToken}` } : undefined,
         body: form,
@@ -70,7 +71,7 @@ export default function ExcelImportPanel({ apiBase = "/api", authToken }: { apiB
   async function downloadTemplate(e: React.MouseEvent<HTMLButtonElement>) {
     e.preventDefault();
     try {
-      const res = await fetch(`${apiBase}/import-excel/`, {
+      const res = await api.get(`/import-excel/`, {
         method: "GET",
         headers: authToken ? { Authorization: `Bearer ${authToken}` } : undefined,
         credentials: authToken ? "omit" : "include",

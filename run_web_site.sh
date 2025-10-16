@@ -11,6 +11,12 @@
 clean_data_at_exit=${1:-false}
 clear_cache=${2:-false}
 
+ORIGINAL_PROJECT_PATH="$(pwd)"
+source ./setup.sh || { echo "setup.sh failed"; exit 1; }
+if [[ $? -ne 0 ]]; then
+  return 1
+fi
+
 set -Eeuo pipefail
 
 cleanup_data() {
@@ -27,7 +33,7 @@ cleanup() {
   cd "$ORIGINAL_PROJECT_PATH"
 }
 
-DJANGO_SUPERUSER_USERNAME="${DJANGO_SUPERUSER_EMAIL:-admin}"
+SUPERUSER_USERNAME="${DJANGO_SUPERUSER_EMAIL:-admin}"
 SUPERUSER_EMAIL="${DJANGO_SUPERUSER_EMAIL:-admin@example.com}"
 SUPERUSER_PASSWORD="${DJANGO_SUPERUSER_PASSWORD:-changeme123}"
 
@@ -56,12 +62,6 @@ case "$clear_cache" in
     docker compose build backend --no-cache
     docker compose build frontend --no-cache
 esac
-
-ORIGINAL_PROJECT_PATH="$(pwd)"
-source ./setup.sh || { echo "setup.sh failed"; exit 1; }
-if [[ $? -ne 0 ]]; then
-  return 1
-fi
 
 # echo "Starting Postgres..."
 # docker compose up -d db

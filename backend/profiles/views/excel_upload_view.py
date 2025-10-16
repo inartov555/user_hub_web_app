@@ -22,6 +22,8 @@ class ExcelUploadView(APIView):
     """
     permission_classes = [permissions.IsAuthenticated]
     parser_classes = [MultiPartParser]
+    serializer_class = UserSerializer
+    user = get_user_model()
 
     def get_permissions(self):
         """

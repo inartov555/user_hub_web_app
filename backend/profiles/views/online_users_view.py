@@ -15,7 +15,7 @@ class OnlineUsersView(generics.ListAPIView):
     """
     serializer_class = UserSerializer
     permission_classes = [permissions.IsAuthenticated]
-    User = get_user_model()
+    user = get_user_model()
 
     def get_queryset(self):
         """
