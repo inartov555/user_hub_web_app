@@ -57,7 +57,9 @@ class ExcelUploadView(APIView):
                 # If Profile may not exist yet, this won't crash thanks to try/except
                 p: Profile = u.profile  # adjust if related_name is different
                 bio = getattr(p, "bio", "")
-            except Exception:
+            except Profile.DoesNotExist:
+                bio = ""
+            except AttributeError:
                 bio = ""
 
             rows.append({
