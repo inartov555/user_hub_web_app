@@ -27,6 +27,7 @@ cleanup() {
   cd "$ORIGINAL_PROJECT_PATH"
 }
 
+DJANGO_SUPERUSER_USERNAME="${DJANGO_SUPERUSER_EMAIL:-admin}"
 SUPERUSER_EMAIL="${DJANGO_SUPERUSER_EMAIL:-admin@example.com}"
 SUPERUSER_PASSWORD="${DJANGO_SUPERUSER_PASSWORD:-changeme123}"
 
@@ -62,7 +63,7 @@ if [[ $? -ne 0 ]]; then
   return 1
 fi
 
-echo "Starting Postgres..."
+# echo "Starting Postgres..."
 # docker compose up -d db
 
 echo "Making migrations (one-off container)..."
@@ -71,10 +72,28 @@ docker compose run --rm backend python manage.py makemigrations profiles
 echo "Applying migrations..."
 docker compose run --rm backend python manage.py migrate --noinput
 
-# docker compose run --rm \
-#  -e DJANGO_SUPERUSER_EMAIL="$SUPERUSER_EMAIL" \
-#  -e DJANGO_SUPERUSER_PASSWORD="$SUPERUSER_PASSWORD" \
-#  backend python manage.py createsuperuser --noinput
+echo "Ensuring superuser exists…"
+docker compose run --rm \
+  -e DJANGO_SUPERUSER_USERNAME="$SUPERUSER_USERNAME" \
+  -e DJANGO_SUPERUSER_EMAIL="$SUPERUSER_EMAIL" \
+  -e DJANGO_SUPERUSER_PASSWORD="$SUPERUSER_PASSWORD" \
+  backend python - <<'PY' || echo "Superuser step skipped (non-fatal)."
+import os, django
+django.setup()
+from django.contrib.auth import get_user_model
+U = get_user_model()
+u, created = U.objects.get_or_create(
+    username=os.environ["DJANGO_SUPERUSER_USERNAME"],
+    defaults={"email": os.environ["DJANGO_SUPERUSER_EMAIL"]}
+)
+if created:
+    u.set_password(os.environ["DJANGO_SUPERUSER_PASSWORD"])
+    u.is_staff = u.is_superuser = True
+    u.save()
+    print("Superuser created.")
+else:
+    print("Superuser already exists.")
+PY
 
 echo "Starting the service"
 docker compose up
@@ -85,7 +104,7 @@ docker compose up
 # docker compose run --rm backend python manage.py migrate profiles zero --fake
 # docker compose run --rm backend python manage.py migrate --noinput
 
-echo "Starting backend & frontend..."
+# echo "Starting backend & frontend..."
 # docker compose up -d backend
 # docker compose up -d frontend
 
