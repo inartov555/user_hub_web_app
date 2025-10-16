@@ -38,13 +38,12 @@ export default function ExcelImportPanel({ apiBase = "/api", authToken }: { apiB
       const form = new FormData();
       form.append("file", file);
 
-      const res = await api.get(`/import-excel/`, {
-        method: "POST",
+      const { data } = await api.post(`/import-excel/`, form, {
         headers: authToken ? { Authorization: `Bearer ${authToken}` } : undefined,
-        body: form,
-        // If using Django session + CSRF, include credentials and add X-CSRFToken from cookies
-        credentials: authToken ? "omit" : "include",
+        withCredentials: !authToken, // use cookies if no Bearer token
+        // onUploadProgress: (e) => { /* optional progress */ },
       });
+      setSummary(data?.result ?? data);
 
       const text = await res.text();
       let data: any;
@@ -72,10 +71,11 @@ export default function ExcelImportPanel({ apiBase = "/api", authToken }: { apiB
     e.preventDefault();
     try {
       const res = await api.get(`/import-excel/`, {
-        method: "GET",
         headers: authToken ? { Authorization: `Bearer ${authToken}` } : undefined,
-        credentials: authToken ? "omit" : "include",
+        withCredentials: !authToken,
+        responseType: "blob",
       });
+      const blob = new Blob([res.data]);
       if (!res.ok) throw new Error(`Failed to download template (${res.status})`);
       const blob = await res.blob();
       const url = window.URL.createObjectURL(blob);
