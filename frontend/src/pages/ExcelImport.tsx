@@ -45,12 +45,13 @@ export default function ExcelImportPanel({ apiBase = "/api", authToken }: { apiB
       });
 
       const result = resp?.data ?? null;
-      setSummary(result?.result ?? result);
+      setSummary(resp?.data?.result ?? resp?.data);
       setMessage("Import finished successfully");
       if (inputRef.current) inputRef.current.value = "";
       setFile(null);
 
-      setSummary(data.result);
+      const payload = resp.data;
+      setSummary(payload?.result ?? payload);
       setMessage("Import finished successfully");
       // Clear chosen file
       if (inputRef.current) inputRef.current.value = "";
