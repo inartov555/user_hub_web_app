@@ -5,6 +5,8 @@ filtering, sorting, and search.
 
 from django.contrib.auth import get_user_model
 from django.contrib.auth import password_validation
+from django.core.exceptions import ValidationError as DjangoValidationError
+from django.db import IntegrityError
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets, permissions, status
 from rest_framework.decorators import action
@@ -86,4 +88,8 @@ class UsersViewSet(viewsets.ReadOnlyModelViewSet):
     @action(detail=True, methods=["post"], url_path="change-password",
             permission_classes=[permissions.IsAuthenticated])
     def change_password(self, request, pk=None):
+        """
+        Change the password for a specific user.
+        Allowed for staff OR the user changing their own password.
+        """
         return self.set_password(request, pk=pk)
