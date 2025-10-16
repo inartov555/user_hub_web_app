@@ -22,4 +22,4 @@ class OnlineUsersView(generics.ListAPIView):
         Read-only DRF endpoint that returns the list of users who have been active in the last 5 minutes.
         """
         cutoff = timezone.now() - timezone.timedelta(minutes=5)
-        return self.User.objects.filter(profile__last_activity__gte=cutoff).order_by("-profile__last_activity")
+        return self.user.objects.filter(profile__last_activity__gte=cutoff).order_by("-profile__last_activity")

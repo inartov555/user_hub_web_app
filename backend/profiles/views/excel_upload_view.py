@@ -14,6 +14,7 @@ from rest_framework.parsers import MultiPartParser
 from rest_framework.response import Response
 
 from ..models.profile import Profile
+from ..serializers.user_serializer import UserSerializer
 
 
 class ExcelUploadView(APIView):
