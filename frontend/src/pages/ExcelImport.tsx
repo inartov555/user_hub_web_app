@@ -1,5 +1,7 @@
 import React, { useState, useRef } from "react";
 import { api } from "../lib/axios";
+import { extractApiError } from "../lib/httpErrors";
+import { useAuthStore } from "../auth/store";
 
 // Tailwind + shadcn/ui-style minimal UI without extra deps
 // Drop this component anywhere in your frontend. It provides:
@@ -8,7 +10,7 @@ import { api } from "../lib/axios";
 // - Works with either cookie-based auth (simple link) or Bearer token (programmatic fetch)
 // - Shows success summary (created/updated/errors)
 
-export default function ExcelImportPanel({ apiBase = "/api", authToken }: { apiBase?: string; authToken?: string; }) {
+export default function ExcelImportPanel() {
   const [file, setFile] = useState<File | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
@@ -19,6 +21,8 @@ export default function ExcelImportPanel({ apiBase = "/api", authToken }: { apiB
     errors: { row: number; msg: string }[];
   }>(null);
   const inputRef = useRef<HTMLInputElement | null>(null);
+  const { user, logout } = useAuthStore();
+  const [error, setError] = useState<string | null>(null);
 
   const onFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setMessage(null);
@@ -39,8 +43,8 @@ export default function ExcelImportPanel({ apiBase = "/api", authToken }: { apiB
       form.append("file", file);
 
       const resp = await api.post(`/import-excel/`, form, {
-        headers: authToken ? { Authorization: `Bearer ${authToken}` } : undefined,
-        withCredentials: !authToken, // cookie-based auth if no token
+        headers: user ? { Authorization: `Bearer ${user}` } : undefined,
+        withCredentials: !user, // cookie-based auth if no token
         // onUploadProgress: (e) => { /* optional progress */ },
       });
 
@@ -58,6 +62,8 @@ export default function ExcelImportPanel({ apiBase = "/api", authToken }: { apiB
       setFile(null);
     } catch (err: any) {
       setMessage(err.message || "Import failed");
+      const parsed = extractApiError(err as unknown);
+      setError(`Signup failure: ${parsed.message}`);
     } finally {
       setSubmitting(false);
     }
@@ -67,8 +73,8 @@ export default function ExcelImportPanel({ apiBase = "/api", authToken }: { apiB
     e.preventDefault();
     try {
       const resp = await api.get(`/import-excel/`, {
-        headers: authToken ? { Authorization: `Bearer ${authToken}` } : undefined,
-        withCredentials: !authToken,
+        headers: user ? { Authorization: `Bearer ${user}` } : undefined,
+        withCredentials: !user,
         responseType: "blob",
       });
       const fileBlob = new Blob([resp.data]);
@@ -104,13 +110,13 @@ export default function ExcelImportPanel({ apiBase = "/api", authToken }: { apiB
             {submitting ? "Uploading…" : "Start import"}
           </button>
 
-          {/* If you rely on cookie auth, a plain anchor works: href={`${apiBase}/import-excel/`} */}
-          {authToken ? (
+          {/* If you rely on cookie auth, a plain anchor works: href={`${api.defaults.baseURL}/import-excel/`} */}
+          {user ? (
             <button className="btn btn-ghost px-4 py-2 rounded-xl border" onClick={downloadTemplate}>
               Download template
             </button>
           ) : (
-            <a className="btn btn-ghost px-4 py-2 rounded-xl border" href={`${apiBase}/import-excel/`} download>
+            <a className="btn btn-ghost px-4 py-2 rounded-xl border" href={`${api.defaults.baseURL}/import-excel/`} download>
               Download template
             </a>
           )}
