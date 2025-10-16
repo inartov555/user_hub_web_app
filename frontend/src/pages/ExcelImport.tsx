@@ -35,15 +35,20 @@ export default function ExcelImportPanel({ apiBase = "/api", authToken }: { apiB
     setSummary(null);
 
     try {
-      const form = new FormData();
+            const form = new FormData();
       form.append("file", file);
 
-      const { data } = await api.post(`/import-excel/`, form, {
+      const resp = await api.post(`/import-excel/`, form, {
         headers: authToken ? { Authorization: `Bearer ${authToken}` } : undefined,
-        withCredentials: !authToken, // use cookies if no Bearer token
-        // onUploadProgress: (e) => { /* optional progress */ },
+        withCredentials: !authToken, // cookie-based auth if no token
+        // onUploadProgress: (e) => setProgress(Math.round((e.loaded / (e.total ?? 1)) * 100)),
       });
-      setSummary(data?.result ?? data);
+
+      const result = resp?.data ?? null;
+      setSummary(result?.result ?? result);
+      setMessage("Import finished successfully");
+      if (inputRef.current) inputRef.current.value = "";
+      setFile(null);
 
       const text = await res.text();
       let data: any;
@@ -70,24 +75,22 @@ export default function ExcelImportPanel({ apiBase = "/api", authToken }: { apiB
   async function downloadTemplate(e: React.MouseEvent<HTMLButtonElement>) {
     e.preventDefault();
     try {
-      const res = await api.get(`/import-excel/`, {
+      const resp = await api.get(`/import-excel/`, {
         headers: authToken ? { Authorization: `Bearer ${authToken}` } : undefined,
         withCredentials: !authToken,
         responseType: "blob",
       });
-      const blob = new Blob([res.data]);
-      if (!res.ok) throw new Error(`Failed to download template (${res.status})`);
-      const blob = await res.blob();
-      const url = window.URL.createObjectURL(blob);
+      const fileBlob = new Blob([resp.data]);
+      const url = window.URL.createObjectURL(fileBlob);
       const a = document.createElement("a");
       a.href = url;
-      a.download = `import_template.xlsx`;
+      a.download = "import_template.xlsx";
       document.body.appendChild(a);
       a.click();
       a.remove();
       window.URL.revokeObjectURL(url);
     } catch (err) {
-      setMessage((err as Error).message);
+      setMessage((err as Error).message || "Failed to download template");
     }
   }
 
