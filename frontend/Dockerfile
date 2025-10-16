@@ -10,6 +10,17 @@ COPY frontend/ /app/
 ARG VITE_API_URL
 ENV VITE_API_URL=$VITE_API_URL
 
+# Network-resilient npm settings
+# - fewer network calls (no audit/fund)
+# - more retries/timeouts
+# - optional cache dir
+RUN npm set progress=false \
+ && npm config set fetch-retries 5 \
+ && npm config set fetch-retry-maxtimeout 120000 \
+ && npm config set fetch-timeout 120000 \
+ && npm config set registry "https://registry.npmjs.org/" \
+ && npm ci --no-audit --no-fund
+
 RUN npm run build
 
 # --- runtime
