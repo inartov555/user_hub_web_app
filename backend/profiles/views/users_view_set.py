@@ -6,7 +6,7 @@ filtering, sorting, and search.
 from django.contrib.auth import get_user_model
 from django.contrib.auth import password_validation
 from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework import viewsets, permissions, serializers, status
+from rest_framework import viewsets, permissions, status
 from rest_framework.decorators import action
 from rest_framework.filters import OrderingFilter, SearchFilter
 from rest_framework.response import Response
@@ -57,7 +57,7 @@ class UsersViewSet(viewsets.ReadOnlyModelViewSet):
 
     @action(detail=True, methods=["post"], url_path="set-password",
             permission_classes=[permissions.IsAuthenticated])
-    def set_password(self, request, pk=None):
+    def set_password(self, request, pk=None):  # pylint: disable=unused-argument
         """
         Set (change) the password for a specific user.
         Allowed for staff OR the user changing their own password.
@@ -73,10 +73,10 @@ class UsersViewSet(viewsets.ReadOnlyModelViewSet):
         # Run Django password validators
         try:
             password_validation.validate_password(new_pw, user=user)
-        except Exception as exc:
-            # Convert validator errors to DRF-style response
-            msgs = getattr(exc, "messages", [str(exc)])
-            return Response({"password": msgs}, status=status.HTTP_400_BAD_REQUEST)
+        except (DjangoValidationError, ValueError) as e:
+            return Response({"detail": str(e)}, status=400)
+        except IntegrityError:
+            return Response({"detail": "Database error while applying changes."}, status=400)
 
         user.set_password(new_pw)
         user.save(update_fields=["password"])
