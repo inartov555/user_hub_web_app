@@ -9,12 +9,15 @@ import {
   VisibilityState,
   useReactTable,
 } from "@tanstack/react-table";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { Trash2 } from "lucide-react";
+import type { RowSelectionState } from "@tanstack/react-table";
 import { api } from "../lib/axios";
 
 import { Button } from "../components/button";
 import { Card, CardContent, CardHeader, CardTitle } from "../components/card";
 import { Input } from "../components/input";
+import { Checkbox } from "../components/checkbox";
 import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight, Columns, ArrowUpDown } from "lucide-react";
 
 type User = {
@@ -28,22 +31,10 @@ type User = {
 // NEW: helper to turn TanStack sorting -> DRF `ordering` (e.g. ["username", "-email"])
 const toOrdering = (s: SortingState) => s.map(({ id, desc }) => (desc ? `-${id}` : id));
 
-// Password modal state
-const [pwOpen, setPwOpen] = useState(false);
-const [pwUser, setPwUser] = useState<User | null>(null);
-const [pw, setPw] = useState("");
-const [pw2, setPw2] = useState("");
-const [pwErr, setPwErr] = useState<string | null>(null);
-const [pwSaving, setPwSaving] = useState(false);
-
-// reset modal inputs when opened/closed
-useEffect(() => {
-  if (pwOpen) {
-    setPw("");
-    setPw2("");
-    setPwErr(null);
-  }
-}, [pwOpen]);
+type Props = {
+  data: User[];
+  onResetPasswords?: (userIds: number[]) => Promise<void> | void;
+};
 
 export default function UsersTable() {
   const [page, setPage] = useState(1);
@@ -53,6 +44,10 @@ export default function UsersTable() {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [showColumns, setShowColumns] = useState(false); // NEW: controls menu visibility
+  const [rowSelection, setRowSelection] = React.useState<RowSelectionState>({});
+  const queryClient = useQueryClient();
+  const [deleting, setDeleting] = useState(false);
+  const [deleteError, setDeleteError] = useState<string | null>(null)
 
   const { data, isLoading } = useQuery({
     queryKey: ["users", page, pageSize, sort, globalFilter],
@@ -67,7 +62,77 @@ export default function UsersTable() {
 
   const rows = useMemo(() => data?.results ?? [], [data]);
 
+  const handleDeleteSelected = async () => {
+    const ids = table.getSelectedRowModel().flatRows.map((r) => r.original.id);
+    if (!ids.length) return;
+
+    /*
+    // Window alert confirmation for user deletion
+    if (!window.confirm(`Delete ${ids.length} selected user(s)? This cannot be undone.`)) {
+      return;
+    }
+    */
+
+    setDeleting(true);
+    setDeleteError(null);
+    try {
+      // Try bulk endpoint first (adjust path if yours differs)
+      const bulk = await api.post("/users/bulk-delete/", { ids }, { validateStatus: () => true });
+
+      if (!(bulk.status >= 200 && bulk.status < 300)) {
+        // Fallback: delete one-by-one
+        const results = await Promise.allSettled(
+          ids.map((id) => api.delete(`/users/${id}/`, { validateStatus: () => true }))
+        );
+        const failed = results.filter(
+          (r) => r.status === "rejected" || (r.status === "fulfilled" && r.value.status >= 400)
+        );
+        if (failed.length) {
+          setDeleteError(`Failed to delete ${failed.length} of ${ids.length} users.`);
+        }
+      }
+
+      // clear selection + refresh list
+      setRowSelection({});
+      await queryClient.invalidateQueries({ queryKey: ["users"] });
+    } catch (e: any) {
+      setDeleteError(e?.message || "Failed to delete selected users.");
+    } finally {
+      setDeleting(false);
+    }
+  };
+
   const columns = useMemo<ColumnDef<User>[]>(() => [
+    {
+      id: "select",
+      header: ({ table }) => {
+        const all = table.getIsAllRowsSelected();
+        const some = table.getIsSomeRowsSelected();
+        return (
+          <div className="px-2">
+            <Checkbox
+              checked={all}
+              indeterminate={!all && some}
+              onChange={(e) => table.toggleAllRowsSelected(e.currentTarget.checked)}
+              aria-label="Select all"
+            />
+          </div>
+        );
+      },
+      cell: ({ row }) => (
+        <div className="px-2">
+          <Checkbox
+            checked={row.getIsSelected()}
+            indeterminate={row.getIsSomeSelected()}
+            onChange={(e) => row.toggleSelected(e.currentTarget.checked)}
+            aria-label="Select row"
+          />
+        </div>
+      ),
+      size: 48,
+      enableResizing: false,
+      enableSorting: false,
+    },
     {
       accessorKey: "username",
       header: ({ column }) => (
@@ -141,20 +206,6 @@ export default function UsersTable() {
       size: 180,
       enableResizing: true,
     },
-    {
-      accessorKey: "reset_password",
-      header: ({ column }) => (
-        <button
-          type="button"
-          className="inline-flex items-center gap-1"
-          title="Reset Password">
-          Reset Password <ArrowUpDown className="h-4 w-4" />
-        </button>
-      ),
-      cell: (ctx) => <span className="break-words">{ctx.getValue<string>()}</span>,
-      size: 180,
-      enableResizing: true,
-    },
   ], []);
 
   // NEW: keep server 'ordering' in sync with TanStack multi-sort
@@ -172,7 +223,10 @@ export default function UsersTable() {
       sorting,
       columnVisibility,
       pagination: { pageIndex: page - 1, pageSize },
+      rowSelection,
     },
+    onRowSelectionChange: setRowSelection,
+    enableRowSelection: true,
     onSortingChange: handleSortingChange, // NEW
     onColumnVisibilityChange: setColumnVisibility,
     getCoreRowModel: getCoreRowModel(),
@@ -244,6 +298,17 @@ export default function UsersTable() {
             }}
           >
             Clear sort
+          </Button>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={handleDeleteSelected}
+            disabled={deleting || table.getSelectedRowModel().rows.length === 0}
+            className="gap-2 border-red-600 text-red-700 hover:bg-red-50"
+            title="Delete selected users"
+          >
+            <Trash2 className="h-4 w-4" />
+            Delete selected ({table.getSelectedRowModel().rows.length || 0})
           </Button>
         </div>
       </CardHeader>
@@ -385,7 +450,6 @@ export default function UsersTable() {
               </select>
             </label>
           </div>
-
         </div>
       </CardContent>
     </Card>
