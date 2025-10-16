@@ -35,13 +35,13 @@ export default function ExcelImportPanel({ apiBase = "/api", authToken }: { apiB
     setSummary(null);
 
     try {
-            const form = new FormData();
+      const form = new FormData();
       form.append("file", file);
 
       const resp = await api.post(`/import-excel/`, form, {
         headers: authToken ? { Authorization: `Bearer ${authToken}` } : undefined,
         withCredentials: !authToken, // cookie-based auth if no token
-        // onUploadProgress: (e) => setProgress(Math.round((e.loaded / (e.total ?? 1)) * 100)),
+        // onUploadProgress: (e) => { /* optional progress */ },
       });
 
       const result = resp?.data ?? null;
@@ -49,16 +49,6 @@ export default function ExcelImportPanel({ apiBase = "/api", authToken }: { apiB
       setMessage("Import finished successfully");
       if (inputRef.current) inputRef.current.value = "";
       setFile(null);
-
-      const text = await res.text();
-      let data: any;
-      try { data = JSON.parse(text); } catch {
-        throw new Error(text || `Unexpected ${res.status} ${res.statusText}`);
-      }
-
-      if (!res.ok) {
-        throw new Error(data?.detail || `Import failed (${res.status})`);
-      }
 
       setSummary(data.result);
       setMessage("Import finished successfully");
