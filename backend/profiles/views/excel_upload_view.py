@@ -65,18 +65,18 @@ class ExcelUploadView(APIView):
             except AttributeError:
                 bio = ""
 
+            # Also, "is_active": bool(u.is_active),
             rows.append({
                 "email": (u.email or "").strip().lower(),
                 "username": u.username or "",
                 "first_name": u.first_name or "",
                 "last_name": u.last_name or "",
-                "is_active": bool(u.is_active),
                 "bio": bio or "",
             })
 
         # Create DataFrame and write to in-memory Excel
         df = pd.DataFrame(rows, columns=[
-            "email", "username", "first_name", "last_name", "is_active", "bio"
+            "email", "username", "first_name", "last_name", "bio"
         ])
         buf = BytesIO()
         # Use openpyxl (installed alongside pandas in many stacks). You can swap to xlsxwriter if you prefer.

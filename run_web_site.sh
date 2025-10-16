@@ -4,8 +4,8 @@
 #   - $1 - true - delete the DB data after stopping the service;
 #          false - preserve the DB data after stopping the service;
 #          default = false
-#   - $2 - true - starting service with cached data (allows to start the service faster);
-#          false - starting the service without cache (cache is cleared)
+#   - $2 - true - starting service WITHOUT cached data (allows to start the service faster);
+#          false - starting the service WITH cache (cache is cleared)
 #          default = false
 
 clean_data_at_exit=${1:-false}
@@ -51,20 +51,17 @@ esac
 echo "Building images..."
 case "$clear_cache" in
   true)
-    echo "Cache will be cleared when starting the service"
-    docker compose build db
-    docker compose build backend
-    docker compose build frontend
-    ;;
-  *)
     echo "Cache will be preserved when starting the service"
     docker compose build db --no-cache
     docker compose build backend --no-cache
     docker compose build frontend --no-cache
+    ;;
+  *)
+    echo "Cache will be cleared when starting the service"
+    docker compose build db
+    docker compose build backend
+    docker compose build frontend
 esac
-
-# echo "Starting Postgres..."
-# docker compose up -d db
 
 echo "Making migrations (one-off container)..."
 docker compose run --rm backend python manage.py makemigrations profiles
@@ -97,21 +94,10 @@ PY
 echo "Starting the service"
 docker compose up
 
-# cleanup()
-
-# OPTIONAL: fix a bad state where migration was recorded but table missing
-# docker compose run --rm backend python manage.py migrate profiles zero --fake
-# docker compose run --rm backend python manage.py migrate --noinput
+# If you need to to start the web site as a daemon and independent on the terminal closing
+# echo "Starting Postgres..."
+# docker compose up -d db
 
 # echo "Starting backend & frontend..."
 # docker compose up -d backend
 # docker compose up -d frontend
-
-# echo "Testing..."
-# docker compose exec backend python manage.py test --noinput -v 2
-
-# echo "Collecting statistics..."
-# docker compose exec backend python manage.py collectstatic --noinput
-
-# echo "Creating superuser..."
-# docker compose exec backend python manage.py createsuperuser --noinput

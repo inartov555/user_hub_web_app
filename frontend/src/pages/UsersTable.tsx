@@ -28,6 +28,23 @@ type User = {
 // NEW: helper to turn TanStack sorting -> DRF `ordering` (e.g. ["username", "-email"])
 const toOrdering = (s: SortingState) => s.map(({ id, desc }) => (desc ? `-${id}` : id));
 
+// Password modal state
+const [pwOpen, setPwOpen] = useState(false);
+const [pwUser, setPwUser] = useState<User | null>(null);
+const [pw, setPw] = useState("");
+const [pw2, setPw2] = useState("");
+const [pwErr, setPwErr] = useState<string | null>(null);
+const [pwSaving, setPwSaving] = useState(false);
+
+// reset modal inputs when opened/closed
+useEffect(() => {
+  if (pwOpen) {
+    setPw("");
+    setPw2("");
+    setPwErr(null);
+  }
+}, [pwOpen]);
+
 export default function UsersTable() {
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState<number>(() => Number(localStorage.getItem("pageSize")) || 20);
@@ -118,6 +135,20 @@ export default function UsersTable() {
           title="Click to sort; hold Shift/Ctrl/⌘ to multi-sort"
         >
           Last name <ArrowUpDown className="h-4 w-4" />
+        </button>
+      ),
+      cell: (ctx) => <span className="break-words">{ctx.getValue<string>()}</span>,
+      size: 180,
+      enableResizing: true,
+    },
+    {
+      accessorKey: "reset_password",
+      header: ({ column }) => (
+        <button
+          type="button"
+          className="inline-flex items-center gap-1"
+          title="Reset Password">
+          Reset Password <ArrowUpDown className="h-4 w-4" />
         </button>
       ),
       cell: (ctx) => <span className="break-words">{ctx.getValue<string>()}</span>,
@@ -354,6 +385,7 @@ export default function UsersTable() {
               </select>
             </label>
           </div>
+
         </div>
       </CardContent>
     </Card>
