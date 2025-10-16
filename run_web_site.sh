@@ -33,7 +33,7 @@ cleanup() {
   cd "$ORIGINAL_PROJECT_PATH"
 }
 
-SUPERUSER_USERNAME="${DJANGO_SUPERUSER_EMAIL:-admin}"
+SUPERUSER_USERNAME="${DJANGO_SUPERUSER_USERNAME:-admin}"
 SUPERUSER_EMAIL="${DJANGO_SUPERUSER_EMAIL:-admin@example.com}"
 SUPERUSER_PASSWORD="${DJANGO_SUPERUSER_PASSWORD:-changeme123}"
 
@@ -77,10 +77,9 @@ docker compose run --rm \
   -e DJANGO_SUPERUSER_USERNAME="$SUPERUSER_USERNAME" \
   -e DJANGO_SUPERUSER_EMAIL="$SUPERUSER_EMAIL" \
   -e DJANGO_SUPERUSER_PASSWORD="$SUPERUSER_PASSWORD" \
-  backend python - <<'PY' || echo "Superuser step skipped (non-fatal)."
-import os, django
-django.setup()
+  backend python manage.py shell <<'PY' || echo "Superuser step skipped (non-fatal)."
 from django.contrib.auth import get_user_model
+import os
 U = get_user_model()
 u, created = U.objects.get_or_create(
     username=os.environ["DJANGO_SUPERUSER_USERNAME"],
