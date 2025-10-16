@@ -13,6 +13,7 @@ import UsersTable from "./pages/UsersTable";
 import Stats from "./pages/Stats";
 import { useAuthStore } from "./auth/store";
 import ExcelImport from "./pages/ExcelImport";
+import ChangePassword from "./pages/ChangePassword";
 
 function PrivateRoute({ children }: { children: JSX.Element }) {
   const token = useAuthStore((s) => s.accessToken);
@@ -32,7 +33,8 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
             <Route path="profile" element={<PrivateRoute><Profile /></PrivateRoute>} />
             <Route path="users" element={<PrivateRoute><UsersTable /></PrivateRoute>} />
             <Route path="stats" element={<PrivateRoute><Stats /></PrivateRoute>} />
-            <Route path="/import-excel" element={<ExcelImport />} />
+            <Route path="import-excel" element={<ExcelImport />} />
+            <Route path="change-password" element={<ChangePassword />} />
           </Route>
         </Routes>
       </BrowserRouter>

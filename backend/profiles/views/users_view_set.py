@@ -4,14 +4,16 @@ filtering, sorting, and search.
 """
 
 from django.contrib.auth import get_user_model
+from django.contrib.auth import password_validation
 from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework import viewsets, permissions
+from rest_framework import viewsets, permissions, serializers, status
 from rest_framework.decorators import action
 from rest_framework.filters import OrderingFilter, SearchFilter
 from rest_framework.response import Response
 
 from .standard_results_set_pagination import StandardResultsSetPagination
 from ..serializers.user_serializer import UserSerializer
+from ..serializers.change_password_serializer import ChangePasswordSerializer
 
 
 class UsersViewSet(viewsets.ReadOnlyModelViewSet):
@@ -52,3 +54,36 @@ class UsersViewSet(viewsets.ReadOnlyModelViewSet):
         count = qs.count()
         qs.delete()
         return Response({"deleted": count}, status=200)
+
+    @action(detail=True, methods=["post"], url_path="set-password",
+            permission_classes=[permissions.IsAuthenticated])
+    def set_password(self, request, pk=None):
+        """
+        Set (change) the password for a specific user.
+        Allowed for staff OR the user changing their own password.
+        """
+        user = self.get_object()
+        if not (request.user.is_staff or request.user == user):
+            return Response({"detail": "Not permitted."}, status=status.HTTP_403_FORBIDDEN)
+
+        ser = ChangePasswordSerializer(data=request.data)
+        ser.is_valid(raise_exception=True)
+        new_pw = ser.validated_data["password"]
+
+        # Run Django password validators
+        try:
+            password_validation.validate_password(new_pw, user=user)
+        except Exception as exc:
+            # Convert validator errors to DRF-style response
+            msgs = getattr(exc, "messages", [str(exc)])
+            return Response({"password": msgs}, status=status.HTTP_400_BAD_REQUEST)
+
+        user.set_password(new_pw)
+        user.save(update_fields=["password"])
+        return Response({"detail": "Password updated."}, status=status.HTTP_200_OK)
+
+    # Optional alias so /users/<id>/change-password/ works too
+    @action(detail=True, methods=["post"], url_path="change-password",
+            permission_classes=[permissions.IsAuthenticated])
+    def change_password(self, request, pk=None):
+        return self.set_password(request, pk=pk)

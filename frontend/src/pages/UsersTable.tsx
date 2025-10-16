@@ -48,6 +48,12 @@ export default function UsersTable() {
   const queryClient = useQueryClient();
   const [deleting, setDeleting] = useState(false);
   const [deleteError, setDeleteError] = useState<string | null>(null)
+  const [pwUser, setPwUser] = useState<User | null>(null);
+  const [pw1, setPw1] = useState("");
+  const [pw2, setPw2] = useState("");
+  const [pwLoading, setPwLoading] = useState(false);
+  const [pwError, setPwError] = useState<string | null>(null);
+  const closePw = () => { setPwUser(null); setPw1(""); setPw2(""); setPwError(null); };
 
   const { data, isLoading } = useQuery({
     queryKey: ["users", page, pageSize, sort, globalFilter],
@@ -99,6 +105,31 @@ export default function UsersTable() {
       setDeleteError(e?.message || "Failed to delete selected users.");
     } finally {
       setDeleting(false);
+    }
+  };
+
+  const submitPasswordChange = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!pwUser) return;
+    if (!pw1 || pw1.length < 8) {
+      setPwError("Password must be at least 8 characters.");
+      return;
+    }
+    if (pw1 !== pw2) {
+      setPwError("Passwords do not match.");
+      return;
+    }
+    setPwLoading(true);
+    setPwError(null);
+    try {
+      // adjust endpoint/body if your API differs
+      await api.post(`/users/${pwUser.id}/set-password/`, { password: pw1 });
+      closePw();
+      await queryClient.invalidateQueries({ queryKey: ["users"] });
+    } catch (err: any) {
+      setPwError(err?.response?.data?.detail || err?.message || "Failed to set password.");
+    } finally {
+      setPwLoading(false);
     }
   };
 
@@ -205,6 +236,24 @@ export default function UsersTable() {
       cell: (ctx) => <span className="break-words">{ctx.getValue<string>()}</span>,
       size: 180,
       enableResizing: true,
+    },
+    {
+      id: "change_password_action",
+      header: "Change Password",
+      enableSorting: false,
+      size: 180,
+      cell: ({ row }) => (
+        <div className="flex flex-wrap gap-2">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => setPwUser(row.original)}
+            title="Change password"
+          >
+            Change password
+          </Button>
+        </div>
+      ),
     },
   ], []);
 
