@@ -1,11 +1,9 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useAuthStore } from "../auth/store";
-import { useAuth } from "../hooks/useAuth";
 
 export default function Navbar() {
   const { pathname } = useLocation();
   const { user, logout } = useAuthStore();
-  const { isAuthenticated } = useAuth();
   const navigate = useNavigate();
   return (
     <header className="sticky top-0 z-10 bg-white/70 backdrop-blur border-b border-slate-200">
