@@ -3,12 +3,8 @@ FROM node:20-alpine AS build
 WORKDIR /app
 
 COPY frontend/package.json frontend/package-lock.json* ./
-RUN npm ci
 
 COPY frontend/ /app/
-
-ARG VITE_API_URL
-ENV VITE_API_URL=$VITE_API_URL
 
 # Network-resilient npm settings
 # - fewer network calls (no audit/fund)
@@ -20,6 +16,9 @@ RUN npm set progress=false \
  && npm config set fetch-timeout 120000 \
  && npm config set registry "https://registry.npmjs.org/" \
  && npm ci --no-audit --no-fund
+
+ARG VITE_API_URL
+ENV VITE_API_URL=$VITE_API_URL
 
 RUN npm run build
 
