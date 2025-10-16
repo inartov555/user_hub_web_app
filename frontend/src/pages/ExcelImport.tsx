@@ -43,7 +43,7 @@ export default function ExcelImportPanel() {
       form.append("file", file);
 
       const resp = await api.post(`/import-excel/`, form, {
-        headers: user ? { Authorization: `Bearer ${user}` } : undefined,
+        headers: user ? { Authorization: `Bearer ${user}`, "Content-Type": `multipart/form-data` } : undefined,
         withCredentials: !user, // cookie-based auth if no token
         // onUploadProgress: (e) => { /* optional progress */ },
       });
@@ -63,7 +63,7 @@ export default function ExcelImportPanel() {
     } catch (err: any) {
       setMessage(err.message || "Import failed");
       const parsed = extractApiError(err as unknown);
-      setError(`Signup failure: ${parsed.message}`);
+      setError(`Excel template download failure: ${parsed.message}`);
     } finally {
       setSubmitting(false);
     }
@@ -88,6 +88,8 @@ export default function ExcelImportPanel() {
       window.URL.revokeObjectURL(url);
     } catch (err) {
       setMessage((err as Error).message || "Failed to download template");
+      const parsed = extractApiError(err as unknown);
+      setError(`Excel upload failure: ${parsed.message}`);
     }
   }
 
