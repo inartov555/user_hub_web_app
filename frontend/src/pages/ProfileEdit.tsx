@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { api } from "../lib/axios";
 
-export default function Profile() {
+export default function ProfileEdit() {
+  const navigate = useNavigate();
   const [data, setData] = useState<any>(null);
   const [first_name, setFirstName] = useState("");
   const [last_name, setLastName] = useState("");
@@ -21,6 +23,7 @@ export default function Profile() {
     if (avatarFile) form.append("avatar", avatarFile);
     const { data } = await api.patch("/me/profile/", form, { headers: { "Content-Type": "multipart/form-data" }});
     setData(data);
+    navigate("/profile-view");
   }
 
   if (!data) return <div className="card">Loading...</div>;

@@ -14,7 +14,7 @@ export default function Navbar() {
             <>
               <Link className={navCls(pathname, "/users")} to="/users">Users</Link>
               <Link className={navCls(pathname, "/stats")} to="/stats">Stats</Link>
-              <Link className={navCls(pathname, "/profile")} to="/profile">Profile</Link>
+              <Link className={navCls(pathname, "/profile-view")} to="/profile-view">Profile</Link>
               <Link className={navCls(pathname, "/import-excel")} to="/import-excel">Import from Excel</Link>
             </>
           )}

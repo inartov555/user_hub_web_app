@@ -8,7 +8,8 @@ import App from "./App";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import ResetPassword from "./pages/ResetPassword";
-import Profile from "./pages/Profile";
+import ProfileEdit from "./pages/ProfileEdit";
+import ProfileView from "./pages/ProfileView";
 import UsersTable from "./pages/UsersTable";
 import Stats from "./pages/Stats";
 import { useAuthStore } from "./auth/store";
@@ -30,7 +31,8 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
             <Route path="login" element={<Login />} />
             <Route path="signup" element={<Signup />} />
             <Route path="reset-password" element={<ResetPassword />} />
-            <Route path="profile" element={<PrivateRoute><Profile /></PrivateRoute>} />
+            <Route path="profile-edit" element={<PrivateRoute><ProfileEdit /></PrivateRoute>} />
+            <Route path="profile-view" element={<PrivateRoute><ProfileView /></PrivateRoute>} />
             <Route path="users" element={<PrivateRoute><UsersTable /></PrivateRoute>} />
             <Route path="stats" element={<PrivateRoute><Stats /></PrivateRoute>} />
             <Route path="import-excel" element={<ExcelImport />} />

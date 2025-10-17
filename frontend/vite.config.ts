@@ -7,7 +7,7 @@ const BACKEND = process.env.VITE_BACKEND_URL || "http://backend:8000";
 
 export default defineConfig({
   plugins: [react()],
-  base: "/", // required for BrowserRouter
+  base: "/",
   server: {
     proxy: {
       "/api": { target: "http://localhost:8000", changeOrigin: true },
