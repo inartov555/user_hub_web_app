@@ -27,6 +27,7 @@ export default function App() {
 	  <Link to="/login" className="btn">Login</Link>
         </div>
         */
+        <div></div>
       )}
     </div>
   );
