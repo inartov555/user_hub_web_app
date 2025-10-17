@@ -245,6 +245,12 @@ export default function UsersTable() {
     setPage(1);
   };
 
+  const isMultiSortEvent = (e: unknown): boolean => {
+    const ev = e as Partial<Pick<KeyboardEvent, "shiftKey" | "ctrlKey" | "metaKey">>
+           & Partial<Pick<MouseEvent, "shiftKey" | "ctrlKey" | "metaKey">>;
+    return !!(ev?.shiftKey || ev?.ctrlKey || ev?.metaKey);
+  };
+
   const table = useReactTable({
     data: rows,
     columns,
@@ -263,6 +269,8 @@ export default function UsersTable() {
     manualSorting: true,
     manualPagination: true,
     pageCount: totalPages, // derive from server count
+    enableMultiSort: true,
+    maxMultiSortColCount: 5, // or whatever limit you prefer
     // keep pagination controls + resizing
     getPaginationRowModel: getPaginationRowModel(),
     columnResizeMode: "onChange",
@@ -367,16 +375,7 @@ export default function UsersTable() {
                         className="relative select-none px-3 py-2 text-left font-semibold align-middle group whitespace-normal break-words"
                       >
                         {header.isPlaceholder ? null : (
-                          <div
-                            className="inline-flex items-center gap-1 cursor-pointer"
-                            onClick={(e) =>
-                              header.column.toggleSorting(
-                                header.column.getIsSorted() === "asc",
-                                e.shiftKey || e.ctrlKey || e.metaKey // NEW
-                              )
-                            }
-                            title="Click to sort; hold Shift/Ctrl/⌘ to multi-sort"
-                          >
+                          <div className="inline-flex items-center gap-1">
                             {flexRender(header.column.columnDef.header, header.getContext())}
                             {typeof sortIndex === "number" && (
                               <span className="text-xs text-muted-foreground">#{sortIndex + 1}</span>

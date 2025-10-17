@@ -1,4 +1,5 @@
 ## Users App (Django + React)
+This is a test web application
 
 ## Setup (Docker)
 ```bash
