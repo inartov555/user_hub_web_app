@@ -11,6 +11,10 @@
 clean_data_at_exit=${1:-false}
 clear_cache=${2:-false}
 
+SUPERUSER_USERNAME="${DJANGO_SUPERUSER_USERNAME:-admin}"
+SUPERUSER_EMAIL="${DJANGO_SUPERUSER_EMAIL:-admin@example.com}"
+SUPERUSER_PASSWORD="${DJANGO_SUPERUSER_PASSWORD:-changeme123}"
+
 ORIGINAL_PROJECT_PATH="$(pwd)"
 source ./setup.sh || { echo "setup.sh failed"; exit 1; }
 if [[ $? -ne 0 ]]; then
@@ -32,10 +36,6 @@ cleanup() {
   echo "Returning to the original project path to be able to run the test again with new changes, if there are any"
   cd "$ORIGINAL_PROJECT_PATH"
 }
-
-SUPERUSER_USERNAME="${DJANGO_SUPERUSER_USERNAME:-admin}"
-SUPERUSER_EMAIL="${DJANGO_SUPERUSER_EMAIL:-admin@example.com}"
-SUPERUSER_PASSWORD="${DJANGO_SUPERUSER_PASSWORD:-changeme123}"
 
 echo "Setting the exit function..."
 case "$clean_data_at_exit" in

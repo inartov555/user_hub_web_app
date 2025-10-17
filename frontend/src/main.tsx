@@ -25,7 +25,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<App />}> 
+            <Route path="/" element={<App />}> 
             <Route index element={<Navigate to="/users" replace />} />
             <Route path="login" element={<Login />} />
             <Route path="signup" element={<Signup />} />

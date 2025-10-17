@@ -7,10 +7,15 @@ const BACKEND = process.env.VITE_BACKEND_URL || "http://backend:8000";
 
 export default defineConfig({
   plugins: [react()],
-
+  base: "/", // crucial for correct asset paths behind nginx/django
+  appType: "spa",
   server: {
-    proxy: {
-      "/api": { target: "http://localhost:8000", changeOrigin: true },
+    port: 5173,
+    strictPort: true,
+    // Only proxy API. Do NOT proxy "/" or "*"
+    '/api': {
+      target: 'http://localhost:8000',
+      changeOrigin: true,
     },
   },
 });
