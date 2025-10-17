@@ -34,7 +34,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
             <Route path="users" element={<PrivateRoute><UsersTable /></PrivateRoute>} />
             <Route path="stats" element={<PrivateRoute><Stats /></PrivateRoute>} />
             <Route path="import-excel" element={<ExcelImport />} />
-            <Route path="change-password" element={<ChangePassword />} />
+            <Route path="/users/:id/change-password" element={<ChangePassword />} />
           </Route>
         </Routes>
       </BrowserRouter>

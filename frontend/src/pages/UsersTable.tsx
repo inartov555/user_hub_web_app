@@ -1,5 +1,6 @@
 import * as React from "react";
 import { useMemo, useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   ColumnDef,
   flexRender,
@@ -37,6 +38,7 @@ type Props = {
 };
 
 export default function UsersTable() {
+  const navigate = useNavigate();
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState<number>(() => Number(localStorage.getItem("pageSize")) || 20);
   const [sort, setSort] = useState<string[]>([]);
@@ -47,7 +49,7 @@ export default function UsersTable() {
   const [rowSelection, setRowSelection] = React.useState<RowSelectionState>({});
   const queryClient = useQueryClient();
   const [deleting, setDeleting] = useState(false);
-  const [deleteError, setDeleteError] = useState<string | null>(null)
+  const [deleteError, setDeleteError] = useState<string | null>(null);
   const [pwUser, setPwUser] = useState<User | null>(null);
   const [pw1, setPw1] = useState("");
   const [pw2, setPw2] = useState("");
@@ -105,31 +107,6 @@ export default function UsersTable() {
       setDeleteError(e?.message || "Failed to delete selected users.");
     } finally {
       setDeleting(false);
-    }
-  };
-
-  const submitPasswordChange = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!pwUser) return;
-    if (!pw1 || pw1.length < 8) {
-      setPwError("Password must be at least 8 characters.");
-      return;
-    }
-    if (pw1 !== pw2) {
-      setPwError("Passwords do not match.");
-      return;
-    }
-    setPwLoading(true);
-    setPwError(null);
-    try {
-      // adjust endpoint/body if your API differs
-      await api.post(`/users/${pwUser.id}/set-password/`, { password: pw1 });
-      closePw();
-      await queryClient.invalidateQueries({ queryKey: ["users"] });
-    } catch (err: any) {
-      setPwError(err?.response?.data?.detail || err?.message || "Failed to set password.");
-    } finally {
-      setPwLoading(false);
     }
   };
 
@@ -247,7 +224,7 @@ export default function UsersTable() {
           <Button
             variant="outline"
             size="sm"
-            onClick={() => setPwUser(row.original)}
+            onClick={() => navigate(`/users/${row.original.id}/change-password`)}
             title="Change password"
           >
             Change password
@@ -255,7 +232,7 @@ export default function UsersTable() {
         </div>
       ),
     },
-  ], []);
+  ], [navigate]);
 
   // NEW: keep server 'ordering' in sync with TanStack multi-sort
   const handleSortingChange = (updater: React.SetStateAction<SortingState>) => {
