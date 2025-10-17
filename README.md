@@ -3,6 +3,7 @@
 ## Setup (Docker)
 ```bash
 ./run_web_site.sh param1 param2
+# admin user: admin / changeme123
 #   - param1 - true - delete the DB data after stopping the service;
 #              false - preserve the DB data after stopping the service;
 #              default = false

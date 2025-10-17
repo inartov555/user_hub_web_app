@@ -21,8 +21,6 @@ Creating plan in short:
     c) There is the ability to configure what columns will be displayed on a table, all by default.
  - There should also be a page with user statistics, so you can see the currently logged-in users.
 
-Additionally, the pages feature a simple and attractive design. Some background. 
+Additionally, the pages feature a simple and attractive design. Some background.
 
-The app stores the user data in the database (select a free and good database). 
-
-Please add this task description to a separate file.
+The app stores the user data in the database (select a free and good database).

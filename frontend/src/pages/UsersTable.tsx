@@ -69,6 +69,9 @@ export default function UsersTable() {
   });
 
   const rows = useMemo(() => data?.results ?? [], [data]);
+  // total items & total pages from server
+  const totalCount = data?.count ?? 0;
+  const totalPages = Math.max(1, Math.ceil(totalCount / pageSize));
 
   const handleDeleteSelected = async () => {
     const ids = table.getSelectedRowModel().flatRows.map((r) => r.original.id);
@@ -256,9 +259,11 @@ export default function UsersTable() {
     onSortingChange: handleSortingChange, // NEW
     onColumnVisibilityChange: setColumnVisibility,
     getCoreRowModel: getCoreRowModel(),
-    // IMPORTANT: server-side sorting – don't sort on client
-    manualSorting: true, // NEW
-    // keep pagination + resizing
+    // IMPORTANT: server-side sorting & pagination – don't do it on the client
+    manualSorting: true,
+    manualPagination: true,
+    pageCount: totalPages, // derive from server count
+    // keep pagination controls + resizing
     getPaginationRowModel: getPaginationRowModel(),
     columnResizeMode: "onChange",
     enableColumnResizing: true,
@@ -268,6 +273,12 @@ export default function UsersTable() {
   useEffect(() => {
     localStorage.setItem("pageSize", String(pageSize));
   }, [pageSize]);
+
+  // Optional UX: whenever page size / filters / sort change, go back to page 1
+  useEffect(() => {
+    table.setPageIndex(0);
+    setPage(1);
+  }, [pageSize, globalFilter, sort]);
 
   if (isLoading) return <div>Loading…</div>;
 
@@ -454,9 +465,9 @@ export default function UsersTable() {
           </div>
 
           <div className="flex items-center gap-3 text-sm text-muted-foreground">
-            <span>
-              Page <strong>{table.getState().pagination.pageIndex + 1}</strong> of {table.getPageCount() || 1}
-            </span>
+                <span>
+                  Page <strong>{table.getState().pagination.pageIndex + 1}</strong> of {table.getPageCount() || 1}
+                </span>
             <label className="flex items-center gap-2">
               Rows per page
               <select
