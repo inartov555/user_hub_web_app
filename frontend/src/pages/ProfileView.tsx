@@ -106,6 +106,13 @@ export default function ProfileView() {
           <Link to="/profile-edit" className="btn inline-flex">
             Edit profile
           </Link>
+          {/* Change password for the *current* user */}
+          {profile?.user?.id != null && (
+            <Link
+              to={`/users/${profile.user.id}/change-password`}
+              className="btn inline-flex"
+            >Change password</Link>
+          )}
         </div>
       </div>
     </div>
