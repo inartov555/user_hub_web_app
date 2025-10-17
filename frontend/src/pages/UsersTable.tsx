@@ -10,8 +10,8 @@ import {
   VisibilityState,
   useReactTable,
 } from "@tanstack/react-table";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { Trash2 } from "lucide-react";
+import { useQuery, useQueryClient, keepPreviousData } from "@tanstack/react-query";
+import { Trash2, ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight, Columns, ArrowUpDown } from "lucide-react";
 import type { RowSelectionState } from "@tanstack/react-table";
 import { api } from "../lib/axios";
 
@@ -19,7 +19,6 @@ import { Button } from "../components/button";
 import { Card, CardContent, CardHeader, CardTitle } from "../components/card";
 import { Input } from "../components/input";
 import { Checkbox } from "../components/checkbox";
-import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight, Columns, ArrowUpDown } from "lucide-react";
 
 type User = {
   id: number;
@@ -29,90 +28,74 @@ type User = {
   last_name?: string;
 };
 
-// NEW: helper to turn TanStack sorting -> DRF `ordering` (e.g. ["username", "-email"])
+/**
+ * Convert TanStack SortingState -> DRF `ordering` (primary,secondary,...)
+ * TanStack keeps highest-priority sort FIRST in `sorting`.
+ */
 const toOrdering = (s: SortingState) => s.map(({ id, desc }) => (desc ? `-${id}` : id));
 
+/**
+ * Always add a deterministic tiebreaker at the end to stabilize pagination.
+ * This prevents "random shuffles" when many rows share the same sorted value.
+ */
+const withStableTiebreaker = (ordering: string[], idField = "id") => {
+  if (ordering.some((o) => o === idField || o === `-${idField}`)) return ordering;
+  return [...ordering, idField];
+};
+
+/**
+ * Treat *every* header click as a multi-sort gesture (no Shift/Ctrl needed).
+ * This keeps previous sort columns intact instead of resetting them.
+ */
+const alwaysMulti = () => true;
+
 type Props = {
-  data: User[];
+  data?: User[]; // unused with server pagination
   onResetPasswords?: (userIds: number[]) => Promise<void> | void;
 };
 
-export default function UsersTable() {
+export default function UsersTable(props: Props) {
   const navigate = useNavigate();
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState<number>(() => Number(localStorage.getItem("pageSize")) || 20);
-  const [sort, setSort] = useState<string[]>([]);
   const [globalFilter, setGlobalFilter] = useState("");
+
+  // TanStack state we control
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
-  const [showColumns, setShowColumns] = useState(false); // NEW: controls menu visibility
+  const [showColumns, setShowColumns] = useState(false);
   const [rowSelection, setRowSelection] = React.useState<RowSelectionState>({});
+
   const queryClient = useQueryClient();
   const [deleting, setDeleting] = useState(false);
   const [deleteError, setDeleteError] = useState<string | null>(null);
-  const [pwUser, setPwUser] = useState<User | null>(null);
-  const [pw1, setPw1] = useState("");
-  const [pw2, setPw2] = useState("");
-  const [pwLoading, setPwLoading] = useState(false);
-  const [pwError, setPwError] = useState<string | null>(null);
-  const closePw = () => { setPwUser(null); setPw1(""); setPw2(""); setPwError(null); };
 
-  const { data, isLoading } = useQuery({
-    queryKey: ["users", page, pageSize, sort, globalFilter],
-    queryFn: async () => {
+  // Build server ordering param from sorting (with a stable id tiebreaker)
+  const ordering = useMemo(
+    () => withStableTiebreaker(toOrdering(sorting)),
+    [sorting]
+  );
+
+  // Data fetch (server-side sort + pagination)
+  const { data, isLoading, isFetching } = useQuery<{ results: User[]; count: number }>({
+    queryKey: ["users", page, pageSize, ordering, globalFilter],
+    placeholderData: keepPreviousData,
+    retry: false,
+    refetchOnWindowFocus: false,
+    queryFn: async ({ signal }) => {
       const params: Record<string, unknown> = { page, page_size: pageSize };
-      if (sort.length) params.ordering = sort.join(",");
+      if (ordering.length) params.ordering = ordering.join(",");
       if (globalFilter) params.search = globalFilter;
-      const { data } = await api.get("/users/", { params });
+      const { data } = await api.get("/users/", { params, signal });
       return data as { results: User[]; count: number };
     },
   });
 
   const rows = useMemo(() => data?.results ?? [], [data]);
-  // total items & total pages from server
   const totalCount = data?.count ?? 0;
   const totalPages = Math.max(1, Math.ceil(totalCount / pageSize));
 
-  const handleDeleteSelected = async () => {
-    const ids = table.getSelectedRowModel().flatRows.map((r) => r.original.id);
-    if (!ids.length) return;
-
-    /*
-    // Window alert confirmation for user deletion
-    if (!window.confirm(`Delete ${ids.length} selected user(s)? This cannot be undone.`)) {
-      return;
-    }
-    */
-
-    setDeleting(true);
-    setDeleteError(null);
-    try {
-      // Try bulk endpoint first (adjust path if yours differs)
-      const bulk = await api.post("/users/bulk-delete/", { ids }, { validateStatus: () => true });
-
-      if (!(bulk.status >= 200 && bulk.status < 300)) {
-        // Fallback: delete one-by-one
-        const results = await Promise.allSettled(
-          ids.map((id) => api.delete(`/users/${id}/`, { validateStatus: () => true }))
-        );
-        const failed = results.filter(
-          (r) => r.status === "rejected" || (r.status === "fulfilled" && r.value.status >= 400)
-        );
-        if (failed.length) {
-          setDeleteError(`Failed to delete ${failed.length} of ${ids.length} users.`);
-        }
-      }
-
-      // clear selection + refresh list
-      setRowSelection({});
-      await queryClient.invalidateQueries({ queryKey: ["users"] });
-    } catch (e: any) {
-      setDeleteError(e?.message || "Failed to delete selected users.");
-    } finally {
-      setDeleting(false);
-    }
-  };
-
+  // Columns
   const columns = useMemo<ColumnDef<User>[]>(() => [
     {
       id: "select",
@@ -150,11 +133,8 @@ export default function UsersTable() {
         <button
           type="button"
           className="inline-flex items-center gap-1"
-          // NEW: allow Shift OR Ctrl/⌘ for multi-sort
-          onClick={(e) =>
-            column.toggleSorting(column.getIsSorted() === "asc", e.shiftKey || e.ctrlKey || e.metaKey)
-          }
-          title="Click to sort; hold Shift/Ctrl/⌘ to multi-sort"
+          onClick={column.getToggleSortingHandler()}
+          title="Click to add/update sort (multi-sort enabled)"
         >
           Username <ArrowUpDown className="h-4 w-4" />
         </button>
@@ -169,10 +149,8 @@ export default function UsersTable() {
         <button
           type="button"
           className="inline-flex items-center gap-1"
-          onClick={(e) =>
-            column.toggleSorting(column.getIsSorted() === "asc", e.shiftKey || e.ctrlKey || e.metaKey)
-          }
-          title="Click to sort; hold Shift/Ctrl/⌘ to multi-sort"
+          onClick={column.getToggleSortingHandler()}
+          title="Click to add/update sort (multi-sort enabled)"
         >
           Email <ArrowUpDown className="h-4 w-4" />
         </button>
@@ -187,10 +165,8 @@ export default function UsersTable() {
         <button
           type="button"
           className="inline-flex items-center gap-1"
-          onClick={(e) =>
-            column.toggleSorting(column.getIsSorted() === "asc", e.shiftKey || e.ctrlKey || e.metaKey)
-          }
-          title="Click to sort; hold Shift/Ctrl/⌘ to multi-sort"
+          onClick={column.getToggleSortingHandler()}
+          title="Click to add/update sort (multi-sort enabled)"
         >
           First name <ArrowUpDown className="h-4 w-4" />
         </button>
@@ -205,10 +181,8 @@ export default function UsersTable() {
         <button
           type="button"
           className="inline-flex items-center gap-1"
-          onClick={(e) =>
-            column.toggleSorting(column.getIsSorted() === "asc", e.shiftKey || e.ctrlKey || e.metaKey)
-          }
-          title="Click to sort; hold Shift/Ctrl/⌘ to multi-sort"
+          onClick={column.getToggleSortingHandler()}
+          title="Click to add/update sort (multi-sort enabled)"
         >
           Last name <ArrowUpDown className="h-4 w-4" />
         </button>
@@ -237,18 +211,11 @@ export default function UsersTable() {
     },
   ], [navigate]);
 
-  // NEW: keep server 'ordering' in sync with TanStack multi-sort
+  // Sync TanStack sorting -> server ordering
   const handleSortingChange = (updater: React.SetStateAction<SortingState>) => {
     const next = typeof updater === "function" ? (updater as (prev: SortingState) => SortingState)(sorting) : updater;
     setSorting(next);
-    setSort(toOrdering(next));
-    setPage(1);
-  };
-
-  const isMultiSortEvent = (e: unknown): boolean => {
-    const ev = e as Partial<Pick<KeyboardEvent, "shiftKey" | "ctrlKey" | "metaKey">>
-           & Partial<Pick<MouseEvent, "shiftKey" | "ctrlKey" | "metaKey">>;
-    return !!(ev?.shiftKey || ev?.ctrlKey || ev?.metaKey);
+    setPage(1); // whenever sort changes, go back to first page
   };
 
   const table = useReactTable({
@@ -262,33 +229,72 @@ export default function UsersTable() {
     },
     onRowSelectionChange: setRowSelection,
     enableRowSelection: true,
-    onSortingChange: handleSortingChange, // NEW
+    onSortingChange: handleSortingChange,
     onColumnVisibilityChange: setColumnVisibility,
+
     getCoreRowModel: getCoreRowModel(),
-    // IMPORTANT: server-side sorting & pagination – don't do it on the client
+
+    // Server-side sorting & pagination
     manualSorting: true,
     manualPagination: true,
-    pageCount: totalPages, // derive from server count
+    pageCount: totalPages,
+
+    // Multi-sort behavior
     enableMultiSort: true,
-    maxMultiSortColCount: 5, // or whatever limit you prefer
-    // keep pagination controls + resizing
+    // Always treat clicks as multi-sort; don't require Shift/Ctrl/⌘
+    isMultiSortEvent: alwaysMulti,
+    // Avoid the "third click removes sorting" behavior (keeps column in sort)
+    enableSortingRemoval: false,
+    maxMultiSortColCount: 5,
+
     getPaginationRowModel: getPaginationRowModel(),
     columnResizeMode: "onChange",
     enableColumnResizing: true,
   });
 
-  // keep localStorage in sync for pageSize
+  // persist pageSize
   useEffect(() => {
     localStorage.setItem("pageSize", String(pageSize));
   }, [pageSize]);
 
-  // Optional UX: whenever page size / filters / sort change, go back to page 1
+  // reset page when size/filter/sort changes
   useEffect(() => {
     table.setPageIndex(0);
     setPage(1);
-  }, [pageSize, globalFilter, sort]);
+  }, [pageSize, globalFilter, ordering]); // ordering includes the tiebreaker
 
-  if (isLoading) return <div>Loading…</div>;
+  // Bulk delete (unchanged)
+  const handleDeleteSelected = async () => {
+    const ids = table.getSelectedRowModel().flatRows.map((r) => r.original.id);
+    if (!ids.length) return;
+
+    setDeleting(true);
+    setDeleteError(null);
+    try {
+      const bulk = await api.post("/users/bulk-delete/", { ids }, { validateStatus: () => true });
+
+      if (!(bulk.status >= 200 && bulk.status < 300)) {
+        const results = await Promise.allSettled(
+          ids.map((id) => api.delete(`/users/${id}/`, { validateStatus: () => true }))
+        );
+        const failed = results.filter(
+          (r) => r.status === "rejected" || (r.status === "fulfilled" && r.value.status >= 400)
+        );
+        if (failed.length) {
+          setDeleteError(`Failed to delete ${failed.length} of ${ids.length} users.`);
+        }
+      }
+
+      setRowSelection({});
+      await queryClient.invalidateQueries({ queryKey: ["users"] });
+    } catch (e: any) {
+      setDeleteError(e?.message || "Failed to delete selected users.");
+    } finally {
+      setDeleting(false);
+    }
+  };
+
+  if (isLoading && !data) return <div>Loading…</div>;
 
   return (
     <Card className="w-full mx-auto">
@@ -302,7 +308,7 @@ export default function UsersTable() {
             className="w-48"
           />
 
-          {/* Columns menu (headless) */}
+          {/* Columns menu */}
           <div className="relative">
             <Button variant="outline" size="sm" className="gap-2" onClick={() => setShowColumns((v) => !v)}>
               <Columns className="h-4 w-4" /> Columns
@@ -331,19 +337,20 @@ export default function UsersTable() {
             )}
           </div>
 
-          {/* NEW: Clear sort button */}
+          {/* Clear sort */}
           <Button
             variant="outline"
             size="sm"
             onClick={() => {
               setSorting([]);
-              setSort([]);
               setPage(1);
               table.resetSorting();
             }}
           >
             Clear sort
           </Button>
+
+          {/* Delete selected */}
           <Button
             variant="outline"
             size="sm"
@@ -365,7 +372,6 @@ export default function UsersTable() {
               {table.getHeaderGroups().map((headerGroup) => (
                 <tr key={headerGroup.id} className="border-b">
                   {headerGroup.headers.map((header) => {
-                    const isSorted = header.column.getIsSorted();
                     const sortIndex = header.column.getSortIndex();
                     return (
                       <th
@@ -377,7 +383,7 @@ export default function UsersTable() {
                         {header.isPlaceholder ? null : (
                           <div className="inline-flex items-center gap-1">
                             {flexRender(header.column.columnDef.header, header.getContext())}
-                            {typeof sortIndex === "number" && (
+                            {sortIndex > -1 && (
                               <span className="text-xs text-muted-foreground">#{sortIndex + 1}</span>
                             )}
                           </div>
@@ -396,6 +402,7 @@ export default function UsersTable() {
                 </tr>
               ))}
             </thead>
+
             <tbody>
               {table.getRowModel().rows.length === 0 ? (
                 <tr>
@@ -422,7 +429,7 @@ export default function UsersTable() {
           </table>
         </div>
 
-        {/* Pagination controls */}
+        {/* Footer / pagination */}
         <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
           <div className="flex items-center gap-2">
             <Button
@@ -464,9 +471,10 @@ export default function UsersTable() {
           </div>
 
           <div className="flex items-center gap-3 text-sm text-muted-foreground">
-                <span>
-                  Page <strong>{table.getState().pagination.pageIndex + 1}</strong> of {table.getPageCount() || 1}
-                </span>
+            {isFetching && <span>Updating…</span>}
+            <span>
+              Page <strong>{table.getState().pagination.pageIndex + 1}</strong> of {table.getPageCount() || 1}
+            </span>
             <label className="flex items-center gap-2">
               Rows per page
               <select
@@ -487,6 +495,10 @@ export default function UsersTable() {
             </label>
           </div>
         </div>
+
+        {deleteError && (
+          <div className="mt-3 text-sm text-red-600">{deleteError}</div>
+        )}
       </CardContent>
     </Card>
   );
