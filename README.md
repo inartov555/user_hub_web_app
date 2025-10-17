@@ -2,32 +2,19 @@
 
 ## Setup (Docker)
 ```bash
-cp backend/.env.example backend/.env
-docker compose up --build -d
-docker compose exec backend python manage.py createsuperuser
+./run_web_site.sh param1 param2
+#   - param1 - true - delete the DB data after stopping the service;
+#              false - preserve the DB data after stopping the service;
+#              default = false
+#   - param2 - true - starting service WITHOUT cached data (allows to start the service faster);
+#              false - starting the service WITH cache (cache is cleared)
+#              default = false
 # Frontend: http://localhost:5173
 # API:      http://localhost:8000/api/
 # Admin:    http://localhost:8000/admin/
 ```
 
-## Setup (no Docker)
-1. **Backend:**
-   ```bash
-   cd backend
-   python -m venv .venv && source .venv/bin/activate
-   pip install -r requirements.txt
-   cp .env.example .env
-   python manage.py migrate
-   python manage.py createsuperuser
-   python manage.py runserver
-   ```
-2. **Frontend:**
-   ```bash
-   cd frontend
-   npm i
-   echo 'VITE_API_URL=http://localhost:8000/api' > .env.local
-   npm run dev
-   ```
+---
 
 ## Auth endpoints
 - `POST /api/auth/users/` — register
@@ -35,11 +22,15 @@ docker compose exec backend python manage.py createsuperuser
 - `POST /api/auth/jwt/refresh/` — refresh
 - `POST /api/auth/users/reset_password/` — request reset email
 
+---
+
 ## App endpoints
 - `GET /api/me/profile/` `PATCH /api/me/profile/`
 - `GET /api/users/` — paginated list (admin-only). Query: `page`, `page_size`, `ordering`, `search`, filters.
 - `POST /api/users/import-excel/` — upload `.xlsx` with columns: `email,username,first_name,last_name,is_active,bio`
 - `GET /api/stats/online-users/`
+
+--
 
 ## Notes
 - **Security:** For production move refresh token to HttpOnly cookie, enable CSRF, strict CORS, HTTPS.
