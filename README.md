@@ -24,7 +24,7 @@ This is a test web application
 
 ---
 
-# API Endpoints Overview
+## API Endpoints Overview
 
 This document lists all API endpoints used by the application, grouped by functionality.  
 Base URL: `${VITE_API_URL}` (defaults to `/api`)
@@ -87,7 +87,7 @@ Base URL: `${VITE_API_URL}` (defaults to `/api`)
 | **GET** | `/api/schema/` | OpenAPI schema |
 | **GET** | `/api/docs/` | Swagger UI |
 
---
+---
 
 ## Notes
 - **Security:** For production move refresh token to HttpOnly cookie, enable CSRF, strict CORS, HTTPS.

@@ -17,5 +17,8 @@ class UserSerializer(serializers.ModelSerializer):
         Configuration for the UserSerializer.
         """
         model = get_user_model()
-        fields = ["id", "username", "email", "first_name", "last_name", "date_joined", "is_active", "is_admin"]
+        # is_staff: allow admin panel
+        # is_superuser: all permissions, admin user
+        fields = ["id", "username", "email", "first_name", "last_name", "date_joined", "is_active",
+                  "is_staff", "is_superuser"]
         read_only_fields = ["id", "date_joined"]

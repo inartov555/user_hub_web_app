@@ -14,6 +14,7 @@ import { useQuery, useQueryClient, keepPreviousData } from "@tanstack/react-quer
 import { Trash2, ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight, Columns, ArrowUpDown } from "lucide-react";
 import type { RowSelectionState } from "@tanstack/react-table";
 import { api } from "../lib/axios";
+import { useAuthStore } from "../auth/store";
 
 import { Button } from "../components/button";
 import { Card, CardContent, CardHeader, CardTitle } from "../components/card";
@@ -26,6 +27,12 @@ type User = {
   email: string;
   first_name?: string;
   last_name?: string;
+};
+
+type AdminFlags = {
+  is_admin?: boolean;
+  is_staff?: boolean;
+  is_superuser?: boolean;
 };
 
 /**
@@ -55,6 +62,8 @@ type Props = {
 };
 
 export default function UsersTable(props: Props) {
+  const cur_user = useAuthStore((s) => s.user) as (User & AdminFlags) | null | undefined;
+  const isAdmin = Boolean(cur_user?.is_admin || cur_user?.is_staff || cur_user?.is_superuser);
   const navigate = useNavigate();
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState<number>(() => Number(localStorage.getItem("pageSize")) || 20);
@@ -62,7 +71,9 @@ export default function UsersTable(props: Props) {
 
   // TanStack state we control
   const [sorting, setSorting] = useState<SortingState>([]);
-  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
+  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>(() =>
+    isAdmin ? {} : { select: false, change_password_action: false }
+  );
   const [showColumns, setShowColumns] = useState(false);
   const [rowSelection, setRowSelection] = React.useState<RowSelectionState>({});
 
@@ -70,9 +81,9 @@ export default function UsersTable(props: Props) {
   const [deleting, setDeleting] = useState(false);
   const [deleteError, setDeleteError] = useState<string | null>(null);
 
-  // Build server ordering param from sorting (with a stable id tiebreaker)
-  const ordering = useMemo(
-    () => withStableTiebreaker(toOrdering(sorting)),
+  // Build server-side ordering tokens from TanStack sorting, with stable tiebreaker
+  const ordering = React.useMemo(
+    () => withStableTiebreaker(toOrdering(sorting), "id"),
     [sorting]
   );
 
@@ -99,6 +110,7 @@ export default function UsersTable(props: Props) {
   const columns = useMemo<ColumnDef<User>[]>(() => [
     {
       id: "select",
+      enableHiding: false,
       header: ({ table }) => {
         const all = table.getIsAllRowsSelected();
         const some = table.getIsSomeRowsSelected();
@@ -118,8 +130,8 @@ export default function UsersTable(props: Props) {
           <Checkbox
             checked={row.getIsSelected()}
             indeterminate={row.getIsSomeSelected()}
-            onChange={(e) => row.toggleSelected(e.currentTarget.checked)}
-            aria-label="Select row"
+            onChange={(e) => table.toggleAllPageRowsSelected(e.currentTarget.checked)}
+            aria-label="Select all on this page"
           />
         </div>
       ),
@@ -193,6 +205,7 @@ export default function UsersTable(props: Props) {
     },
     {
       id: "change_password_action",
+      enableHiding: false,
       header: "Change Password",
       enableSorting: false,
       size: 180,
@@ -227,8 +240,10 @@ export default function UsersTable(props: Props) {
       pagination: { pageIndex: page - 1, pageSize },
       rowSelection,
     },
+    // Stable selection across pages & admin-only selection
+    getRowId: (row) => String(row.id),
     onRowSelectionChange: setRowSelection,
-    enableRowSelection: true,
+    enableRowSelection: isAdmin,
     onSortingChange: handleSortingChange,
     onColumnVisibilityChange: setColumnVisibility,
 
@@ -320,7 +335,10 @@ export default function UsersTable(props: Props) {
               >
                 <div className="px-2 py-1 text-xs font-medium text-slate-500">Toggle columns</div>
                 <div className="my-2 h-px bg-slate-200" />
-                {table.getAllLeafColumns().map((col) => {
+                {table
+                  .getAllLeafColumns()
+                  .filter((col) => col.columnDef.enableHiding !== false)
+                  .map((col) => {
                   const label = typeof col.columnDef.header === "string" ? col.columnDef.header : col.id;
                   return (
                     <label key={col.id} className="flex cursor-pointer items-center gap-2 rounded px-2 py-1.5 hover:bg-slate-50">
@@ -351,17 +369,20 @@ export default function UsersTable(props: Props) {
           </Button>
 
           {/* Delete selected */}
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={handleDeleteSelected}
-            disabled={deleting || table.getSelectedRowModel().rows.length === 0}
-            className="gap-2 border-red-600 text-red-700 hover:bg-red-50"
-            title="Delete selected users"
-          >
-            <Trash2 className="h-4 w-4" />
-            Delete selected ({table.getSelectedRowModel().rows.length || 0})
-          </Button>
+          {/* Delete selected (admin only) */}
+          {isAdmin && (
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={handleDeleteSelected}
+              disabled={deleting || table.getSelectedRowModel().rows.length === 0}
+              className="gap-2 border-red-600 text-red-700 hover:bg-red-50"
+              title="Delete selected users"
+            >
+              <Trash2 className="h-4 w-4" />
+              Delete selected ({table.getSelectedRowModel().rows.length || 0})
+            </Button>
+          )}
         </div>
       </CardHeader>
 
