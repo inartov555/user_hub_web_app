@@ -81,9 +81,9 @@ export default function UsersTable(props: Props) {
   const [deleting, setDeleting] = useState(false);
   const [deleteError, setDeleteError] = useState<string | null>(null);
 
-  // Build server ordering param from sorting (with a stable id tiebreaker)
-  const ordering = useMemo(
-    () => withStableTiebreaker(toOrdering(sorting)),
+  // Build server-side ordering tokens from TanStack sorting, with stable tiebreaker
+  const ordering = React.useMemo(
+    () => withStableTiebreaker(toOrdering(sorting), "id"),
     [sorting]
   );
 
@@ -108,7 +108,7 @@ export default function UsersTable(props: Props) {
 
   // Columns
   const columns = useMemo<ColumnDef<User>[]>(() => [
-    {
+    ...(isAdmin ? [{
       id: "select",
       enableHiding: false,
       header: ({ table }) => {
@@ -130,15 +130,15 @@ export default function UsersTable(props: Props) {
           <Checkbox
             checked={row.getIsSelected()}
             indeterminate={row.getIsSomeSelected()}
-            onChange={(e) => table.toggleAllPageRowsSelected(e.currentTarget.checked)}
-            aria-label="Select all on this page"
+            onChange={(e) => row.toggleSelected(e.currentTarget.checked)}
+            aria-label="Select row"
           />
         </div>
       ),
       size: 48,
       enableResizing: false,
       enableSorting: false,
-    },
+    }] : []),
     {
       accessorKey: "username",
       header: ({ column }) => (
@@ -203,7 +203,7 @@ export default function UsersTable(props: Props) {
       size: 180,
       enableResizing: true,
     },
-    {
+    ...(isAdmin ? [{
       id: "change_password_action",
       enableHiding: false,
       header: "Change Password",
@@ -221,8 +221,8 @@ export default function UsersTable(props: Props) {
           </Button>
         </div>
       ),
-    },
-  ], [navigate]);
+    }] : []),
+  ], [navigate, isAdmin]);
 
   // Sync TanStack sorting -> server ordering
   const handleSortingChange = (updater: React.SetStateAction<SortingState>) => {
