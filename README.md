@@ -1,8 +1,8 @@
 ## Users App
-backend: Django + DRF + SimpleJWT + Djoser
-frontend: React + Zustand + TanStack Query
 
-This is a test web application
+| **backend** | Django + DRF + SimpleJWT + Djoser |
+| **frontend** | React + Zustand + TanStack Query |
+| This is a test web application | |
 
 ## Setup (Docker)
 ```bash
