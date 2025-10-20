@@ -13,8 +13,8 @@ type ProfileUser = {
 type Profile = {
   id: number;
   bio?: string | null;
-  avatar?: string | null;       // relative path, e.g. /media/avatars/...
-  avatar_url?: string | null;   // absolute URL if backend provides it
+  avatar?: string | null; // relative path, e.g. /media/avatars/...
+  avatar_url?: string | null; // absolute URL if backend provides it
   user: ProfileUser;
 };
 
@@ -70,7 +70,7 @@ export default function ProfileView() {
   const initials =
     (profile.user?.first_name?.[0] || "") + (profile.user?.last_name?.[0] || "");
 
-  // ✅ FIX: Prefer absolute avatar_url if provided
+  // Prefer absolute avatar_url if provided
   const avatarSrc =
     profile.avatar_url ??
     (profile.avatar ? mediaBase + profile.avatar : `https://placehold.co/160x160?text=${encodeURIComponent(initials || "👤")}`);

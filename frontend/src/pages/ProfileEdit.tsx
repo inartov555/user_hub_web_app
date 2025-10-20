@@ -5,8 +5,8 @@ import { api } from "../lib/axios";
 type Profile = {
   id: number;
   bio?: string | null;
-  avatar?: string | null;       // e.g. /media/avatars/...
-  avatar_url?: string | null;   // absolute URL (if backend provides it)
+  avatar?: string | null; // e.g. /media/avatars/...
+  avatar_url?: string | null; // absolute URL (if backend provides it)
   user: {
     id: number;
     username: string;
