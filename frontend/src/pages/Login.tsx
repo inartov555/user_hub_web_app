@@ -10,7 +10,7 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
-  const { setTokens, setUser } = useAuthStore();
+  const { setTokens, setUser, user } = useAuthStore();
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -19,7 +19,7 @@ export default function Login() {
       setTokens(tokens.access, tokens.refresh);
       const { data: me } = await api.get("/auth/users/me/");
       setUser(me);
-      navigate("/users");
+      navigate("/users", { replace: true }); // navigating to /users and clearing back history
     } catch (err: any) {
       const parsed = extractApiError(err as unknown);
       setError(`Signup failure: ${parsed.message}`);
