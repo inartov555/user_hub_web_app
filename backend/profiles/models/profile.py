@@ -17,9 +17,7 @@ def avatar_upload_path(instance: "Profile", filename: str) -> str:
     """
     _, ext = os.path.splitext(filename)
     ext = (ext or ".jpg").lower()
-    # Use user_id if available; fall back to 'anonymous'
-    user_part = f"u_{instance.user_id}" if getattr(instance, "user_id", None) else "anonymous"
-    return f"avatars/{user_part}/{uuid4().hex}{ext}"
+    return f"avatars/user_{instance.user.id}/{uuid.uuid4()}{ext}"
 
 
 class Profile(models.Model):
