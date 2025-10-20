@@ -17,7 +17,7 @@ def avatar_upload_path(instance: "Profile", filename: str) -> str:
     """
     _, ext = os.path.splitext(filename)
     ext = (ext or ".jpg").lower()
-    return f"avatars/user_{instance.user.id}/{uuid.uuid4()}{ext}"
+    return f"avatars/user_{instance.user.id}/{uuid4()}{ext}"
 
 
 class Profile(models.Model):
