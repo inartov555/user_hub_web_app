@@ -81,9 +81,9 @@ export default function UsersTable(props: Props) {
   const [deleting, setDeleting] = useState(false);
   const [deleteError, setDeleteError] = useState<string | null>(null);
 
-  // Build server-side ordering tokens from TanStack sorting, with stable tiebreaker
-  const ordering = React.useMemo(
-    () => withStableTiebreaker(toOrdering(sorting), "id"),
+  // Build server ordering param from sorting (with a stable id tiebreaker)
+  const ordering = useMemo(
+    () => withStableTiebreaker(toOrdering(sorting)),
     [sorting]
   );
 
