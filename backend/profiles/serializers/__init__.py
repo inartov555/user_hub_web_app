@@ -1,6 +1,7 @@
 # pylint: disable=missing-module-docstring
 
 from .change_password_serializer import ChangePasswordSerializer
+from .me_serializer import MeSerializer
 from .user_create_serializer import UserCreateSerializer
 from .email_or_user_token_create_serializer import EmailOrUsernameTokenCreateSerializer
 from .user_serializer import UserSerializer
@@ -8,6 +9,6 @@ from .profile_serializer import ProfileSerializer
 from .profile_update_serializer import ProfileUpdateSerializer
 
 
-__all__ = ["ChangePasswordSerializer", "UserCreateSerializer",
+__all__ = ["ChangePasswordSerializer", "MeSerializer", "UserCreateSerializer",
            "EmailOrUsernameTokenCreateSerializer", "UserSerializer", "ProfileSerializer",
            "ProfileUpdateSerializer"]
