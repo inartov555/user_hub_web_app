@@ -11,9 +11,11 @@ type ProfileUser = {
 };
 
 type Profile = {
-  user: ProfileUser;
+  id: number;
   bio?: string | null;
-  avatar?: string | null; // path like "/media/avatars/.."
+  avatar?: string | null;       // relative path, e.g. /media/avatars/...
+  avatar_url?: string | null;   // absolute URL if backend provides it
+  user: ProfileUser;
 };
 
 export default function ProfileView() {
@@ -51,12 +53,13 @@ export default function ProfileView() {
   if (loading) return <div className="card p-4">Loading…</div>;
   if (error) return <div className="card p-4 text-red-600">Error: {error}</div>;
 
-  // Previously returned null -> blank page. Show a friendly state instead.
   if (!profile)
     return (
       <div className="card p-4">
         <p className="mb-2">No profile found.</p>
-        <Link to="/profile-edit" className="btn inline-flex">Create / edit profile</Link>
+        <Link to="/profile-edit" className="btn inline-flex">
+          Create / edit profile
+        </Link>
       </div>
     );
 
@@ -66,18 +69,22 @@ export default function ProfileView() {
 
   const initials =
     (profile.user?.first_name?.[0] || "") + (profile.user?.last_name?.[0] || "");
-  const avatarSrc = profile.avatar
-    ? mediaBase + profile.avatar
-    : `https://placehold.co/160x160?text=${encodeURIComponent(initials || "👤")}`;
+
+  // ✅ FIX: Prefer absolute avatar_url if provided
+  const avatarSrc =
+    profile.avatar_url ??
+    (profile.avatar ? mediaBase + profile.avatar : `https://placehold.co/160x160?text=${encodeURIComponent(initials || "👤")}`);
 
   return (
     <div className="card grid grid-cols-1 gap-6 md:grid-cols-3 p-4 rounded-2xl border bg-white">
       {/* Left: Avatar */}
       <div className="flex items-start justify-center md:justify-start">
         <img
-          className="w-40 h-40 rounded-full object-cover border"
           src={avatarSrc}
           alt="Profile avatar"
+          width={160}
+          height={160}
+          style={{ objectFit: "cover", borderRadius: "50%" }}
         />
       </div>
 
@@ -106,12 +113,13 @@ export default function ProfileView() {
           <Link to="/profile-edit" className="btn inline-flex">
             Edit profile
           </Link>
-          {/* Change password for the *current* user */}
           {profile?.user?.id != null && (
             <Link
               to={`/users/${profile.user.id}/change-password`}
               className="btn inline-flex"
-            >Change password</Link>
+            >
+              Change password
+            </Link>
           )}
         </div>
       </div>
@@ -119,7 +127,7 @@ export default function ProfileView() {
   );
 }
 
-/* Small presentational helpers */
+/* UI helpers */
 function Label({ children }: { children: React.ReactNode }) {
   return <div className="text-xs font-medium text-slate-500">{children}</div>;
 }
@@ -133,4 +141,3 @@ function Field({ label, value }: { label: string; value: string }) {
     </div>
   );
 }
-
