@@ -1,11 +1,5 @@
 """
 Django REST Framework serializer for the authenticated user ("me") endpoint.
-
-This serializer exposes core `User` fields along with a nested `profile`
-object. It supports reading and partially updating both the `User` and
-their related `Profile` in a single request. When updating, any fields
-present under `profile` are applied to the user's `Profile` instance; if
-a profile does not yet exist, it is created automatically.
 """
 
 from django.contrib.auth import get_user_model
