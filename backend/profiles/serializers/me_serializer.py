@@ -12,7 +12,6 @@ from django.contrib.auth import get_user_model
 from rest_framework import serializers
 
 from ..models.profile import Profile
-from ..serializers.user_serializer import UserSerializer
 from ..serializers.profile_serializer import ProfileSerializer
 # Note: This file assumes `get_user_model` and `ProfileSerializer` are available
 # in the import path, as referenced below.
