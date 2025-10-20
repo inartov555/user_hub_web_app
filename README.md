@@ -1,4 +1,7 @@
-## Users App (Django + React)
+## Users App
+backend: Django + DRF + SimpleJWT + Djoser
+frontend: React + Zustand + TanStack Query
+
 This is a test web application
 
 ## Setup (Docker)
@@ -8,9 +11,12 @@ This is a test web application
 #   - param1 - true - delete the DB data after stopping the service;
 #              false - preserve the DB data after stopping the service;
 #              default = false
-#   - param2 - true - starting service WITHOUT cached data (allows to start the service faster);
-#              false - starting the service WITH cache (cache is cleared)
+#   - param2 - true - starting service WITHOUT cached data (cache is cleared);
+#              false - starting the service WITH cache (allows to start the service faster);
 #              default = false
+#
+# Endpoints:
+#
 # Frontend: http://localhost:5173
 # API:      http://localhost:8000/api/
 # Admin:    http://localhost:8000/admin/
@@ -18,19 +24,68 @@ This is a test web application
 
 ---
 
-## Auth endpoints
-- `POST /api/auth/users/` — register
-- `POST /api/auth/jwt/create/` — login (email+password)
-- `POST /api/auth/jwt/refresh/` — refresh
-- `POST /api/auth/users/reset_password/` — request reset email
+# API Endpoints Overview
+
+This document lists all API endpoints used by the application, grouped by functionality.  
+Base URL: `${VITE_API_URL}` (defaults to `/api`)
 
 ---
 
-## App endpoints
-- `GET /api/me/profile/` `PATCH /api/me/profile/`
-- `GET /api/users/` — paginated list (admin-only). Query: `page`, `page_size`, `ordering`, `search`, filters.
-- `POST /api/users/import-excel/` — upload `.xlsx` with columns: `email,username,first_name,last_name,is_active,bio`
-- `GET /api/stats/online-users/`
+## 🔐 Auth (Djoser + JWT)
+
+| Method | Endpoint | Description |
+|---------|-----------|-------------|
+| **POST** | `/api/auth/jwt/create/` | Obtain access and refresh tokens |
+| **POST** | `/api/auth/jwt/refresh/` | Refresh access token (used by Axios interceptor) |
+| **GET**  | `/api/auth/users/me/` | Get current user info |
+| **POST** | `/api/auth/users/` | Sign up a new user |
+| **POST** | `/api/auth/users/reset_password/` | Request password reset |
+
+---
+
+## 👤 Profile (Current User)
+
+| Method | Endpoint | Description |
+|---------|-----------|-------------|
+| **GET**   | `/api/me/profile/` | Fetch own profile |
+| **PATCH** | `/api/me/profile/` | Update own profile (supports multipart for avatar, etc.) |
+
+---
+
+## 👥 Users (Admin-Facing)
+
+| Method | Endpoint | Description |
+|---------|-----------|-------------|
+| **GET**    | `/api/users/` | List users (paginated, sortable) |
+| **DELETE** | `/api/users/{id}/` | Delete a single user |
+| **POST**   | `/api/users/bulk-delete/` | Delete multiple users |
+| **POST**   | `/api/users/{id}/set-password/` | Set a user’s password |
+
+---
+
+## 📊 Excel Import (Admin)
+
+| Method | Endpoint | Description |
+|---------|-----------|-------------|
+| **GET**  | `/api/import-excel/` | Download the Excel template |
+| **POST** | `/api/import-excel/` | Upload Excel to create/update users (multipart) |
+
+---
+
+## 📈 Stats
+
+| Method | Endpoint | Description |
+|---------|-----------|-------------|
+| **GET** | `/api/stats/online-users/` | Retrieve online users metric |
+
+---
+
+## 🧩 Developer Utilities
+
+| Method | Endpoint | Description |
+|---------|-----------|-------------|
+| **GET** | `/api/schema/` | OpenAPI schema |
+| **GET** | `/api/docs/` | Swagger UI |
 
 --
 
