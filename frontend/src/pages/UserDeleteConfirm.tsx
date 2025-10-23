@@ -5,7 +5,7 @@ import { api } from "../lib/axios";
 import { Card, CardHeader, CardTitle, CardContent } from "../components/card";
 import { Button } from "../components/button";
 import { extractApiError } from "../lib/httpErrors";
-import { useAuthStore } from "./auth/store";
+import { useAuthStore } from "../auth/store";
 
 type User = {
   id: number;

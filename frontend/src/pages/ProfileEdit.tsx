@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { api } from "../lib/axios";
-import { useAuthStore } from "./auth/store";
+import { useAuthStore } from "../auth/store";
 
 type Profile = {
   id: number;
