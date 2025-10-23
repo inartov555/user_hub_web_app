@@ -12,14 +12,37 @@ load_dotenv()
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 DEBUG = os.getenv("DEBUG", "1") == "1"
-SECRET_KEY = os.getenv("SECRET_KEY", "dev-secret")
-SESSION_COOKIE_AGE = os.getenv("SESSION_COOKIE_AGE", str(30 * 60))  # defaults to 30 minutes
-IDLE_TIMEOUT_SECONDS = os.getenv("IDLE_TIMEOUT_SECONDS", str(30 * 60))  # defaults to 30 minutes
+# SESSION_COOKIE_AGE = os.getenv("SESSION_COOKIE_AGE", str(30 * 60))  # defaults to 30 minutes
+# IDLE_TIMEOUT_SECONDS = os.getenv("IDLE_TIMEOUT_SECONDS", str(30 * 60))  # defaults to 30 minutes
 # Refresh expiry on every request (rolling inactivity timeout)
-SESSION_SAVE_EVERY_REQUEST = os.getenv("SESSION_SAVE_EVERY_REQUEST", "1")
+# SESSION_SAVE_EVERY_REQUEST = os.getenv("SESSION_SAVE_EVERY_REQUEST", "1")
 # The property SESSION_EXPIRE_AT_BROWSER_CLOSE affects also page reload
-SESSION_EXPIRE_AT_BROWSER_CLOSE = os.getenv("SESSION_EXPIRE_AT_BROWSER_CLOSE", "1")  # or True if you prefer
-SESSION_COOKIE_SECURE = os.getenv("SESSION_COOKIE_SECURE", "1")  # if using HTTPS
+# SESSION_EXPIRE_AT_BROWSER_CLOSE = os.getenv("SESSION_EXPIRE_AT_BROWSER_CLOSE", "1")  # or True if you prefer
+# SESSION_COOKIE_SECURE = os.getenv("SESSION_COOKIE_SECURE", "1")  # if using HTTPS
+
+# Login session properties start
+ACCESS_COOKIE_NAME = str(os.getenv("ACCESS_COOKIE_NAME", "access"))
+REFRESH_COOKIE_NAME = str(os.getenv("REFRESH_COOKIE_NAME", "refresh"))
+RENEW_AT_SECONDS = int(os.getenv("RENEW_AT_SECONDS", "60"))
+COOKIE_PATH = str(os.getenv("COOKIE_PATH", "/"))
+COOKIE_DOMAIN = str(os.getenv("COOKIE_DOMAIN", ""))
+COOKIE_SAMESITE = str(os.getenv("COOKIE_SAMESITE", "Lax"))
+COOKIE_SECURE = bool(os.getenv("COOKIE_SECURE", "0"))
+COOKIE_HTTPONLY = bool(os.getenv("COOKIE_HTTPONLY", "1"))
+
+# This becomes your idle timeout window (example: 1800 seconds (30 minutes))
+# If the user is inactive for > IDLE_TIMEOUT_SECONDS seconds, their refresh expires and the session ends.
+IDLE_TIMEOUT_SECONDS = int(os.getenv("IDLE_TIMEOUT_SECONDS", "100"))
+# Short access — forces periodic refreshes
+ACCESS_TOKEN_LIFETIME = int(os.getenv("ACCESS_TOKEN_LIFETIME", "60"))
+# Turn on rotation so that each refresh "slides" the window forward
+ROTATE_REFRESH_TOKENS = bool(os.getenv("ROTATE_REFRESH_TOKENS", "1"))
+BLACKLIST_AFTER_ROTATION = bool(os.getenv("BLACKLIST_AFTER_ROTATION", "1"))
+ALGORITHM = str(os.getenv("ALGORITHM", "HS256"))
+SECRET_KEY = str(os.getenv("SECRET_KEY", "dev-secret"))
+SIGNING_KEY = SECRET_KEY
+AUTH_HEADER_TYPES = list(os.getenv("AUTH_HEADER_TYPES", ["Bearer",]))
+# Login session properties end
 ALLOWED_HOSTS = ["*"]
 
 INSTALLED_APPS = [
@@ -30,6 +53,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "rest_framework",
+    "rest_framework_simplejwt.token_blacklist",
     "corsheaders",
     "django_filters",
     "djoser",
@@ -43,12 +67,12 @@ MIDDLEWARE = [
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
+    "profiles.middleware.jwt_authentication_middleware.JWTAuthenticationMiddleware",
+    "profiles.middleware.idle_timeout_middleware.IdleTimeoutMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "profiles.middleware.last_activity_middle_ware.LastActivityMiddleware",
-    "profiles.middleware.jwt_authentication_middleware.JWTAuthenticationMiddleware",
-    "profiles.middleware.idle_timeout_middleware.IdleTimeoutMiddleware",
 ]
 
 ROOT_URLCONF = "core.urls"
@@ -115,10 +139,24 @@ REST_FRAMEWORK = {
 }
 
 SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=15),
-    "REFRESH_TOKEN_LIFETIME": timedelta(days=7),
-    "ROTATE_REFRESH_TOKENS": True,
-    "BLACKLIST_AFTER_ROTATION": True,
+    "IDLE_TIMEOUT_SECONDS": IDLE_TIMEOUT_SECONDS,
+    "ACCESS_TOKEN_LIFETIME": ACCESS_TOKEN_LIFETIME,
+    "ROTATE_REFRESH_TOKENS": ROTATE_REFRESH_TOKENS,
+    "BLACKLIST_AFTER_ROTATION": BLACKLIST_AFTER_ROTATION,
+    "ALGORITHM": ALGORITHM,
+    "SECRET_KEY": SECRET_KEY,
+    "AUTH_HEADER_TYPES": AUTH_HEADER_TYPES,
+}
+
+JWT_COOKIE = {
+    "ACCESS_COOKIE_NAME": ACCESS_COOKIE_NAME,
+    "REFRESH_COOKIE_NAME": REFRESH_COOKIE_NAME,
+    "RENEW_AT_SECONDS": RENEW_AT_SECONDS,
+    "COOKIE_PATH": COOKIE_PATH,
+    "COOKIE_DOMAIN": COOKIE_DOMAIN,
+    "COOKIE_SAMESITE": COOKIE_SAMESITE,
+    "COOKIE_SECURE": COOKIE_SECURE,
+    "COOKIE_HTTPONLY": COOKIE_HTTPONLY,
 }
 
 SPECTACULAR_SETTINGS = {

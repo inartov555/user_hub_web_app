@@ -7,13 +7,14 @@ Stateless auth middleware that:
 """
 
 from __future__ import annotations
-
-from django.contrib.auth import get_user_model
-from django.utils import timezone
-from django.utils.functional import SimpleLazyObject
-from django.conf import settings
+from types import SimpleNamespace
 from typing import Optional
 
+from django.conf import settings
+from django.contrib.auth import get_user_model
+from django.contrib.auth.models import AnonymousUser
+from django.utils import timezone
+from django.utils.functional import SimpleLazyObject
 from rest_framework_simplejwt.tokens import AccessToken, RefreshToken
 from rest_framework_simplejwt.exceptions import TokenError, InvalidToken
 
@@ -68,9 +69,15 @@ class JWTAuthenticationMiddleware:
 
     def __init__(self, get_response):
         self.get_response = get_response
-        self.UserModel = get_user_model()
+        self.user_model = get_user_model()
 
     def __call__(self, request):
+        # Namespace to avoid "protected-access" (W0212)
+        request.jwt = SimpleNamespace(
+            new_access_token=None,   # type: Optional[str]
+            new_refresh_token=None,  # type: Optional[str]
+            auth_failed=False,
+        )
         # Will hold any newly minted tokens to be set on the response
         request._new_access_token: Optional[str] = None
         request._new_refresh_token: Optional[str] = None
@@ -111,8 +118,6 @@ class JWTAuthenticationMiddleware:
                 request._jwt_auth_failed = True
 
         # Defer DB hit with a lazy object; if user is None fall back to AnonymousUser
-        from django.contrib.auth.models import AnonymousUser
-
         request.user = SimpleLazyObject(lambda: user or AnonymousUser())
 
         response = self.get_response(request)
@@ -150,7 +155,7 @@ class JWTAuthenticationMiddleware:
         user_id = token.get("user_id") or token.get("sub")
         if not user_id:
             raise InvalidToken("user_id claim missing")
-        return self.UserModel.objects.get(pk=user_id)
+        return self.user_model.objects.get(pk=user_id)
 
     def _should_renew(self, token: AccessToken) -> bool:
         # token['exp'] is a UNIX timestamp

@@ -49,7 +49,7 @@ class IdleTimeoutMiddleware(MiddlewareMixin):
                     status=401
                 )
             # For non-API, redirect:
-            from django.shortcuts import redirect  # pylint: disable=import-outside-toplevel
-            return redirect("login")
+            # from django.shortcuts import redirect  # pylint: disable=import-outside-toplevel
+            # return redirect("login")
 
         return None
