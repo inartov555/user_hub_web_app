@@ -26,7 +26,7 @@ def _get_settings():
     return {
         "ACCESS_COOKIE_NAME": cfg.get("ACCESS_COOKIE_NAME", "access"),
         "REFRESH_COOKIE_NAME": cfg.get("REFRESH_COOKIE_NAME", "refresh"),
-        "RENEW_AT_SECONDS": timedelta(seconds=int(cfg.get("RENEW_AT_SECONDS", "60"))),
+        "RENEW_AT_SECONDS": cfg.get("RENEW_AT_SECONDS", timedelta(seconds=60)),
         "COOKIE_PATH": cfg.get("COOKIE_PATH", "/"),
         "COOKIE_DOMAIN": cfg.get("COOKIE_DOMAIN"),
         "COOKIE_SAMESITE": cfg.get("COOKIE_SAMESITE", "Lax"),
