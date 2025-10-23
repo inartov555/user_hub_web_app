@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { api } from "../lib/axios";
 import { useAuthStore } from "../auth/store";
 
@@ -24,6 +24,8 @@ export default function ProfileView() {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const { user, logout } = useAuthStore();
+  const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     if (!user && location.pathname !== "/login") {
