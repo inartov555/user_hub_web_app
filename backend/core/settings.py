@@ -40,7 +40,7 @@ ACCESS_COOKIE_NAME = str(os.getenv("ACCESS_COOKIE_NAME", "access"))
 REFRESH_COOKIE_NAME = str(os.getenv("REFRESH_COOKIE_NAME", "refresh"))
 RENEW_AT_SECONDS = int(os.getenv("RENEW_AT_SECONDS", "60"))
 COOKIE_PATH = str(os.getenv("COOKIE_PATH", "/"))
-COOKIE_DOMAIN = str(os.getenv("COOKIE_DOMAIN", ""))
+COOKIE_DOMAIN = str(os.getenv("COOKIE_DOMAIN", None))
 COOKIE_SAMESITE = str(os.getenv("COOKIE_SAMESITE", "Lax"))
 COOKIE_SECURE = bool(os.getenv("COOKIE_SECURE", "0"))
 COOKIE_HTTPONLY = bool(os.getenv("COOKIE_HTTPONLY", "1"))
@@ -82,11 +82,11 @@ MIDDLEWARE = [
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
-    "profiles.middleware.jwt_authentication_middleware.JWTAuthenticationMiddleware",
-    "profiles.middleware.idle_timeout_middleware.IdleTimeoutMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "profiles.middleware.jwt_authentication_middleware.JWTAuthenticationMiddleware",
+    "profiles.middleware.idle_timeout_middleware.IdleTimeoutMiddleware",
     "profiles.middleware.last_activity_middle_ware.LastActivityMiddleware",
 ]
 
@@ -140,6 +140,8 @@ CORS_ALLOW_CREDENTIALS = True
 
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
+        "rest_framework.authentication.SessionAuthentication",
+        "rest_framework.authentication.BasicAuthentication",
         "rest_framework_simplejwt.authentication.JWTAuthentication",
     ),
     "DEFAULT_PERMISSION_CLASSES": (
