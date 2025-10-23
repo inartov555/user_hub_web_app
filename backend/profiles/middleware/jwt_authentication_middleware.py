@@ -1,9 +1,9 @@
 """
 Stateless auth middleware that:
-  - Extracts access token only from Authorization header (no cookies)
+  - Extracts access token only from the Authorization: Bearer header
   - Sets request.user when valid
-  - Does not refresh via cookies; clients refresh via API
-  - Proactively refreshes if access expires within RENEW_AT_SECONDS
+  - Does not refresh via cookies; clients call the refresh API explicitly
+  - Optionally flags near-expiry (RENEW_AT_SECONDS), but does not set cookies
 """
 
 from __future__ import annotations
@@ -53,10 +53,10 @@ def _delete_cookie(resp, name):
 class JWTAuthenticationMiddleware:
     """
     Stateless auth middleware that:
-      - Extracts access token from Authorization header or 'access' cookie
+      - Extracts access token only from the Authorization: Bearer header
       - Sets request.user when valid
-      - If access expired and 'refresh' cookie exists, refreshes tokens
-      - Proactively refreshes if access expires within RENEW_AT_SECONDS
+      - Does not refresh via cookies; clients call the refresh API explicitly
+      - Optionally flags near-expiry (RENEW_AT_SECONDS), but does not set cookies
     """
 
     def __init__(self, get_response):
@@ -112,7 +112,25 @@ class JWTAuthenticationMiddleware:
 
         return response
 
-    # ---- helpers ----
+    # --- token extractors (header-only) ---
+    def _get_access_from_request(self, request) -> Optional[str]:
+        """
+        Read 'Authorization: Bearer <access>' from headers. No cookies.
+        """
+        auth = request.META.get("HTTP_AUTHORIZATION") or request.headers.get("Authorization")
+        if not auth:
+            return None
+        parts = auth.split()
+        if len(parts) == 2 and parts[0].lower() == "bearer":
+            return parts[1]
+        return None
+
+    def _get_refresh_from_request(self, request) -> Optional[str]:
+        """
+        We do NOT auto-refresh in middleware anymore. Always return None.
+        (Clients should call the refresh endpoint and then resend with a new access token.)
+        """
+        return None
 
     def _user_from_token(self, token: AccessToken):
         user_id = token.get("user_id") or token.get("sub")
