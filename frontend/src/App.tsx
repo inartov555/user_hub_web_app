@@ -4,11 +4,11 @@ import { useAuthStore } from "./auth/store";
 import Navbar from "./components/Navbar";
 
 export default function App() {
-  const { user, logout } = useAuthStore();
+  const { user, logout, accessToken } = useAuthStore();
   const navigate = useNavigate();
   const location = useLocation();
   useEffect(() => {
-    if (!user && location.pathname !== "/login") {
+    if (!user && !accessToken && location.pathname !== "/login") {
       navigate("/login", { replace: true, state: { from: location } });
     }
   }, [user, location, navigate]);

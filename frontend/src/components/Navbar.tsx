@@ -3,7 +3,7 @@ import { useAuthStore } from "../auth/store";
 
 export default function Navbar() {
   const { pathname } = useLocation();
-  const { user, logout } = useAuthStore();
+  const { user, logout, accessToken } = useAuthStore();
   const navigate = useNavigate();
   return (
     <header className="sticky top-0 z-10 bg-white/70 backdrop-blur border-b border-slate-200">

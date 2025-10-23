@@ -23,7 +23,7 @@ export default function ProfileView() {
   const [profile, setProfile] = useState<Profile | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
-  const { user, logout } = useAuthStore();
+  const { user, logout, accessToken } = useAuthStore();
   const navigate = useNavigate();
   const location = useLocation();
 

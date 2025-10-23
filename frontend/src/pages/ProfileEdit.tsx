@@ -18,7 +18,7 @@ type Profile = {
 };
 
 export default function ProfileEdit() {
-  const { user, logout } = useAuthStore();
+  const { user, logout, accessToken } = useAuthStore();
   const navigate = useNavigate();
   const location = useLocation();
   const [data, setData] = useState<Profile | null>(null);
