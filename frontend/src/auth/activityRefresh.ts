@@ -1,5 +1,5 @@
 import { api } from "../lib/axios";
-import jwtDecode from "jwt-decode";
+import { jwtDecode } from "jwt-decode";
 
 export function setupActivityRefresh(thresholdSeconds = 60) {
   const check = async () => {

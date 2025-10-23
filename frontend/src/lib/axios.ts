@@ -1,6 +1,7 @@
 import axios from "axios";
+import { AxiosHeaders, InternalAxiosRequestConfig } from "axios";
 import { useAuthStore } from "../auth/store";
-import jwtDecode from "jwt-decode";
+import { jwtDecode } from "jwt-decode";
 
 export const api = axios.create({
     baseURL: import.meta.env.VITE_API_URL || "/api",
@@ -16,10 +17,16 @@ function onRefreshed(token: string|null) {
   pending = [];
 }
 
-api.interceptors.request.use((config) => {
+api.interceptors.request.use((config: InternalAxiosRequestConfig) => {
   const token = useAuthStore.getState().accessToken || localStorage.getItem("access");
   if (token) {
-    config.headers = { ...config.headers, Authorization: `Bearer ${token}` };
+    if (!config.headers) config.headers = new AxiosHeaders();
+    if (config.headers instanceof AxiosHeaders) {
+      config.headers.set("Authorization", `Bearer ${token}`);
+      }
+    else {
+      (config.headers as any)["Authorization"] = `Bearer ${token}`;
+    }
   }
   return config;
 });
