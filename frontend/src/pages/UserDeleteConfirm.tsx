@@ -46,7 +46,7 @@ export default function UserDeleteConfirm() {
         setError(prev => (prev ? `${prev}\n` : "") + `Bulk delete failed: ${parsed.message}`);
         // Fallback to per-user delete
         const results = await Promise.allSettled(
-          ids.map((id) => api.delete(`/users/${id}/`, { validateStatus: () => true }))
+          ids.map((id) => api.delete(`/users/${id}/delete-user/`, { validateStatus: () => true }))
         );
         const failed = results.filter(
 	  (r) => r.status === "rejected" || (r.status === "fulfilled" && r.value.status >= 400)

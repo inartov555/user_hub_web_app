@@ -38,6 +38,12 @@ class UsersViewSet(viewsets.ReadOnlyModelViewSet):
         user_model = get_user_model()
         return user_model.objects.select_related("profile").order_by("id")
 
+    def perform_destroy(self, instance):
+        """
+        Deleting a user
+        """
+        instance.delete()
+
     @action(detail=False, methods=["post"], url_path="bulk-delete",
             permission_classes=[permissions.IsAuthenticated])
     def bulk_delete(self, request):
@@ -46,20 +52,40 @@ class UsersViewSet(viewsets.ReadOnlyModelViewSet):
         """
         ids = request.data.get("ids", [])
         if not isinstance(ids, list) or not all(isinstance(i, int) for i in ids):
-            return Response({"detail": "ids must be a list of integers"}, status=400)
+            return Response({"detail": "ids must be a list of integers"},
+                            status=status.HTTP_400_BAD_REQUEST)
 
         # optional: don't allow deleting yourself
         if request.user and request.user.id in ids:
-            return Response({"detail": "Cannot delete current user."}, status=400)
+            return Response({"detail": "Cannot delete current user."},
+                            status=status.HTTP_400_BAD_REQUEST)
 
         qs = self.get_queryset().filter(id__in=ids)
         count = qs.count()
         qs.delete()
-        return Response({"deleted": count}, status=200)
+        return Response({"deleted": count}, status=status.HTTP_200_OK)
 
+    # DELETE users/<id>/delete-user
+    @action(detail=True, methods=["delete"], url_path="delete-user",
+            permission_classes=[permissions.IsAuthenticated])
+    def delete_user(self, request, pk=None, *args, **kwargs) -> Response:  # pylint: disable=unused-argument
+        """
+        Delete a user by id
+        """
+        user = self.get_object()  # resolves by {pk}
+        # optional: don't allow deleting yourself
+        if request.user.id == user.id:
+            return Response(
+                {"detail": "Cannot delete current user."},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+        self.perform_destroy(user)
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+    # POST /users/<id>/change-password/
     @action(detail=True, methods=["post"], url_path="set-password",
             permission_classes=[permissions.IsAuthenticated])
-    def set_password(self, request, pk=None):  # pylint: disable=unused-argument
+    def set_password(self, request, pk=None) -> Response:  # pylint: disable=unused-argument
         """
         Set (change) the password for a specific user.
         Allowed for staff OR the user changing their own password.
@@ -77,7 +103,7 @@ class UsersViewSet(viewsets.ReadOnlyModelViewSet):
         try:
             password_validation.validate_password(new_pw, user=user)
         except (DjangoValidationError, ValueError) as e:
-            return Response({"detail": str(e)}, status=400)
+            return Response({"detail": str(e)}, status=status.HTTP_400_BAD_REQUEST)
         except IntegrityError:
             return Response({"detail": "Database error while applying changes."}, status=400)
 
