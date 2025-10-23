@@ -11,7 +11,11 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import { useQuery, useQueryClient, keepPreviousData } from "@tanstack/react-query";
-import { Trash2, ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight, Columns, ArrowUpDown } from "lucide-react";
+import {
+  Trash2,
+  ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight,
+  Columns, ArrowUpDown, ArrowUp, ArrowDown
+} from "lucide-react";
 import type { RowSelectionState } from "@tanstack/react-table";
 import { api } from "../lib/axios";
 import { useAuthStore } from "../auth/store";
@@ -76,6 +80,12 @@ export default function UsersTable(props: Props) {
   );
   const [showColumns, setShowColumns] = useState(false);
   const [rowSelection, setRowSelection] = React.useState<RowSelectionState>({});
+  const SortIcon = ({ column }: { column: any }) => {
+    const dir = column.getIsSorted(); // 'asc' | 'desc' | false
+    if (dir === "asc") return <ArrowUp className="h-4 w-4" aria-label="sorted ascending" />;
+    if (dir === "desc") return <ArrowDown className="h-4 w-4" aria-label="sorted descending" />;
+    return <ArrowUpDown className="h-4 w-4 opacity-40" aria-label="not sorted" />;
+  };
 
   const queryClient = useQueryClient();
   const [deleting, setDeleting] = useState(false);
@@ -146,9 +156,13 @@ export default function UsersTable(props: Props) {
           type="button"
           className="inline-flex items-center gap-1"
           onClick={column.getToggleSortingHandler()}
-          title="Click to add/update sort (multi-sort enabled)"
+          title={
+            column.getIsSorted()
+            ? `Sorted ${column.getIsSorted()} (#${column.getSortIndex() + 1})`
+            : "Click to sort; multi-sort enabled"
+          }
         >
-          Username <ArrowUpDown className="h-4 w-4" />
+          Username <SortIcon column={column} />
         </button>
       ),
       cell: (info) => <span className="font-medium break-words">{info.getValue() as string}</span>,
@@ -162,9 +176,13 @@ export default function UsersTable(props: Props) {
           type="button"
           className="inline-flex items-center gap-1"
           onClick={column.getToggleSortingHandler()}
-          title="Click to add/update sort (multi-sort enabled)"
+          title={
+            column.getIsSorted()
+            ? `Sorted ${column.getIsSorted()} (#${column.getSortIndex() + 1})`
+            : "Click to sort; multi-sort enabled"
+          }
         >
-          Email <ArrowUpDown className="h-4 w-4" />
+          Email <SortIcon column={column} />
         </button>
       ),
       cell: (ctx) => <span className="break-words">{ctx.getValue<string>()}</span>,
@@ -178,9 +196,13 @@ export default function UsersTable(props: Props) {
           type="button"
           className="inline-flex items-center gap-1"
           onClick={column.getToggleSortingHandler()}
-          title="Click to add/update sort (multi-sort enabled)"
+          title={
+            column.getIsSorted()
+            ? `Sorted ${column.getIsSorted()} (#${column.getSortIndex() + 1})`
+            : "Click to sort; multi-sort enabled"
+          }
         >
-          First name <ArrowUpDown className="h-4 w-4" />
+          First name <SortIcon column={column} />
         </button>
       ),
       cell: (ctx) => <span className="break-words">{ctx.getValue<string>()}</span>,
@@ -194,9 +216,13 @@ export default function UsersTable(props: Props) {
           type="button"
           className="inline-flex items-center gap-1"
           onClick={column.getToggleSortingHandler()}
-          title="Click to add/update sort (multi-sort enabled)"
+          title={
+            column.getIsSorted()
+            ? `Sorted ${column.getIsSorted()} (#${column.getSortIndex() + 1})`
+            : "Click to sort; multi-sort enabled"
+          }
         >
-          Last name <ArrowUpDown className="h-4 w-4" />
+          Last name <SortIcon column={column} />
         </button>
       ),
       cell: (ctx) => <span className="break-words">{ctx.getValue<string>()}</span>,
