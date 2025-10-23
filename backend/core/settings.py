@@ -48,9 +48,9 @@ COOKIE_HTTPONLY = bool(os.getenv("COOKIE_HTTPONLY", "1"))
 
 # This becomes your idle timeout window (example: 1800 seconds (30 minutes))
 # If the user is inactive for > IDLE_TIMEOUT_SECONDS seconds, their refresh expires and the session ends.
-IDLE_TIMEOUT_SECONDS = int(os.getenv("IDLE_TIMEOUT_SECONDS", "100"))
+IDLE_TIMEOUT_SECONDS = int(os.getenv("IDLE_TIMEOUT_SECONDS", "60"))
 # Short access — forces periodic refreshes
-ACCESS_TOKEN_LIFETIME = timedelta(seconds=int(os.getenv("ACCESS_TOKEN_LIFETIME", "60")))
+ACCESS_TOKEN_LIFETIME = timedelta(seconds=int(os.getenv("ACCESS_TOKEN_LIFETIME", "100")))
 # Turn on rotation so that each refresh "slides" the window forward
 ROTATE_REFRESH_TOKENS = bool(os.getenv("ROTATE_REFRESH_TOKENS", "1"))
 BLACKLIST_AFTER_ROTATION = bool(os.getenv("BLACKLIST_AFTER_ROTATION", "1"))

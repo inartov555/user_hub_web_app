@@ -29,14 +29,14 @@ def _get_settings():
     # small helper to avoid attribute errors in tests
     cfg = getattr(settings, "JWT_COOKIE", {})
     return {
-        "ACCESS_COOKIE_NAME": cfg.get("ACCESS_COOKIE_NAME", "access"),
-        "REFRESH_COOKIE_NAME": cfg.get("REFRESH_COOKIE_NAME", "refresh"),
-        "RENEW_AT_SECONDS": cfg.get("RENEW_AT_SECONDS", 60),
-        "COOKIE_PATH": cfg.get("COOKIE_PATH", "/"),
+        "ACCESS_COOKIE_NAME": cfg.get("ACCESS_COOKIE_NAME"),
+        "REFRESH_COOKIE_NAME": cfg.get("REFRESH_COOKIE_NAME"),
+        "RENEW_AT_SECONDS": cfg.get("RENEW_AT_SECONDS"),
+        "COOKIE_PATH": cfg.get("COOKIE_PATH"),
         "COOKIE_DOMAIN": cfg.get("COOKIE_DOMAIN"),
-        "COOKIE_SAMESITE": cfg.get("COOKIE_SAMESITE", "Lax"),
-        "COOKIE_SECURE": bool(cfg.get("COOKIE_SECURE", not settings.DEBUG)),
-        "COOKIE_HTTPONLY": bool(cfg.get("COOKIE_HTTPONLY", True)),
+        "COOKIE_SAMESITE": cfg.get("COOKIE_SAMESITE"),
+        "COOKIE_SECURE": bool(cfg.get("COOKIE_SECURE"),
+        "COOKIE_HTTPONLY": bool(cfg.get("COOKIE_HTTPONLY")),
     }
 
 

@@ -21,11 +21,8 @@ api.interceptors.request.use((config: InternalAxiosRequestConfig) => {
   const token = useAuthStore.getState().accessToken || localStorage.getItem("access");
   if (token) {
     if (!config.headers) config.headers = new AxiosHeaders();
-    if (config.headers instanceof AxiosHeaders) {
+    if (config.headers instanceof AxiosHeaders && !config.headers?.Authorization) {
       config.headers.set("Authorization", `Bearer ${token}`);
-      }
-    else {
-      (config.headers as any)["Authorization"] = `Bearer ${token}`;
     }
   }
   return config;
