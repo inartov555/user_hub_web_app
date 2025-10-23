@@ -7,7 +7,6 @@ Stateless auth middleware that:
 """
 
 from __future__ import annotations
-from datetime import timedelta
 from types import SimpleNamespace
 from typing import Optional
 
@@ -19,6 +18,11 @@ from django.utils.functional import SimpleLazyObject
 from django.db import DatabaseError, IntegrityError
 from rest_framework_simplejwt.tokens import AccessToken, RefreshToken
 from rest_framework_simplejwt.exceptions import TokenError, InvalidToken
+
+from ..tools.logger.logger import Logger
+
+
+logger = Logger(__name__)
 
 
 def _get_settings():
