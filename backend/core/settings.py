@@ -3,6 +3,7 @@ Settings
 """
 
 import os
+from datetime import timedelta
 from pathlib import Path
 from dotenv import load_dotenv
 
@@ -38,7 +39,7 @@ DEBUG = os.getenv("DEBUG", "1") == "1"
 # Login session properties start
 ACCESS_COOKIE_NAME = str(os.getenv("ACCESS_COOKIE_NAME", "access"))
 REFRESH_COOKIE_NAME = str(os.getenv("REFRESH_COOKIE_NAME", "refresh"))
-RENEW_AT_SECONDS = int(os.getenv("RENEW_AT_SECONDS", "60"))
+RENEW_AT_SECONDS = timedelta(seconds=(os.getenv("RENEW_AT_SECONDS", "60")))
 COOKIE_PATH = str(os.getenv("COOKIE_PATH", "/"))
 COOKIE_DOMAIN = str(os.getenv("COOKIE_DOMAIN", None))
 COOKIE_SAMESITE = str(os.getenv("COOKIE_SAMESITE", "Lax"))
@@ -47,16 +48,16 @@ COOKIE_HTTPONLY = bool(os.getenv("COOKIE_HTTPONLY", "1"))
 
 # This becomes your idle timeout window (example: 1800 seconds (30 minutes))
 # If the user is inactive for > IDLE_TIMEOUT_SECONDS seconds, their refresh expires and the session ends.
-IDLE_TIMEOUT_SECONDS = int(os.getenv("IDLE_TIMEOUT_SECONDS", "100"))
+IDLE_TIMEOUT_SECONDS = timedelta(seconds=(os.getenv("IDLE_TIMEOUT_SECONDS", "100")))
 # Short access — forces periodic refreshes
-ACCESS_TOKEN_LIFETIME = int(os.getenv("ACCESS_TOKEN_LIFETIME", "60"))
+ACCESS_TOKEN_LIFETIME = timedelta(seconds=(os.getenv("ACCESS_TOKEN_LIFETIME", "60")))
 # Turn on rotation so that each refresh "slides" the window forward
 ROTATE_REFRESH_TOKENS = bool(os.getenv("ROTATE_REFRESH_TOKENS", "1"))
 BLACKLIST_AFTER_ROTATION = bool(os.getenv("BLACKLIST_AFTER_ROTATION", "1"))
 ALGORITHM = str(os.getenv("ALGORITHM", "HS256"))
 SECRET_KEY = str(os.getenv("SECRET_KEY", "dev-secret"))
 SIGNING_KEY = SECRET_KEY
-AUTH_HEADER_TYPES = env_tuple(os.getenv("AUTH_HEADER_TYPES"), ("Bearer",))
+AUTH_HEADER_TYPES = env_tuple("AUTH_HEADER_TYPES", ("Bearer",))
 # Login session properties end
 ALLOWED_HOSTS = ["*"]
 
