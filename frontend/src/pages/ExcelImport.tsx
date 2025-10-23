@@ -96,7 +96,7 @@ export default function ExcelImportPanel() {
   return (
     <div className="max-w-xl mx-auto p-4 rounded-2xl shadow bg-white border">
       <h2 className="text-xl font-semibold mb-3">Excel import</h2>
-      <p className="text-sm text-gray-600 mb-4">Upload an .xlsx file with columns: <code>first_name</code>, <code>last_name</code>, <code>email</code>, <code>phone</code>.</p>
+      <p className="text-sm text-gray-600 mb-4">Upload an .xlsx file with columns: <code>first_name</code>, <code>last_name</code>, <code>email</code>.</p>
 
       <form onSubmit={onSubmit} className="space-y-3">
         <input
