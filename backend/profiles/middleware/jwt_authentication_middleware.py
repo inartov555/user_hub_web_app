@@ -188,7 +188,7 @@ class JWTAuthenticationMiddleware:
                 try:
                     rt.blacklist()  # requires 'token_blacklist' app + migrations
                 except (DatabaseError, IntegrityError) as exc:
-                    logger.warning("Failed to blacklist refresh token: %s", exc)
+                    logger.warning(f"Failed to blacklist refresh token: {exc}")
             new_rt = RefreshToken.for_user(self._user_from_token(new_at))
             new_rt_str = str(new_rt)
 
