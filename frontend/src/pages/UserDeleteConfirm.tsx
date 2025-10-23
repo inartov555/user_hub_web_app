@@ -53,9 +53,8 @@ export default function UserDeleteConfirm() {
           setError(`Failed to delete ${failed.length} of ${ids.length} users.`);
         }
       }
-
+      /*
       let bulkOk = false;
-
       // Try bulk endpoint first.
       // First, let's make bulk-delete request WITHOUT validateStatus to catch 4xx/5xx and show the error message
       try {
@@ -66,7 +65,9 @@ export default function UserDeleteConfirm() {
   	setError(`Bulk delete failed: ${parsed.message}`);
   	bulkOk = false;
       }
-
+      } finally {
+        setLoading(false);
+      }
       // If bulk failed, then delete users one by one
       if (!bulkOk) {
   	  const results = await Promise.allSettled(
@@ -79,7 +80,7 @@ export default function UserDeleteConfirm() {
     	  setError(`User deletion failed: ${failed.length} of ${ids.length} users.`);
         }
       }
-
+      */
       await qc.invalidateQueries({ queryKey: ["users"] });
       navigate("/users", { replace: true });
     } catch (e: any) {
