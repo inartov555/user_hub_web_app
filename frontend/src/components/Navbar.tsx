@@ -31,5 +31,5 @@ export default function Navbar() {
 
 function navCls(path: string, href: string) {
   const active = path.startsWith(href);
-  return 'px-3 py-1 rounded-lg ${active ? "bg-slate-900 text-white" : "hover:bg-slate-100"}';
+  return `px-3 py-1 rounded-lg ${active ? "bg-slate-900 text-white" : "hover:bg-slate-100"}`;
 }

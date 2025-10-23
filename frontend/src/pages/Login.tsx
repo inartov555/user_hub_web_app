@@ -22,7 +22,7 @@ export default function Login() {
       navigate("/users", { replace: true }); // navigating to /users and clearing back history
     } catch (err: any) {
       const parsed = extractApiError(err as unknown);
-      setError('Signup failure: ${parsed.message}');
+      setError(`Signup failure: ${parsed.message}`);
     }
   }
 

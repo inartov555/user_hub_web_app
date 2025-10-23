@@ -40,17 +40,17 @@ type AdminFlags = {
 };
 
 /**
- * Convert TanStack SortingState -> DRF 'ordering' (primary,secondary,...)
- * TanStack keeps highest-priority sort FIRST in 'sorting'.
+ * Convert TanStack SortingState -> DRF `ordering` (primary,secondary,...)
+ * TanStack keeps highest-priority sort FIRST in `sorting`.
  */
-const toOrdering = (s: SortingState) => s.map(({ id, desc }) => (desc ? '-${id}' : id));
+const toOrdering = (s: SortingState) => s.map(({ id, desc }) => (desc ? `-${id}` : id));
 
 /**
  * Always add a deterministic tiebreaker at the end to stabilize pagination.
  * This prevents "random shuffles" when many rows share the same sorted value.
  */
 const withStableTiebreaker = (ordering: string[], idField = "id") => {
-  if (ordering.some((o) => o === idField || o === '-${idField}')) return ordering;
+  if (ordering.some((o) => o === idField || o === `-${idField}`)) return ordering;
   return [...ordering, idField];
 };
 
@@ -158,7 +158,7 @@ export default function UsersTable(props: Props) {
           onClick={column.getToggleSortingHandler()}
           title={
             column.getIsSorted()
-            ? 'Sorted ${column.getIsSorted()} (#${column.getSortIndex() + 1})'
+            ? `Sorted ${column.getIsSorted()} (#${column.getSortIndex() + 1})`
             : "Click to sort; multi-sort enabled"
           }
         >
@@ -178,7 +178,7 @@ export default function UsersTable(props: Props) {
           onClick={column.getToggleSortingHandler()}
           title={
             column.getIsSorted()
-            ? 'Sorted ${column.getIsSorted()} (#${column.getSortIndex() + 1})'
+            ? `Sorted ${column.getIsSorted()} (#${column.getSortIndex() + 1})`
             : "Click to sort; multi-sort enabled"
           }
         >
@@ -198,7 +198,7 @@ export default function UsersTable(props: Props) {
           onClick={column.getToggleSortingHandler()}
           title={
             column.getIsSorted()
-            ? 'Sorted ${column.getIsSorted()} (#${column.getSortIndex() + 1})'
+            ? `Sorted ${column.getIsSorted()} (#${column.getSortIndex() + 1})`
             : "Click to sort; multi-sort enabled"
           }
         >
@@ -218,7 +218,7 @@ export default function UsersTable(props: Props) {
           onClick={column.getToggleSortingHandler()}
           title={
             column.getIsSorted()
-            ? 'Sorted ${column.getIsSorted()} (#${column.getSortIndex() + 1})'
+            ? `Sorted ${column.getIsSorted()} (#${column.getSortIndex() + 1})`
             : "Click to sort; multi-sort enabled"
           }
         >
@@ -240,7 +240,7 @@ export default function UsersTable(props: Props) {
           <Button
             variant="outline"
             size="sm"
-            onClick={() => navigate('/users/${row.original.id}/change-password')}
+            onClick={() => navigate(`/users/${row.original.id}/change-password`)}
             title="Change password"
           >
             Change password

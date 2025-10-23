@@ -18,7 +18,7 @@ export default function Signup() {
       navigate("/login");
     } catch (err: any) {
       const parsed = extractApiError(err as unknown);
-      setError('Signup failure: ${parsed.message}');
+      setError(`Signup failure: ${parsed.message}`);
     }
   }
 

@@ -17,7 +17,7 @@ export function extractApiError(err: unknown): { message: string; fields?: Recor
   }
 
   const { status, data } = ax.response;
-  if (!data) return { message: 'Server error (${status}).' };
+  if (!data) return { message: `Server error (${status}).` };
 
   // DRF common shapes
   if (typeof data === "object") {

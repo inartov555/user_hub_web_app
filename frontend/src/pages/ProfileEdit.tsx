@@ -76,7 +76,7 @@ export default function ProfileEdit() {
 
   const avatarSrc =
     data.avatar_url ??
-    (data.avatar ? mediaBase + data.avatar : 'https://placehold.co/160x160?text=${encodeURIComponent(initials)}');
+    (data.avatar ? mediaBase + data.avatar : `https://placehold.co/160x160?text=${encodeURIComponent(initials)}`);
 
   return (
     <div className="card grid grid-cols-1 md:grid-cols-3 gap-6">
