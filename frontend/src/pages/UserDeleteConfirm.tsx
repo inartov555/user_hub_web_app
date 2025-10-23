@@ -1,4 +1,4 @@
-import * as React from "react";
+import { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useQueryClient } from "@tanstack/react-query";
 import { api } from "../lib/axios";
@@ -21,10 +21,10 @@ export default function UserDeleteConfirm() {
   const qc = useQueryClient();
   const { state } = useLocation() as { state?: LocationState };
   const users = state?.users ?? [];
-  const [loading, setLoading] = React.useState(false);
-  const [error, setError] = React.useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (!users.length) {
       // nothing to confirm
       navigate("/users", { replace: true });
@@ -51,6 +51,32 @@ export default function UserDeleteConfirm() {
         );
         if (failed.length) {
           setError(`Failed to delete ${failed.length} of ${ids.length} users.`);
+        }
+      }
+
+      let bulkOk = false;
+
+      // Try bulk endpoint first.
+      // First, let's make bulk-delete request WITHOUT validateStatus to catch 4xx/5xx and show the error message
+      try {
+        const bulk = await api.post("/users/bulk-delete/", { ids });
+        bulkOk = bulk.status >= 200 && bulk.status < 300;
+      } catch (err) {
+  	const parsed = extractApiError(err as unknown);
+  	setError(`Bulk delete failed: ${parsed.message}`);
+  	bulkOk = false;
+      }
+
+      // If bulk failed, then delete users one by one
+      if (!bulkOk) {
+  	  const results = await Promise.allSettled(
+   	  ids.map((id) => api.delete(`/users/${id}/`, { validateStatus: () => true }))
+        );
+        const failed = results.filter(
+    	  (r) => r.status === "rejected" || (r.status === "fulfilled" && r.value.status >= 400)
+        );
+        if (failed.length) {
+    	  setError(`User deletion failed: ${failed.length} of ${ids.length} users.`);
         }
       }
 
