@@ -73,7 +73,7 @@ export default function ProfileView() {
   // Prefer absolute avatar_url if provided
   const avatarSrc =
     profile.avatar_url ??
-    (profile.avatar ? mediaBase + profile.avatar : `https://placehold.co/160x160?text=${encodeURIComponent(initials || "👤")}`);
+    (profile.avatar ? mediaBase + profile.avatar : 'https://placehold.co/160x160?text=${encodeURIComponent(initials || "👤")}');
 
   return (
     <div className="card grid grid-cols-1 gap-6 md:grid-cols-3 p-4 rounded-2xl border bg-white">
@@ -115,7 +115,7 @@ export default function ProfileView() {
           </Link>
           {profile?.user?.id != null && (
             <Link
-              to={`/users/${profile.user.id}/change-password`}
+              to={'/users/${profile.user.id}/change-password'}
               className="btn inline-flex"
             >
               Change password

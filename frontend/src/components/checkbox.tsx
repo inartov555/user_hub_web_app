@@ -35,7 +35,7 @@ export function Checkbox({
       <input
         ref={ref}
         type="checkbox"
-        className={`${boxBase} ${boxVariant} ${boxSize} ${className}`}
+        className={'${boxBase} ${boxVariant} ${boxSize} ${className}'}
         {...props}
       />
       {label ? <span className={size === "sm" ? "text-sm" : ""}>{label}</span> : null}

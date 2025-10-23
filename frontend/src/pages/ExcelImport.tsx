@@ -42,8 +42,8 @@ export default function ExcelImportPanel() {
       const form = new FormData();
       form.append("file", file);
 
-      const resp = await api.post(`/import-excel/`, form, {
-        headers: user ? { Authorization: `Bearer ${user}`, "Content-Type": `multipart/form-data` } : undefined,
+      const resp = await api.post('/import-excel/', form, {
+        headers: user ? { Authorization: 'Bearer ${user}', "Content-Type": 'multipart/form-data' } : undefined,
         withCredentials: !user, // cookie-based auth if no token
         // onUploadProgress: (e) => { /* optional progress */ },
       });
@@ -63,7 +63,7 @@ export default function ExcelImportPanel() {
     } catch (err: any) {
       setMessage(err.message || "Import failed");
       const parsed = extractApiError(err as unknown);
-      setError(`Excel template download failure: ${parsed.message}`);
+      setError('Excel template download failure: ${parsed.message}');
     } finally {
       setSubmitting(false);
     }
@@ -72,8 +72,8 @@ export default function ExcelImportPanel() {
   async function downloadTemplate(e: React.MouseEvent<HTMLButtonElement>) {
     e.preventDefault();
     try {
-      const resp = await api.get(`/import-excel/`, {
-        headers: user ? { Authorization: `Bearer ${user}` } : undefined,
+      const resp = await api.get('/import-excel/', {
+        headers: user ? { Authorization: 'Bearer ${user}' } : undefined,
         withCredentials: !user,
         responseType: "blob",
       });
@@ -89,7 +89,7 @@ export default function ExcelImportPanel() {
     } catch (err) {
       setMessage((err as Error).message || "Failed to download template");
       const parsed = extractApiError(err as unknown);
-      setError(`Excel upload failure: ${parsed.message}`);
+      setError('Excel upload failure: ${parsed.message}');
     }
   }
 
@@ -112,13 +112,13 @@ export default function ExcelImportPanel() {
             {submitting ? "Uploading…" : "Start import"}
           </button>
 
-          {/* If you rely on cookie auth, a plain anchor works: href={`${api.defaults.baseURL}/import-excel/`} */}
+          {/* If you rely on cookie auth, a plain anchor works: href={'${api.defaults.baseURL}/import-excel/'} */}
           {user ? (
             <button className="btn btn-ghost px-4 py-2 rounded-xl border" onClick={downloadTemplate}>
               Download template
             </button>
           ) : (
-            <a className="btn btn-ghost px-4 py-2 rounded-xl border" href={`${api.defaults.baseURL}/import-excel/`} download>
+            <a className="btn btn-ghost px-4 py-2 rounded-xl border" href={'${api.defaults.baseURL}/import-excel/'} download>
               Download template
             </a>
           )}

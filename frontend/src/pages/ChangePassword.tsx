@@ -31,7 +31,7 @@ export default function ChangePassword() {
 
     try {
       setSaving(true);
-      await api.post(`/users/${id}/set-password/`, { password });
+      await api.post('/users/${id}/set-password/', { password });
       navigate("/users", { replace: true });
     } catch (err) {
       const parsed = extractApiError(err as unknown);

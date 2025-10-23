@@ -10,5 +10,5 @@ export function Button({ variant = "default", size = "md", className = "", ...pr
   const v = variant === "outline" ? "border-slate-200 bg-transparent hover:bg-slate-50"
                                   : "border-slate-200 bg-white hover:bg-slate-50";
   const s = size === "sm" ? "text-sm px-3 py-1.5" : "";
-  return <button className={`${base} ${v} ${s} ${className}`} {...props} />;
+  return <button className={'${base} ${v} ${s} ${className}'} {...props} />;
 }

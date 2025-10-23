@@ -9,7 +9,7 @@ export const api = axios.create({
 
 api.interceptors.request.use((config) => {
   const token = useAuthStore.getState().accessToken;
-  if (token) config.headers.Authorization = `Bearer ${token}`;
+  if (token) config.headers.Authorization = 'Bearer ${token}';
   return config;
 });
 
@@ -22,9 +22,9 @@ api.interceptors.response.use(
       try {
         const refresh = useAuthStore.getState().refreshToken;
         if (!refresh) throw new Error("No refresh token");
-        const { data } = await axios.post(`${api.defaults.baseURL}/auth/jwt/refresh/`, { refresh });
+        const { data } = await axios.post('${api.defaults.baseURL}/auth/jwt/refresh/', { refresh });
         useAuthStore.getState().setTokens(data.access, refresh);
-        original.headers.Authorization = `Bearer ${data.access}`;
+        original.headers.Authorization = 'Bearer ${data.access}';
         return api(original);
       } catch (e) {
         useAuthStore.getState().logout();

@@ -42,15 +42,30 @@ export default function UserDeleteConfirm() {
       const bulk = await api.post("/users/bulk-delete/", { ids }, { validateStatus: () => true });
 
       if (!(bulk.status >= 200 && bulk.status < 300)) {
+        setError(prev => prev + `Bulk delete failed: ${failed}`);
         // Fallback to per-user delete
         const results = await Promise.allSettled(
           ids.map((id) => api.delete(`/users/${id}/`, { validateStatus: () => true }))
         );
         const failed = results.filter(
-          (r) => r.status === "rejected" || (r.status === "fulfilled" && r.value.status >= 400)
+	  (r) => r.status === "rejected" || (r.status === "fulfilled" && r.value.status >= 400)
         );
         if (failed.length) {
-          setError(`Failed to delete ${failed.length} of ${ids.length} users.`);
+          // setError('Failed to delete ${failed.length} of ${ids.length} users.');
+          setError(prev => prev + `Failed to delete ${failed.length} of ${ids.length} users.`);
+          for (const err_item of failed) {
+            const parsed = extractApiError(err_item);
+            setError(prev => prev + `${parsed.message}`);
+          }
+          const parsed = extractApiError(failed);
+  	  // setError('Bulk delete failed: ${parsed.message}');
+  	  // setError('Bulk delete failed: ${failed}');
+  	  // for 
+  	  // setError(prev => prev + 'Failed to delete ${failed.length} of ${ids.length} users.');
+        }
+        else {
+          await qc.invalidateQueries({ queryKey: ["users"] });
+          navigate("/users", { replace: true });
         }
       }
       /*
@@ -62,7 +77,7 @@ export default function UserDeleteConfirm() {
         bulkOk = bulk.status >= 200 && bulk.status < 300;
       } catch (err) {
   	const parsed = extractApiError(err as unknown);
-  	setError(`Bulk delete failed: ${parsed.message}`);
+  	setError('Bulk delete failed: ${parsed.message}');
   	bulkOk = false;
       }
       } finally {
@@ -71,18 +86,16 @@ export default function UserDeleteConfirm() {
       // If bulk failed, then delete users one by one
       if (!bulkOk) {
   	  const results = await Promise.allSettled(
-   	  ids.map((id) => api.delete(`/users/${id}/`, { validateStatus: () => true }))
+   	  ids.map((id) => api.delete('/users/${id}/', { validateStatus: () => true }))
         );
         const failed = results.filter(
     	  (r) => r.status === "rejected" || (r.status === "fulfilled" && r.value.status >= 400)
         );
         if (failed.length) {
-    	  setError(`User deletion failed: ${failed.length} of ${ids.length} users.`);
+    	  setError('User deletion failed: ${failed.length} of ${ids.length} users.');
         }
       }
       */
-      await qc.invalidateQueries({ queryKey: ["users"] });
-      navigate("/users", { replace: true });
     } catch (e: any) {
       setError(e?.message || "Failed to delete selected users.");
     } finally {
