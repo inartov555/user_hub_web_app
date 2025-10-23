@@ -28,10 +28,26 @@ export default function ProfileView() {
   const location = useLocation();
 
   useEffect(() => {
-    if (!user && location.pathname !== "/login") {
-      navigate("/login", { replace: true, state: { from: location } });
-    }
-  }, [user, location, navigate]);
+    let alive = true;
+    (async () => {
+      try {
+        const resp = await api.get<Profile>("/me/profile/");
+        if (!alive) return;
+        const p = resp.data;
+        setData(p);
+        setFirstName(p.user.first_name || "");
+        setLastName(p.user.last_name || "");
+        setBio(p.bio || "");
+        setError(null);
+      } catch (e: any) {
+        if (!alive) return;
+        setError(e?.response?.data?.detail || e?.message || "Failed to load profile.");
+      }
+    })();
+    return () => {
+      alive = false;
+    };
+  }, []);
 
   if (loading) return <div className="card p-4">Loading…</div>;
   if (error) return <div className="card p-4 text-red-600">Error: {error}</div>;
