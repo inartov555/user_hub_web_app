@@ -109,8 +109,8 @@ class JWTAuthenticationMiddleware:
                         user = self._user_from_token(access_token_obj)
                     except (TokenError, InvalidToken):
                         request.jwt_auth_failed = True
-                 else:
-                    request.jwt_auth_failed = True
+                else:
+                   request.jwt_auth_failed = True
         elif refresh:
             # No access but we have a refresh cookie → attempt refresh
             try:
