@@ -70,7 +70,11 @@ api.interceptors.response.use(
       return api(config);
     } catch (e) {
       onRefreshed(null);
-      useAuthStore.getState().logout(); // clears tokens + redirects
+      useAuthStore.getState().logout(); // clears tokens
+      // Force redirect to Login after idle/session expiry
+      if (typeof window !== "undefined") {
+        window.location.assign("/login");
+      }
       return Promise.reject(error);
     } finally {
       isRefreshing = false;

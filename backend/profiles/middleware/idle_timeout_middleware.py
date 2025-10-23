@@ -12,6 +12,7 @@ from django.conf import settings
 from django.http import JsonResponse
 from django.utils.deprecation import MiddlewareMixin
 from django.contrib import auth
+from django.shortcuts import redirect
 
 
 IDLE_TIMEOUT_SECONDS = getattr(settings, "IDLE_TIMEOUT_SECONDS", 30 * 60)
@@ -44,10 +45,9 @@ class IdleTimeoutMiddleware(MiddlewareMixin):
 
             # For API requests, return 401 JSON; for normal pages, redirect if you prefer
             if request.path.startswith("/api/"):
-                return JsonResponse(
-                    {"detail": "Session expired due to inactivity."},
-                    status=401
-                )
+                return JsonResponse({"detail": "Session expired due to inactivity."}, status=401)
+            # Non-API requests - redirect to login
+            return redirect("/login")
             # For non-API, redirect:
             # from django.shortcuts import redirect  # pylint: disable=import-outside-toplevel
             # return redirect("login")

@@ -9,11 +9,27 @@ export default function ProtectedRoute() {
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
+    setReady(false);
     bootstrapAuth().finally(() => setReady(true));
+  }, [location.pathname, location.search, location.hash]);
+
+  // Also revalidate when the tab regains focus or visibility changes
+  useEffect(() => {
+    const recheck = () => {
+      setReady(false);
+      bootstrapAuth().finally(() => setReady(true));
+    };
+    window.addEventListener("focus", recheck);
+    window.addEventListener("visibilitychange", recheck);
+    return () => {
+      window.removeEventListener("focus", recheck);
+      window.removeEventListener("visibilitychange", recheck);
+    };
   }, []);
 
   const hasTokens = !!(accessToken || localStorage.getItem("access"));
   const mustRedirect = ready && !user && !hasTokens;
+
   useEffect(() => {
     if (mustRedirect) {
       const intended = location.pathname + location.search + location.hash;
