@@ -1,8 +1,8 @@
 """
 Stateless auth middleware that:
-  - Extracts access token from Authorization header or 'access' cookie
+  - Extracts access token only from Authorization header (no cookies)
   - Sets request.user when valid
-  - If access expired and 'refresh' cookie exists, refreshes tokens
+  - Does not refresh via cookies; clients refresh via API
   - Proactively refreshes if access expires within RENEW_AT_SECONDS
 """
 
@@ -38,20 +38,6 @@ def _get_settings():
         "COOKIE_SECURE": bool(cfg.get("COOKIE_SECURE")),
         "COOKIE_HTTPONLY": bool(cfg.get("COOKIE_HTTPONLY")),
     }
-
-
-def _set_cookie(resp, name, value, *, max_age=None):
-    cfg = _get_settings()
-    resp.set_cookie(
-        name,
-        value,
-        max_age=max_age,
-        path=cfg["COOKIE_PATH"],
-        domain=cfg["COOKIE_DOMAIN"],
-        secure=cfg["COOKIE_SECURE"],
-        httponly=cfg["COOKIE_HTTPONLY"],
-        samesite=cfg["COOKIE_SAMESITE"],
-    )
 
 
 def _delete_cookie(resp, name):
@@ -124,43 +110,9 @@ class JWTAuthenticationMiddleware:
             except (TokenError, InvalidToken):
                 request.jwt_auth_failed = True
 
-        # Defer DB hit with a lazy object; if user is None fall back to AnonymousUser
-        request.user = SimpleLazyObject(lambda: user or AnonymousUser())
-
-        response = self.get_response(request)
-
-        # If we minted new tokens, set cookies (read via public attrs to avoid W0212)
-        new_access = getattr(request, "new_access_token", None)
-        new_refresh = getattr(request, "new_refresh_token", None)
-        if new_access:
-            # Access lifetime is in SIMPLE_JWT; we won't set max_age to let the browser treat it as session
-            _set_cookie(response, _get_settings()["ACCESS_COOKIE_NAME"], str(new_access))
-        if new_refresh:
-            # For refresh we usually want a persistent cookie; compute max_age from SIMPLE_JWT
-            refresh_lifetime = settings.SIMPLE_JWT["REFRESH_TOKEN_LIFETIME"]
-            _set_cookie(
-                response,
-                _get_settings()["REFRESH_COOKIE_NAME"],
-                str(new_refresh),
-                max_age=int(refresh_lifetime.total_seconds()),
-            )
-        # On hard failures, clean up cookies so the client can re-login
-        if getattr(request, "jwt_auth_failed", False):
-            _delete_cookie(response, _get_settings()["ACCESS_COOKIE_NAME"])
-            _delete_cookie(response, _get_settings()["REFRESH_COOKIE_NAME"])
-
         return response
 
     # ---- helpers ----
-
-    def _get_access_from_request(self, request) -> Optional[str]:
-        auth = request.META.get("HTTP_AUTHORIZATION", "")
-        if auth.startswith("Bearer "):
-            return auth.split(" ", 1)[1].strip() or None
-        return request.COOKIES.get(_get_settings()["ACCESS_COOKIE_NAME"])
-
-    def _get_refresh_from_request(self, request) -> Optional[str]:
-        return request.COOKIES.get(_get_settings()["REFRESH_COOKIE_NAME"])
 
     def _user_from_token(self, token: AccessToken):
         user_id = token.get("user_id") or token.get("sub")

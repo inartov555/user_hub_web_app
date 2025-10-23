@@ -5,7 +5,7 @@ import { jwtDecode } from "jwt-decode";
 
 export const api = axios.create({
     baseURL: import.meta.env.VITE_API_URL || "/api",
-    withCredentials: true,
+    withCredentials: false,
     headers: { "Content-Type": "application/json" }
 });
 

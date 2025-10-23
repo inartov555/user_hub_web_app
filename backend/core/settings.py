@@ -37,14 +37,6 @@ DEBUG = os.getenv("DEBUG", "1") == "1"
 # SESSION_COOKIE_SECURE = os.getenv("SESSION_COOKIE_SECURE", "1")  # if using HTTPS
 
 # Login session properties start
-ACCESS_COOKIE_NAME = str(os.getenv("ACCESS_COOKIE_NAME", "access"))
-REFRESH_COOKIE_NAME = str(os.getenv("REFRESH_COOKIE_NAME", "refresh"))
-RENEW_AT_SECONDS = int(os.getenv("RENEW_AT_SECONDS", "120"))
-COOKIE_PATH = str(os.getenv("COOKIE_PATH", "/"))
-COOKIE_DOMAIN = str(os.getenv("COOKIE_DOMAIN", None))
-COOKIE_SAMESITE = str(os.getenv("COOKIE_SAMESITE", "Lax"))
-COOKIE_SECURE = bool(os.getenv("COOKIE_SECURE", "0"))
-COOKIE_HTTPONLY = bool(os.getenv("COOKIE_HTTPONLY", "1"))
 
 # This becomes your idle timeout window (example: 1800 seconds (30 minutes))
 # If the user is inactive for > IDLE_TIMEOUT_SECONDS seconds, their refresh expires and the session ends.
@@ -163,17 +155,6 @@ SIMPLE_JWT = {
     "BLACKLIST_AFTER_ROTATION": BLACKLIST_AFTER_ROTATION,
     "ALGORITHM": ALGORITHM,
     "AUTH_HEADER_TYPES": AUTH_HEADER_TYPES,
-}
-
-JWT_COOKIE = {
-    "ACCESS_COOKIE_NAME": ACCESS_COOKIE_NAME,
-    "REFRESH_COOKIE_NAME": REFRESH_COOKIE_NAME,
-    "RENEW_AT_SECONDS": RENEW_AT_SECONDS,
-    "COOKIE_PATH": COOKIE_PATH,
-    "COOKIE_DOMAIN": COOKIE_DOMAIN,
-    "COOKIE_SAMESITE": COOKIE_SAMESITE,
-    "COOKIE_SECURE": COOKIE_SECURE,
-    "COOKIE_HTTPONLY": COOKIE_HTTPONLY,
 }
 
 SPECTACULAR_SETTINGS = {

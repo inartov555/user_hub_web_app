@@ -7,7 +7,7 @@ import { useAuthStore } from "../auth/store";
 // Drop this component anywhere in your frontend. It provides:
 // - File picker + submit to POST /api/import-excel/
 // - "Download template" that calls GET /api/import-excel/ (same endpoint) and downloads the .xlsx
-// - Works with either cookie-based auth (simple link) or Bearer token (programmatic fetch)
+// - Uses Bearer token (Authorization header) from localStorage
 // - Shows success summary (created/updated/errors)
 
 export default function ExcelImportPanel() {
@@ -44,7 +44,6 @@ export default function ExcelImportPanel() {
 
       const resp = await api.post(`/import-excel/`, form, {
         headers: user ? { Authorization: `Bearer ${user}`, "Content-Type": `multipart/form-data` } : undefined,
-        withCredentials: !user, // cookie-based auth if no token
         // onUploadProgress: (e) => { /* optional progress */ },
       });
 
@@ -74,7 +73,6 @@ export default function ExcelImportPanel() {
     try {
       const resp = await api.get(`/import-excel/`, {
         headers: user ? { Authorization: `Bearer ${user}` } : undefined,
-        withCredentials: !user,
         responseType: "blob",
       });
       const fileBlob = new Blob([resp.data]);
