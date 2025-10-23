@@ -16,6 +16,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.models import AnonymousUser
 from django.utils import timezone
 from django.utils.functional import SimpleLazyObject
+from django.db import DatabaseError, IntegrityError
 from rest_framework_simplejwt.tokens import AccessToken, RefreshToken
 from rest_framework_simplejwt.exceptions import TokenError, InvalidToken
 
@@ -79,10 +80,11 @@ class JWTAuthenticationMiddleware:
             new_refresh_token=None,  # type: Optional[str]
             auth_failed=False,
         )
-        # Will hold any newly minted tokens to be set on the response
-        request._new_access_token: Optional[str] = None
-        request._new_refresh_token: Optional[str] = None
-        request._jwt_auth_failed = False
+        # Public attributes; avoid protected access warnings.
+        # These mirror the previous underscore fields but without leading underscores.
+        request.new_access_token: Optional[str] = None
+        request.new_refresh_token: Optional[str] = None
+        request.jwt_auth_failed: bool = False
 
         access = self._get_access_from_request(request)
         refresh = self._get_refresh_from_request(request)
@@ -103,39 +105,43 @@ class JWTAuthenticationMiddleware:
                     try:
                         self._refresh_from_refresh(refresh, request)
                         # decode the new access to set user
-                        access_token_obj = AccessToken(request._new_access_token)
+                        access_token_obj = AccessToken(request.new_access_token)  # type: ignore[arg-type]
                         user = self._user_from_token(access_token_obj)
                     except (TokenError, InvalidToken):
-                        request._jwt_auth_failed = True
-                else:
-                    request._jwt_auth_failed = True
+                        request.jwt_auth_failed = True
+                 else:
+                    request.jwt_auth_failed = True
         elif refresh:
             # No access but we have a refresh cookie → attempt refresh
             try:
                 self._refresh_from_refresh(refresh, request)
-                access_token_obj = AccessToken(request._new_access_token)
+                access_token_obj = AccessToken(request.new_access_token)  # type: ignore[arg-type]
                 user = self._user_from_token(access_token_obj)
             except (TokenError, InvalidToken):
-                request._jwt_auth_failed = True
+                request.jwt_auth_failed = True
 
         # Defer DB hit with a lazy object; if user is None fall back to AnonymousUser
         request.user = SimpleLazyObject(lambda: user or AnonymousUser())
 
         response = self.get_response(request)
 
-        # If we minted new tokens, set cookies
-        if request._new_access_token:
+        # If we minted new tokens, set cookies (read via public attrs to avoid W0212)
+        new_access = getattr(request, "new_access_token", None)
+        new_refresh = getattr(request, "new_refresh_token", None)
+        if new_access:
             # Access lifetime is in SIMPLE_JWT; we won't set max_age to let the browser treat it as session
-            _set_cookie(response, _get_settings()["ACCESS_COOKIE_NAME"], str(request._new_access_token))
-        if request._new_refresh_token:
-            # For refresh we usually want a persistent cookie; you can compute max_age from SIMPLE_JWT
+            _set_cookie(response, _get_settings()["ACCESS_COOKIE_NAME"], str(new_access))
+        if new_refresh:
+            # For refresh we usually want a persistent cookie; compute max_age from SIMPLE_JWT
             refresh_lifetime = settings.SIMPLE_JWT["REFRESH_TOKEN_LIFETIME"]
-            _set_cookie(response,
-                        _get_settings()["REFRESH_COOKIE_NAME"],
-                        str(request._new_refresh_token),
-                        max_age=int(refresh_lifetime.total_seconds()))
+            _set_cookie(
+                response,
+                _get_settings()["REFRESH_COOKIE_NAME"],
+                str(new_refresh),
+                max_age=int(refresh_lifetime.total_seconds()),
+            )
         # On hard failures, clean up cookies so the client can re-login
-        if request._jwt_auth_failed:
+        if getattr(request, "jwt_auth_failed", False):
             _delete_cookie(response, _get_settings()["ACCESS_COOKIE_NAME"])
             _delete_cookie(response, _get_settings()["REFRESH_COOKIE_NAME"])
 
@@ -172,15 +178,16 @@ class JWTAuthenticationMiddleware:
         # Rotate refresh if enabled
         new_rt_str = None
         if settings.SIMPLE_JWT.get("ROTATE_REFRESH_TOKENS", False):
-            # When rotating, SimpleJWT expects you to blacklist and create a new one
-            try:
-                rt.blacklist()  # requires 'rest_framework_simplejwt.token_blacklist' in INSTALLED_APPS
-            except Exception:
-                # If blacklist app not enabled, ignoring
-                pass
+            # When rotating, SimpleJWT expects you to blacklist and create a new one.
+            # Only swallow expected DB/blacklist errors; don't hide everything.
+            if "rest_framework_simplejwt.token_blacklist" in settings.INSTALLED_APPS:
+                try:
+                    rt.blacklist()  # requires 'token_blacklist' app + migrations
+                except (DatabaseError, IntegrityError) as exc:
+                    logger.warning("Failed to blacklist refresh token: %s", exc)
             new_rt = RefreshToken.for_user(self._user_from_token(new_at))
             new_rt_str = str(new_rt)
 
-        request._new_access_token = str(new_at)
+        request.new_access_token = str(new_at)
         if new_rt_str:
-            request._new_refresh_token = new_rt_str
+            request.new_refresh_token = new_rt_str
