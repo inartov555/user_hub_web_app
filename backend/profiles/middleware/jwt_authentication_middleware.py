@@ -114,7 +114,7 @@ class JWTAuthenticationMiddleware:
                     except (TokenError, InvalidToken):
                         request.jwt_auth_failed = True
                 else:
-                   request.jwt_auth_failed = True
+                    request.jwt_auth_failed = True
         elif refresh:
             # No access but we have a refresh cookie → attempt refresh
             try:
