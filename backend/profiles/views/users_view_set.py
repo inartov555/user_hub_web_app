@@ -57,7 +57,7 @@ class UsersViewSet(viewsets.ReadOnlyModelViewSet):
         qs.delete()
         return Response({"deleted": count}, status=200)
 
-    @action(detail=True, methods=["post"], url_path="change-password",
+    @action(detail=True, methods=["post"], url_path="set-password",
             permission_classes=[permissions.IsAuthenticated])
     def set_password(self, request, pk=None):  # pylint: disable=unused-argument
         """

@@ -58,41 +58,13 @@ export default function UserDeleteConfirm() {
             setError(prev => (prev ? `${prev}\n` : "") + `${parsed.message}`);
           }
         }
-        else {
-          await qc.invalidateQueries({ queryKey: ["users"] });
-          navigate("/users", { replace: true });
-        }
       }
-      /*
-      let bulkOk = false;
-      // Try bulk endpoint first.
-      // First, let's make bulk-delete request WITHOUT validateStatus to catch 4xx/5xx and show the error message
-      try {
-        const bulk = await api.post("/users/bulk-delete/", { ids });
-        bulkOk = bulk.status >= 200 && bulk.status < 300;
-      } catch (err) {
-  	const parsed = extractApiError(err as unknown);
-  	setError('Bulk delete failed: ${parsed.message}');
-  	bulkOk = false;
+      else {
+        await qc.invalidateQueries({ queryKey: ["users"] });
+        navigate("/users", { replace: true });
       }
-      } finally {
-        setLoading(false);
-      }
-      // If bulk failed, then delete users one by one
-      if (!bulkOk) {
-  	  const results = await Promise.allSettled(
-   	  ids.map((id) => api.delete('/users/${id}/', { validateStatus: () => true }))
-        );
-        const failed = results.filter(
-    	  (r) => r.status === "rejected" || (r.status === "fulfilled" && r.value.status >= 400)
-        );
-        if (failed.length) {
-    	  setError('User deletion failed: ${failed.length} of ${ids.length} users.');
-        }
-      }
-      */
-    } catch (e: any) {
-      setError(e?.message || "Failed to delete selected users.");
+    } catch (erro: any) {
+      setError(prev => (prev ? `${prev}\n` : "") + `Failed to delete selected users: ${erro}`);
     } finally {
       setLoading(false);
     }
