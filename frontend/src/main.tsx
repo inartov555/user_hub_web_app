@@ -16,6 +16,7 @@ import { useAuthStore } from "./auth/store";
 import ExcelImport from "./pages/ExcelImport";
 import ChangePassword from "./pages/ChangePassword";
 import UserDeleteConfirm from "./pages/UserDeleteConfirm";
+import ProtectedRoute from "./auth/ProtectedRoute";
 
 function PrivateRoute({ children }: { children: JSX.Element }) {
   const token = useAuthStore((s) => s.accessToken);
@@ -27,18 +28,25 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
         <Routes>
-            <Route path="/" element={<App />}> 
+          {/* App layout wrapper */}
+          <Route path="/" element={<App />}>
+            {/* Public routes */}
             <Route index element={<Navigate to="/users" replace />} />
             <Route path="login" element={<Login />} />
             <Route path="signup" element={<Signup />} />
             <Route path="reset-password" element={<ResetPassword />} />
-            <Route path="profile-edit" element={<PrivateRoute><ProfileEdit /></PrivateRoute>} />
-            <Route path="profile-view" element={<PrivateRoute><ProfileView /></PrivateRoute>} />
-            <Route path="users" element={<PrivateRoute><UsersTable /></PrivateRoute>} />
-            <Route path="stats" element={<PrivateRoute><Stats /></PrivateRoute>} />
-            <Route path="import-excel" element={<ExcelImport />} />
-            <Route path="/users/:id/change-password" element={<ChangePassword />} />
-            <Route path="/users/confirm-delete" element={<UserDeleteConfirm />} />
+            {/* Protected routes */}
+            <Route element={<ProtectedRoute />}>
+              <Route path="profile-edit" element={<PrivateRoute><ProfileEdit /></PrivateRoute>} />
+              <Route path="profile-view" element={<PrivateRoute><ProfileView /></PrivateRoute>} />
+              <Route path="users" element={<PrivateRoute><UsersTable /></PrivateRoute>} />
+              <Route path="stats" element={<PrivateRoute><Stats /></PrivateRoute>} />
+              <Route path="import-excel" element={<ExcelImport />} />
+              <Route path="/users/:id/change-password" element={<ChangePassword />} />
+              <Route path="/users/confirm-delete" element={<UserDeleteConfirm />} />
+              {/* Fallback */}
+              <Route path="*" element={<Navigate to="/" replace />} />
+            </Route>
           </Route>
         </Routes>
       </BrowserRouter>
