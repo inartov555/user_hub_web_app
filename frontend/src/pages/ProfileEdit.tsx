@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate, useLocation, useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { api } from "../lib/axios";
 import { useAuthStore } from "../auth/store";
 
@@ -18,7 +18,6 @@ type Profile = {
 };
 
 export default function ProfileEdit() {
-  const navigate = useNavigate();
   const { user, logout } = useAuthStore();
   const navigate = useNavigate();
   const location = useLocation();
