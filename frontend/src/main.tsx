@@ -18,11 +18,6 @@ import ChangePassword from "./pages/ChangePassword";
 import UserDeleteConfirm from "./pages/UserDeleteConfirm";
 import ProtectedRoute from "./auth/ProtectedRoute";
 
-function PrivateRoute({ children }: { children: JSX.Element }) {
-  const token = useAuthStore((s) => s.accessToken);
-  return token ? children : <Navigate to="/login" replace />;
-}
-
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <QueryClientProvider client={queryClient}>
@@ -37,16 +32,16 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
             <Route path="reset-password" element={<ResetPassword />} />
             {/* Protected routes */}
             <Route element={<ProtectedRoute />}>
-              <Route path="profile-edit" element={<PrivateRoute><ProfileEdit /></PrivateRoute>} />
-              <Route path="profile-view" element={<PrivateRoute><ProfileView /></PrivateRoute>} />
-              <Route path="users" element={<PrivateRoute><UsersTable /></PrivateRoute>} />
-              <Route path="stats" element={<PrivateRoute><Stats /></PrivateRoute>} />
+              <Route path="profile-edit" element={<ProfileEdit />} />
+              <Route path="profile-view" element={<ProfileView />} />
+              <Route path="users" element={<UsersTable />} />
+              <Route path="stats" element={<Stats />} />
               <Route path="import-excel" element={<ExcelImport />} />
               <Route path="/users/:id/change-password" element={<ChangePassword />} />
               <Route path="/users/confirm-delete" element={<UserDeleteConfirm />} />
-              {/* Fallback */}
-              <Route path="*" element={<Navigate to="/" replace />} />
             </Route>
+            {/* Fallback */}
+            <Route path="*" element={<Navigate to="/" replace />} />
           </Route>
         </Routes>
       </BrowserRouter>

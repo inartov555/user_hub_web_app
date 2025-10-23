@@ -16,18 +16,17 @@ export default function ProtectedRoute() {
 
   const hasTokens = !!(accessToken || localStorage.getItem("access"));
   const mustRedirect = ready && !user && !hasTokens;
-  if (mustRedirect) {
-    // remember where we tried to go
-    const intended = location.pathname + location.search + location.hash;
-    localStorage.setItem("postLoginRedirect", intended);
-    return <Navigate to="/login" replace state={{ from: location }} />;
-  }, [mustRedirect, location]);
+  useEffect(() => {
+    if (mustRedirect) {
+      const intended = location.pathname + location.search + location.hash;
+      localStorage.setItem("postLoginRedirect", intended);
+    }
+  }, [mustRedirect, location.pathname, location.search, location.hash]);
 
   return (
     <>
-      {/* Always mounted → prevents focus loss */}
+      {/* Keep mounted to avoid input focus loss */}
       <Outlet />
-      {/* When we truly know we're unauthenticated, navigate away */}
       {mustRedirect && <Navigate to="/login" replace state={{ from: location }} />}
     </>
   );

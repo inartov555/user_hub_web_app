@@ -12,10 +12,6 @@ export default function Login() {
   const navigate = useNavigate();
   const { setTokens, setUser, user } = useAuthStore();
 
-  const redirect = localStorage.getItem("postLoginRedirect") || "/";
-  localStorage.removeItem("postLoginRedirect");
-  navigate(redirect, { replace: true });
-
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     try {
