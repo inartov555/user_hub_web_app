@@ -12,8 +12,6 @@ export default function ProtectedRoute() {
     bootstrapAuth().finally(() => setReady(true));
   }, []);
 
-  if (!ready) return null; // or a tiny spinner
-
   const hasTokens = !!(accessToken || localStorage.getItem("access"));
   const mustRedirect = ready && !user && !hasTokens;
   useEffect(() => {
@@ -22,6 +20,8 @@ export default function ProtectedRoute() {
       localStorage.setItem("postLoginRedirect", intended);
     }
   }, [mustRedirect, location.pathname, location.search, location.hash]);
+
+  if (!ready) return null; // or a tiny spinner
 
   return (
     <>
