@@ -4,7 +4,6 @@ import { useAuthStore } from "./store";
 import { bootstrapAuth } from "./bootstrap";
 
 export default function ProtectedRoute() {
-  /*
   const { user, accessToken } = useAuthStore();
   const location = useLocation();
   const [ready, setReady] = useState(false);
@@ -16,14 +15,20 @@ export default function ProtectedRoute() {
   if (!ready) return null; // or a tiny spinner
 
   const hasTokens = !!(accessToken || localStorage.getItem("access"));
-  if (!user && !hasTokens) {
+  const mustRedirect = ready && !user && !hasTokens;
+  if (mustRedirect) {
     // remember where we tried to go
     const intended = location.pathname + location.search + location.hash;
     localStorage.setItem("postLoginRedirect", intended);
     return <Navigate to="/login" replace state={{ from: location }} />;
-  }
+  }, [mustRedirect, location]);
 
-  return <Outlet />;
-  */
-  return <Outlet />;
+  return (
+    <>
+      {/* Always mounted → prevents focus loss */}
+      <Outlet />
+      {/* When we truly know we're unauthenticated, navigate away */}
+      {mustRedirect && <Navigate to="/login" replace state={{ from: location }} />}
+    </>
+  );
 }
