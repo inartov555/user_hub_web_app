@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { api } from "../lib/axios";
+import { useAuthStore } from "./auth/store";
 
 type Profile = {
   id: number;
@@ -18,7 +19,7 @@ type Profile = {
 
 export default function ProfileEdit() {
   const navigate = useNavigate();
-
+  const { user, logout } = useAuthStore();
   const [data, setData] = useState<Profile | null>(null);
   const [first_name, setFirstName] = useState("");
   const [last_name, setLastName] = useState("");
@@ -27,26 +28,10 @@ export default function ProfileEdit() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    let alive = true;
-    (async () => {
-      try {
-        const resp = await api.get<Profile>("/me/profile/");
-        if (!alive) return;
-        const p = resp.data;
-        setData(p);
-        setFirstName(p.user.first_name || "");
-        setLastName(p.user.last_name || "");
-        setBio(p.bio || "");
-        setError(null);
-      } catch (e: any) {
-        if (!alive) return;
-        setError(e?.response?.data?.detail || e?.message || "Failed to load profile.");
-      }
-    })();
-    return () => {
-      alive = false;
-    };
-  }, []);
+    if (!user && location.pathname !== "/login") {
+      navigate("/login", { replace: true, state: { from: location } });
+    }
+  }, [user, location, navigate]);
 
   async function onSave() {
     const form = new FormData();

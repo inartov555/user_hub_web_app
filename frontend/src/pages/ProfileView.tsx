@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { api } from "../lib/axios";
+import { useAuthStore } from "./auth/store";
 
 type ProfileUser = {
   id: number;
@@ -22,33 +23,13 @@ export default function ProfileView() {
   const [profile, setProfile] = useState<Profile | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
+  const { user, logout } = useAuthStore();
 
   useEffect(() => {
-    let alive = true;
-    (async () => {
-      try {
-        const resp = await api.get<Profile>("/me/profile/");
-        if (!alive) return;
-        setProfile(resp.data);
-        setError(null);
-      } catch (e: any) {
-        if (!alive) return;
-        const status = e?.response?.status;
-        const msg =
-          status === 401
-            ? "You are not signed in."
-            : status === 403
-            ? "You do not have permission to view this profile."
-            : e?.response?.data?.detail || e?.message || "Failed to load profile.";
-        setError(msg);
-      } finally {
-        if (alive) setLoading(false);
-      }
-    })();
-    return () => {
-      alive = false;
-    };
-  }, []);
+    if (!user && location.pathname !== "/login") {
+      navigate("/login", { replace: true, state: { from: location } });
+    }
+  }, [user, location, navigate]);
 
   if (loading) return <div className="card p-4">Loading…</div>;
   if (error) return <div className="card p-4 text-red-600">Error: {error}</div>;

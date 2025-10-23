@@ -3,6 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { api } from "../lib/axios";
 import FormInput from "../components/FormInput";
 import { extractApiError } from "../lib/httpErrors";
+import { useAuthStore } from "./auth/store";
 
 export default function ChangePassword() {
   const { id } = useParams<{ id: string }>();
