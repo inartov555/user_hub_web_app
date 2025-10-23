@@ -304,35 +304,11 @@ export default function UsersTable(props: Props) {
     setPage(1);
   }, [pageSize, globalFilter, ordering]); // ordering includes the tiebreaker
 
-  // Bulk delete (unchanged)
-  const handleDeleteSelected = async () => {
-    const ids = table.getSelectedRowModel().flatRows.map((r) => r.original.id);
-    if (!ids.length) return;
-
-    setDeleting(true);
-    setDeleteError(null);
-    try {
-      const bulk = await api.post("/users/bulk-delete/", { ids }, { validateStatus: () => true });
-
-      if (!(bulk.status >= 200 && bulk.status < 300)) {
-        const results = await Promise.allSettled(
-          ids.map((id) => api.delete(`/users/${id}/`, { validateStatus: () => true }))
-        );
-        const failed = results.filter(
-          (r) => r.status === "rejected" || (r.status === "fulfilled" && r.value.status >= 400)
-        );
-        if (failed.length) {
-          setDeleteError(`Failed to delete ${failed.length} of ${ids.length} users.`);
-        }
-      }
-
-      setRowSelection({});
-      await queryClient.invalidateQueries({ queryKey: ["users"] });
-    } catch (e: any) {
-      setDeleteError(e?.message || "Failed to delete selected users.");
-    } finally {
-      setDeleting(false);
-    }
+  /** Navigate to confirmation page instead of deleting immediately */
+  const handleGoToDeleteConfirm = () => {
+    const selectedUsers = table.getSelectedRowModel().flatRows.map((r) => r.original as User);
+    if (!selectedUsers.length) return;
+    navigate("/users/confirm-delete", { state: { users: selectedUsers } });
   };
 
   if (isLoading && !data) return <div>Loading…</div>;
@@ -400,14 +376,15 @@ export default function UsersTable(props: Props) {
             <Button
               variant="outline"
               size="sm"
-              onClick={handleDeleteSelected}
-              disabled={deleting || table.getSelectedRowModel().rows.length === 0}
+              onClick={handleGoToDeleteConfirm}
+              disabled={table.getSelectedRowModel().rows.length === 0}
               className="gap-2 border-red-600 text-red-700 hover:bg-red-50"
               title="Delete selected users"
             >
               <Trash2 className="h-4 w-4" />
               Delete selected ({table.getSelectedRowModel().rows.length || 0})
             </Button>
+
           )}
         </div>
       </CardHeader>

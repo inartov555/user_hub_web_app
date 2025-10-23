@@ -15,6 +15,7 @@ import Stats from "./pages/Stats";
 import { useAuthStore } from "./auth/store";
 import ExcelImport from "./pages/ExcelImport";
 import ChangePassword from "./pages/ChangePassword";
+import UserDeleteConfirm from "./pages/UserDeleteConfirm";
 
 function PrivateRoute({ children }: { children: JSX.Element }) {
   const token = useAuthStore((s) => s.accessToken);
@@ -37,6 +38,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
             <Route path="stats" element={<PrivateRoute><Stats /></PrivateRoute>} />
             <Route path="import-excel" element={<ExcelImport />} />
             <Route path="/users/:id/change-password" element={<ChangePassword />} />
+            <Route path="/users/confirm-delete" element={<UserDeleteConfirm />} />
           </Route>
         </Routes>
       </BrowserRouter>
