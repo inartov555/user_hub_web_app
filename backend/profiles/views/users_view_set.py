@@ -68,7 +68,7 @@ class UsersViewSet(viewsets.ReadOnlyModelViewSet):
     # DELETE users/<id>/delete-user
     @action(detail=True, methods=["delete"], url_path="delete-user",
             permission_classes=[permissions.IsAuthenticated])
-    def delete_user(self, request, pk=None, *args, **kwargs) -> Response:  # pylint: disable=unused-argument
+    def delete_user(self, request, pk=None) -> Response:  # pylint: disable=unused-argument
         """
         Delete a user by id
         """
