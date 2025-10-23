@@ -13,12 +13,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 DEBUG = os.getenv("DEBUG", "1") == "1"
 SECRET_KEY = os.getenv("SECRET_KEY", "dev-secret")
-# SESSION_COOKIE_AGE = os.getenv("SESSION_COOKIE_AGE", str(30 * 60))  # defaults to 30 minutes
+SESSION_COOKIE_AGE = os.getenv("SESSION_COOKIE_AGE", str(30 * 60))  # defaults to 30 minutes
+IDLE_TIMEOUT_SECONDS = os.getenv("IDLE_TIMEOUT_SECONDS", str(30 * 60))  # defaults to 30 minutes
 # Refresh expiry on every request (rolling inactivity timeout)
-# SESSION_SAVE_EVERY_REQUEST = os.getenv("SESSION_SAVE_EVERY_REQUEST", "1")
-# SESSION_EXPIRE_AT_BROWSER_CLOSE affects also page reload
-# SESSION_EXPIRE_AT_BROWSER_CLOSE = os.getenv("SESSION_EXPIRE_AT_BROWSER_CLOSE", "1")  # or True if you prefer
-# SESSION_COOKIE_SECURE = os.getenv("SESSION_COOKIE_SECURE", "1")  # if using HTTPS
+SESSION_SAVE_EVERY_REQUEST = os.getenv("SESSION_SAVE_EVERY_REQUEST", "1")
+# The property SESSION_EXPIRE_AT_BROWSER_CLOSE affects also page reload
+SESSION_EXPIRE_AT_BROWSER_CLOSE = os.getenv("SESSION_EXPIRE_AT_BROWSER_CLOSE", "1")  # or True if you prefer
+SESSION_COOKIE_SECURE = os.getenv("SESSION_COOKIE_SECURE", "1")  # if using HTTPS
 ALLOWED_HOSTS = ["*"]
 
 INSTALLED_APPS = [
@@ -46,6 +47,7 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "profiles.middleware.last_activity_middle_ware.LastActivityMiddleware",
+    "profiles.middleware.idle_timeout_middleware",
 ]
 
 ROOT_URLCONF = "core.urls"

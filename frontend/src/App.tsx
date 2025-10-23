@@ -1,17 +1,32 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Outlet, Link, Navigate, useLocation, useNavigate } from "react-router-dom";
 import { useAuthStore } from "./auth/store";
+import { bootstrapAuth } from "./auth/bootstrap";
 import Navbar from "./components/Navbar";
 
 export default function App() {
-  const { user, logout, accessToken } = useAuthStore();
+  const { user, accessToken } = useAuthStore();
   const navigate = useNavigate();
   const location = useLocation();
+  const [authReady, setAuthReady] = useState(false);
+
   useEffect(() => {
-    if (!user && location.pathname !== "/login") {
+    bootstrapAuth().finally(() => setAuthReady(true));
+  }, []);
+
+  useEffect(() => {
+    if (!authReady) return;
+    const hasTokens = !!(accessToken || localStorage.getItem("access"));
+    if (!user && !hasTokens && location.pathname !== "/login") {
       navigate("/login", { replace: true, state: { from: location } });
     }
-  }, [user, location, navigate]);
+  }, [authReady, user, accessToken, location, navigate]);
+
+  if (!authReady) {
+    // Prevent a flash-redirect to /login before hydration completes
+    return <div className="p-4">Loading…</div>;
+  }
+
   return (
     <div className="min-h-screen">
       <Navbar />
