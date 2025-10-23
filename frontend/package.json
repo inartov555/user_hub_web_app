@@ -20,7 +20,8 @@
     "lucide-react": "^0.456.0",
     "tailwind-merge": "^3.3.1",
     "zustand": "^4.5.2",
-    "xlsx": "0.18.5"
+    "xlsx": "0.18.5",
+    "jwt-decode": "^4.0.0"
   },
   "devDependencies": {
     "@types/react": "^18.3.6",
