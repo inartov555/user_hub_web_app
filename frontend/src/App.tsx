@@ -8,7 +8,7 @@ export default function App() {
   const navigate = useNavigate();
   const location = useLocation();
   useEffect(() => {
-    if (!user && !accessToken && location.pathname !== "/login") {
+    if (!user && location.pathname !== "/login") {
       navigate("/login", { replace: true, state: { from: location } });
     }
   }, [user, location, navigate]);
