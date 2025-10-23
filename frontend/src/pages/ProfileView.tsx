@@ -34,11 +34,9 @@ export default function ProfileView() {
         const resp = await api.get<Profile>("/me/profile/");
         if (!alive) return;
         const p = resp.data;
-        setData(p);
-        setFirstName(p.user.first_name || "");
-        setLastName(p.user.last_name || "");
-        setBio(p.bio || "");
+        setProfile(p);
         setError(null);
+        setLoading(false);
       } catch (e: any) {
         if (!alive) return;
         setError(e?.response?.data?.detail || e?.message || "Failed to load profile.");
