@@ -35,7 +35,7 @@ def _get_settings():
         "COOKIE_PATH": cfg.get("COOKIE_PATH"),
         "COOKIE_DOMAIN": cfg.get("COOKIE_DOMAIN"),
         "COOKIE_SAMESITE": cfg.get("COOKIE_SAMESITE"),
-        "COOKIE_SECURE": bool(cfg.get("COOKIE_SECURE"),
+        "COOKIE_SECURE": bool(cfg.get("COOKIE_SECURE")),
         "COOKIE_HTTPONLY": bool(cfg.get("COOKIE_HTTPONLY")),
     }
 

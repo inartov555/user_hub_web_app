@@ -29,23 +29,27 @@ class IdleTimeoutMiddleware(MiddlewareMixin):
         """
         Enforce inactivity timeout for the current request.
         """
-        if request.path.startswith("/api/"):
-            return None
-        if request.META.get("HTTP_AUTHORIZATION", "").startswith("Bearer "):
-            return None
-
-        # if you truly need it for server-rendered pages using sessions, keep the rest:
-        IDLE_TIMEOUT_SECONDS = getattr(settings, "IDLE_TIMEOUT_SECONDS", None)
-        if not IDLE_TIMEOUT_SECONDS:
+        # Skip for anonymous users or for endpoints you want to ignore
+        if not request.user.is_authenticated:
             return None
 
-        last = request.session.get("last_activity_ts")
         now = int(time.time())
-        request.session["last_activity_ts"] = now  # update on every request
+        last = request.session.get("last_activity_ts", now)
+        request.session["last_activity_ts"] = now  # always update
 
-        if last and now - last > IDLE_TIMEOUT_SECONDS:
+        if (now - last).total_seconds() > IDLE_TIMEOUT_SECONDS:
+            # Invalidate the session and logout the user
             auth.logout(request)
             request.session.flush()
-            # only apply to non-API pages (we already returned above for /api/)
-            return None
+
+            # For API requests, return 401 JSON; for normal pages, redirect if you prefer
+            if request.path.startswith("/api/"):
+                return JsonResponse(
+                    {"detail": "Session expired due to inactivity."},
+                    status=401
+                )
+            # For non-API, redirect:
+            # from django.shortcuts import redirect  # pylint: disable=import-outside-toplevel
+            # return redirect("login")
+
         return None
