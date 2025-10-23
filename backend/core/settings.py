@@ -3,13 +3,28 @@ Settings
 """
 
 import os
-from datetime import timedelta
 from pathlib import Path
 from dotenv import load_dotenv
 
 
 load_dotenv()
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+def env_tuple(name: str, default=()) -> tuple:
+    """
+    Getting tuple value from list property
+
+    Args:
+        name (str): the property value in format (comma separated): one,two,three
+        default (tuple): default value
+
+    Returns:
+        tuple
+    """
+    raw = os.getenv(name)
+    if raw is None or raw.strip() == "":
+        return tuple(default)
+    return tuple(p.strip() for p in raw.split(",") if p.strip())
 
 DEBUG = os.getenv("DEBUG", "1") == "1"
 # SESSION_COOKIE_AGE = os.getenv("SESSION_COOKIE_AGE", str(30 * 60))  # defaults to 30 minutes
@@ -41,7 +56,7 @@ BLACKLIST_AFTER_ROTATION = bool(os.getenv("BLACKLIST_AFTER_ROTATION", "1"))
 ALGORITHM = str(os.getenv("ALGORITHM", "HS256"))
 SECRET_KEY = str(os.getenv("SECRET_KEY", "dev-secret"))
 SIGNING_KEY = SECRET_KEY
-AUTH_HEADER_TYPES = list(os.getenv("AUTH_HEADER_TYPES", ["Bearer",]))
+AUTH_HEADER_TYPES = env_tuple(os.getenv("AUTH_HEADER_TYPES"), ("Bearer",))
 # Login session properties end
 ALLOWED_HOSTS = ["*"]
 
