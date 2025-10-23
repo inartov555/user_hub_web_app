@@ -27,26 +27,32 @@ export function extractApiError(err: unknown): { message: string; fields?: Recor
   }
 
   // If backend returned a plain string, show it
+  console.log("AQUI before data === string and server error: ")
   if (typeof data === "string") {
     return { message: data || (status ? `Server error (${status}).` : fallback.message) };
   }
 
+  console.log("AQUI before server error: ")
   if (!data) return { message: `Server error (${status}).` };
 
+  console.log("AQUI before data === object: ")
   // DRF common shapes
   if (typeof data === "object" && data !== null) {
     const fields: Record<string, string[]> = {};
 
     // detail
-    if ("detail" in data) {
+    if ("detail" in data && typeof data.detail === "string") {
       const d = (data as any).detail;
       if (typeof d === "string") {
+        console.log("AQUI type is string: ", d)
         return { message: d };
       }
       if (Array.isArray(d)) {
+        console.log("AQUI type is array: ", d)
         return { message: d.map(String).join(" ") };
       }
     }
+    console.log("AQUI after detail check: ")
     // collect field errors & non_field_errors
     let topMessage = "";
     for (const [k, v] of Object.entries(data)) {
