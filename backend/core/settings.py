@@ -47,7 +47,8 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "profiles.middleware.last_activity_middle_ware.LastActivityMiddleware",
-    "profiles.middleware.idle_timeout_middleware",
+    "profiles.middleware.jwt_authentication_middleware.JWTAuthenticationMiddleware",
+    "profiles.middleware.idle_timeout_middleware.IdleTimeoutMiddleware",
 ]
 
 ROOT_URLCONF = "core.urls"
