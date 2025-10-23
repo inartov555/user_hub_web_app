@@ -37,7 +37,7 @@ class IdleTimeoutMiddleware(MiddlewareMixin):
         last = request.session.get("last_activity_ts", now)
         request.session["last_activity_ts"] = now  # always update
 
-        if (now - last).total_seconds() > IDLE_TIMEOUT_SECONDS:
+        if now - last > IDLE_TIMEOUT_SECONDS:
             # Invalidate the session and logout the user
             auth.logout(request)
             request.session.flush()
