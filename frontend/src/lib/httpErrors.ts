@@ -26,16 +26,15 @@ export function extractApiError(err: unknown): { message: string; fields?: Recor
     data = anyErr?.data ?? anyErr?.response?.data ?? anyErr?.value?.data ?? anyErr;
   }
 
-  // If backend returned a plain string, show it
-  console.log("AQUI before data === string and server error: ")
-  if (typeof data === "string") {
-    return { message: data || (status ? `Server error (${status}).` : fallback.message) };
-  }
-
-  console.log("AQUI before server error: ")
   if (!data) return { message: `Server error (${status}).` };
+  /*
+    TODO: add text retrieving for the HTTP error when plain HTML is returned.
+    Example (but it returns plain HTML at the moment):
+    if (typeof data === "string") {
+      return { message: data || (status ? `Server error (${status}).` : fallback.message) };
+    }
+  */
 
-  console.log("AQUI before data === object: ")
   // DRF common shapes
   if (typeof data === "object" && data !== null) {
     const fields: Record<string, string[]> = {};
@@ -44,15 +43,12 @@ export function extractApiError(err: unknown): { message: string; fields?: Recor
     if ("detail" in data && typeof data.detail === "string") {
       const d = (data as any).detail;
       if (typeof d === "string") {
-        console.log("AQUI type is string: ", d)
         return { message: d };
       }
       if (Array.isArray(d)) {
-        console.log("AQUI type is array: ", d)
         return { message: d.map(String).join(" ") };
       }
     }
-    console.log("AQUI after detail check: ")
     // collect field errors & non_field_errors
     let topMessage = "";
     for (const [k, v] of Object.entries(data)) {
@@ -62,7 +58,6 @@ export function extractApiError(err: unknown): { message: string; fields?: Recor
         fields[k] = [v];
       }
     }
-
     // Prefer non_field_errors as top-level
     if (fields.non_field_errors?.length) {
       topMessage = fields.non_field_errors.join(" ");
