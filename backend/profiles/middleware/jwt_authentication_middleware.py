@@ -145,8 +145,6 @@ class JWTAuthenticationMiddleware:
 
         # Prefer a dedicated setting; fall back to legacy JWT_COOKIE value; default 0
         threshold = getattr(settings, "JWT_RENEW_AT_SECONDS", None)
-        if threshold is None:
-            threshold = (_get_settings().get("RENEW_AT_SECONDS") or 0)
         try:
             threshold_int = int(threshold)
         except (TypeError, ValueError):
