@@ -112,7 +112,7 @@ export default function ExcelImportPanel() {
           </button>
 
           {/* If you rely on cookie auth, a plain anchor works: href={`${api.defaults.baseURL}/import-excel/`} */}
-          {user ? (
+          {accessToken ? (
             <button className="btn btn-ghost px-4 py-2 rounded-xl border" onClick={downloadTemplate}>
               Download template
             </button>
