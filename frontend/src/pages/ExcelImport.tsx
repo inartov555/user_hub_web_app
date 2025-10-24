@@ -27,8 +27,12 @@ export default function ExcelImportPanel() {
   const onFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setMessage(null);
     setSummary(null);
-    const f = e.target.files?.[0] || null;
+    const input = e.currentTarget;
+    const f = input.files?.[0] || null;
     setFile(f);
+
+    // Allow choosing the same file again later while keeping the current selection visible now
+    input.value = "";
   };
 
   async function onSubmit(e: React.FormEvent) {
@@ -47,16 +51,10 @@ export default function ExcelImportPanel() {
         // onUploadProgress: (e) => { /* optional progress */ },
       });
 
-      const result = resp?.data ?? null;
-      setSummary(resp?.data?.result ?? resp?.data);
-      setMessage("Import finished successfully");
-      if (inputRef.current) inputRef.current.value = "";
-      setFile(null);
-
-      const payload = resp.data;
+      const payload = resp?.data;
       setSummary(payload?.result ?? payload);
       setMessage("Import finished successfully");
-      // Clear chosen file
+      // Clear chosen file for the next upload
       if (inputRef.current) inputRef.current.value = "";
       setFile(null);
     } catch (err: any) {
@@ -103,11 +101,6 @@ export default function ExcelImportPanel() {
           accept=".xlsx,.xls,.csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel,text/csv"
           name="file"
           onChange={onFileChange}
-          onClick={(e) => {
-            // ensure selecting the same file twice still fires onChange
-            (e.currentTarget as HTMLInputElement).value = "";
-            setFile(null);
-          }}
           className="block w-full text-sm file:mr-3 file:py-2 file:px-3 file:rounded-xl file:border file:bg-gray-50 file:hover:bg-gray-100 file:cursor-pointer"
         />
         {file && (
