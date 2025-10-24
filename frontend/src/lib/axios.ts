@@ -18,13 +18,23 @@ function onRefreshed(token: string|null) {
 }
 
 api.interceptors.request.use((config: InternalAxiosRequestConfig) => {
-  const token = useAuthStore.getState().accessToken || localStorage.getItem("access");
-  if (token) {
-    if (!config.headers) config.headers = new AxiosHeaders();
-    if (config.headers instanceof AxiosHeaders && !config.headers?.Authorization) {
-      config.headers.set("Authorization", `Bearer ${token}`);
+  // Do NOT attach Authorization on JWT endpoints
+  const url = (config.url || "").toString();
+  const isJwtEndpoint =
+    url.includes("/auth/jwt/refresh/") ||
+    url.includes("/auth/jwt/create/") ||
+    url.includes("/auth/jwt/verify/");
+
+  if (!isJwtEndpoint) {
+    const token = useAuthStore.getState().accessToken || localStorage.getItem("access");
+    if (token) {
+      if (!config.headers) config.headers = new AxiosHeaders();
+      if (config.headers instanceof AxiosHeaders && !config.headers?.Authorization) {
+        config.headers.set("Authorization", `Bearer ${token}`);
+      }
     }
   }
+
   return config;
 });
 
