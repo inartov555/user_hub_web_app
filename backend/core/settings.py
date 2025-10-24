@@ -37,7 +37,7 @@ DEBUG = os.getenv("DEBUG", "1") == "1"
 # SESSION_COOKIE_SECURE = os.getenv("SESSION_COOKIE_SECURE", "1")  # if using HTTPS
 
 # Login session properties start
-
+JWT_RENEW_AT_SECONDS=int(os.getenv("JWT_RENEW_AT_SECONDS", "100"))
 # This becomes your idle timeout window (example: 1800 seconds (30 minutes))
 # If the user is inactive for > IDLE_TIMEOUT_SECONDS seconds, their refresh expires and the session ends.
 IDLE_TIMEOUT_SECONDS = int(os.getenv("IDLE_TIMEOUT_SECONDS", "60"))
@@ -155,6 +155,7 @@ SIMPLE_JWT = {
     "BLACKLIST_AFTER_ROTATION": BLACKLIST_AFTER_ROTATION,
     "ALGORITHM": ALGORITHM,
     "AUTH_HEADER_TYPES": AUTH_HEADER_TYPES,
+    "RENEW_AT_SECONDS": JWT_RENEW_AT_SECONDS,
 }
 
 SPECTACULAR_SETTINGS = {

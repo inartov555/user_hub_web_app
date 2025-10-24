@@ -86,8 +86,8 @@ class JWTAuthenticationMiddleware:
             try:
                 access_token_obj = AccessToken(access)
                 user = self._user_from_token(access_token_obj)
-                # Proactive refresh if near expiry
-                if self._should_renew(access_token_obj) and refresh:
+                # Proactive refresh if near expiry (only if a refresh token mechanism exists)
+                if refresh and self._should_renew(access_token_obj):
                     self._refresh_from_refresh(refresh, request)
             except (TokenError, InvalidToken):
                 # Try refresh if access expired/invalid but we have refresh
@@ -142,8 +142,17 @@ class JWTAuthenticationMiddleware:
         # token['exp'] is a UNIX timestamp
         exp_ts = int(token["exp"])
         now_ts = int(timezone.now().timestamp())
-        threshold = _get_settings()["RENEW_AT_SECONDS"]
-        return (exp_ts - now_ts) <= max(0, threshold)
+
+        # Prefer a dedicated setting; fall back to legacy JWT_COOKIE value; default 0
+        threshold = getattr(settings, "JWT_RENEW_AT_SECONDS", None)
+        if threshold is None:
+            threshold = (_get_settings().get("RENEW_AT_SECONDS") or 0)
+        try:
+            threshold_int = int(threshold)
+        except (TypeError, ValueError):
+            threshold_int = 0
+
+        return (exp_ts - now_ts) <= max(0, threshold_int)
 
     def _refresh_from_refresh(self, refresh_str: str, request):
         rt = RefreshToken(refresh_str)
