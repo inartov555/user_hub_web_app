@@ -43,7 +43,7 @@ export default function ExcelImportPanel() {
       form.append("file", file);
 
       const resp = await api.post(`/import-excel/`, form, {
-        headers: user ? { Authorization: `Bearer ${user}`, "Content-Type": `multipart/form-data` } : undefined,
+        headers: user ? { Authorization: `Bearer ${user}` } : undefined,
         // onUploadProgress: (e) => { /* optional progress */ },
       });
 
@@ -100,7 +100,8 @@ export default function ExcelImportPanel() {
         <input
           ref={inputRef}
           type="file"
-          accept=".xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+          accept=".xlsx,.xls,.csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel,text/csv"
+          name="file"
           onChange={onFileChange}
           className="block w-full text-sm file:mr-3 file:py-2 file:px-3 file:rounded-xl file:border file:bg-gray-50 file:hover:bg-gray-100 file:cursor-pointer"
         />
