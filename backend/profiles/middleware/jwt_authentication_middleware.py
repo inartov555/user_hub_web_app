@@ -79,33 +79,12 @@ class JWTAuthenticationMiddleware:
         # (Clients should call the refresh endpoint and then resend with a new access token.)
         refresh: Optional[str] = None
 
-        access_token_obj = None
-
         if access:
             try:
                 access_token_obj = AccessToken(access)
-                user = self._user_from_token(access_token_obj)
                 # Proactive refresh if near expiry (only if a refresh token mechanism exists)
                 if refresh and self._should_renew(access_token_obj):
                     self._refresh_from_refresh(refresh, request)
-            except (TokenError, InvalidToken):
-                # Try refresh if access expired/invalid but we have refresh
-                if refresh:
-                    try:
-                        self._refresh_from_refresh(refresh, request)
-                        # decode the new access to set user
-                        access_token_obj = AccessToken(request.new_access_token)  # type: ignore[arg-type]
-                        user = self._user_from_token(access_token_obj)
-                    except (TokenError, InvalidToken):
-                        request.jwt_auth_failed = True
-                else:
-                    request.jwt_auth_failed = True
-        elif refresh:
-            # No access but we have a refresh cookie → attempt refresh
-            try:
-                self._refresh_from_refresh(refresh, request)
-                access_token_obj = AccessToken(request.new_access_token)  # type: ignore[arg-type]
-                user = self._user_from_token(access_token_obj)
             except (TokenError, InvalidToken):
                 request.jwt_auth_failed = True
         response = self.get_response(request)
