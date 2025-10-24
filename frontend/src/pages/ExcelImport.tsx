@@ -2,6 +2,7 @@ import React, { useState, useRef } from "react";
 import { api } from "../lib/axios";
 import { extractApiError } from "../lib/httpErrors";
 import { useAuthStore } from "../auth/store";
+import { Input } from "../components/input";
 
 // Tailwind + shadcn/ui-style minimal UI without extra deps
 // Drop this component anywhere in your frontend. It provides:
@@ -21,6 +22,7 @@ export default function ExcelImportPanel() {
     errors: { row: number; msg: string }[];
   }>(null);
   const inputRef = useRef<HTMLInputElement | null>(null);
+  const [inputKey, setInputKey] = useState(0);
   const { accessToken } = useAuthStore();
   const [error, setError] = useState<string | null>(null);
 
@@ -28,8 +30,8 @@ export default function ExcelImportPanel() {
     setMessage(null);
     setSummary(null);
     const input = e.currentTarget;
-    const f = input.files?.[0] || null;
-    setFile(f);
+    const a_file = input.files?.[0] || null;
+    setFile(a_file);
   };
 
   async function onSubmit(e: React.FormEvent) {
@@ -44,16 +46,17 @@ export default function ExcelImportPanel() {
       form.append("file", file);
 
       const resp = await api.post(`/import-excel/`, form, {
-        headers: accessToken ? { Authorization: `Bearer ${accessToken}` } : undefined,
+        headers: accessToken ? { Authorization: `Bearer ${accessToken}`, "Content-Type": `multipart/form-data` } : undefined,
         // onUploadProgress: (e) => { /* optional progress */ },
       });
 
       const payload = resp?.data;
       setSummary(payload?.result ?? payload);
       setMessage("Import finished successfully");
-      // Clear chosen file for the next upload
-      if (inputRef.current) inputRef.current.value = "";
+
+      // Reset the input for the *next* upload (without interfering with current display)
       setFile(null);
+      setInputKey((k) => k + 1);
     } catch (err: any) {
       setMessage(err.message || "Import failed");
       const parsed = extractApiError(err as unknown);
@@ -67,7 +70,7 @@ export default function ExcelImportPanel() {
     e.preventDefault();
     try {
       const resp = await api.get(`/import-excel/`, {
-        headers: accessToken ? { Authorization: `Bearer ${accessToken}` } : undefined,
+        headers: accessToken ? { Authorization: `Bearer ${accessToken}`, "Content-Type": `multipart/form-data` } : undefined,
         responseType: "blob",
       });
       const fileBlob = new Blob([resp.data]);
@@ -92,17 +95,19 @@ export default function ExcelImportPanel() {
       <p className="text-sm text-gray-600 mb-4">Upload an .xlsx file with columns: <code>first_name</code>, <code>last_name</code>, <code>email</code>.</p>
 
       <form onSubmit={onSubmit} className="space-y-3">
-        <input
+        <Input
+          key={inputKey}
           ref={inputRef}
           type="file"
-          accept=".xlsx,.xls,.csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel,text/csv"
           name="file"
+          accept=".xlsx,.xls,.csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel,text/csv"
           onChange={onFileChange}
-          onClick={(e) => {
-            // allow choosing the SAME file again (clears previous selection before dialog opens)
-            (e.currentTarget as HTMLInputElement).value = "";
-          }}
-          className="block w-full text-sm file:mr-3 file:py-2 file:px-3 file:rounded-xl file:border file:bg-gray-50 file:hover:bg-gray-100 file:cursor-pointer"
+          onClick={(e) => { (e.currentTarget as HTMLInputElement).value = ""; }} // allow re-select same file
+          className="
+            block w-full text-sm text-gray-900 !appearance-auto
+            file:mr-3 file:py-2 file:px-3 file:rounded-xl file:border
+            file:bg-gray-50 file:hover:bg-gray-100 file:cursor-pointer
+          "
         />
         {file && (
           <div className="text-sm text-gray-600 mt-1">Selected: {file.name}</div>
