@@ -21,7 +21,7 @@ export default function ExcelImportPanel() {
     errors: { row: number; msg: string }[];
   }>(null);
   const inputRef = useRef<HTMLInputElement | null>(null);
-  const { user, logout } = useAuthStore();
+  const { accessToken } = useAuthStore();
   const [error, setError] = useState<string | null>(null);
 
   const onFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -43,7 +43,7 @@ export default function ExcelImportPanel() {
       form.append("file", file);
 
       const resp = await api.post(`/import-excel/`, form, {
-        headers: user ? { Authorization: `Bearer ${user}` } : undefined,
+        headers: accessToken ? { Authorization: `Bearer ${accessToken}` } : undefined,
         // onUploadProgress: (e) => { /* optional progress */ },
       });
 
@@ -72,7 +72,7 @@ export default function ExcelImportPanel() {
     e.preventDefault();
     try {
       const resp = await api.get(`/import-excel/`, {
-        headers: user ? { Authorization: `Bearer ${user}` } : undefined,
+        headers: accessToken ? { Authorization: `Bearer ${accessToken}` } : undefined,
         responseType: "blob",
       });
       const fileBlob = new Blob([resp.data]);
