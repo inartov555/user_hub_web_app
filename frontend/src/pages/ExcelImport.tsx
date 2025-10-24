@@ -30,9 +30,6 @@ export default function ExcelImportPanel() {
     const input = e.currentTarget;
     const f = input.files?.[0] || null;
     setFile(f);
-
-    // Allow choosing the same file again later while keeping the current selection visible now
-    input.value = "";
   };
 
   async function onSubmit(e: React.FormEvent) {
@@ -60,7 +57,7 @@ export default function ExcelImportPanel() {
     } catch (err: any) {
       setMessage(err.message || "Import failed");
       const parsed = extractApiError(err as unknown);
-      setError(`Excel template download failure: ${parsed.message}`);
+      setError(`Excel upload failure: ${parsed.message}`);
     } finally {
       setSubmitting(false);
     }
@@ -85,7 +82,7 @@ export default function ExcelImportPanel() {
     } catch (err) {
       setMessage((err as Error).message || "Failed to download template");
       const parsed = extractApiError(err as unknown);
-      setError(`Excel upload failure: ${parsed.message}`);
+      setError(`Excel template download failure: ${parsed.message}`);
     }
   }
 
@@ -101,6 +98,10 @@ export default function ExcelImportPanel() {
           accept=".xlsx,.xls,.csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel,text/csv"
           name="file"
           onChange={onFileChange}
+          onClick={(e) => {
+            // allow choosing the SAME file again (clears previous selection before dialog opens)
+            (e.currentTarget as HTMLInputElement).value = "";
+          }}
           className="block w-full text-sm file:mr-3 file:py-2 file:px-3 file:rounded-xl file:border file:bg-gray-50 file:hover:bg-gray-100 file:cursor-pointer"
         />
         {file && (
