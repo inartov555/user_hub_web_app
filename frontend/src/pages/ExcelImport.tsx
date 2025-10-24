@@ -7,7 +7,7 @@ import { useAuthStore } from "../auth/store";
 // Drop this component anywhere in your frontend. It provides:
 // - File picker + submit to POST /api/import-excel/
 // - "Download template" that calls GET /api/import-excel/ (same endpoint) and downloads the .xlsx
-// - Uses Bearer token (Authorization header) from localStorage
+// - Works with either cookie-based auth (simple link) or Bearer token (programmatic fetch)
 // - Shows success summary (created/updated/errors)
 
 export default function ExcelImportPanel() {
@@ -21,7 +21,7 @@ export default function ExcelImportPanel() {
     errors: { row: number; msg: string }[];
   }>(null);
   const inputRef = useRef<HTMLInputElement | null>(null);
-  const { accessToken } = useAuthStore();
+  const { user, logout } = useAuthStore();
   const [error, setError] = useState<string | null>(null);
 
   const onFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -43,7 +43,8 @@ export default function ExcelImportPanel() {
       form.append("file", file);
 
       const resp = await api.post(`/import-excel/`, form, {
-        headers: accessToken ? { Authorization: `Bearer ${accessToken}` } : undefined,
+        headers: user ? { Authorization: `Bearer ${user}`, "Content-Type": `multipart/form-data` } : undefined,
+        withCredentials: !user, // cookie-based auth if no token
         // onUploadProgress: (e) => { /* optional progress */ },
       });
 
@@ -72,7 +73,8 @@ export default function ExcelImportPanel() {
     e.preventDefault();
     try {
       const resp = await api.get(`/import-excel/`, {
-        headers: accessToken ? { Authorization: `Bearer ${accessToken}` } : undefined,
+        headers: user ? { Authorization: `Bearer ${user}` } : undefined,
+        withCredentials: !user,
         responseType: "blob",
       });
       const fileBlob = new Blob([resp.data]);
@@ -94,25 +96,16 @@ export default function ExcelImportPanel() {
   return (
     <div className="max-w-xl mx-auto p-4 rounded-2xl shadow bg-white border">
       <h2 className="text-xl font-semibold mb-3">Excel import</h2>
-      <p className="text-sm text-gray-600 mb-4">Upload an .xlsx file with columns: <code>first_name</code>, <code>last_name</code>, <code>email</code>.</p>
+      <p className="text-sm text-gray-600 mb-4">Upload an .xlsx file with columns: <code>first_name</code>, <code>last_name</code>, <code>email</code>, <code>phone</code>.</p>
 
       <form onSubmit={onSubmit} className="space-y-3">
         <input
           ref={inputRef}
           type="file"
-          accept=".xlsx,.xls,.csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel,text/csv"
-          name="file"
+          accept=".xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
           onChange={onFileChange}
-          onClick={(e) => {
-            // ensure selecting the same file twice still fires onChange
-            (e.currentTarget as HTMLInputElement).value = "";
-            setFile(null);
-          }}
           className="block w-full text-sm file:mr-3 file:py-2 file:px-3 file:rounded-xl file:border file:bg-gray-50 file:hover:bg-gray-100 file:cursor-pointer"
         />
-        {file && (
-          <div className="text-sm text-gray-600 mt-1">Selected: {file.name}</div>
-        )}
 
         <div className="flex gap-2">
           <button className="btn px-4 py-2 rounded-xl bg-black text-white disabled:opacity-50" type="submit" disabled={!file || submitting}>
@@ -120,7 +113,7 @@ export default function ExcelImportPanel() {
           </button>
 
           {/* If you rely on cookie auth, a plain anchor works: href={`${api.defaults.baseURL}/import-excel/`} */}
-          {accessToken ? (
+          {user ? (
             <button className="btn btn-ghost px-4 py-2 rounded-xl border" onClick={downloadTemplate}>
               Download template
             </button>
