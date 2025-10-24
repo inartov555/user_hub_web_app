@@ -109,7 +109,7 @@ class JWTAuthenticationMiddleware:
                 user = self._user_from_token(access_token_obj)
             except (TokenError, InvalidToken):
                 request.jwt_auth_failed = True
-
+        response = self.get_response(request)
         return response
 
     # --- token extractors (header-only) ---
