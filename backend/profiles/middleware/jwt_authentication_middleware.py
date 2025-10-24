@@ -12,9 +12,7 @@ from typing import Optional
 
 from django.conf import settings
 from django.contrib.auth import get_user_model
-from django.contrib.auth.models import AnonymousUser
 from django.utils import timezone
-from django.utils.functional import SimpleLazyObject
 from django.db import DatabaseError, IntegrityError
 from rest_framework_simplejwt.tokens import AccessToken, RefreshToken
 from rest_framework_simplejwt.exceptions import TokenError, InvalidToken
@@ -77,9 +75,10 @@ class JWTAuthenticationMiddleware:
         request.jwt_auth_failed: bool = False
 
         access = self._get_access_from_request(request)
-        refresh = self._get_refresh_from_request(request)
+        # We do NOT auto-refresh in middleware anymore. Always return None.
+        # (Clients should call the refresh endpoint and then resend with a new access token.)
+        refresh: Optional[str] = None
 
-        user = None
         access_token_obj = None
 
         if access:
@@ -123,13 +122,6 @@ class JWTAuthenticationMiddleware:
         parts = auth.split()
         if len(parts) == 2 and parts[0].lower() == "bearer":
             return parts[1]
-        return None
-
-    def _get_refresh_from_request(self, request) -> Optional[str]:
-        """
-        We do NOT auto-refresh in middleware anymore. Always return None.
-        (Clients should call the refresh endpoint and then resend with a new access token.)
-        """
         return None
 
     def _user_from_token(self, token: AccessToken):
