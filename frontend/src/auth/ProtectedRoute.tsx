@@ -37,7 +37,8 @@ export default function ProtectedRoute() {
     }
   }, [mustRedirect, location.pathname, location.search, location.hash]);
 
-  if (!ready) return null; // or a tiny spinner
+  // This line may affect rendering, e.g. some input elements cannot be filled with data
+  // if (!ready) return null; // or a tiny spinner
 
   return (
     <>

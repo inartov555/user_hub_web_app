@@ -30,13 +30,13 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
             <Route path="login" element={<Login />} />
             <Route path="signup" element={<Signup />} />
             <Route path="reset-password" element={<ResetPassword />} />
-            <Route path="import-excel" element={<ExcelImport />} />
             {/* Protected routes */}
             <Route element={<ProtectedRoute />}>
               <Route path="profile-edit" element={<ProfileEdit />} />
               <Route path="profile-view" element={<ProfileView />} />
               <Route path="users" element={<UsersTable />} />
               <Route path="stats" element={<Stats />} />
+              <Route path="import-excel" element={<ExcelImport />} />
               <Route path="/users/:id/change-password" element={<ChangePassword />} />
               <Route path="/users/confirm-delete" element={<UserDeleteConfirm />} />
             </Route>

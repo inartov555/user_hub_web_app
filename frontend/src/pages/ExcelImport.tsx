@@ -31,6 +31,7 @@ export default function ExcelImportPanel() {
     setSummary(null);
     const input = e.currentTarget;
     const a_file = input.files?.[0] || null;
+    console.log('picked:', a_file?.name);
     setFile(a_file);
   };
 
