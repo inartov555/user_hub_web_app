@@ -103,8 +103,16 @@ export default function ExcelImportPanel() {
           accept=".xlsx,.xls,.csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel,text/csv"
           name="file"
           onChange={onFileChange}
+          onClick={(e) => {
+            // ensure selecting the same file twice still fires onChange
+            (e.currentTarget as HTMLInputElement).value = "";
+            setFile(null);
+          }}
           className="block w-full text-sm file:mr-3 file:py-2 file:px-3 file:rounded-xl file:border file:bg-gray-50 file:hover:bg-gray-100 file:cursor-pointer"
         />
+        {file && (
+          <div className="text-sm text-gray-600 mt-1">Selected: {file.name}</div>
+        )}
 
         <div className="flex gap-2">
           <button className="btn px-4 py-2 rounded-xl bg-black text-white disabled:opacity-50" type="submit" disabled={!file || submitting}>
