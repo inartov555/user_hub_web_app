@@ -2,7 +2,7 @@ import { useState } from "react";
 import { api } from "../lib/axios";
 import { useAuthStore } from "../auth/store";
 import FormInput from "../components/FormInput";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { extractApiError } from "../lib/httpErrors";
 
 export default function Login() {
@@ -11,6 +11,7 @@ export default function Login() {
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
   const { setTokens, setUser, user } = useAuthStore();
+  const { pathname } = useLocation();
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -22,7 +23,7 @@ export default function Login() {
       navigate("/users", { replace: true }); // navigating to /users and clearing back history
     } catch (err: any) {
       const parsed = extractApiError(err as unknown);
-      setError(`Signup failure: ${parsed.message}`);
+      setError(`Login failure: ${parsed.message}`);
     }
   }
 

@@ -46,6 +46,17 @@ api.interceptors.response.use(
       return Promise.reject(error);
     }
 
+    // Do NOT treat 401s from auth endpoints as session expiry
+    const url = (config.url || "").toString();
+    const isJwtEndpoint =
+      url.includes("/auth/jwt/refresh/") ||
+      url.includes("/auth/jwt/create/") ||
+      url.includes("/auth/jwt/verify/");
+    if (isJwtEndpoint) {
+      // Let the caller (e.g., Login.tsx) show the error message
+      return Promise.reject(error);
+    }
+
     // prevent stampede
     if (isRefreshing) {
       return new Promise((resolve, reject) => {
