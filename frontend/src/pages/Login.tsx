@@ -18,8 +18,10 @@ export default function Login() {
       const { data: tokens } = await api.post("/auth/jwt/create/", { username, password });
       setTokens(tokens.access, tokens.refresh);
       const { data: me } = await api.get("/auth/users/me/");
-      setUser(me);
-      navigate("/users", { replace: true }); // navigating to /users and clearing back history
+      if (me) {
+        setUser(me);
+        navigate("/users", { replace: true }); // navigating to /users and clearing back history
+      }
     } catch (err: any) {
       const parsed = extractApiError(err as unknown);
       setError(`Signup failure: ${parsed.message}`);

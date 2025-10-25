@@ -26,12 +26,12 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
           {/* App layout wrapper */}
           <Route path="/" element={<App />}>
             {/* Public routes */}
-            <Route index element={<Navigate to="/users" replace />} />
             <Route path="login" element={<Login />} />
             <Route path="signup" element={<Signup />} />
             <Route path="reset-password" element={<ResetPassword />} />
             {/* Protected routes */}
             <Route element={<ProtectedRoute />}>
+              <Route index element={<Navigate to="/users" replace />} />
               <Route path="profile-edit" element={<ProfileEdit />} />
               <Route path="profile-view" element={<ProfileView />} />
               <Route path="users" element={<UsersTable />} />
