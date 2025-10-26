@@ -28,66 +28,7 @@
 
 ## API Endpoints Overview
 
-This document lists all API endpoints used by the application, grouped by functionality.  
-Base URL: `${VITE_API_URL}` (defaults to `/api`)
-
----
-
-## 🔐 Auth (Djoser + JWT)
-
-| Method | Endpoint | Description |
-|---------|-----------|-------------|
-| **POST** | `/api/auth/jwt/create/` | Obtain access and refresh tokens |
-| **POST** | `/api/auth/jwt/refresh/` | Refresh access token (used by Axios interceptor) |
-| **GET**  | `/api/auth/users/me/` | Get current user info |
-| **POST** | `/api/auth/users/` | Sign up a new user |
-| **POST** | `/api/auth/users/reset_password/` | Request password reset |
-
----
-
-## 👤 Profile (Current User)
-
-| Method | Endpoint | Description |
-|---------|-----------|-------------|
-| **GET**   | `/api/me/profile/` | Fetch own profile |
-| **PATCH** | `/api/me/profile/` | Update own profile (supports multipart for avatar, etc.) |
-
----
-
-## 👥 Users (Admin-Facing)
-
-| Method | Endpoint | Description |
-|---------|-----------|-------------|
-| **GET**    | `/api/users/` | List users (paginated, sortable) |
-| **DELETE** | `/api/users/{id}/` | Delete a single user |
-| **POST**   | `/api/users/bulk-delete/` | Delete multiple users |
-| **POST**   | `/api/users/{id}/set-password/` | Set a user’s password |
-
----
-
-## 📊 Excel Import (Admin)
-
-| Method | Endpoint | Description |
-|---------|-----------|-------------|
-| **GET**  | `/api/import-excel/` | Download the Excel template |
-| **POST** | `/api/import-excel/` | Upload Excel to create/update users (multipart) |
-
----
-
-## 📈 Stats
-
-| Method | Endpoint | Description |
-|---------|-----------|-------------|
-| **GET** | `/api/stats/online-users/` | Retrieve online users metric |
-
----
-
-## 🧩 Developer Utilities
-
-| Method | Endpoint | Description |
-|---------|-----------|-------------|
-| **GET** | `/api/schema/` | OpenAPI schema |
-| **GET** | `/api/docs/` | Swagger UI |
+API details can be found in [.api_reference.md](.api_reference.md)
 
 ---
 
