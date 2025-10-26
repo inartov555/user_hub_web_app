@@ -1,3 +1,12 @@
+# API Reference
+
+> **Base URL**
+>
+> The frontend talks to the backend via Axios with `baseURL = import.meta.env.VITE_API_URL` (defaulting to `/api` during local dev).  
+> In this README all paths are shown **relative to** `/api` (so `/auth/jwt/create/` really means `https://<host>/api/auth/jwt/create/`).
+
+---
+
 # API Overview (Quick Tables)
 
 🔐 **Auth (Djoser + JWT)**
@@ -39,15 +48,6 @@
 |-------:|----------------|----------------|
 | GET    | /api/schema/   | OpenAPI schema |
 | GET    | /api/docs/     | Swagger UI     |
-
----
-
-# API Reference
-
-> **Base URL**
->
-> The frontend talks to the backend via Axios with `baseURL = import.meta.env.VITE_API_URL` (defaulting to `/api` during local dev).  
-> In this README all paths are shown **relative to** `/api` (so `/auth/jwt/create/` really means `https://<host>/api/auth/jwt/create/`).
 
 ---
 

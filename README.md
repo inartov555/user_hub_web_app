@@ -28,7 +28,7 @@
 
 ## API Endpoints Overview
 
-API details can be found in [.api_reference.md](.api_reference.md)
+- API details can be found in [.api_reference.md](.api_reference.md)
 
 ---
 

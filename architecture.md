@@ -1,189 +1,127 @@
-# Project Architecture Overview
+## Project Architecture Overview
 
-This project is a typical **3‑container single‑page application (SPA)**:  
-**Frontend (Vite/React)** ↔ **Backend (Django REST Framework)** ↔ **PostgreSQL**, all orchestrated with **Docker Compose**.
+This repository implements a **3‑service, containerised SPA**:
+
+```
+[ Browser SPA ]  ──HTTP──>  [ Nginx (frontend) ]  ──/api/*──>  [ Django REST API ]  ──SQL──>  [ PostgreSQL ]
+       |                              |                             |
+   React + TS +                       |                             |-- DRF Spectacular (OpenAPI)
+   TanStack Query                     |                             |-- Djoser + SimpleJWT (JWT auth)
+   Zustand auth state                 |                             |-- Profiles app (users/profiles)
+```
+
+- **Frontend**: Vite + React + TypeScript + Tailwind, built into static assets and served by **Nginx**.  
+  Nginx proxies `/api/` to the backend container; all other routes serve the SPA (`index.html`) to support refresh/deep links.
+- **Backend**: Django 5 + DRF + Djoser + **SimpleJWT**, plus the `profiles` domain app.  
+  Two custom middlewares were added recently:
+  - `LastActivityMiddleware` – updates `profile.last_activity` for each authenticated request.
+  - `JWTAuthenticationMiddleware` – _stateless_ header‑based auth; extracts/validates **Access** tokens from `Authorization: Bearer …`.  
+    It does **not** manage cookies; refresh is performed via the `/api/auth/jwt/refresh/` endpoint from the client.
+- **Database**: PostgreSQL 16 with a named Docker volume (`pgdata`) for persistence.
 
 ---
 
-## 📁 Project Structure
+## Top‑Level Layout
 
 ```
 user_hub_web_app/
 ├─ docker-compose.yml
 ├─ backend/
-│  ├─ core/                # Base Django configuration (settings, urls, wsgi)
-│  └─ profiles/            # User domain + API
-└─ frontend/               # Vite + React + TypeScript + Tailwind SPA
+│  ├─ core/               # Django project (settings, urls, wsgi)
+│  └─ profiles/           # Users/Profile domain, serializers, views, middleware
+└─ frontend/              # Vite React app, built and served by Nginx
+```
+
+### Containers & Ports
+
+| Service     | Image/Build                     | Port (host→container) | Notes |
+|-------------|----------------------------------|-----------------------|------|
+| `db`        | `postgres:16`                   | `5432 → 5432`         | Database `usersdb` |
+| `backend`   | `python:3.12-slim` (multi‑stage) | `8000 → 8000`         | Runs `python manage.py runserver 0.0.0.0:8000` (swap to Gunicorn for prod) |
+| `frontend`  | build with Node 20 → `nginx:1.27` | `5173 → 80`           | Serves SPA and proxies `/api/` to `backend:8000` |
+
+**Nginx proxy rule (excerpt):**
+```nginx
+location /api/ { proxy_pass http://backend:8000/api/; }
+location /      { try_files $uri /index.html; }  # SPA fallback
 ```
 
 ---
 
-## 🐳 Infrastructure (Docker Compose)
+## Backend Details
 
-### Services
-- **db** — `postgres:16`  
-  Database `usersdb`, user/password `users`, persistent volume `pgdata`.
+- **Auth**: Djoser + SimpleJWT
+  - `POST /api/auth/jwt/create/` → obtain **access**/**refresh** tokens
+  - `POST /api/auth/jwt/refresh/` → obtain a new **access** token (optionally rotate refresh depending on settings)
+- **Schema/Docs**: DRF Spectacular
+  - `GET /api/schema/` (OpenAPI 3) and `GET /api/docs/` (Swagger UI)
+- **Profiles app**:
+  - `GET /api/users/` … standard CRUD via `UsersViewSet`
+  - `GET /api/me/profile/` … current user profile
+  - `GET /api/stats/online-users/` … users active within last **5 minutes** (uses `profile.last_activity`)
+  - `POST /api/import-excel/` … **bulk upsert** users & profiles from an uploaded Excel file
+- **Middleware**:
+  - `profiles.middleware.LastActivityMiddleware` – sets `Profile.last_activity = timezone.now()` after a successful authenticated request.
+  - `profiles.middleware.JWTAuthenticationMiddleware` – validates access tokens from headers; sets `request.user`; may expose `request.new_access_token` when nearing expiry (client still refreshes via API).
+- **Logging**:
+  - JSON config at `profiles/tools/logger/logging.json`. Root logger writes to a file handler; app logger name: `utaf`.
 
-- **backend** — built from `backend/Dockerfile`  
-  Runs Django development server (`python manage.py runserver 0.0.0.0:8000`).
-
-- **frontend** — built from `frontend/Dockerfile`  
-  Runs Vite dev server on port `5173`, exposes `VITE_API_URL=http://localhost:8000/api`.
-
-> ⚠️ Currently everything runs in **development mode**. For production, you would run Gunicorn/Uvicorn + Nginx and build the frontend statically.
-
----
-
-## 🧠 Backend (Django + DRF)
-
-### Core (`backend/core/`)
-
-- **settings.py**
-  - `INSTALLED_APPS`: `rest_framework`, `django_filters`, `corsheaders`, `djoser`, `drf_spectacular`, local `profiles`.
-  - **Database**: PostgreSQL (`POSTGRES_*` env vars).
-  - **CORS**: allowed origin from `FRONTEND_ORIGIN` (default `http://localhost:5173`).
-  - **DRF** defaults:
-    - Auth: `JWTAuthentication`
-    - Permissions: `IsAuthenticated`
-    - Filters: `DjangoFilterBackend`, `OrderingFilter`, `SearchFilter`
-    - Schema: `drf_spectacular`
-  - **JWT (SimpleJWT)**: access 15 min, refresh 7 days, rotation enabled.
-  - **Djoser**: login via email, custom serializers from `profiles.serializers`.
-  - **Middleware**: `profiles.middleware.LastActivityMiddleware` updates `last_activity` on each authenticated request.
-  - **MEDIA**: `MEDIA_URL=/media/`, `MEDIA_ROOT=BASE_DIR/media`.
-
-- **urls.py**
-  - `/admin/`
-  - `/api/schema/` and `/api/docs/` (Swagger / OpenAPI)
-  - `/api/auth/` — Djoser JWT endpoints
-  - `/api/` — app routes (`profiles.urls`)
+> Note: No Celery/Redis queue is used. Excel import runs within the request (synchronous).
 
 ---
 
-### App: `profiles/`
+## Frontend Details
 
-#### Models
-`Profile`: one‑to‑one with `User`, fields `bio`, `avatar`, `last_activity`.
-
-#### Signals
-Automatically create a `Profile` on new `User` creation (`post_save` signal).
-
-#### Middleware
-`LastActivityMiddleware` — updates `Profile.last_activity` for logged‑in users.
-
-#### Serializers
-- `UserSerializer`
-- `ProfileSerializer`
-- `ProfileUpdateSerializer` (writes both profile and nested user fields).
-
-#### API Views
-- `UsersViewSet(ReadOnlyModelViewSet)` — list/detail of users with filters, search, ordering, pagination.
-- `MeProfileView(RetrieveUpdateAPIView)` — `GET/PATCH /api/me/profile/`, multipart upload for avatar.
-- `ExcelUploadView(GenericAPIView)` — `POST /api/users/import-excel/`, bulk import/update from Excel (admin only).
-- `OnlineUsersView(ListAPIView)` — `GET /api/stats/online-users/`, users active in the last 5 minutes.
-
-#### Routing
-`backend/profiles/urls.py`:
-```python
-router.register("users", UsersViewSet)
-urlpatterns = [
-    path("me/profile/", MeProfileView.as_view()),
-    path("users/import-excel/", ExcelUploadView.as_view()),
-    path("stats/online-users/", OnlineUsersView.as_view()),
-]
-```
+- **Stack**: React + TypeScript, TailwindCSS, TanStack Query, React Router, Zustand.
+- **Base URL**: `VITE_API_URL` (Docker build ARG & env) – defaults to `/api`.
+- **Auth flow**:
+  1. User logs in via Djoser (`/api/auth/jwt/create/`).
+  2. Access token is attached in `Authorization: Bearer <token>`.
+  3. An Axios **response interceptor** handles `401` with `token_not_valid` by calling `/api/auth/jwt/refresh/` once, then retries the original request.  
+     If refresh fails, it clears Zustand auth state and navigates to `/login`.
+- **Online users UI**: `/stats` calls `/stats/online-users/` and lists users with activity in last 5 minutes.
 
 ---
 
-### Backend Request Flow
+## Environment & Configuration
 
-1. **Auth**: frontend calls `/api/auth/jwt/create/` → receives `access` + `refresh`.
-2. **API calls**: include `Authorization: Bearer <token>` header.
-3. On 401 → frontend silently refreshes via `/api/auth/jwt/refresh/`.
-4. **LastActivityMiddleware** updates `last_activity` each request.
-5. **Online stats** endpoint reads recent `last_activity` values.
+### Backend `.env` (see `backend/.env.example`)
+- `DEBUG=1`
+- Database connection envs (`POSTGRES_*`) are supplied by Compose networking.
+- SimpleJWT behaviour (expiry/rotation/blacklisting) is configured in `core/settings.py` via `SIMPLE_JWT` dict.
+- Static/media settings are standard; media is served in DEBUG only.
 
----
-
-## 💻 Frontend (Vite + React + TS + Tailwind)
-
-### Entry Points
-- `src/main.tsx` — sets up Router + React Query client + styles.
-- `src/App.tsx` — navbar and outlet for pages.
-
-### State / Auth (Zustand)
-`src/auth/store.ts` — stores `access`/`refresh` tokens and current `user` in localStorage.
-
-### HTTP Client (Axios)
-`src/lib/axios.ts`
-- `baseURL = import.meta.env.VITE_API_URL || "http://localhost:8000/api"`.
-- Interceptor adds `Authorization: Bearer` header.
-- On 401: refreshes token automatically and retries request.
-
-### React Query
-`src/lib/queryClient.ts` — global QueryClient for caching and invalidation.
-
-### Pages
-- `Login`, `Signup`, `ResetPassword` — Djoser auth forms.
-- `Profile` — view/update own profile (multipart avatar upload).
-- `UsersTable` — admin list of users using **TanStack Table** with sorting/search/column visibility.
-- `Stats` — list of online users (`/stats/online-users/`).
-
-### Components
-`Navbar`, `FormInput`, `ColumnVisibilityMenu`, etc.
-
-### Styling
-Tailwind CSS via `tailwind.config.js` + `postcss.config.js`.
+### Frontend build ARGs / env
+- `VITE_API_URL` (ex: `http://localhost:8000/api` in local‑non‑proxy setups).  
+  In Docker, Nginx proxies `/api/` so `VITE_API_URL` can remain `/api`.
 
 ---
 
-## 🌐 API Map
+## Local Development
 
-| Endpoint | Method | Description |
-|-----------|---------|-------------|
-| `/api/auth/jwt/create/` | POST | Login |
-| `/api/auth/jwt/refresh/` | POST | Refresh token |
-| `/api/users/` | GET | List users (admin) |
-| `/api/me/profile/` | GET/PATCH | Get or update current user's profile |
-| `/api/users/import-excel/` | POST | Bulk import users (admin) |
-| `/api/stats/online-users/` | GET | Online users |
-| `/api/docs/` | GET | Swagger UI |
-| `/api/schema/` | GET | OpenAPI spec |
-
----
-
-## 🧩 File Reference
-
-| File | Purpose |
-|------|----------|
-| `docker-compose.yml` | Infrastructure configuration |
-| `backend/core/settings.py` | Django settings |
-| `backend/core/urls.py` | Root API routing |
-| `backend/profiles/views.py` | API view classes |
-| `backend/profiles/serializers.py` | API serializers |
-| `backend/profiles/models.py` | Database models |
-| `backend/profiles/middleware.py` | Last activity tracker |
-| `frontend/src/*` | React app source |
-| `frontend/src/lib/axios.ts` | API client |
-| `frontend/src/auth/store.ts` | Auth state |
-| `frontend/tailwind.config.js` | Tailwind setup |
+- **Docker (recommended)**
+  - `./run_web_site.sh [delete_db=true|false] [no_cache=true|false]`
+  - Containers:
+    - Postgres with volume `pgdata`
+    - Backend served on `http://localhost:8000`
+    - Frontend+Nginx on `http://localhost:5173`
+- **Non‑Docker**
+  - Backend: create venv, `pip install -r backend/requirements.txt`, `python backend/manage.py runserver`.
+  - Frontend: `npm i` then `npm run dev` (ensure `VITE_API_URL=http://localhost:8000/api`).
 
 ---
 
-## ⚙️ Interaction Flow
+## Security Notes
 
-1. SPA (`http://localhost:5173`) sends requests to backend (`http://localhost:8000/api`).
-2. DRF authenticates via JWT and communicates with PostgreSQL.
-3. Middleware + signals keep user and profile data synchronized.
-4. OpenAPI/Swagger documents the API.
-5. React Query handles caching and revalidation on the frontend.
+- Pure **header‑based JWT**; no auth cookies. CORS allowed origins must be configured if serving frontend from a different origin.
+- Refresh rotation/blacklisting is supported if `token_blacklist` app is enabled; current setup keeps refresh explicit on client.
+- Nginx only proxies `/api/` to the backend; static SPA assets are immutable‑cached under `/assets/`.
 
 ---
 
-## 🚀 Tips for Local Dev
+## Known Limitations / Next Steps
 
-- Ensure `VITE_API_URL` points to backend (`http://localhost:8000/api`).
-- Vite must bind to `0.0.0.0` for Docker (`--host` flag).
-- Add `CHOKIDAR_USEPOLLING=1` for stable file watching on Docker Desktop.
-
----
+- Switch backend command to **Gunicorn** for production.
+- Add unit/integration tests for Excel import and JWT middleware.
+- Consider rate‑limiting and stricter CORS in production.
+- Add health/readiness endpoints for backend & Nginx.
