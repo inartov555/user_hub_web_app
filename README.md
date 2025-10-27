@@ -26,9 +26,10 @@
 
 ---
 
-## API Endpoints Overview
+## Additional details
 
-- API details can be found in [.api_reference.md](.api_reference.md)
+- API endpoints overview can be found in [.api_reference.md](.api_reference.md)
+- Architecture details: [.architecture.md](.architecture.md)
 
 ---
 
