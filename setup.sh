@@ -44,5 +44,6 @@ cd "$COPIED_PROJECT_PATH"
 
 echo "Copying .env file..."
 cp backend/.env.example backend/.env
+printf 'HOST_ARTIFACTS=%s\n' "$HOST_ARTIFACTS" > backend/.env
 
 export TEST_VENV=$(pwd)

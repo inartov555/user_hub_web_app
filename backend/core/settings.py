@@ -31,21 +31,20 @@ def _attach_request_id(record):
     return True
 
 def _dir_writable(_path: Path) -> bool:
-    try:
-        _path.mkdir(parents=True, exist_ok=True)
-        with tempfile.TemporaryFile(dir=_path):
-            pass
-        return True
-    except Exception:
-        return False
+    _path.mkdir(parents=True, exist_ok=True)
+    with tempfile.TemporaryFile(dir=_path):
+        pass
+    return True
 
 load_dotenv()
 
-BASE_DIR = Path(__file__).resolve().parent.parent
-HOME_PATH = Path.home()
+# This variable DEBUG can be (0, 1) which means not debug/debug
 DEBUG = os.getenv("DEBUG", "1") == "1"
 LOG_LEVEL = os.getenv("DJANGO_LOG_LEVEL", "DEBUG").upper()
-LOG_DIR = os.getenv("DJANGO_LOG_DIR", str(HOME_PATH / "TEST1/workspace/artifacts/"))
+
+BASE_DIR = Path(__file__).resolve().parent.parent
+HOST_ARTIFACTS = os.environ.get("HOST_ARTIFACTS")
+LOG_DIR = os.getenv("DJANGO_LOG_DIR", str(HOST_ARTIFACTS))
 LOG_PATH = Path(LOG_DIR)
 LOG_TO_FILES = _dir_writable(LOG_PATH)
 
