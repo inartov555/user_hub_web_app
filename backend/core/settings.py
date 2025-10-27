@@ -44,7 +44,7 @@ DEBUG = os.getenv("DEBUG", "1") == "1"
 LOG_LEVEL = os.getenv("DJANGO_LOG_LEVEL", "DEBUG").upper()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
-LOG_DIR = os.getenv("HOST_ARTIFACTS")
+LOG_DIR = os.getenv("HOST_ARTIFACTS", "workspace/artifacts")
 LOG_PATH = Path(LOG_DIR)
 
 LOG_TO_DIR = _dir_writable(LOG_PATH)
