@@ -45,7 +45,8 @@ HOME_PATH = Path.home()
 DEBUG = os.getenv("DEBUG", "1") == "1"
 LOG_LEVEL = os.getenv("DJANGO_LOG_LEVEL", "DEBUG").upper()
 LOG_DIR = os.getenv("DJANGO_LOG_DIR", str(HOME_PATH / "TEST1/workspace/artifacts/"))
-LOG_TO_FILES = _dir_writable(log_path)
+LOG_PATH = Path(LOG_DIR)
+LOG_TO_FILES = _dir_writable(LOG_PATH)
 
 # Login session properties start
 JWT_RENEW_AT_SECONDS=int(os.getenv("JWT_RENEW_AT_SECONDS", "100"))
@@ -90,7 +91,7 @@ LOGGING = {
             "file_app": {
                 "level": "DEBUG" if DEBUG else "INFO",
                 "class": "logging.handlers.TimedRotatingFileHandler",
-                "filename": str(log_path / "app.log"),
+                "filename": str(LOG_PATH / "app.log"),
                 "when": "midnight",
                 "interval": 1,
                 "backupCount": 14,
@@ -102,7 +103,7 @@ LOGGING = {
             "file_errors": {
                 "level": "ERROR",
                 "class": "logging.handlers.TimedRotatingFileHandler",
-                "filename": str(log_path / "errors.log"),
+                "filename": str(LOG_PATH / "errors.log"),
                 "when": "midnight",
                 "interval": 1,
                 "backupCount": 14,
