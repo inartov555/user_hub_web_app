@@ -9,6 +9,7 @@ Stateless auth middleware that:
 from __future__ import annotations
 from types import SimpleNamespace
 from typing import Optional
+import logging
 
 from django.conf import settings
 from django.contrib.auth import get_user_model
@@ -17,10 +18,8 @@ from django.db import DatabaseError, IntegrityError
 from rest_framework_simplejwt.tokens import AccessToken, RefreshToken
 from rest_framework_simplejwt.exceptions import TokenError, InvalidToken
 
-from ..tools.logger.logger import Logger
 
-
-logger = Logger(__name__)
+logger = logging.getLogger(__name__)
 
 
 def _get_settings():
