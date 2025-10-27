@@ -49,6 +49,11 @@ AUTH_HEADER_TYPES = env_tuple("AUTH_HEADER_TYPES", ("Bearer",))
 # Login session properties end
 ALLOWED_HOSTS = ["*"]
 
+def _attach_request_id(record):
+    if not hasattr(record, "request_id"):
+        record.request_id = "-"
+    return True
+
 LOGGING = {
     "version": 1,
     "disable_existing_loggers": False,
