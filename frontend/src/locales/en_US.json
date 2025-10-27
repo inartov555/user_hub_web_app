@@ -7,6 +7,7 @@
     "users": "Users",
     "stats": "Stats",
     "profile": "Profile",
+    "importFromExcel": "Import from Excel",
     "login": "Login",
     "logout": "Logout",
     "signup": "Sign up"
