@@ -14,9 +14,10 @@ echo "REPO = '$REPO'"
 PROJECT_FOLDER_NAME="${REPO##*/}"
 
 # path where workspace will be stored
+# Consider that this folder is used in the project
 HOST_WORKSPACE="$HOME/$ARTIFACTS_ROOT_FOLDER/workspace"
 # path where artifacts will be stored
-HOST_ARTIFACTS="$HOST_WORKSPACE/artifact"
+HOST_ARTIFACTS="$HOST_WORKSPACE/artifacts"
 export HOST_ARTIFACTS="$HOST_ARTIFACTS"
 export COPIED_PROJECT_PATH="$HOST_WORKSPACE/$PROJECT_FOLDER_NAME"
 
