@@ -8,10 +8,6 @@ from pathlib import Path
 from dotenv import load_dotenv
 
 
-load_dotenv()
-BASE_DIR = Path(__file__).resolve().parent.parent
-HOME_PATH = Path.home()
-
 def env_tuple(name: str, default=()) -> tuple:
     """
     Getting tuple value from list property
@@ -28,9 +24,28 @@ def env_tuple(name: str, default=()) -> tuple:
         return tuple(default)
     return tuple(p.strip() for p in raw.split(",") if p.strip())
 
+def _attach_request_id(record):
+    if not hasattr(record, "request_id"):
+        record.request_id = "-"
+    return True
+
+def _dir_writable(p: Path) -> bool:
+    try:
+        p.mkdir(parents=True, exist_ok=True)
+        with tempfile.TemporaryFile(dir=p):
+            pass
+        return True
+    except Exception:
+        return False
+
+load_dotenv()
+
+BASE_DIR = Path(__file__).resolve().parent.parent
+HOME_PATH = Path.home()
 DEBUG = os.getenv("DEBUG", "1") == "1"
 LOG_LEVEL = os.getenv("DJANGO_LOG_LEVEL", "DEBUG").upper()
 LOG_DIR = os.getenv("DJANGO_LOG_DIR", str(HOME_PATH / "TEST1/workspace/artifacts/"))
+LOG_TO_FILES = _dir_writable(log_path)
 
 # Login session properties start
 JWT_RENEW_AT_SECONDS=int(os.getenv("JWT_RENEW_AT_SECONDS", "100"))
@@ -49,11 +64,6 @@ AUTH_HEADER_TYPES = env_tuple("AUTH_HEADER_TYPES", ("Bearer",))
 # Login session properties end
 ALLOWED_HOSTS = ["*"]
 
-def _attach_request_id(record):
-    if not hasattr(record, "request_id"):
-        record.request_id = "-"
-    return True
-
 LOGGING = {
     "version": 1,
     "disable_existing_loggers": False,
@@ -66,7 +76,7 @@ LOGGING = {
     "filters": {
         "request_id": {
             "()": "django.utils.log.CallbackFilter",
-            "callback": _attach_request_id,  # <— use the helper above
+            "callback": _attach_request_id,
         },
     },
     "handlers": {
@@ -76,31 +86,32 @@ LOGGING = {
             "formatter": "verbose" if DEBUG else "simple",
             "filters": ["request_id"],
         },
-        # Daily rotation with timestamped archives: app.log.YYYY-MM-DD
-        "file_app": {
-            "level": "DEBUG" if DEBUG else "INFO",
-            "class": "logging.handlers.TimedRotatingFileHandler",
-            "filename": os.path.join(LOG_DIR, "app.log"),
-            "when": "midnight",
-            "interval": 1,
-            "backupCount": 14,
-            "utc": True,
-            "encoding": "utf-8",
-            "formatter": "verbose",
-            "filters": ["request_id"],
-        },
-        "file_errors": {
-            "level": "ERROR",
-            "class": "logging.handlers.TimedRotatingFileHandler",
-            "filename": os.path.join(LOG_DIR, "errors.log"),
-            "when": "midnight",
-            "interval": 1,
-            "backupCount": 14,
-            "utc": True,
-            "encoding": "utf-8",
-            "formatter": "verbose",
-            "filters": ["request_id"],
-        },
+        **({
+            "file_app": {
+                "level": "DEBUG" if DEBUG else "INFO",
+                "class": "logging.handlers.TimedRotatingFileHandler",
+                "filename": str(log_path / "app.log"),
+                "when": "midnight",
+                "interval": 1,
+                "backupCount": 14,
+                "utc": True,
+                "encoding": "utf-8",
+                "formatter": "verbose",
+                "filters": ["request_id"],
+            },
+            "file_errors": {
+                "level": "ERROR",
+                "class": "logging.handlers.TimedRotatingFileHandler",
+                "filename": str(log_path / "errors.log"),
+                "when": "midnight",
+                "interval": 1,
+                "backupCount": 14,
+                "utc": True,
+                "encoding": "utf-8",
+                "formatter": "verbose",
+                "filters": ["request_id"],
+            },
+        } if LOG_TO_FILES else {}),
         "mail_admins": {
             "level": "ERROR",
             "class": "django.utils.log.AdminEmailHandler",
@@ -108,13 +119,13 @@ LOGGING = {
         },
     },
     "loggers": {
-        "profiles": {"handlers": ["console", "file_app"], "level": LOG_LEVEL, "propagate": False},
-        "django": {"handlers": ["console", "file_app"], "level": LOG_LEVEL, "propagate": False},
-        "django.request": {"handlers": ["console", "file_errors", "mail_admins"], "level": "ERROR", "propagate": False},
+        "profiles": {"handlers": ["console"] + (["file_app"] if LOG_TO_FILES else []), "level": LOG_LEVEL, "propagate": False},
+        "django": {"handlers": ["console"] + (["file_app"] if LOG_TO_FILES else []), "level": LOG_LEVEL, "propagate": False},
+        "django.request": {"handlers": ["console", "mail_admins"] + (["file_errors"] if LOG_TO_FILES else []), "level": "ERROR", "propagate": False},
         "django.server": {"handlers": ["console"], "level": LOG_LEVEL, "propagate": False},
         "django.db.backends": {"handlers": ["console"], "level": os.getenv("DJANGO_SQL_LEVEL", "WARNING"), "propagate": False},
         "rest_framework": {"handlers": ["console"], "level": LOG_LEVEL, "propagate": False},
-        "": {"handlers": ["console", "file_app"], "level": LOG_LEVEL},
+        "": {"handlers": ["console"] + (["file_app"] if LOG_TO_FILES else []), "level": LOG_LEVEL},
     },
 }
 
