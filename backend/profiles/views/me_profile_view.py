@@ -16,7 +16,6 @@ class MeProfileView(generics.RetrieveUpdateAPIView):
     """
     permission_classes = [permissions.IsAuthenticated]
     parser_classes = [MultiPartParser, FormParser]
-    serializer_class = MeSerializer
 
     def get_serializer_class(self):
         """
