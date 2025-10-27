@@ -6,6 +6,7 @@ import os
 from datetime import timedelta
 from pathlib import Path
 from dotenv import load_dotenv
+import tempfile
 
 
 def env_tuple(name: str, default=()) -> tuple:
@@ -22,17 +23,17 @@ def env_tuple(name: str, default=()) -> tuple:
     raw = os.getenv(name)
     if raw is None or raw.strip() == "":
         return tuple(default)
-    return tuple(p.strip() for p in raw.split(",") if p.strip())
+    return tuple(prop.strip() for prop in raw.split(",") if prop.strip())
 
 def _attach_request_id(record):
     if not hasattr(record, "request_id"):
         record.request_id = "-"
     return True
 
-def _dir_writable(p: Path) -> bool:
+def _dir_writable(_path: Path) -> bool:
     try:
-        p.mkdir(parents=True, exist_ok=True)
-        with tempfile.TemporaryFile(dir=p):
+        _path.mkdir(parents=True, exist_ok=True)
+        with tempfile.TemporaryFile(dir=_path):
             pass
         return True
     except Exception:

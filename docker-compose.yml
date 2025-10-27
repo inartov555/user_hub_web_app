@@ -19,17 +19,20 @@ services:
 
   backend:
     build: { context: ., dockerfile: backend/Dockerfile }
+    working_dir: /app/backend
     env_file: backend/.env
     depends_on: 
       db:
         condition: service_healthy
     dns: [8.8.8.8, 1.1.1.1]
     environment:
+      DJANGO_SETTINGS_MODULE: core.settings
       DJANGO_SUPERUSER_USERNAME: admin
       DJANGO_SUPERUSER_EMAIL: admin@example.com
       DJANGO_SUPERUSER_PASSWORD: changeme123
     ports: ["8000:8000"]
-    volumes: ["./backend:/app"]
+    volumes:
+      - ./:/app
     stop_signal: SIGINT
     stop_grace_period: 5s
 
