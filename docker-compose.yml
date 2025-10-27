@@ -30,9 +30,11 @@ services:
       DJANGO_SUPERUSER_USERNAME: admin
       DJANGO_SUPERUSER_EMAIL: admin@example.com
       DJANGO_SUPERUSER_PASSWORD: changeme123
+      HOST_ARTIFACTS: $HOST_ARTIFACTS
     ports: ["8000:8000"]
     volumes:
       - ./:/app
+      - $HOST_ARTIFACTS:$HOST_ARTIFACTS
     stop_signal: SIGINT
     stop_grace_period: 5s
 
