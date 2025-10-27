@@ -23,7 +23,7 @@ export default function Navbar() {
         </nav>
         <div className="flex items-center gap-3">
           {user && (
-            <span className="text-sm">Hi, {t("app.hiUser", { username: user.username })}</span>)}
+            <span className="text-sm">{t("app.hiUser", { username: user.username })}</span>)}
           {user && <button className="btn" onClick={() => { logout(); navigate("/login"); }}>{t("nav.logout")}</button>}
         </div>
         {/* Language switcher */}
