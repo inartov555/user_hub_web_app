@@ -1,8 +1,9 @@
 import { useState } from "react";
+import { Link, useNavigate, useLocation } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { api } from "../lib/axios";
 import { useAuthStore } from "../auth/store";
 import FormInput from "../components/FormInput";
-import { Link, useNavigate, useLocation } from "react-router-dom";
 import { extractApiError } from "../lib/httpErrors";
 
 export default function Login() {
@@ -12,6 +13,7 @@ export default function Login() {
   const navigate = useNavigate();
   const { setTokens, setUser, user } = useAuthStore();
   const { pathname } = useLocation();
+  const { t } = useTranslation();
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -29,16 +31,16 @@ export default function Login() {
 
   return (
     <div className="max-w-md mx-auto card">
-      <h1 className="text-2xl font-semibold mb-4">Login</h1>
+      <h1 className="text-2xl font-semibold mb-4">{t("auth.login")}</h1>
       <form onSubmit={onSubmit} className="space-y-3">
-        <FormInput placeholder="Username" type="username" value={username} onChange={e=>setUsername(e.target.value)} required />
-        <FormInput placeholder="Password" type="password" value={password} onChange={e=>setPassword(e.target.value)} required />
-        {error && <p className="text-red-600 text-sm">{error}</p>}
+        <FormInput placeholder={t("auth.username")} type="username" value={username} onChange={e=>setUsername(e.target.value)} required />
+        <FormInput placeholder={t("auth.password")} type="password" value={password} onChange={e=>setPassword(e.target.value)} required />
+        {error && <p className="text-red-600 text-sm">{t("auth.loginFailed", { message: error })}</p>}
         <button className="btn w-full" type="submit">Sign in</button>
       </form>
       <div className="mt-4 text-sm flex justify-between">
-        <Link to="/signup">Create an account</Link>
-        <Link to="/reset-password">Forgot password?</Link>
+        <Link to="/signup">{t("auth.createAccount")}</Link>
+        <Link to="/reset-password">{t("auth.forgotPassword")}</Link>
       </div>
     </div>
   );

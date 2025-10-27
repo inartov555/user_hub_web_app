@@ -26,6 +26,15 @@ export default function Navbar() {
             <span className="text-sm">Hi, {t("app.hiUser", { username: user.username })}</span>)}
           {user && <button className="btn" onClick={() => { logout(); navigate("/login"); }}>{t("nav.logout")}</button>}
         </div>
+        {/* Language switcher */}
+        <select
+          className="border rounded px-2 py-1 text-sm"
+          value={i18n.resolvedLanguage}
+          onChange={(e) => i18n.changeLanguage(e.target.value)}
+        >
+          <option value="en_US">English - US</option>
+          <option value="et_EE">Eesti</option>
+        </select>
       </div>
     </header>
   );
