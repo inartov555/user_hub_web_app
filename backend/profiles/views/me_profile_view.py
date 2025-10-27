@@ -8,6 +8,8 @@ from rest_framework.parsers import MultiPartParser, FormParser
 from ..models.profile import Profile
 from ..serializers.profile_serializer import ProfileSerializer
 from ..serializers.profile_update_serializer import ProfileUpdateSerializer
+from ..serializers.me_serializer import MeSerializer
+from ..serializers.me_serializer import MeSerializer
 
 
 class MeProfileView(generics.RetrieveUpdateAPIView):
@@ -16,6 +18,7 @@ class MeProfileView(generics.RetrieveUpdateAPIView):
     """
     permission_classes = [permissions.IsAuthenticated]
     parser_classes = [MultiPartParser, FormParser]
+    serializer_class = MeSerializer
 
     def get_serializer_class(self):
         """
