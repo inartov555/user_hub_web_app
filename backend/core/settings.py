@@ -51,21 +51,17 @@ ALLOWED_HOSTS = ["*"]
 
 LOGGING = {
     "version": 1,
-    "disable_existing_loggers": False,  # keep Django defaults
+    "disable_existing_loggers": False,
     "formatters": {
         "verbose": {
-            "format": (
-                "%(asctime)s | %(levelname)s | %(name)s | "
-                "%(request_id)s | %(message)s"
-            )
+            "format": "%(asctime)s | %(levelname)s | %(name)s | %(request_id)s | %(message)s"
         },
         "simple": {"format": "%(levelname)s: %(message)s"},
     },
     "filters": {
-        # Adds request_id (if present) to every record; safe fallback.
         "request_id": {
             "()": "django.utils.log.CallbackFilter",
-            "callback": lambda r: True,  # always pass record
+            "callback": _attach_request_id,  # <— use the helper above
         },
     },
     "handlers": {
@@ -74,38 +70,32 @@ LOGGING = {
             "class": "logging.StreamHandler",
             "formatter": "verbose" if DEBUG else "simple",
             "filters": ["request_id"],
-            "utc": True,  # or False to use local time
-            "encoding": "utf-8",
         },
+        # Daily rotation with timestamped archives: app.log.YYYY-MM-DD
         "file_app": {
             "level": "DEBUG" if DEBUG else "INFO",
-            "class": "logging.handlers.RotatingFileHandler",
+            "class": "logging.handlers.TimedRotatingFileHandler",
             "filename": os.path.join(LOG_DIR, "app.log"),
-            "maxBytes": 10 * 1024 * 1024,  # 10MB
-            "backupCount": 5,
+            "when": "midnight",
+            "interval": 1,
+            "backupCount": 14,
+            "utc": True,
+            "encoding": "utf-8",
             "formatter": "verbose",
             "filters": ["request_id"],
-            "when": "midnight",  # rollover daily
-            "interval": 1,
-            "backupCount": 14,  # keep last 14 days
-            "utc": True,  # or False to use local time
-            "encoding": "utf-8",
         },
         "file_errors": {
             "level": "ERROR",
-            "class": "logging.handlers.RotatingFileHandler",
+            "class": "logging.handlers.TimedRotatingFileHandler",
             "filename": os.path.join(LOG_DIR, "errors.log"),
-            "maxBytes": 10 * 1024 * 1024,
-            "backupCount": 5,
+            "when": "midnight",
+            "interval": 1,
+            "backupCount": 14,
+            "utc": True,
+            "encoding": "utf-8",
             "formatter": "verbose",
             "filters": ["request_id"],
-            "when": "midnight",  # rollover daily
-            "interval": 1,
-            "backupCount": 14,  # keep last 14 days
-            "utc": True,  # or False to use local time
-            "encoding": "utf-8",
         },
-        # Send 500s to admins when DEBUG=False and ADMINS configured
         "mail_admins": {
             "level": "ERROR",
             "class": "django.utils.log.AdminEmailHandler",
@@ -113,43 +103,13 @@ LOGGING = {
         },
     },
     "loggers": {
-        # Project packages: tune as needed
-        "profiles": {
-            "handlers": ["console", "file_app"],
-            "level": LOG_LEVEL,
-            "propagate": False,
-        },
-        # Django and DRF
-        "django": {
-            "handlers": ["console", "file_app"],
-            "level": LOG_LEVEL,
-            "propagate": False,
-        },
-        "django.request": {
-            "handlers": ["console", "file_errors", "mail_admins"],
-            "level": "ERROR",
-            "propagate": False,
-        },
-        "django.server": {  # runserver
-            "handlers": ["console"],
-            "level": LOG_LEVEL,
-            "propagate": False,
-        },
-        "django.db.backends": {  # SQL logging (noisy—keep WARNING+)
-            "handlers": ["console"],
-            "level": os.getenv("DJANGO_SQL_LEVEL", "WARNING"),
-            "propagate": False,
-        },
-        "rest_framework": {
-            "handlers": ["console"],
-            "level": LOG_LEVEL,
-            "propagate": False,
-        },
-        # Root logger as a catch-all
-        "": {
-            "handlers": ["console", "file_app"],
-            "level": LOG_LEVEL,
-        },
+        "profiles": {"handlers": ["console", "file_app"], "level": LOG_LEVEL, "propagate": False},
+        "django": {"handlers": ["console", "file_app"], "level": LOG_LEVEL, "propagate": False},
+        "django.request": {"handlers": ["console", "file_errors", "mail_admins"], "level": "ERROR", "propagate": False},
+        "django.server": {"handlers": ["console"], "level": LOG_LEVEL, "propagate": False},
+        "django.db.backends": {"handlers": ["console"], "level": os.getenv("DJANGO_SQL_LEVEL", "WARNING"), "propagate": False},
+        "rest_framework": {"handlers": ["console"], "level": LOG_LEVEL, "propagate": False},
+        "": {"handlers": ["console", "file_app"], "level": LOG_LEVEL},
     },
 }
 
