@@ -33,7 +33,6 @@ services:
     ports: ["8000:8000"]
     volumes:
       - ./:/app
-      - ${HOST_ARTIFACTS}:/app/artifacts:rw
     stop_signal: SIGINT
     stop_grace_period: 5s
 

@@ -7,6 +7,7 @@ from datetime import timedelta
 from pathlib import Path
 from dotenv import load_dotenv
 import tempfile
+import logging
 
 
 def env_tuple(name: str, default=()) -> tuple:
@@ -32,7 +33,7 @@ def _attach_request_id(record):
 
 def _dir_writable(_path: Path) -> bool:
     try:
-        # _path.mkdir(parents=True, exist_ok=True)
+        _path.mkdir(parents=True, exist_ok=True)
         with tempfile.TemporaryFile(dir=_path):
             pass
         return True
@@ -50,10 +51,7 @@ HOST_ARTIFACTS = os.environ.get("HOST_ARTIFACTS")
 LOG_DIR = os.getenv("DJANGO_LOG_DIR", str(HOST_ARTIFACTS))
 LOG_PATH = Path(LOG_DIR)
 
-LOG_TO_APP_LOG = _dir_writable(LOG_PATH / "app.log")
-LOG_TO_ERRORS_LOG = _dir_writable(LOG_PATH / "errors.log")
-
-ARE_LOG_FILES_PRESENT = LOG_TO_APP_LOG and LOG_TO_ERRORS_LOG
+LOG_TO_DIR = _dir_writable(LOG_PATH)
 
 # Login session properties start
 JWT_RENEW_AT_SECONDS=int(os.getenv("JWT_RENEW_AT_SECONDS", "100"))
@@ -96,9 +94,9 @@ LOGGING = {
         },
         **({
             "file_app": {
-                "level": "DEBUG" if DEBUG else "INFO",
+                "level": LOG_LEVEL,
                 "class": "logging.handlers.TimedRotatingFileHandler",
-                "filename": str(LOG_TO_APP_LOG),
+                "filename": str(LOG_TO_DIR / "app.log"),
                 "when": "midnight",
                 "interval": 1,
                 "backupCount": 14,
@@ -108,9 +106,9 @@ LOGGING = {
                 "filters": ["request_id"],
             },
             "file_errors": {
-                "level": "ERROR",
+                "level": LOG_LEVEL,
                 "class": "logging.handlers.TimedRotatingFileHandler",
-                "filename": str(LOG_TO_ERRORS_LOG),
+                "filename": str(LOG_TO_DIR / "errors.log"),
                 "when": "midnight",
                 "interval": 1,
                 "backupCount": 14,
@@ -119,25 +117,25 @@ LOGGING = {
                 "formatter": "verbose",
                 "filters": ["request_id"],
             },
-        } if ARE_LOG_FILES_PRESENT else {}),
+        } if LOG_TO_DIR else {}),
         "mail_admins": {
-            "level": "ERROR",
+            "level": LOG_LEVEL,
             "class": "django.utils.log.AdminEmailHandler",
             "include_html": True,
         },
     },
     "loggers": {
         "profiles": {"handlers": ["console"] + (["file_app"] \
-            if ARE_LOG_FILES_PRESENT else []), "level": LOG_LEVEL, "propagate": False},
+            if LOG_TO_DIR else []), "level": LOG_LEVEL, "propagate": False},
         "django": {"handlers": ["console"] + (["file_app"] \
-            if ARE_LOG_FILES_PRESENT else []), "level": LOG_LEVEL, "propagate": False},
+            if LOG_TO_DIR else []), "level": LOG_LEVEL, "propagate": False},
         "django.request": {"handlers": ["console", "mail_admins"] + (["file_errors"] \
-            if ARE_LOG_FILES_PRESENT else []), "level": "ERROR", "propagate": False},
+            if LOG_TO_DIR else []), "level": LOG_LEVEL, "propagate": False},
         "django.server": {"handlers": ["console"], "level": LOG_LEVEL, "propagate": False},
-        "django.db.backends": {"handlers": ["console"], "level": os.getenv("DJANGO_SQL_LEVEL", "WARNING"),
+        "django.db.backends": {"handlers": ["console"], "level": os.getenv("DJANGO_SQL_LEVEL", LOG_LEVEL),
                                "propagate": False},
         "rest_framework": {"handlers": ["console"], "level": LOG_LEVEL, "propagate": False},
-        "": {"handlers": ["console"] + (["file_app"] if ARE_LOG_FILES_PRESENT else []), "level": LOG_LEVEL},
+        "": {"handlers": ["console"] + (["file_app"] if LOG_TO_DIR else []), "level": LOG_LEVEL},
     },
 }
 
@@ -278,3 +276,6 @@ DJOSER = {
 
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+logging.getLogger("django").info("\n\n\n\n Hello from Django logger! \n\n\n\n ")
+logging.getLogger("profiles").warning("\n\n\n\n Profiles warning test \n\n\n\n ")
