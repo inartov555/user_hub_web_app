@@ -42,9 +42,6 @@ export ROOT_VENV="$COPIED_PROJECT_PATH"
 echo "Entering the '$COPIED_PROJECT_PATH' module"
 cd "$COPIED_PROJECT_PATH"
 
-# echo "Setting HOST_ARTIFACTS env variable to docker-compose.yml"
-# sed -i 's/\<_HOST_ARTIFACTS_\>/$HOST_ARTIFACTS/g' "$COPIED_PROJECT_PATH/docker-compose.yml"
-
 echo "Copying .env file..."
 cp backend/.env.example backend/.env
 echo "Appending HOST_ARTIFACTS and COPIED_PROJECT_PATH path properties"
