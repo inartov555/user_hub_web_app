@@ -68,10 +68,6 @@
 ### 📈 User Statistics
 - A dedicated statistics page showing currently logged-in users.
 
-### 🎨 Design
-- Clean, simple, and visually appealing layout.  
-- Light background for a modern, user-friendly appearance.
-
 ---
 
 ## 💾 Data Storage
