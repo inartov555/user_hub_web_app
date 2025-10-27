@@ -4,6 +4,7 @@
 #   - NONE
 # Exported variables: HOST_ARTIFACTS, ROOT_VENV, TEST_VENV, COPIED_PROJECT_PATH
 
+# Consider that this folder is used in the project
 ARTIFACTS_ROOT_FOLDER="TEST1"
 
 REPO="$(pwd)"
