@@ -10,6 +10,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 BASE_DIR = Path(__file__).resolve().parent.parent
+HOME_PATH = Path.home()
 
 def env_tuple(name: str, default=()) -> tuple:
     """
@@ -28,13 +29,8 @@ def env_tuple(name: str, default=()) -> tuple:
     return tuple(p.strip() for p in raw.split(",") if p.strip())
 
 DEBUG = os.getenv("DEBUG", "1") == "1"
-# SESSION_COOKIE_AGE = os.getenv("SESSION_COOKIE_AGE", str(30 * 60))  # defaults to 30 minutes
-# IDLE_TIMEOUT_SECONDS = os.getenv("IDLE_TIMEOUT_SECONDS", str(30 * 60))  # defaults to 30 minutes
-# Refresh expiry on every request (rolling inactivity timeout)
-# SESSION_SAVE_EVERY_REQUEST = os.getenv("SESSION_SAVE_EVERY_REQUEST", "1")
-# The property SESSION_EXPIRE_AT_BROWSER_CLOSE affects also page reload
-# SESSION_EXPIRE_AT_BROWSER_CLOSE = os.getenv("SESSION_EXPIRE_AT_BROWSER_CLOSE", "1")  # or True if you prefer
-# SESSION_COOKIE_SECURE = os.getenv("SESSION_COOKIE_SECURE", "1")  # if using HTTPS
+LOG_LEVEL = os.getenv("DJANGO_LOG_LEVEL", "DEBUG").upper()
+LOG_DIR = os.getenv("DJANGO_LOG_DIR", str(HOME_PATH / "TEST1/workspace/artifacts/"))
 
 # Login session properties start
 JWT_RENEW_AT_SECONDS=int(os.getenv("JWT_RENEW_AT_SECONDS", "100"))
@@ -52,6 +48,98 @@ SIGNING_KEY = SECRET_KEY
 AUTH_HEADER_TYPES = env_tuple("AUTH_HEADER_TYPES", ("Bearer",))
 # Login session properties end
 ALLOWED_HOSTS = ["*"]
+
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,  # keep Django defaults
+    "formatters": {
+        "verbose": {
+            "format": (
+                "%(asctime)s | %(levelname)s | %(name)s | "
+                "%(request_id)s | %(message)s"
+            )
+        },
+        "simple": {"format": "%(levelname)s: %(message)s"},
+    },
+    "filters": {
+        # Adds request_id (if present) to every record; safe fallback.
+        "request_id": {
+            "()": "django.utils.log.CallbackFilter",
+            "callback": lambda r: True,  # always pass record
+        },
+    },
+    "handlers": {
+        "console": {
+            "level": LOG_LEVEL,
+            "class": "logging.StreamHandler",
+            "formatter": "verbose" if DEBUG else "simple",
+            "filters": ["request_id"],
+        },
+        "file_app": {
+            "level": "INFO",
+            "class": "logging.handlers.RotatingFileHandler",
+            "filename": os.path.join(LOG_DIR, "app.log"),
+            "maxBytes": 10 * 1024 * 1024,  # 10MB
+            "backupCount": 5,
+            "formatter": "verbose",
+            "filters": ["request_id"],
+        },
+        "file_errors": {
+            "level": "ERROR",
+            "class": "logging.handlers.RotatingFileHandler",
+            "filename": os.path.join(LOG_DIR, "errors.log"),
+            "maxBytes": 10 * 1024 * 1024,
+            "backupCount": 5,
+            "formatter": "verbose",
+            "filters": ["request_id"],
+        },
+        # Send 500s to admins when DEBUG=False and ADMINS configured
+        "mail_admins": {
+            "level": "ERROR",
+            "class": "django.utils.log.AdminEmailHandler",
+            "include_html": True,
+        },
+    },
+    "loggers": {
+        # Project packages: tune as needed
+        "profiles": {
+            "handlers": ["console", "file_app"],
+            "level": LOG_LEVEL,
+            "propagate": False,
+        },
+        # Django and DRF
+        "django": {
+            "handlers": ["console", "file_app"],
+            "level": LOG_LEVEL,
+            "propagate": False,
+        },
+        "django.request": {
+            "handlers": ["console", "file_errors", "mail_admins"],
+            "level": "ERROR",
+            "propagate": False,
+        },
+        "django.server": {  # runserver
+            "handlers": ["console"],
+            "level": LOG_LEVEL,
+            "propagate": False,
+        },
+        "django.db.backends": {  # SQL logging (noisy—keep WARNING+)
+            "handlers": ["console"],
+            "level": os.getenv("DJANGO_SQL_LEVEL", "WARNING"),
+            "propagate": False,
+        },
+        "rest_framework": {
+            "handlers": ["console"],
+            "level": LOG_LEVEL,
+            "propagate": False,
+        },
+        # Root logger as a catch-all
+        "": {
+            "handlers": ["console", "file_app"],
+            "level": LOG_LEVEL,
+        },
+    },
+}
 
 INSTALLED_APPS = [
     "django.contrib.admin",
