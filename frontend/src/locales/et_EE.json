@@ -1,0 +1,39 @@
+{
+  "app": {
+    "title": "Kasutajate rakendus",
+    "hiUser": "Tere, {{username}}"
+  },
+  "nav": {
+    "users": "Kasutajad",
+    "stats": "Statistika",
+    "profile": "Profiil",
+    "login": "Logi sisse",
+    "logout": "Logi välja",
+    "signup": "Loo konto"
+  },
+  "auth": {
+    "login": "Logi sisse",
+    "signup": "Loo konto",
+    "email": "E-post",
+    "username": "Kasutajanimi",
+    "password": "Parool",
+    "signin": "Logi sisse",
+    "createAccount": "Loo konto",
+    "forgotPassword": "Unustasid parooli?",
+    "loginFailed": "Sisselogimine ebaõnnestus: {{message}}",
+    "signupFailed": "Registreerimine ebaõnnestus: {{message}}"
+  },
+  "users": {
+    "title": "Kasutajad",
+    "deleteSelected": "Kustuta valitud",
+    "confirmDeletion": "Kinnita kustutamine",
+    "deleteNUsers": "Kustuta {{count}} valitud kasutaja",
+    "deleteNUsers_plural": "Kustuta {{count}} valitud kasutajat",
+    "cancel": "Tühista",
+    "delete": "Kustuta",
+    "failedDelete": "Valitud kasutajate kustutamine ebaõnnestus: {{error}}"
+  },
+  "stats": {
+    "onlineHeader": "Hetkel online kasutajad (viimased 5 minutit)"
+  }
+}
