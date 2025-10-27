@@ -74,15 +74,22 @@ LOGGING = {
             "class": "logging.StreamHandler",
             "formatter": "verbose" if DEBUG else "simple",
             "filters": ["request_id"],
+            "utc": True,  # or False to use local time
+            "encoding": "utf-8",
         },
         "file_app": {
-            "level": "INFO",
+            "level": "DEBUG" if DEBUG else "INFO",
             "class": "logging.handlers.RotatingFileHandler",
             "filename": os.path.join(LOG_DIR, "app.log"),
             "maxBytes": 10 * 1024 * 1024,  # 10MB
             "backupCount": 5,
             "formatter": "verbose",
             "filters": ["request_id"],
+            "when": "midnight",  # rollover daily
+            "interval": 1,
+            "backupCount": 14,  # keep last 14 days
+            "utc": True,  # or False to use local time
+            "encoding": "utf-8",
         },
         "file_errors": {
             "level": "ERROR",
@@ -92,6 +99,11 @@ LOGGING = {
             "backupCount": 5,
             "formatter": "verbose",
             "filters": ["request_id"],
+            "when": "midnight",  # rollover daily
+            "interval": 1,
+            "backupCount": 14,  # keep last 14 days
+            "utc": True,  # or False to use local time
+            "encoding": "utf-8",
         },
         # Send 500s to admins when DEBUG=False and ADMINS configured
         "mail_admins": {
