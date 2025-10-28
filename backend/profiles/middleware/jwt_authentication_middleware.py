@@ -13,7 +13,7 @@ import logging
 
 from django.conf import settings
 from django.contrib.auth import get_user_model
-from django.utils import timezone
+from django.utils import timezone, translation
 from django.db import DatabaseError, IntegrityError
 from rest_framework_simplejwt.tokens import AccessToken, RefreshToken
 from rest_framework_simplejwt.exceptions import TokenError, InvalidToken
@@ -105,7 +105,7 @@ class JWTAuthenticationMiddleware:
     def _user_from_token(self, token: AccessToken):
         user_id = token.get("user_id") or token.get("sub")
         if not user_id:
-            raise InvalidToken("user_id claim missing")
+            raise InvalidToken(translation.gettext("user_id claim missing"))
         return self.user_model.objects.get(pk=user_id)
 
     def _should_renew(self, token: AccessToken) -> bool:

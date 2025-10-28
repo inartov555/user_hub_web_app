@@ -107,7 +107,8 @@ class UsersViewSet(viewsets.ReadOnlyModelViewSet):
         except (DjangoValidationError, ValueError) as e:
             return Response({"detail": str(e)}, status=status.HTTP_400_BAD_REQUEST)
         except IntegrityError:
-            return Response({"detail": translation.gettext("Database error while applying changes.")}, status=400)
+            return Response({"detail": translation.gettext("Database error while applying changes.")},
+                            status=status.HTTP_400_BAD_REQUEST)
 
         user.set_password(new_pw)
         user.save(update_fields=["password"])

@@ -7,6 +7,7 @@ from typing import Any, Dict
 
 from django.conf import settings
 from django.contrib.auth import get_user_model
+from django.utils import translation
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework import serializers
 
@@ -34,7 +35,7 @@ class EmailOrUsernameTokenCreateSerializer(TokenObtainPairSerializer):
         Fall back to DJOSER['LOGIN_FIELD'], and finally 'email'.
         """
         user_model = get_user_model()
-        # e.g., "email" for email-only user models, "username" for default
+        # e.g., email for email-only user models, username for default
         username_field = getattr(user_model, "USERNAME_FIELD", None)
         if username_field:
             return username_field
@@ -74,7 +75,7 @@ class EmailOrUsernameTokenCreateSerializer(TokenObtainPairSerializer):
         if not login_value or not password:
             # consistent, frontend-friendly error shape
             raise serializers.ValidationError(
-                {"detail": 'Must include "login" (or "email"/"username") and "password".'}
+                {"detail": translation.gettext("Must include 'login' (or 'email'/'username') and 'password'.")}
             )
 
         # 4) put the login into the correct field; drop the others

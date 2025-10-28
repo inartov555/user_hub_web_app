@@ -7,6 +7,7 @@ from io import BytesIO
 
 from django.http import HttpResponse
 from django.contrib.auth import get_user_model
+from django.utils import translation
 import pandas as pd
 from rest_framework import permissions
 from rest_framework.views import APIView
@@ -105,7 +106,7 @@ class ExcelUploadView(APIView):
         user_model = get_user_model()
         file = request.FILES.get("file")
         if not file:
-            return Response({"detail": "No file provided"}, status=400)
+            return Response({"detail": translation.gettext("No file provided")}, status=400)
         df = pd.read_excel(file)
         created, updated = 0, 0
         for _, row in df.iterrows():

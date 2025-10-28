@@ -72,3 +72,38 @@ msgstr "User is inactive"
 
 msgid "No active account found with the given credentials"
 msgstr "No active account found with the given credentials"
+
+
+
+
+
+
+msgid "No refresh token provided"
+msgstr "No refresh token provided"
+
+msgid "Session expired due to server restart."
+msgstr "Session expired due to server restart."
+
+msgid "Invalid refresh token."
+msgstr "Invalid refresh token."
+
+msgid "Failed to blacklist token."
+msgstr "Failed to blacklist token."
+
+msgid "Database error while applying changes."
+msgstr "Database error while applying changes."
+
+msgid "Password updated."
+msgstr "Password updated."
+
+msgid "No file provided"
+msgstr "No file provided"
+
+msgid "Must include 'login' (or 'email'/'username') and 'password'."
+msgstr "Must include 'login' (or 'email'/'username') and 'password'."
+
+msgid "Email required"
+msgstr "Email required"
+
+msgid "user_id claim missing"
+msgstr "user_id claim missing"

@@ -3,7 +3,6 @@ Normalize non-canonical language tags in headers/cookies/querystrings
 to Django's expected form (e.g., 'en_US' -> 'en-us', 'us-US' -> 'en-us').
 """
 
-
 from django.utils.deprecation import MiddlewareMixin
 
 

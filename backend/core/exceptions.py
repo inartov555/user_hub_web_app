@@ -41,7 +41,7 @@ EXC_MAP = {
                           translation.gettext("Not found.")),
     exceptions.MethodNotAllowed: ("common.method_not_allowed",
                                   "errors.common.method_not_allowed",
-                                  translation.gettext('Method "%(method)s" not allowed.')),
+                                  translation.gettext("Method \"%(method)s\" not allowed.")),
     exceptions.Throttled: ("common.throttled",
                            "errors.common.throttled",
                            translation.gettext("Request was throttled.")),
