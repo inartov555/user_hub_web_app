@@ -2,7 +2,8 @@
 Settings
 """
 
-import os, hashlib
+import os
+import hashlib
 import tempfile
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
