@@ -165,7 +165,7 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "profiles.middleware.jwt_authentication_middleware.JWTAuthenticationMiddleware",
-    "profiles.middleware.boot_epoch_enforcer.BootEpochEnforcerMiddleware",
+    "profiles.middleware.boot_id_enforcer.BootIdEnforcerMiddleware",
     "profiles.middleware.idle_timeout_middleware.IdleTimeoutMiddleware",
     "profiles.middleware.last_activity_middle_ware.LastActivityMiddleware",
 ]

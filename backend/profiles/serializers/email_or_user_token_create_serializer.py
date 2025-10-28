@@ -10,7 +10,7 @@ from django.contrib.auth import get_user_model
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework import serializers
 
-from ..boot import get_boot_epoch
+from ..boot import get_boot_id
 
 
 class EmailOrUsernameTokenCreateSerializer(TokenObtainPairSerializer):
@@ -25,7 +25,7 @@ class EmailOrUsernameTokenCreateSerializer(TokenObtainPairSerializer):
         Getting token
         """
         token = super().get_token(user)  # this is the REFRESH token
-        token["boot_epoch"] = int(get_boot_epoch())
+        token["boot_id"] = int(get_boot_id())
         return token
 
     def _resolve_login_field(self) -> str:

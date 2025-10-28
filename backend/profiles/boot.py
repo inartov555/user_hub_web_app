@@ -34,19 +34,16 @@ def _coerce_epoch(value: Optional[object]) -> Optional[int]:
         return None
 
 
-def get_boot_epoch() -> int:
+def get_boot_id() -> int:
     """
-    Get the current boot epoch as an integer.
+    Get the current boot id as an integer.
 
     Returns
-        int, The boot epoch to embed in tokens and compare in middleware.
+        int, The boot id to embed in tokens and compare in middleware.
     """
     if DJANGO_SETTINGS is not None:
         # Prefer top-level BOOT_ID from core.settings
         boot_id = getattr(DJANGO_SETTINGS, "BOOT_ID", None)
-        if boot_id is None:
-            # Back-compat: allow SIMPLE_JWT["BOOT_ID"]
-            boot_id = (getattr(DJANGO_SETTINGS, "SIMPLE_JWT", {}) or {}).get("BOOT_ID")
         if boot_id is not None:
             try:
                 return int(boot_id)

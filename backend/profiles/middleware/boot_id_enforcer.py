@@ -1,7 +1,7 @@
 """
 This module integrates with Django REST Framework + SimpleJWT. On each request,
-it compares the `boot_epoch` value embedded in the validated JWT (added at
-issue time) with the server's current boot epoch (from `profiles.boot.get_boot_epoch`).
+it compares the `boot_id` value embedded in the validated JWT (added at
+issue time) with the server's current boot epoch (from `profiles.boot.get_boot_id`).
 If they differ—e.g., after a deploy or restart—the middleware returns a 401
 so the client can refresh credentials.
 
@@ -9,15 +9,15 @@ Expected behavior:
 - Anonymous users are ignored (normal response continues).
 - If no validated JWT is present on the request (e.g., session auth or unauthenticated),
   the request proceeds unmodified.
-- When a JWT is present and its `boot_epoch` differs from the server's current
+- When a JWT is present and its `boot_id` differs from the server's current
   epoch, a 401 JSON response is returned with a short explanation.
 """
 
 from django.http import JsonResponse
-from ..boot import get_boot_epoch
+from ..boot import get_boot_id
 
 
-class BootEpochEnforcerMiddleware:
+class BootIdEnforcerMiddleware:
     """
     Middleware to enforce logout of JWT-authenticated users after a server "boot epoch"
     change.
@@ -36,8 +36,8 @@ class BootEpochEnforcerMiddleware:
         if not token:
             return resp
 
-        curr = get_boot_epoch()
-        if token and token.payload.get("boot_epoch") != curr:
+        curr = get_boot_id()
+        if token and token.payload.get("boot_id") != curr:
             return JsonResponse({"detail": "Session expired due to server restart."}, status=401)
 
         return resp
