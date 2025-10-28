@@ -14,6 +14,7 @@ Expected behavior:
 """
 
 from django.http import JsonResponse
+from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework_simplejwt.exceptions import TokenError, InvalidToken
 from rest_framework.exceptions import AuthenticationFailed
 
@@ -44,6 +45,7 @@ class BootIdEnforcerMiddleware:
     """
     def __init__(self, get_response):
         self.get_response = get_response
+        self.jwt_auth = JWTAuthentication()
 
     def __call__(self, request):
         # Pull raw Bearer token (if any)
