@@ -14,6 +14,8 @@ Expected behavior:
 """
 
 from django.http import JsonResponse
+from rest_framework_simplejwt.exceptions import TokenError, InvalidToken
+
 from ..boot import get_boot_id
 
 
@@ -43,39 +45,24 @@ class BootIdEnforcerMiddleware:
         self.get_response = get_response
 
     def __call__(self, request):
-        # Pre-response check: only enforce if a validated SimpleJWT token is present.
-        user = getattr(request, "user", None)
-        token = getattr(request, "auth", None)  # SimpleJWT validated token (if any)
+        # Pull raw Bearer token (if any)
+        auth_header = request.META.get("HTTP_AUTHORIZATION", "")
+        if auth_header.lower().startswith("bearer "):
+            raw = auth_header.split(None, 1)[1]
 
-        if user is not None and getattr(user, "is_authenticated", False) and token is not None:
+            # Validate token and compare boot ids
             try:
-                current_boot = int(get_boot_id())
-            except (TypeError, ValueError):
-                # If boot id can't be read, do NOT hard-fail the request.
-                current_boot = None
-
-            if current_boot is not None:
-                # Token may be an instance of AccessToken/RefreshToken or a dict-like object
-                payload = getattr(token, "payload", None) or getattr(token, "payload", {}) or {}
-                try:
-                    token_boot = int(payload.get("boot_id"))
-                except (TypeError, ValueError):
-                    token_boot = None
-
-                if token_boot is not None and token_boot != current_boot:
+                token = self.jwt_auth.get_validated_token(raw)
+                curr = get_boot_id()
+                if token.payload.get("boot_id") != curr:
                     return JsonResponse(
                         {"detail": "Session expired due to server restart."},
                         status=401,
                     )
+                request.auth = token
+            except (InvalidToken, AuthenticationFailed):
+                # Let the normal auth/permission handling reject it.
+                pass
 
-        # Call downstream view/middleware
-        response = self.get_response(request)
-
-        # Best-effort header with current boot id
-        try:
-            response["X-Boot-Id"] = str(int(get_boot_id()))
-        except (TypeError, ValueError):
-            # Never break responses if boot reading fails
-            pass
-
-        return response
+        # Anonymous or no/bad token - proceed (views/DRF will handle)
+        return self.get_response(request)
