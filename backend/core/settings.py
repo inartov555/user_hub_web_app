@@ -7,6 +7,7 @@ import tempfile
 from datetime import timedelta
 from pathlib import Path
 from dotenv import load_dotenv
+from django.utils.translation import translation
 
 
 def env_tuple(name: str, default=()) -> tuple:
@@ -47,6 +48,14 @@ LOG_DIR = os.getenv("HOST_ARTIFACTS", "workspace/artifacts")
 LOG_PATH = Path(LOG_DIR)
 
 LOG_TO_DIR = _dir_writable(LOG_PATH)
+
+USE_I18N = True
+LANGUAGE_CODE = "en_us"
+LANGUAGES = [
+    ("en_US", translation.gettext_lazy("en-US")),
+    ("et_EE", translation.gettext_lazy("et-EE")),
+]
+LOCALE_PATHS = [BASE_DIR / "locale"]
 
 # Login session properties start
 JWT_RENEW_AT_SECONDS=int(os.getenv("JWT_RENEW_AT_SECONDS", "100"))

@@ -1,5 +1,6 @@
 import axios from "axios";
 import { AxiosHeaders, InternalAxiosRequestConfig } from "axios";
+import i18n from "./i18n";
 import { useAuthStore } from "../auth/store";
 import { jwtDecode } from "jwt-decode";
 
@@ -31,6 +32,7 @@ api.interceptors.request.use((config: InternalAxiosRequestConfig) => {
       if (!config.headers) config.headers = new AxiosHeaders();
       if (config.headers instanceof AxiosHeaders && !config.headers?.Authorization) {
         config.headers.set("Authorization", `Bearer ${token}`);
+        config.headers["Accept-Language"] = i18n.resolvedLanguage ?? "en-US";
       }
     }
   }
