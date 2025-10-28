@@ -1,9 +1,11 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useAuthStore } from "../auth/store";
+import { LocaleFlag } from "./LocaleFlag";
 
 export default function Navbar() {
   const { t, i18n } = useTranslation();
+  const [locale, setLocale] = useState(i18n.resolvedLanguage || "en-US");
   const { pathname } = useLocation();
   const { user, logout, accessToken } = useAuthStore();
   const navigate = useNavigate();
@@ -27,14 +29,22 @@ export default function Navbar() {
           {user && <button className="btn" onClick={() => { logout(); navigate("/login"); }}>{t("nav.logout")}</button>}
         </div>
         {/* Language switcher */}
-        <select
-          className="border rounded px-2 py-1 text-sm"
-          value={i18n.resolvedLanguage}
-          onChange={(e) => i18n.changeLanguage(e.target.value)}
-        >
-          <option value="en-US">English - US</option>
-          <option value="et-EE">Eesti</option>
-        </select>
+        {/* Show current flag next to the select */}
+        <div>
+    	  <LocaleFlag locale={locale} size={18} />
+          <select
+            className="border rounded px-2 py-1 text-sm"
+            value={locale}
+            onChange={(e) => {
+              const next = e.target.value;
+              setLocale(next);
+              i18n.changeLanguage(next);
+            }}
+          >
+            <option value="en-US">English - US</option>
+            <option value="et-EE">Eesti</option>
+          </select>
+        </div>
       </div>
     </header>
   );

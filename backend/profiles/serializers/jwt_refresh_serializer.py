@@ -8,7 +8,10 @@ This allows clients to recover after a server restart without forcing a full re-
 from typing import Any, Dict
 
 from django.conf import settings
+from django.apps import apps
 from django.contrib.auth import get_user_model
+from django.db import DatabaseError, IntegrityError
+from django.utils import translation
 from rest_framework_simplejwt.serializers import TokenRefreshSerializer
 from rest_framework_simplejwt.tokens import RefreshToken, AccessToken, Token
 from rest_framework_simplejwt.exceptions import InvalidToken, TokenError
@@ -56,10 +59,8 @@ class CustomTokenRefreshSerializer(TokenRefreshSerializer):
 
         if rotate:
             if blacklist_after_rotation and "rest_framework_simplejwt.token_blacklist" in settings.INSTALLED_APPS:
-                try:
-                    refresh_in.blacklist()
-                except Exception:
-                    pass
+                # Blacklist the *previous* refresh token (if using rotation/blacklist feature)
+                _try_blacklist_refresh(refresh_in)
 
             user = self._user_from_token(refresh_in)
             new_refresh: RefreshToken = RefreshToken.for_user(user)
@@ -67,6 +68,35 @@ class CustomTokenRefreshSerializer(TokenRefreshSerializer):
             data["refresh"] = str(new_refresh)
 
         return data
+
+    def _try_blacklist_refresh(refresh_token) -> None:
+        """
+        Attempt to blacklist a refresh token safely.
+        - No-op if the blacklist app is not installed (keeps behavior compatible).
+        - Raises localized, specific exceptions for expected failure modes.
+        """
+        # Fast exit if the blacklist app isn’t installed
+        if not apps.is_installed("rest_framework_simplejwt.token_blacklist"):
+            return
+
+        # Optional: honor SIMPLE_JWT settings
+        blacklist_after_rotation = getattr(
+            settings, "SIMPLE_JWT", {}
+        ).get("BLACKLIST_AFTER_ROTATION", True)
+        if not blacklist_after_rotation:
+            return
+
+        try:
+            refresh_token.blacklist()
+        except TokenError:
+            # e.g., malformed/expired token object being blacklisted
+            # Surface as a field validation error for the client
+            raise ValidationError({"refresh": [translation.gettext("Invalid refresh token.")]})
+        except (IntegrityError, DatabaseError):
+            # Database write failed (duplicate/DB down). Tell the client clearly.
+            # Your exception handler will wrap this into the standard error envelope.
+            raise APIException(detail=translation.gettext("Failed to blacklist token."), code="auth.blacklist_failed")
+        # Note: do NOT catch a bare Exception here; let unexpected errors surface.
 
     @staticmethod
     def _user_from_token(token: Token):
