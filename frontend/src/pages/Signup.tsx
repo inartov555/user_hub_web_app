@@ -1,8 +1,8 @@
 import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { api } from "../lib/axios";
 import FormInput from "../components/FormInput";
-import { useNavigate } from "react-router-dom";
 import { extractApiError } from "../lib/httpErrors";
 
 export default function Signup() {
