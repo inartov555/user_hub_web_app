@@ -26,13 +26,26 @@
   },
   "users": {
     "title": "Kasutajad",
+    "people": "Inimesed",
+    "loading": "Laadimine…",
     "deleteSelected": "Kustuta valitud",
-    "confirmDeletion": "Kinnita kustutamine",
+    "deleteSelectedTitle": "Kustuta valitud kasutajad",
+    "confirmDeletion": "Kustutamise kinnitamine",
     "deleteNUsers": "Kustuta {{count}} valitud kasutaja",
     "deleteNUsers_plural": "Kustuta {{count}} valitud kasutajat",
     "cancel": "Tühista",
     "delete": "Kustuta",
-    "failedDelete": "Valitud kasutajate kustutamine ebaõnnestus: {{error}}"
+    "failedDelete": "Valitud kasutajate kustutamine ebaõnnestus: {{error}}",
+    "clickToSort": "Klõpsa sortimiseks; mitmiksortimine on lubatud",
+    "sorted": "Sorditud",
+    "ascending": "kasvav",
+    "descending": "kahanev",
+    "select": "Vali",
+    "changePassword": "Muuda parooli",
+    "search": "Otsi…",
+    "columns": "Veerud",
+    "clearSort": "Tühista sortimine",
+    "toggleColumns": "Kuva/peida veerud"
   },
   "stats": {
     "onlineHeader": "Hetkel online kasutajad (viimased 5 minutit)"

@@ -1,6 +1,7 @@
 import * as React from "react";
 import { useMemo, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import {
   ColumnDef,
   flexRender,
@@ -19,7 +20,6 @@ import {
 import type { RowSelectionState } from "@tanstack/react-table";
 import { api } from "../lib/axios";
 import { useAuthStore } from "../auth/store";
-
 import { Button } from "../components/button";
 import { Card, CardContent, CardHeader, CardTitle } from "../components/card";
 import { Input } from "../components/input";
@@ -66,6 +66,7 @@ type Props = {
 };
 
 export default function UsersTable(props: Props) {
+  const { t } = useTranslation();
   const cur_user = useAuthStore((s) => s.user) as (User & AdminFlags) | null | undefined;
   const isAdmin = Boolean(cur_user?.is_admin || cur_user?.is_staff || cur_user?.is_superuser);
   const navigate = useNavigate();
@@ -80,10 +81,20 @@ export default function UsersTable(props: Props) {
   );
   const [showColumns, setShowColumns] = useState(false);
   const [rowSelection, setRowSelection] = React.useState<RowSelectionState>({});
+  // put inside UsersTable, above `columns`
+  const sortLabel = (column: any): string | undefined => {
+    const dir = column.getIsSorted() as 'asc' | 'desc' | false;
+    if (!dir) return undefined;
+    const map = {
+      asc: t('users.ascending'),
+      desc: t('users.descending'),
+    } satisfies Record<'asc' | 'desc', string>;
+    return map[dir];
+  };
   const SortIcon = ({ column }: { column: any }) => {
-    const dir = column.getIsSorted(); // 'asc' | 'desc' | false
-    if (dir === "asc") return <ArrowUp className="h-4 w-4" aria-label="sorted ascending" />;
-    if (dir === "desc") return <ArrowDown className="h-4 w-4" aria-label="sorted descending" />;
+    const get_sorted_order = column.getIsSorted(); // 'asc' | 'desc' | false
+    if (get_sorted_order === "asc") return <ArrowUp className="h-4 w-4" aria-label="sorted ascending" />;
+    if (get_sorted_order === "desc") return <ArrowDown className="h-4 w-4" aria-label="sorted descending" />;
     return <ArrowUpDown className="h-4 w-4 opacity-40" aria-label="not sorted" />;
   };
 
@@ -119,7 +130,8 @@ export default function UsersTable(props: Props) {
   // Columns
   const columns = useMemo<ColumnDef<User>[]>(() => [
     ...(isAdmin ? [{
-      id: "select",
+      accessorKey: "select",
+      label: t("users.select"),
       enableHiding: false,
       header: ({ table }) => {
         const all = table.getIsAllRowsSelected();
@@ -151,6 +163,7 @@ export default function UsersTable(props: Props) {
     }] : []),
     {
       accessorKey: "username",
+      label: t("auth.username"),
       header: ({ column }) => (
         <button
           type="button"
@@ -158,11 +171,11 @@ export default function UsersTable(props: Props) {
           onClick={column.getToggleSortingHandler()}
           title={
             column.getIsSorted()
-            ? `Sorted ${column.getIsSorted()} (#${column.getSortIndex() + 1})`
-            : "Click to sort; multi-sort enabled"
+            ? `{t("users.sorted")} ${sortLabel(column)} (#${column.getSortIndex() + 1})`
+            : t("users.clickToSort")
           }
         >
-          Username <SortIcon column={column} />
+          {t("auth.username")} <SortIcon column={column} />
         </button>
       ),
       cell: (info) => <span className="font-medium break-words">{info.getValue() as string}</span>,
@@ -171,6 +184,7 @@ export default function UsersTable(props: Props) {
     },
     {
       accessorKey: "email",
+      label: t("auth.email"),
       header: ({ column }) => (
         <button
           type="button"
@@ -178,11 +192,11 @@ export default function UsersTable(props: Props) {
           onClick={column.getToggleSortingHandler()}
           title={
             column.getIsSorted()
-            ? `Sorted ${column.getIsSorted()} (#${column.getSortIndex() + 1})`
-            : "Click to sort; multi-sort enabled"
+            ? `{t("users.sorted")} ${sortLabel(column)} (#${column.getSortIndex() + 1})`
+            : t("users.clickToSort")
           }
         >
-          Email <SortIcon column={column} />
+          {t("auth.email")} <SortIcon column={column} />
         </button>
       ),
       cell: (ctx) => <span className="break-words">{ctx.getValue<string>()}</span>,
@@ -191,6 +205,7 @@ export default function UsersTable(props: Props) {
     },
     {
       accessorKey: "first_name",
+      label: t("signup.firstName"),
       header: ({ column }) => (
         <button
           type="button"
@@ -198,11 +213,11 @@ export default function UsersTable(props: Props) {
           onClick={column.getToggleSortingHandler()}
           title={
             column.getIsSorted()
-            ? `Sorted ${column.getIsSorted()} (#${column.getSortIndex() + 1})`
-            : "Click to sort; multi-sort enabled"
+            ? `{t("users.sorted")} ${sortLabel(column)} (#${column.getSortIndex() + 1})`
+            : t("users.clickToSort")
           }
         >
-          First name <SortIcon column={column} />
+          {t("signup.firstName")} <SortIcon column={column} />
         </button>
       ),
       cell: (ctx) => <span className="break-words">{ctx.getValue<string>()}</span>,
@@ -211,6 +226,7 @@ export default function UsersTable(props: Props) {
     },
     {
       accessorKey: "last_name",
+      label: t("signup.lastName"),
       header: ({ column }) => (
         <button
           type="button"
@@ -218,11 +234,11 @@ export default function UsersTable(props: Props) {
           onClick={column.getToggleSortingHandler()}
           title={
             column.getIsSorted()
-            ? `Sorted ${column.getIsSorted()} (#${column.getSortIndex() + 1})`
-            : "Click to sort; multi-sort enabled"
+            ? `{t("users.sorted")} ${sortLabel(column)} (#${column.getSortIndex() + 1})`
+            : t("users.clickToSort")
           }
         >
-          Last name <SortIcon column={column} />
+          {t("signup.lastName")} <SortIcon column={column} />
         </button>
       ),
       cell: (ctx) => <span className="break-words">{ctx.getValue<string>()}</span>,
@@ -230,9 +246,10 @@ export default function UsersTable(props: Props) {
       enableResizing: true,
     },
     ...(isAdmin ? [{
-      id: "change_password_action",
+      accessorKey: "change_password_action",
+      label: t("users.changePassword"),
       enableHiding: false,
-      header: "Change Password",
+      header: t("users.changePassword"),
       enableSorting: false,
       size: 180,
       cell: ({ row }) => (
@@ -241,9 +258,9 @@ export default function UsersTable(props: Props) {
             variant="outline"
             size="sm"
             onClick={() => navigate(`/users/${row.original.id}/change-password`)}
-            title="Change password"
+            title={t("users.changePassword")}
           >
-            Change password
+            {t("users.changePassword")}
           </Button>
         </div>
       ),
@@ -282,7 +299,7 @@ export default function UsersTable(props: Props) {
 
     // Multi-sort behavior
     enableMultiSort: true,
-    // Always treat clicks as multi-sort; don't require Shift/Ctrl/⌘
+    // Always treat clicks as multi-sort; don't require Shift/Ctrl
     isMultiSortEvent: alwaysMulti,
     // Avoid the "third click removes sorting" behavior (keeps column in sort)
     enableSortingRemoval: false,
@@ -311,15 +328,15 @@ export default function UsersTable(props: Props) {
     navigate("/users/confirm-delete", { state: { users: selectedUsers } });
   };
 
-  if (isLoading && !data) return <div>Loading…</div>;
+  if (isLoading && !data) return <div>{t("users.loading")}</div>;
 
   return (
     <Card className="w-full mx-auto">
       <CardHeader className="flex flex-row items-center justify-between gap-4">
-        <CardTitle className="text-xl">People</CardTitle>
+        <CardTitle className="text-xl">{t("users.people")}</CardTitle>
         <div className="flex items-center gap-2">
           <Input
-            placeholder="Search…"
+            placeholder={t("users.search")}
             value={globalFilter}
             onChange={(e) => setGlobalFilter(e.target.value)}
             className="w-48"
@@ -328,14 +345,14 @@ export default function UsersTable(props: Props) {
           {/* Columns menu */}
           <div className="relative">
             <Button variant="outline" size="sm" className="gap-2" onClick={() => setShowColumns((v) => !v)}>
-              <Columns className="h-4 w-4" /> Columns
+              <Columns className="h-4 w-4" /> {t("users.columns")}
             </Button>
             {showColumns && (
               <div
                 className="absolute right-0 z-10 mt-2 w-56 rounded-md border bg-white p-2 shadow-lg"
                 role="menu"
               >
-                <div className="px-2 py-1 text-xs font-medium text-slate-500">Toggle columns</div>
+                <div className="px-2 py-1 text-xs font-medium text-slate-500">{t("users.toggleColumns")}</div>
                 <div className="my-2 h-px bg-slate-200" />
                 {table
                   .getAllLeafColumns()
@@ -367,10 +384,9 @@ export default function UsersTable(props: Props) {
               table.resetSorting();
             }}
           >
-            Clear sort
+            {t("users.clearSort")}
           </Button>
 
-          {/* Delete selected */}
           {/* Delete selected (admin only) */}
           {isAdmin && (
             <Button
@@ -379,10 +395,10 @@ export default function UsersTable(props: Props) {
               onClick={handleGoToDeleteConfirm}
               disabled={table.getSelectedRowModel().rows.length === 0}
               className="gap-2 border-red-600 text-red-700 hover:bg-red-50"
-              title="Delete selected users"
+              title={t("users.deleteSelectedTitle")}
             >
               <Trash2 className="h-4 w-4" />
-              Delete selected ({table.getSelectedRowModel().rows.length || 0})
+              {t("users.deleteSelected")} ({table.getSelectedRowModel().rows.length || 0})
             </Button>
 
           )}

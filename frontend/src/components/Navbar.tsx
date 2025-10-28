@@ -3,10 +3,10 @@ import { useTranslation } from "react-i18next";
 import { useAuthStore } from "../auth/store";
 
 export default function Navbar() {
+  const { t, i18n } = useTranslation();
   const { pathname } = useLocation();
   const { user, logout, accessToken } = useAuthStore();
   const navigate = useNavigate();
-  const { t, i18n } = useTranslation();
   return (
     <header className="sticky top-0 z-10 bg-white/70 backdrop-blur border-b border-slate-200">
       <div className="max-w-6xl mx-auto flex items-center justify-between p-3">
@@ -32,8 +32,8 @@ export default function Navbar() {
           value={i18n.resolvedLanguage}
           onChange={(e) => i18n.changeLanguage(e.target.value)}
         >
-          <option value="en_US">English - US</option>
-          <option value="et_EE">Eesti</option>
+          <option value="en-US">English - US</option>
+          <option value="et-EE">Eesti</option>
         </select>
       </div>
     </header>

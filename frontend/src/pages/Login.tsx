@@ -7,13 +7,13 @@ import FormInput from "../components/FormInput";
 import { extractApiError } from "../lib/httpErrors";
 
 export default function Login() {
+  const { t } = useTranslation();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
   const { setTokens, setUser, user } = useAuthStore();
   const { pathname } = useLocation();
-  const { t } = useTranslation();
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
