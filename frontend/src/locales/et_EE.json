@@ -97,5 +97,10 @@
     "more": "veel",
     "deleteUsers": "Kustuta kasutajad",
     "deleting": "Kustutamine…"
+  },
+  "resetPassword": {
+    "resetPassword": "Lähtesta parool",
+    "checkEmailForResetLink": "Vaata konsoolis e-posti backendi, et leida lähtestamislink.",
+    "sendResetEmail": "Saada parooli lähtestamise e-kiri"
   }
 }

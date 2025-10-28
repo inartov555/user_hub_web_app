@@ -1,8 +1,10 @@
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { api } from "../lib/axios";
 import FormInput from "../components/FormInput";
 
 export default function ResetPassword() {
+  const { t, i18n } = useTranslation();
   const [email, setEmail] = useState("");
   const [sent, setSent] = useState(false);
 
@@ -14,11 +16,11 @@ export default function ResetPassword() {
 
   return (
     <div className="max-w-md mx-auto card">
-      <h1 className="text-2xl font-semibold mb-4">Reset password</h1>
-      {sent ? <p>Check console email backend for the reset link.</p> : (
+      <h1 className="text-2xl font-semibold mb-4">{t("resetPassword.resetPassword")}</h1>
+      {sent ? <p>{t("resetPassword.checkEmailForResetLink")}</p> : (
         <form onSubmit={onSubmit} className="space-y-3">
           <FormInput placeholder="Email" type="email" value={email} onChange={e=>setEmail(e.target.value)} required />
-          <button className="btn w-full" type="submit">Send reset email</button>
+          <button className="btn w-full" type="submit">{t("resetPassword.sendResetEmail")}</button>
         </form>
       )}
     </div>

@@ -100,5 +100,10 @@
   },
   "stats": {
     "curOnline5Mins": "Currently online users (last 5 minutes)"
+  },
+  "resetPassword": {
+    "resetPassword": "Reset password",
+    "checkEmailForResetLink": "Check console email backend for the reset link.",
+    "sendResetEmail": "Send reset email"
   }
 }
