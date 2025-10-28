@@ -24,11 +24,11 @@ export default function ChangePassword() {
     setError(null);
 
     if (!password || password.length < 8) {
-      setError({t("changePassword.atLeast8Chars")});
+      setError(t("changePassword.atLeast8Chars"));
       return;
     }
     if (password !== confirmPassword) {
-      setError({t("changePassword.notMatch")});
+      setError(t("changePassword.notMatch"));
       return;
     }
 
@@ -38,7 +38,7 @@ export default function ChangePassword() {
       navigate("/users", { replace: true });
     } catch (err) {
       const parsed = extractApiError(err as unknown);
-      setError(parsed.message || {t("changePassword.setPasswordFailed")});
+      setError(parsed.message || t("changePassword.setPasswordFailed"));
     } finally {
       setSaving(false);
     }
@@ -65,7 +65,7 @@ export default function ChangePassword() {
         />
         {error && <p className="text-red-600 text-sm">{error}</p>}
         <button className="btn w-full" type="submit" disabled={saving}>
-          {saving ? {t("changePassword.saving")} : {t("profileEdit.save")}}
+          {saving ? t("changePassword.saving") : t("profileEdit.save")}
         </button>
       </form>
     </div>
