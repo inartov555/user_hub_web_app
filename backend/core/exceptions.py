@@ -16,11 +16,10 @@ Every error response follows this envelope:
 }
 """
 
-from typing import Any, Dict, Optional
+from typing import Any, Optional
 
 from django.core.exceptions import ValidationError as DjangoValidationError
-from django.utils.translation import gettext as _
-from django.utils.translation import get_language
+from django.utils import gettext as translation
 from rest_framework.views import exception_handler
 from rest_framework import exceptions, status
 from rest_framework.response import Response
@@ -28,16 +27,36 @@ from rest_framework.response import Response
 
 # Optional: a small catalog to map common DRF exception classes to our error codes & i18n keys
 EXC_MAP = {
-    exceptions.NotAuthenticated:   ("auth.not_authenticated",        "errors.auth.not_authenticated",        _("Not authenticated.")),
-    exceptions.AuthenticationFailed: ("auth.auth_failed",            "errors.auth.auth_failed",              _("Authentication credentials were not provided.")),
-    exceptions.PermissionDenied:   ("auth.permission_denied",        "errors.auth.permission_denied",        _("You do not have permission to perform this action.")),
-    exceptions.NotFound:           ("common.not_found",              "errors.common.not_found",              _("Not found.")),
-    exceptions.MethodNotAllowed:   ("common.method_not_allowed",     "errors.common.method_not_allowed",     _('Method "%(method)s" not allowed.')),
-    exceptions.Throttled:          ("common.throttled",              "errors.common.throttled",              _("Request was throttled.")),
-    exceptions.ParseError:         ("common.parse_error",            "errors.common.parse_error",            _("Malformed request.")),
-    exceptions.UnsupportedMediaType:("common.unsupported_media_type","errors.common.unsupported_media_type", _("Unsupported media type.")),
-    exceptions.NotAcceptable:      ("common.not_acceptable",         "errors.common.not_acceptable",         _("Not acceptable.")),
-    exceptions.APIException:       ("common.server_error",           "errors.common.server_error",           _("A server error occurred.")),
+    exceptions.NotAuthenticated: ("auth.not_authenticated",
+                                  "errors.auth.not_authenticated",
+                                  translation.gettext("Not authenticated.")),
+    exceptions.AuthenticationFailed: ("auth.auth_failed", 
+                                      "errors.auth.auth_failed",
+                                      translation.gettext("Authentication credentials were not provided.")),
+    exceptions.PermissionDenied: ("auth.permission_denied",
+                                  "errors.auth.permission_denied",
+                                  translation.gettext("You do not have permission to perform this action.")),
+    exceptions.NotFound: ("common.not_found",
+                          "errors.common.not_found",
+                          translation.gettext("Not found.")),
+    exceptions.MethodNotAllowed: ("common.method_not_allowed",
+                                  "errors.common.method_not_allowed",
+                                  translation.gettext('Method "%(method)s" not allowed.')),
+    exceptions.Throttled: ("common.throttled",
+                           "errors.common.throttled",
+                           translation.gettext("Request was throttled.")),
+    exceptions.ParseError: ("common.parse_error",
+                            "errors.common.parse_error",
+                            translation.gettext("Malformed request.")),
+    exceptions.UnsupportedMediaType: ("common.unsupported_media_type",
+                                      "errors.common.unsupported_media_type",
+                                      translation.gettext("Unsupported media type.")),
+    exceptions.NotAcceptable: ("common.not_acceptable",
+                               "errors.common.not_acceptable",
+                               translation.gettext("Not acceptable.")),
+    exceptions.APIException: ("common.server_error",
+                              "errors.common.server_error",
+                              translation.gettext("A server error occurred.")),
 }
 
 def _serialize_validation_errors(detail) -> Any:
