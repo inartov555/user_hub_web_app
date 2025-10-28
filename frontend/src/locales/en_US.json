@@ -41,7 +41,10 @@
     "search": "Search...",
     "columns": "Columns",
     "clearSort": "Clear sort",
-    "toggleColumns": "Toggle columns"
+    "toggleColumns": "Toggle columns",
+    "page": "Page",
+    "of": "of",
+    "rowsPerPage": "Rows per page"
   },
   "stats": {
     "onlineHeader": "Currently online users (last 5 minutes)"
@@ -80,5 +83,17 @@
     "newPassword": "New password",
     "confirmPassword": "Confirm password",
     "saving": "Saving…"
+  },
+  "userDeleteConfirm": {
+    "bulkDeleteFailed": "Bulk delete failed:",
+    "failedToDelete": "Failed to delete",
+    "failedToDeleteSelectedUsers": "Failed to delete selected users:",
+    "confirmDelete": "Confirm deletion",
+    "youAboutToDelete": "You are about to permanently delete",
+    "cannotBeUndone": "user(s). This action cannot be undone.",
+    "and": "…and",
+    "more": "more",
+    "deleteUsers": "Delete users",
+    "deleting": "Deleting…"
   }
 }

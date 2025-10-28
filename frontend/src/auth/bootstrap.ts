@@ -19,7 +19,7 @@ export async function bootstrapAuth(): Promise<boolean> {
     setUser(data);
     return true;
   } catch {
-    logout(); // tokens invalid → clear them
+    logout(); // tokens invalid - clear them
     return false;
   }
 }

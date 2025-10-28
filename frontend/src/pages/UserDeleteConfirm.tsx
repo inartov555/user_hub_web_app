@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useQueryClient } from "@tanstack/react-query";
+import { useTranslation } from "react-i18next";
 import { api } from "../lib/axios";
 import { Card, CardHeader, CardTitle, CardContent } from "../components/card";
 import { Button } from "../components/button";
@@ -18,6 +19,7 @@ type User = {
 type LocationState = { users?: User[] };
 
 export default function UserDeleteConfirm() {
+  const { t, i18n } = useTranslation();
   const navigate = useNavigate();
   const qc = useQueryClient();
   const { state } = useLocation() as { state?: LocationState };
@@ -44,7 +46,7 @@ export default function UserDeleteConfirm() {
 
       if (!(bulk.status >= 200 && bulk.status < 300)) {
         const parsed = extractApiError(bulk);
-        setError(prev => (prev ? `${prev}\n` : "") + `Bulk delete failed: ${parsed.message}`);
+        setError(prev => (prev ? `${prev}\n` : "") + `{t("userDeleteConfirm.bulkDeleteFailed")} ${parsed.message}`);
         // Fallback to per-user delete
         const results = await Promise.allSettled(
           ids.map((id) => api.delete(`/users/${id}/delete-user/`, { validateStatus: () => true }))
@@ -53,7 +55,7 @@ export default function UserDeleteConfirm() {
 	  (r) => r.status === "rejected" || (r.status === "fulfilled" && r.value.status >= 400)
         );
         if (failed.length) {
-          setError(prev => (prev ? `${prev}\n` : "") + `Failed to delete ${failed.length} of ${ids.length} users.`);
+          setError(prev => (prev ? `${prev}\n` : "") + `{t("userDeleteConfirm.failedToDelete")} ${failed.length} of ${ids.length} {t("users.title")}.`);
           for (const err_item of failed) {
             const parsed = extractApiError(err_item);
             setError(prev => (prev ? `${prev}\n` : "") + `${parsed.message}`);
@@ -65,7 +67,7 @@ export default function UserDeleteConfirm() {
         navigate("/users", { replace: true });
       }
     } catch (erro: any) {
-      setError(prev => (prev ? `${prev}\n` : "") + `Failed to delete selected users: ${erro}`);
+      setError(prev => (prev ? `${prev}\n` : "") + `{t("userDeleteConfirm.failedToDeleteSelectedUsers")} ${erro}`);
     } finally {
       setLoading(false);
     }
@@ -78,22 +80,21 @@ export default function UserDeleteConfirm() {
   return (
     <Card className="w-full mx-auto max-w-3xl">
       <CardHeader>
-        <CardTitle>Confirm deletion</CardTitle>
+        <CardTitle>{t("userDeleteConfirm.confirmDelete")}</CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
         <p className="text-sm text-slate-700">
-          You are about to permanently delete <strong>{users.length}</strong> user{users.length > 1 ? "s" : ""}.
-          This action cannot be undone.
+          {t("userDeleteConfirm.youAboutToDelete")} <strong>{users.length}</strong> {t("userDeleteConfirm.cannotBeUndone")}
         </p>
 
         <div className="rounded-lg border overflow-hidden">
           <table className="w-full text-sm table-auto">
             <thead className="bg-muted/50">
               <tr>
-                <th className="text-left px-3 py-2">Username</th>
-                <th className="text-left px-3 py-2">Email</th>
-                <th className="text-left px-3 py-2">First name</th>
-                <th className="text-left px-3 py-2">Last name</th>
+                <th className="text-left px-3 py-2">{t("signup.username")}</th>
+                <th className="text-left px-3 py-2">{t("signup.email")}</th>
+                <th className="text-left px-3 py-2">{t("users.firstName")}</th>
+                <th className="text-left px-3 py-2">{t("users.lastName")}</th>
               </tr>
             </thead>
             <tbody>
@@ -108,7 +109,7 @@ export default function UserDeleteConfirm() {
               {users.length > 20 && (
                 <tr className="border-t">
                   <td className="px-3 py-2 text-slate-500" colSpan={4}>
-                    …and {users.length - 20} more
+                    {t("userDeleteConfirm.and")} {users.length - 20} {t("userDeleteConfirm.more")}
                   </td>
                 </tr>
               )}
@@ -127,9 +128,9 @@ export default function UserDeleteConfirm() {
             variant="outline"
             onClick={handleConfirm}
             disabled={loading}
-            title="Delete users"
+            title={t("userDeleteConfirm.deleteUsers")}
           >
-            {loading ? "Deleting…" : `Delete ${users.length} selected`}
+            {loading ? {t("userDeleteConfirm.deleting")} : `{t("users.deleteSelected")} ${users.length}`}
           </Button>
         </div>
       </CardContent>

@@ -175,7 +175,7 @@ export default function UsersTable(props: Props) {
             : t("users.clickToSort")
           }
         >
-          {t("auth.username")} <SortIcon column={column} />
+          {t("signup.username")} <SortIcon column={column} />
         </button>
       ),
       cell: (info) => <span className="font-medium break-words">{info.getValue() as string}</span>,
@@ -267,7 +267,7 @@ export default function UsersTable(props: Props) {
     }] : []),
   ], [navigate, isAdmin]);
 
-  // Sync TanStack sorting -> server ordering
+  // Sync TanStack sorting - server ordering
   const handleSortingChange = (updater: React.SetStateAction<SortingState>) => {
     const next = typeof updater === "function" ? (updater as (prev: SortingState) => SortingState)(sorting) : updater;
     setSorting(next);
@@ -518,10 +518,10 @@ export default function UsersTable(props: Props) {
           <div className="flex items-center gap-3 text-sm text-muted-foreground">
             {isFetching && <span>Updating…</span>}
             <span>
-              Page <strong>{table.getState().pagination.pageIndex + 1}</strong> of {table.getPageCount() || 1}
+              {t("users.page")} <strong>{table.getState().pagination.pageIndex + 1}</strong> {t("users.of")} {table.getPageCount() || 1}
             </span>
             <label className="flex items-center gap-2">
-              Rows per page
+              {t("users.rowsPerPage")}
               <select
                 className="rounded-md border bg-background px-2 py-1"
                 value={table.getState().pagination.pageSize}

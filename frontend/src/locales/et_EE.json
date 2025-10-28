@@ -46,7 +46,10 @@
     "search": "Otsi…",
     "columns": "Veerud",
     "clearSort": "Tühista sortimine",
-    "toggleColumns": "Kuva/peida veerud"
+    "toggleColumns": "Kuva/peida veerud",
+    "page": "Leht",
+    "of": "/",
+    "rowsPerPage": "Ridu lehe kohta"
   },
   "stats": {
     "onlineHeader": "Hetkel online kasutajad (viimased 5 minutit)"
