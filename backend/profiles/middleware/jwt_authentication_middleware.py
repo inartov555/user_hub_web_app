@@ -63,7 +63,7 @@ class JWTAuthenticationMiddleware:
     def __call__(self, request):
         # Namespace to avoid "protected-access" (W0212)
         request.jwt = SimpleNamespace(
-            new_access_token=None,   # type: Optional[str]
+            new_access_token=None,  # type: Optional[str]
             new_refresh_token=None,  # type: Optional[str]
             auth_failed=False,
         )
@@ -89,7 +89,7 @@ class JWTAuthenticationMiddleware:
         response = self.get_response(request)
         return response
 
-    # --- token extractors (header-only) ---
+    # Token extractors (header-only)
     def _get_access_from_request(self, request) -> Optional[str]:
         """
         Read 'Authorization: Bearer <access>' from headers. No cookies.
