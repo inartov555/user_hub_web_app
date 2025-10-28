@@ -49,14 +49,6 @@ LOG_PATH = Path(LOG_DIR)
 
 LOG_TO_DIR = _dir_writable(LOG_PATH)
 
-USE_I18N = True
-LANGUAGE_CODE = "en_us"
-LANGUAGES = [
-    ("en_US", translation.gettext_lazy("en-US")),
-    ("et_EE", translation.gettext_lazy("et-EE")),
-]
-LOCALE_PATHS = [BASE_DIR / "locale"]
-
 # Login session properties start
 JWT_RENEW_AT_SECONDS=int(os.getenv("JWT_RENEW_AT_SECONDS", "100"))
 # This becomes your idle timeout window (example: 1800 seconds (30 minutes))
@@ -161,6 +153,7 @@ MIDDLEWARE = [
     "corsheaders.middleware.CorsMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
+    "django.middleware.locale.LocaleMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
@@ -170,6 +163,14 @@ MIDDLEWARE = [
     "profiles.middleware.idle_timeout_middleware.IdleTimeoutMiddleware",
     "profiles.middleware.last_activity_middle_ware.LastActivityMiddleware",
 ]
+
+USE_I18N = True
+LANGUAGE_CODE = "en_us"
+LANGUAGES = [
+    ("en_US", translation.gettext_lazy("en-US")),
+    ("et_EE", translation.gettext_lazy("et-EE")),
+]
+LOCALE_PATHS = [BASE_DIR / "locale"]
 
 ROOT_URLCONF = "core.urls"
 TEMPLATES = [{
@@ -234,6 +235,7 @@ REST_FRAMEWORK = {
         "rest_framework.filters.SearchFilter",
     ),
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+    "EXCEPTION_HANDLER": "core.exceptions.localized_exception_handler",
 }
 
 SIMPLE_JWT = {
