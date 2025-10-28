@@ -12,7 +12,7 @@
     "logout": "Logi välja"
   },
   "auth": {
-    "login": "Sisselogimine",
+    "login": "Logi sisse",
     "signin": "Logi sisse",
     "forgotPassword": "Unustasid parooli?",
     "createAccount": "Loo konto",
