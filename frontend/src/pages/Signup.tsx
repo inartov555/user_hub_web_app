@@ -20,7 +20,7 @@ export default function Signup() {
       navigate("/login");
     } catch (err: any) {
       const parsed = extractApiError(err as unknown);
-      setError(`${t("signup.signupFailed")}: ${parsed.message}`);
+      setError(`${parsed.message}`);
     }
   }
 
@@ -31,7 +31,7 @@ export default function Signup() {
         <FormInput placeholder={t("signup.email")} type="email" value={email} onChange={e=>setEmail(e.target.value)} required />
         <FormInput placeholder={t("signup.username")} value={username} onChange={e=>setUsername(e.target.value)} required />
         <FormInput placeholder={t("signup.password")} type="password" value={password} onChange={e=>setPassword(e.target.value)} required />
-        {error && <p className="text-red-600 text-sm">{error}</p>}
+        {error && <p className="text-red-600 text-sm">{t("signup.signupFailed", { message: error })}</p>}
         <button className="btn w-full" type="submit">{t("signup.createAccount")}</button>
       </form>
     </div>
