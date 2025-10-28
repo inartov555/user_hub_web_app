@@ -14,7 +14,7 @@ Expected behavior:
 """
 
 from django.http import JsonResponse
-from ..profiles.boot import get_boot_epoch
+from ..boot import get_boot_epoch
 
 
 class BootEpochEnforcerMiddleware:
