@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { api } from "../lib/axios";
 import { useAuthStore } from "../auth/store";
 
@@ -20,6 +21,7 @@ type Profile = {
 };
 
 export default function ProfileView() {
+  const { t, i18n } = useTranslation();
   const [profile, setProfile] = useState<Profile | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
@@ -39,7 +41,7 @@ export default function ProfileView() {
         setLoading(false);
       } catch (e: any) {
         if (!alive) return;
-        setError(e?.response?.data?.detail || e?.message || "Failed to load profile.");
+        setError(e?.response?.data?.detail || e?.message || t("profileEdit.profileLoadError"));
       }
     })();
     return () => {
@@ -47,15 +49,15 @@ export default function ProfileView() {
     };
   }, []);
 
-  if (loading) return <div className="card p-4">Loading…</div>;
-  if (error) return <div className="card p-4 text-red-600">Error: {error}</div>;
+  if (loading) return <div className="card p-4">{t("users.loading")}</div>;
+  if (error) return <div className="card p-4 text-red-600">{t("profileView.pViewError", { message: error })}</div>;
 
   if (!profile)
     return (
       <div className="card p-4">
-        <p className="mb-2">No profile found.</p>
+        <p className="mb-2">{t("profileView.noProfileFound")}</p>
         <Link to="/profile-edit" className="btn inline-flex">
-          Create / edit profile
+          {t("profileView.createEditProfile")}
         </Link>
       </div>
     );
@@ -78,7 +80,7 @@ export default function ProfileView() {
       <div className="flex items-start justify-center md:justify-start">
         <img
           src={avatarSrc}
-          alt="Profile avatar"
+          alt={t("profileEdit.profileAvatar")}
           width={160}
           height={160}
           style={{ objectFit: "cover", borderRadius: "50%" }}
@@ -88,19 +90,19 @@ export default function ProfileView() {
       {/* Right: Details */}
       <div className="md:col-span-2 space-y-4">
         <div>
-          <h2 className="text-xl font-semibold">Profile</h2>
-          <p className="text-sm text-slate-500">Your personal details</p>
+          <h2 className="text-xl font-semibold">{t("profileView.profile")}</h2>
+          <p className="text-sm text-slate-500">{t("profileView.yourPersonalDetails")}</p>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <Field label="Full name" value={fullName} />
-          <Field label="Username" value={profile.user?.username || "—"} />
-          <Field label="Email" value={profile.user?.email || "—"} />
-          <Field label="ID" value={String(profile.user?.id ?? "—")} />
+          <Field label={t("profileView.fullName")} value={fullName} />
+          <Field label={t("auth.username")} value={profile.user?.username || "—"} />
+          <Field label={t("signup.email")} value={profile.user?.email || "—"} />
+          <Field label={t("profileView.pId")} value={String(profile.user?.id ?? "—")} />
         </div>
 
         <div>
-          <Label>Bio</Label>
+          <Label>{t("excelImport.bio")}</Label>
           <p className="mt-1 whitespace-pre-wrap text-slate-800">
             {profile.bio?.trim() ? profile.bio : "—"}
           </p>
@@ -108,14 +110,14 @@ export default function ProfileView() {
 
         <div className="pt-2">
           <Link to="/profile-edit" className="btn inline-flex">
-            Edit profile
+            {t("profileView.editProfile")}
           </Link>
           {profile?.user?.id != null && (
             <Link
               to={`/users/${profile.user.id}/change-password`}
               className="btn inline-flex"
             >
-              Change password
+              {t("profileView.changePassword")}
             </Link>
           )}
         </div>

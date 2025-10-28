@@ -9,8 +9,7 @@
     "profile": "Profiil",
     "importFromExcel": "Impordi Exceli failist",
     "login": "Logi sisse",
-    "logout": "Logi välja",
-    "signup": "Loo konto"
+    "logout": "Logi välja"
   },
   "auth": {
     "login": "Logi sisse",
@@ -28,7 +27,6 @@
     "email": "E-post",
     "username": "Kasutajanimi",
     "password": "Parool",
-    "signin": "Loo konto",
     "signupFailed": "Registreerimine ebaõnnestus: {{message}}"
   },
   "users": {
@@ -62,5 +60,21 @@
     "processed": "Töödeldud:",
     "created": "Loodud:",
     "updated": "Uuendatud:"
+  },
+  "profileEdit": {
+    "profileLoadError": "Profiili laadimine ebaõnnestus.",
+    "save": "Salvesta",
+    "profileAvatar": "Profiilipilt"
+  },
+  "profileView": {
+    "pViewError": "Viga: {{message}}",
+    "noProfileFound": "Profiili ei leitud.",
+    "createEditProfile": "Loo / muuda profiili",
+    "profile": "Profiil",
+    "yourPersonalDetails": "Sinu isikuandmed",
+    "fullName": "Täisnimi",
+    "pId": "ID",
+    "editProfile": "Muuda profiili",
+    "changePassword": "Muuda parooli"
   }
 }

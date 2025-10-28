@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
 import { Outlet, Link, Navigate, useLocation, useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { useAuthStore } from "./auth/store";
 import { bootstrapAuth } from "./auth/bootstrap";
 import Navbar from "./components/Navbar";
 
 export default function App() {
+  const { t, i18n } = useTranslation();
   const { user, accessToken } = useAuthStore();
   const navigate = useNavigate();
   const location = useLocation();
@@ -30,7 +32,7 @@ export default function App() {
 
   if (!authReady) {
     // Prevent a flash-redirect to /login before hydration completes
-    return <div className="p-4">Loading…</div>;
+    return <div className="p-4">{t("users.loading")}</div>;
   }
 
   return (

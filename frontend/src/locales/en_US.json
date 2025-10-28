@@ -9,8 +9,7 @@
     "profile": "Profile",
     "importFromExcel": "Import from Excel",
     "login": "Login",
-    "logout": "Logout",
-    "signup": "Sign up"
+    "logout": "Logout"
   },
   "auth": {
     "login": "Sisselogimine",
@@ -23,7 +22,6 @@
     "email": "Email",
     "username": "Username",
     "password": "Password",
-    "signin": "Sign up",
     "signupFailed": "Signup failure: {{message}}"
   },
   "users": {
@@ -57,5 +55,22 @@
     "processed": "Processed:",
     "created": "Created:",
     "updated": "Updated:"
+  },
+  "profileEdit": {
+    "profileLoadError": "Failed to load profile.",
+    "save": "Save",
+    "profileAvatar": "Profile avatar"
+  },
+  "profileView": {
+    "pViewError": "Error: {{message}}",
+    "noProfileFound": "No profile found.",
+    "createEditProfile": "Create / edit profile",
+    
+    "profile": "Profile",
+    "yourPersonalDetails": "Your personal details",
+    "fullName": "Full name",
+    "pId": "ID",
+    "editProfile": "Edit profile",
+    "changePassword": "Change password"
   }
 }

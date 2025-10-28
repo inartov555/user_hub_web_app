@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { api } from "../lib/axios";
 import { useAuthStore } from "../auth/store";
 
@@ -18,6 +19,7 @@ type Profile = {
 };
 
 export default function ProfileEdit() {
+  const { t, i18n } = useTranslation();
   const { user, logout, accessToken } = useAuthStore();
   const navigate = useNavigate();
   const location = useLocation();
@@ -42,7 +44,7 @@ export default function ProfileEdit() {
         setError(null);
       } catch (e: any) {
         if (!alive) return;
-        setError(e?.response?.data?.detail || e?.message || "Failed to load profile.");
+        setError(e?.response?.data?.detail || e?.message || t("profileEdit.profileLoadError"));
       }
     })();
     return () => {
@@ -65,7 +67,7 @@ export default function ProfileEdit() {
   }
 
   if (error) return <div className="card p-4 text-red-600">{error}</div>;
-  if (!data) return <div className="card">Loading...</div>;
+  if (!data) return <div className="card">{t("users.loading")}</div>;
 
   const mediaBase = (import.meta.env.VITE_API_URL ?? "http://localhost:8000/api").replace(/\/api$/, "");
   const initials =
@@ -86,7 +88,7 @@ export default function ProfileEdit() {
         <img
           className="w-40 h-40 rounded-full object-cover border"
           src={avatarSrc}
-          alt="Profile avatar"
+          alt={t("profileEdit.profileAvatar")}
           width={160}
           height={160}
         />
@@ -96,13 +98,13 @@ export default function ProfileEdit() {
         <div className="grid grid-cols-2 gap-3">
           <input
             className="input"
-            placeholder="First name"
+            placeholder={t("users.lastName")}
             value={first_name}
             onChange={(e) => setFirstName(e.target.value)}
           />
           <input
             className="input"
-            placeholder="Last name"
+            placeholder={t("users.firstName")}
             value={last_name}
             onChange={(e) => setLastName(e.target.value)}
           />
@@ -110,14 +112,14 @@ export default function ProfileEdit() {
 
         <textarea
           className="input min-h-[120px]"
-          placeholder="Bio"
+          placeholder={t("excelImport.bio")}
           value={bio}
           onChange={(e) => setBio(e.target.value)}
         />
         <input type="file" accept="image/*" onChange={(e) => setAvatarFile(e.target.files?.[0] || null)} />
 
         <div className="flex gap-2">
-          <button className="btn" onClick={onSave}>Save</button>
+          <button className="btn" onClick={onSave}>{t("profileEdit.save")}</button>
         </div>
       </div>
     </div>
