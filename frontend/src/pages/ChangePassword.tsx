@@ -7,7 +7,7 @@ import { extractApiError } from "../lib/httpErrors";
 import { useAuthStore } from "../auth/store";
 
 export default function ChangePassword() {
-  const { t, i18n } = useTranslation();s
+  const { t, i18n } = useTranslation();
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
 
