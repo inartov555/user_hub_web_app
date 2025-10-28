@@ -76,5 +76,13 @@
     "pId": "ID",
     "editProfile": "Muuda profiili",
     "changePassword": "Muuda parooli"
+  },
+  "changePassword": {
+    "atLeast8Chars": "Parool peab olema vähemalt 8 tähemärki.",
+    "notMatch": "Paroolid ei kattu.",
+    "setPasswordFailed": "Parooli seadmine ebaõnnestus.",
+    "newPassword": "Uus parool",
+    "confirmPassword": "Kinnita parool",
+    "saving": "Salvestamine…"
   }
 }

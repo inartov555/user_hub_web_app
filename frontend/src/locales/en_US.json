@@ -72,5 +72,13 @@
     "pId": "ID",
     "editProfile": "Edit profile",
     "changePassword": "Change password"
+  },
+  "changePassword": {
+    "atLeast8Chars": "Password must be at least 8 characters.",
+    "notMatch": "Passwords do not match.",
+    "setPasswordFailed": "Failed to set password.",
+    "newPassword": "New password",
+    "confirmPassword": "Confirm password",
+    "saving": "Saving…"
   }
 }

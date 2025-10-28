@@ -1,11 +1,13 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { api } from "../lib/axios";
 import FormInput from "../components/FormInput";
 import { extractApiError } from "../lib/httpErrors";
 import { useAuthStore } from "../auth/store";
 
 export default function ChangePassword() {
+  const { t, i18n } = useTranslation();s
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
 
@@ -22,11 +24,11 @@ export default function ChangePassword() {
     setError(null);
 
     if (!password || password.length < 8) {
-      setError("Password must be at least 8 characters.");
+      setError({t("changePassword.atLeast8Chars")});
       return;
     }
     if (password !== confirmPassword) {
-      setError("Passwords do not match.");
+      setError({t("changePassword.notMatch")});
       return;
     }
 
@@ -36,7 +38,7 @@ export default function ChangePassword() {
       navigate("/users", { replace: true });
     } catch (err) {
       const parsed = extractApiError(err as unknown);
-      setError(parsed.message || "Failed to set password.");
+      setError(parsed.message || {t("changePassword.setPasswordFailed")});
     } finally {
       setSaving(false);
     }
@@ -44,18 +46,18 @@ export default function ChangePassword() {
 
   return (
     <div className="max-w-md mx-auto card p-4 rounded-2xl border bg-white">
-      <h1 className="text-2xl font-semibold mb-4">Change Password</h1>
+      <h1 className="text-2xl font-semibold mb-4">{t("users.changePassword")}</h1>
       <form onSubmit={onSubmit} className="space-y-3">
         <FormInput
           ref={pwRef}
-          placeholder="New password"
+          placeholder={t("changePassword.newPassword")}
           type="password"
           value={password}
           onChange={e => setPassword(e.target.value)}
           required
         />
         <FormInput
-          placeholder="Confirm password"
+          placeholder={t("changePassword.confirmPassword")}
           type="password"
           value={confirmPassword}
           onChange={e => setConfirmPassword(e.target.value)}
@@ -63,7 +65,7 @@ export default function ChangePassword() {
         />
         {error && <p className="text-red-600 text-sm">{error}</p>}
         <button className="btn w-full" type="submit" disabled={saving}>
-          {saving ? "Saving…" : "Save"}
+          {saving ? {t("changePassword.saving")} : {t("profileEdit.save")}}
         </button>
       </form>
     </div>
