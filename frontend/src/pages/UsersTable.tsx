@@ -205,7 +205,7 @@ export default function UsersTable(props: Props) {
     },
     {
       accessorKey: "first_name",
-      label: t("signup.firstName"),
+      label: t("users.firstName"),
       header: ({ column }) => (
         <button
           type="button"
@@ -217,7 +217,7 @@ export default function UsersTable(props: Props) {
             : t("users.clickToSort")
           }
         >
-          {t("signup.firstName")} <SortIcon column={column} />
+          {t("users.firstName")} <SortIcon column={column} />
         </button>
       ),
       cell: (ctx) => <span className="break-words">{ctx.getValue<string>()}</span>,
@@ -226,7 +226,7 @@ export default function UsersTable(props: Props) {
     },
     {
       accessorKey: "last_name",
-      label: t("signup.lastName"),
+      label: t("users.lastName"),
       header: ({ column }) => (
         <button
           type="button"
@@ -238,7 +238,7 @@ export default function UsersTable(props: Props) {
             : t("users.clickToSort")
           }
         >
-          {t("signup.lastName")} <SortIcon column={column} />
+          {t("users.lastName")} <SortIcon column={column} />
         </button>
       ),
       cell: (ctx) => <span className="break-words">{ctx.getValue<string>()}</span>,
@@ -358,7 +358,7 @@ export default function UsersTable(props: Props) {
                   .getAllLeafColumns()
                   .filter((col) => col.columnDef.enableHiding !== false)
                   .map((col) => {
-                  const label = typeof col.columnDef.header === "string" ? col.columnDef.header : col.id;
+                  const label = typeof col.columnDef.label === "string" ? col.columnDef.label : col.id;
                   return (
                     <label key={col.id} className="flex cursor-pointer items-center gap-2 rounded px-2 py-1.5 hover:bg-slate-50">
                       <input

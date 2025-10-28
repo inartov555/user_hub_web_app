@@ -24,6 +24,13 @@
     "loginFailed": "Sisselogimine ebaõnnestus: {{message}}",
     "signupFailed": "Registreerimine ebaõnnestus: {{message}}"
   },
+  "signup": {
+    "email": "E-post",
+    "username": "Kasutajanimi",
+    "password": "Parool",
+    "signin": "Loo konto",
+    "signupFailed": "Registreerimine ebaõnnestus: {{message}}"
+  },
   "users": {
     "title": "Kasutajad",
     "people": "Inimesed",
@@ -35,6 +42,8 @@
     "ascending": "kasvav",
     "descending": "kahanev",
     "select": "Vali",
+    "firstName": "Eesnimi",
+    "lastName": "Perekonnanimi",
     "changePassword": "Muuda parooli",
     "search": "Otsi…",
     "columns": "Veerud",

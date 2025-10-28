@@ -1,4 +1,5 @@
 import React, { useState, useRef } from "react";
+import { useTranslation } from "react-i18next";
 import { api } from "../lib/axios";
 import { extractApiError } from "../lib/httpErrors";
 import { useAuthStore } from "../auth/store";
@@ -12,6 +13,7 @@ import { Input } from "../components/input";
 // - Shows success summary (created/updated/errors)
 
 export default function ExcelImportPanel() {
+  const { t } = useTranslation();
   const [file, setFile] = useState<File | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const [message, setMessage] = useState<string | null>(null);

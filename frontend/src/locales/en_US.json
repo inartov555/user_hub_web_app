@@ -37,6 +37,8 @@
     "ascending": "asc",
     "descending": "desc",
     "select": "Select",
+    "firstName": "First Name",
+    "lastName": "Last Name",
     "changePassword": "Change Password",
     "search": "Search...",
     "columns": "Columns",
@@ -45,5 +47,12 @@
   },
   "stats": {
     "onlineHeader": "Currently online users (last 5 minutes)"
+  },
+  "excelImport": {
+    "email": "E-post",
+    "username": "Kasutajanimi",
+    "password": "Parool",
+    "signin": "Loo konto",
+    "signupFailed": "Registreerimine ebaõnnestus: {{message}}"
   }
 }
