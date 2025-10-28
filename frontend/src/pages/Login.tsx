@@ -20,7 +20,7 @@ export default function Login() {
     try {
       useAuthStore.getState().logout?.(); // clears access+refresh in memory and storage
       const { data: tokens } = await api.post("/auth/jwt/create/", { username, password });
-      useAuthStore.getState().applyRefreshedTokens(data.access, data.refresh);
+      useAuthStore.getState().applyRefreshedTokens?.(tokens.access, tokens.refresh);
       setTokens(tokens.access, tokens.refresh);
       const { data: me } = await api.get("/auth/users/me/");
       setUser(me);
