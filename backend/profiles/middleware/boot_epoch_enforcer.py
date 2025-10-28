@@ -32,10 +32,12 @@ class BootEpochEnforcerMiddleware:
         if not user or not user.is_authenticated:
             return resp
 
-        token = getattr(request, "auth", None)  # SimpleJWT puts validated token here
-        if token:
-            curr = get_boot_epoch()
-            if token.payload.get("boot_epoch") != curr:
-                return JsonResponse({"detail": "Session expired due to server restart."}, status=401)
+        token = getattr(request, "auth", None)  # SimpleJWT validated token
+        if not token:
+            return resp
+
+        curr = get_boot_epoch()
+        if token and token.payload.get("boot_epoch") != curr:
+            return JsonResponse({"detail": "Session expired due to server restart."}, status=401)
 
         return resp
