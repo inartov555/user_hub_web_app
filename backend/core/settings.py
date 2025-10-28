@@ -7,7 +7,7 @@ import tempfile
 from datetime import timedelta
 from pathlib import Path
 from dotenv import load_dotenv
-from django.utils.translation import translation
+from django.utils import translation
 
 
 def env_tuple(name: str, default=()) -> tuple:
