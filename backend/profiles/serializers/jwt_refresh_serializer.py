@@ -38,26 +38,29 @@ class CustomTokenRefreshSerializer(TokenRefreshSerializer):
             raise InvalidToken(str(exc)) from exc
 
         current_boot = int(get_boot_id())
+        token_boot = refresh_in.payload.get("boot_id")
 
-        # Always mint a new access token and stamp current boot_id
+        # *** CRITICAL CHANGE ***
+        # Treat missing or mismatched boot_id as invalid -> forces login after reboot
+        if token_boot != current_boot:
+            raise InvalidToken("Session expired due to server restart.")
+
+        # boot_id matches -> proceed like normal SimpleJWT refresh
         access: AccessToken = refresh_in.access_token
-        access["boot_id"] = current_boot
+        access["boot_id"] = current_boot  # keep it explicit
 
         data: Dict[str, Any] = {"access": str(access)}
 
-        # If rotation enabled, blacklist old refresh (when applicable) and create a NEW refresh
         rotate = bool(settings.SIMPLE_JWT.get("ROTATE_REFRESH_TOKENS", False))
         blacklist_after_rotation = bool(settings.SIMPLE_JWT.get("BLACKLIST_AFTER_ROTATION", False))
 
         if rotate:
-            # Blacklist the old refresh if blacklist app is installed
             if blacklist_after_rotation and "rest_framework_simplejwt.token_blacklist" in settings.INSTALLED_APPS:
                 try:
                     refresh_in.blacklist()
-                except (AttributeError, TokenError):
+                except Exception:
                     pass
 
-            # Create a fresh refresh for the same user and stamp current boot_id
             user = self._user_from_token(refresh_in)
             new_refresh: RefreshToken = RefreshToken.for_user(user)
             new_refresh["boot_id"] = current_boot
