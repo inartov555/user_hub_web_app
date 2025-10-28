@@ -10,12 +10,23 @@ from django.contrib.auth import get_user_model
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework import serializers
 
+from ..boot import get_boot_epoch
+
 
 class EmailOrUsernameTokenCreateSerializer(TokenObtainPairSerializer):
     """
     Django REST Framework ModelSerializer for Django’s built-in User model.
     It defines which user fields are exposed through your API and which of them are writable.
     """
+
+    @classmethod
+    def get_token(cls, user) -> dict:
+        """
+        Getting token
+        """
+        token = super().get_token(user)  # this is the REFRESH token
+        token["boot_epoch"] = int(get_boot_epoch())
+        return token
 
     def _resolve_login_field(self) -> str:
         """

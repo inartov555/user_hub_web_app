@@ -41,12 +41,15 @@ def get_boot_epoch() -> int:
     Returns
         int, The boot epoch to embed in tokens and compare in middleware.
     """
-    # DJANGO_SETTINGS, if available
     if DJANGO_SETTINGS is not None:
-        cfg = getattr(DJANGO_SETTINGS, "JWT_COOKIE", {})
-        boot_id = cfg.get("BOOD_ID")
+        # Prefer top-level BOOT_ID from core.settings
+        boot_id = getattr(DJANGO_SETTINGS, "BOOT_ID", None)
+        if boot_id is None:
+            # Back-compat: allow SIMPLE_JWT["BOOT_ID"]
+            boot_id = (getattr(DJANGO_SETTINGS, "SIMPLE_JWT", {}) or {}).get("BOOT_ID")
         if boot_id is not None:
-            return boot_id
-
-    # Per-process fallback (changes on restart of this Python process)
+            try:
+                return int(boot_id)
+            except (TypeError, ValueError):
+                pass
     return _FALLBACK_BOOT_ID
