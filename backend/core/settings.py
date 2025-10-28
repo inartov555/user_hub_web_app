@@ -255,7 +255,9 @@ SIMPLE_JWT = {
     "AUTH_HEADER_TYPES": AUTH_HEADER_TYPES,
     "RENEW_AT_SECONDS": JWT_RENEW_AT_SECONDS,
     "UPDATE_LAST_LOGIN": True,
-    "BOOT_ID": BOOT_ID
+    "BOOT_ID": BOOT_ID,
+    "TOKEN_OBTAIN_SERIALIZER": "profiles.serializers.email_or_user_token_create_serializer.EmailOrUsernameTokenCreateSerializer",
+    "TOKEN_REFRESH_SERIALIZER": "profiles.serializers.jwt_refresh_serializer.CustomTokenRefreshSerializer",
 }
 
 SPECTACULAR_SETTINGS = {
