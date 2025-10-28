@@ -14,14 +14,16 @@
   },
   "auth": {
     "login": "Login",
-    "signup": "Sign up",
+    "signin": "Sign in",
+    "forgotPassword": "Forgot password?",
+    "createAccount": "Create an account",
+    "loginFailed": "Login failed: {{message}}"
+  },
+  "signup": {
     "email": "Email",
     "username": "Username",
     "password": "Password",
-    "signin": "Sign in",
-    "createAccount": "Create an account",
-    "forgotPassword": "Forgot password?",
-    "loginFailed": "Login failed: {{message}}",
+    "signin": "Sign up",
     "signupFailed": "Signup failure: {{message}}"
   },
   "users": {

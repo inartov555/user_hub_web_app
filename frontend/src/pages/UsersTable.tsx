@@ -184,7 +184,7 @@ export default function UsersTable(props: Props) {
     },
     {
       accessorKey: "email",
-      label: t("auth.email"),
+      label: t("signup.email"),
       header: ({ column }) => (
         <button
           type="button"
@@ -196,7 +196,7 @@ export default function UsersTable(props: Props) {
             : t("users.clickToSort")
           }
         >
-          {t("auth.email")} <SortIcon column={column} />
+          {t("signup.email")} <SortIcon column={column} />
         </button>
       ),
       cell: (ctx) => <span className="break-words">{ctx.getValue<string>()}</span>,

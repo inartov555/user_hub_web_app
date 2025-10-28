@@ -33,8 +33,8 @@ export default function Login() {
     <div className="max-w-md mx-auto card">
       <h1 className="text-2xl font-semibold mb-4">{t("auth.login")}</h1>
       <form onSubmit={onSubmit} className="space-y-3">
-        <FormInput placeholder={t("auth.username")} type="username" value={username} onChange={e=>setUsername(e.target.value)} required />
-        <FormInput placeholder={t("auth.password")} type="password" value={password} onChange={e=>setPassword(e.target.value)} required />
+        <FormInput placeholder={t("signup.username")} type="username" value={username} onChange={e=>setUsername(e.target.value)} required />
+        <FormInput placeholder={t("signup.password")} type="password" value={password} onChange={e=>setPassword(e.target.value)} required />
         {error && <p className="text-red-600 text-sm">{t("auth.loginFailed", { message: error })}</p>}
         <button className="btn w-full" type="submit">Sign in</button>
       </form>
