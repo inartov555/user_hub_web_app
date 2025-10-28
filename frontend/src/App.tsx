@@ -17,7 +17,13 @@ export default function App() {
   useEffect(() => {
     if (!authReady) return;
     const hasTokens = !!(accessToken || localStorage.getItem("access"));
-    if (!user && !hasTokens && location.pathname !== "/login") {
+    // Public routes that should be reachable without auth
+    const isPublic =
+      location.pathname === "/login" ||
+      location.pathname === "/signup" ||
+      location.pathname.startsWith("/reset-password");
+
+    if (!user && !hasTokens && !isPublic) {
       navigate("/login", { replace: true, state: { from: location } });
     }
   }, [authReady, user, accessToken, location, navigate]);
