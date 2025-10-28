@@ -7,6 +7,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth import password_validation
 from django.core.exceptions import ValidationError as DjangoValidationError
 from django.db import IntegrityError
+from django.utils import translation
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets, permissions, status
 from rest_framework.decorators import action
@@ -53,12 +54,12 @@ class UsersViewSet(viewsets.ReadOnlyModelViewSet):
         """
         ids = request.data.get("ids", [])
         if not isinstance(ids, list) or not all(isinstance(i, int) for i in ids):
-            return Response({"detail": "ids must be a list of integers"},
+            return Response({"detail": translation.gettext("ids must be a list of integers")},
                             status=status.HTTP_400_BAD_REQUEST)
 
         # optional: don't allow deleting yourself
         if request.user and request.user.id in ids:
-            return Response({"detail": "Cannot delete current user."},
+            return Response({"detail": translation.gettext("Cannot delete current user.")},
                             status=status.HTTP_400_BAD_REQUEST)
 
         qs = self.get_queryset().filter(id__in=ids)
@@ -77,7 +78,7 @@ class UsersViewSet(viewsets.ReadOnlyModelViewSet):
         # optional: don't allow deleting yourself
         if request.user.id == user.id:
             return Response(
-                {"detail": "Cannot delete current user."},
+                {"detail": translation.gettext("Cannot delete current user.")},
                 status=status.HTTP_400_BAD_REQUEST,
             )
         self.perform_destroy(user)
@@ -106,8 +107,8 @@ class UsersViewSet(viewsets.ReadOnlyModelViewSet):
         except (DjangoValidationError, ValueError) as e:
             return Response({"detail": str(e)}, status=status.HTTP_400_BAD_REQUEST)
         except IntegrityError:
-            return Response({"detail": "Database error while applying changes."}, status=400)
+            return Response({"detail": translation.gettext("Database error while applying changes.")}, status=400)
 
         user.set_password(new_pw)
         user.save(update_fields=["password"])
-        return Response({"detail": "Password updated."}, status=status.HTTP_200_OK)
+        return Response({"detail": translation.gettext("Password updated.")}, status=status.HTTP_200_OK)

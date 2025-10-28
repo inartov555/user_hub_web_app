@@ -46,7 +46,6 @@ LOG_LEVEL = os.getenv("DJANGO_LOG_LEVEL", "DEBUG").upper()
 BASE_DIR = Path(__file__).resolve().parent.parent
 LOG_DIR = os.getenv("HOST_ARTIFACTS", "workspace/artifacts")
 LOG_PATH = Path(LOG_DIR)
-
 LOG_TO_DIR = _dir_writable(LOG_PATH)
 
 # Login session properties start
@@ -141,10 +140,10 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "rest_framework",
-    "rest_framework_simplejwt.token_blacklist",
     "corsheaders",
     "django_filters",
     "djoser",
+    "rest_framework_simplejwt.token_blacklist",
     "drf_spectacular",
     "profiles.apps.ProfilesConfig",
 ]
@@ -240,13 +239,14 @@ REST_FRAMEWORK = {
 }
 
 SIMPLE_JWT = {
-    "IDLE_TIMEOUT_SECONDS": IDLE_TIMEOUT_SECONDS,
+    "REFRESH_TOKEN_LIFETIME": timedelta(seconds=IDLE_TIMEOUT_SECONDS),
     "ACCESS_TOKEN_LIFETIME": ACCESS_TOKEN_LIFETIME,
     "ROTATE_REFRESH_TOKENS": ROTATE_REFRESH_TOKENS,
     "BLACKLIST_AFTER_ROTATION": BLACKLIST_AFTER_ROTATION,
     "ALGORITHM": ALGORITHM,
     "AUTH_HEADER_TYPES": AUTH_HEADER_TYPES,
     "RENEW_AT_SECONDS": JWT_RENEW_AT_SECONDS,
+    "UPDATE_LAST_LOGIN": True,
 }
 
 SPECTACULAR_SETTINGS = {
