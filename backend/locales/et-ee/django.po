@@ -11,6 +11,9 @@
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 # Core DRF & Django errors
+msgid "Unknown error."
+msgstr "Tundmatu viga."
+
 msgid "Not authenticated."
 msgstr "Pole autentitud."
 
