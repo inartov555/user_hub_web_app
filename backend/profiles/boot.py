@@ -1,24 +1,9 @@
-# profiles/boot.py
 """
 Boot epoch utilities.
 
-`get_boot_epoch()` returns an integer that identifies the current "boot" of the
-application. Embed this value into JWTs at issue-time and compare it in
-middleware to invalidate tokens after a restart/deploy.
-
 Priority for the epoch source:
-1) Django setting `BOOT_EPOCH`
-2) Environment variable `BOOT_EPOCH`
-3) Fallback: per-process timestamp captured at import time
-
-Notes
------
-- For multi-worker deployments (uWSGI, gunicorn with multiple workers, ASGI
-  workers, etc.), you should set BOOT_EPOCH via settings or environment so all
-  processes share the same value. The fallback is per-process and will differ
-  between workers.
-- To force logouts on each deploy, bump BOOT_EPOCH (e.g., export a new value in
-  your CI/CD or write the build timestamp).
+1) Django setting `BOOT_ID`
+2) Fallback: per-process timestamp captured at import time
 """
 
 from __future__ import annotations
@@ -47,48 +32,24 @@ def _coerce_epoch(value: Optional[object]) -> Optional[int]:
     if value is None:
         return None
     try:
-        return int(value)  # type: ignore[arg-type]
+        return int(value)
     except (TypeError, ValueError):
         return None
 
 
 def get_boot_epoch() -> int:
     """
-    Return the current boot epoch as an integer.
-
-    Resolution is seconds since Unix epoch. Prefer configuring this via
-    `settings.BOOT_EPOCH` or the environment variable `BOOT_EPOCH` so all
-    workers share the same value. Falls back to a per-process timestamp that
-    changes on interpreter restart.
-
-    Examples
-    --------
-    In settings.py (recommended for consistent multi-worker behavior):
-
-        import time
-        BOOT_EPOCH = int(time.time())  # bump on each deploy, or set in CI
-
-    Or set an environment variable before starting the app:
-
-        export BOOT_EPOCH=$(date +%s)
+    Get the current boot epoch as an integer.
 
     Returns
-    -------
-    int
-        The boot epoch to embed in tokens and compare in middleware.
+        int, The boot epoch to embed in tokens and compare in middleware.
     """
-    # 1) Django settings, if available
+    # Django settings, if available
     if settings is not None:
         cfg = getattr(settings, "JWT_COOKIE", {})
         boot_id = cfg.get("BOOD_ID")
-        epoch = _coerce_epoch(getattr(settings, "BOOT_EPOCH", None))
-        if epoch is not None:
-            return epoch
+        if boot_id is not None:
+            return boot_id
 
-    # 2) Environment variable
-    env_epoch = _coerce_epoch(os.getenv("BOOT_EPOCH"))
-    if env_epoch is not None:
-        return env_epoch
-
-    # 3) Per-process fallback (changes on restart of this Python process)
+    # Per-process fallback (changes on restart of this Python process)
     return _FALLBACK_BOOT_EPOCH
