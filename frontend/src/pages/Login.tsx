@@ -15,20 +15,10 @@ export default function Login() {
   const { setTokens, setUser, user } = useAuthStore();
   const { pathname } = useLocation();
 
-  async function handleSubmit(formValues) {
-    useAuthStore.logoutLocal(); // clears access+refresh in memory and storage
-    try {
-      const res = await api.post("/auth/jwt/create/", formValues);
-      useAuthStore.applyRefreshedTokens(res.data.access, res.data.refresh);
-      // navigate to app…
-    } catch (e) {
-      // show error…
-    }
-  }
-
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     try {
+      useAuthStore.logoutLocal(); // clears access+refresh in memory and storage
       const { data: tokens } = await api.post("/auth/jwt/create/", { username, password });
       setTokens(tokens.access, tokens.refresh);
       const { data: me } = await api.get("/auth/users/me/");
