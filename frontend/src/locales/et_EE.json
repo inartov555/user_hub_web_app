@@ -99,7 +99,8 @@
     "and": "…ja",
     "more": "veel",
     "deleteUsers": "Kustuta kasutajad",
-    "deleting": "Kustutamine…"
+    "deleting": "Kustutamine…",
+    "cancel": "Tühista"
   },
   "stats": {
     "curOnline5Mins": "Praegu veebis olevad kasutajad (viimase 5 minuti jooksul)"

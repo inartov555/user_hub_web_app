@@ -121,7 +121,7 @@ export default function UserDeleteConfirm() {
 
         <div className="flex items-center gap-2">
           <Button variant="outline" onClick={handleCancel} disabled={loading}>
-            Cancel
+            {t("userDeleteConfirm.cancel")}
           </Button>
           <Button
             className="border-red-600 text-red-700 hover:bg-red-50"

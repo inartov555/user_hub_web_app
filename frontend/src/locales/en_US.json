@@ -99,7 +99,8 @@
     "and": "…and",
     "more": "more",
     "deleteUsers": "Delete users",
-    "deleting": "Deleting…"
+    "deleting": "Deleting…",
+    "cancel": "Cancel"
   },
   "stats": {
     "curOnline5Mins": "Currently online users (last 5 minutes)"
