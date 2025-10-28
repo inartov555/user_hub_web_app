@@ -2,9 +2,9 @@
 Settings
 """
 
-import os
+import os, hashlib
 import tempfile
-from datetime import timedelta
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from dotenv import load_dotenv
 from django.utils import translation
@@ -49,6 +49,10 @@ LOG_PATH = Path(LOG_DIR)
 LOG_TO_DIR = _dir_writable(LOG_PATH)
 
 # Login session properties start
+# Derive a per-boot signing key from your stable secret + BOOT_ID
+SECRET_KEY = "user_hub_web_app-secret_key"
+BOOT_ID = datetime.now(timezone.utc).timestamp()
+SIGNING_KEY = hashlib.sha256(f"{SECRET_KEY}.{BOOT_ID}".encode("utf-8")).hexdigest()
 JWT_RENEW_AT_SECONDS=int(os.getenv("JWT_RENEW_AT_SECONDS", "100"))
 # This becomes your idle timeout window (example: 1800 seconds (30 minutes))
 # If the user is inactive for > IDLE_TIMEOUT_SECONDS seconds, their refresh expires and the session ends.
@@ -239,6 +243,7 @@ REST_FRAMEWORK = {
 }
 
 SIMPLE_JWT = {
+    "SIGNING_KEY": SIGNING_KEY,
     "REFRESH_TOKEN_LIFETIME": timedelta(seconds=IDLE_TIMEOUT_SECONDS),
     "ACCESS_TOKEN_LIFETIME": ACCESS_TOKEN_LIFETIME,
     "ROTATE_REFRESH_TOKENS": ROTATE_REFRESH_TOKENS,
