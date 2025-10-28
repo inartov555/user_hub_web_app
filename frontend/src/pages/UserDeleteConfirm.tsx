@@ -130,7 +130,7 @@ export default function UserDeleteConfirm() {
             disabled={loading}
             title={t("userDeleteConfirm.deleteUsers")}
           >
-            {loading ? {t("userDeleteConfirm.deleting")} : `{t("users.deleteSelected")} ${users.length}`}
+            {loading ? t("userDeleteConfirm.deleting") : `{t("users.deleteSelected")} ${users.length}`}
           </Button>
         </div>
       </CardContent>
