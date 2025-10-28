@@ -7,21 +7,16 @@
     "users": "Kasutajad",
     "stats": "Statistika",
     "profile": "Profiil",
-    "importFromExcel": "Impordi Exceli failist",
-    "login": "Logi sisse",
+    "importFromExcel": "Impordi Excelist",
+    "login": "Sisselogimine",
     "logout": "Logi välja"
   },
   "auth": {
-    "login": "Logi sisse",
-    "signup": "Loo konto",
-    "email": "E-post",
-    "username": "Kasutajanimi",
-    "password": "Parool",
+    "login": "Sisselogimine",
     "signin": "Logi sisse",
-    "createAccount": "Loo konto",
     "forgotPassword": "Unustasid parooli?",
-    "loginFailed": "Sisselogimine ebaõnnestus: {{message}}",
-    "signupFailed": "Registreerimine ebaõnnestus: {{message}}"
+    "createAccount": "Loo konto",
+    "loginFailed": "Sisselogimine ebaõnnestus: {{message}}"
   },
   "signup": {
     "email": "E-post",
@@ -48,11 +43,12 @@
     "clearSort": "Tühista sortimine",
     "toggleColumns": "Kuva/peida veerud",
     "page": "Leht",
-    "of": "/",
+    "of": " / ",
     "rowsPerPage": "Ridu lehe kohta"
   },
   "stats": {
-    "onlineHeader": "Hetkel online kasutajad (viimased 5 minutit)"
+    "onlineHeader": "Praegu veebis olevad kasutajad (viimase 5 minuti jooksul)",
+    "curOnline5Mins": "Praegu veebis olevad kasutajad (viimase 5 minuti jooksul)"
   },
   "excelImport": {
     "bio": "Tutvustus",
@@ -62,7 +58,9 @@
     "downloadTemplate": "Laadi alla mall",
     "processed": "Töödeldud:",
     "created": "Loodud:",
-    "updated": "Uuendatud:"
+    "updated": "Uuendatud:",
+    "result": "Tulemus",
+    "importSuccessful": "Import lõpetati edukalt"
   },
   "profileEdit": {
     "profileLoadError": "Profiili laadimine ebaõnnestus.",
@@ -87,5 +85,17 @@
     "newPassword": "Uus parool",
     "confirmPassword": "Kinnita parool",
     "saving": "Salvestamine…"
+  },
+  "userDeleteConfirm": {
+    "bulkDeleteFailed": "Hulgi kustutamine ebaõnnestus:",
+    "failedToDelete": "Kustutamine ebaõnnestus",
+    "failedToDeleteSelectedUsers": "Valitud kasutajate kustutamine ebaõnnestus:",
+    "confirmDelete": "Kinnita kustutamine",
+    "youAboutToDelete": "Oled jäädavalt kustutamas",
+    "cannotBeUndone": "kasutaja(id). Seda toimingut ei saa tagasi võtta.",
+    "and": "…ja",
+    "more": "veel",
+    "deleteUsers": "Kustuta kasutajad",
+    "deleting": "Kustutamine…"
   }
 }

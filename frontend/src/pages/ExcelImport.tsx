@@ -55,7 +55,7 @@ export default function ExcelImportPanel() {
 
       const payload = resp?.data;
       setSummary(payload?.result ?? payload);
-      setMessage("Import finished successfully");
+      setMessage({t("excelImport.importSuccessful")});
 
       // Reset the input for the *next* upload (without interfering with current display)
       setFile(null);
@@ -140,7 +140,7 @@ export default function ExcelImportPanel() {
 
       {summary && (
         <div className="mt-4 p-3 rounded-2xl border">
-          <div className="font-medium mb-2">Result</div>
+          <div className="font-medium mb-2">{t("excelImport.result")}</div>
           <ul className="text-sm space-y-1">
             <li>{t("excelImport.processed")} <span className="font-semibold">{summary.processed}</span></li>
             <li>{t("excelImport.created")} <span className="font-semibold">{summary.created}</span></li>

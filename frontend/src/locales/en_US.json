@@ -57,7 +57,9 @@
     "downloadTemplate": "Download template",
     "processed": "Processed:",
     "created": "Created:",
-    "updated": "Updated:"
+    "updated": "Updated:",
+    "result": "Result",
+    "importSuccessful": "Import finished successfully"
   },
   "profileEdit": {
     "profileLoadError": "Failed to load profile.",
@@ -95,5 +97,8 @@
     "more": "more",
     "deleteUsers": "Delete users",
     "deleting": "Deleting…"
+  },
+  "stats": {
+    "curOnline5Mins": "Currently online users (last 5 minutes)"
   }
 }
