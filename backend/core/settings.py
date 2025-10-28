@@ -158,8 +158,8 @@ MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
-    "django.middleware.locale.LocaleMiddleware",
     "profiles.middleware.normalize_language_middleware.NormalizeLanguageMiddleware",
+    "django.middleware.locale.LocaleMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
@@ -177,7 +177,7 @@ LANGUAGES = [
     ("en-us", translation.gettext_lazy("English (US)")),
     ("et-ee", translation.gettext_lazy("Eesti (Eesti)")),
 ]
-LOCALE_PATHS = [BASE_DIR / "locale"]
+LOCALE_PATHS = [BASE_DIR / "backend/locales"]
 
 ROOT_URLCONF = "core.urls"
 TEMPLATES = [{

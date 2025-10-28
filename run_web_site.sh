@@ -48,6 +48,9 @@ case "$clean_data_at_exit" in
     trap cleanup EXIT ERR SIGINT SIGTERM
 esac
 
+echo "Compiling backend localization *.po files..."
+docker compose run --rm backend python manage.py compilemessages -l et -l en
+
 echo "Building images..."
 case "$clear_cache" in
   true)

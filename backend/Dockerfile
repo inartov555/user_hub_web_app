@@ -8,12 +8,20 @@ ENV VIRTUAL_ENV=/opt/venv \
 RUN python -m venv $VIRTUAL_ENV
 ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 
+# Install gettext (provides msgfmt)
+RUN apt-get update && apt-get install -y --no-install-recommends gettext \
+  && rm -rf /var/lib/apt/lists/*
+
 WORKDIR /app
 # copy only requirements files first to leverage Docker layer cache
 COPY backend/requirements*.txt /app/
 RUN pip install --upgrade pip && \
     if [ -f requirements.txt ]; then pip install -r requirements.txt; fi && \
     if [ -f requirements-dev.txt ]; then pip install -r requirements-dev.txt; fi
+
+# Compile translations after code is copied & deps installed
+# If your manage.py is one level up, adjust WORKDIR accordingly
+RUN python -m django compilemessages -l et -l en
 
 # --- runtime
 FROM python:3.12-slim AS runtime
