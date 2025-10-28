@@ -5,6 +5,7 @@ Custom user model and manager using email as the username.
 from django.contrib.auth.base_user import AbstractBaseUser, BaseUserManager
 from django.contrib.auth.models import PermissionsMixin
 from django.db import models
+from django.utils import translation
 
 
 class UserManager(BaseUserManager):
@@ -35,7 +36,7 @@ class UserManager(BaseUserManager):
             User: The created user instance.
         """
         if not email:
-            raise ValueError("Email required")
+            raise ValueError(translation.gettext("Email required"))
         email = self.normalize_email(email)
         user = self.model(email=email, **extra)
         user.set_password(password)

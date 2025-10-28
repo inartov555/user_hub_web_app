@@ -107,3 +107,6 @@ msgstr "Email required"
 
 msgid "user_id claim missing"
 msgstr "user_id claim missing"
+
+msgid "Session expired due to inactivity."
+msgstr "Session expired due to inactivity."
