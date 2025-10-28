@@ -96,7 +96,7 @@ export default function ProfileView() {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <Field label={t("profileView.fullName")} value={fullName} />
-          <Field label={t("auth.username")} value={profile.user?.username || "—"} />
+          <Field label={t("signup.username")} value={profile.user?.username || "—"} />
           <Field label={t("signup.email")} value={profile.user?.email || "—"} />
           <Field label={t("profileView.pId")} value={String(profile.user?.id ?? "—")} />
         </div>

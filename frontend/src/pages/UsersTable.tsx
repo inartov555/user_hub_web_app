@@ -516,7 +516,7 @@ export default function UsersTable(props: Props) {
           </div>
 
           <div className="flex items-center gap-3 text-sm text-muted-foreground">
-            {isFetching && <span>Updating…</span>}
+            {isFetching && <span>{t("users.updating")}</span>}
             <span>
               {t("users.page")} <strong>{table.getState().pagination.pageIndex + 1}</strong> {t("users.of")} {table.getPageCount() || 1}
             </span>
