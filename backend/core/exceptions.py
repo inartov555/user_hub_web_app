@@ -19,7 +19,7 @@ Every error response follows this envelope:
 from typing import Any, Optional
 
 from django.core.exceptions import ValidationError as DjangoValidationError
-from django.utils import gettext as translation
+from django.utils import translation
 from rest_framework.views import exception_handler
 from rest_framework import exceptions, status
 from rest_framework.response import Response
@@ -30,7 +30,7 @@ EXC_MAP = {
     exceptions.NotAuthenticated: ("auth.not_authenticated",
                                   "errors.auth.not_authenticated",
                                   translation.gettext("Not authenticated.")),
-    exceptions.AuthenticationFailed: ("auth.auth_failed", 
+    exceptions.AuthenticationFailed: ("auth.auth_failed",
                                       "errors.auth.auth_failed",
                                       translation.gettext("Authentication credentials were not provided.")),
     exceptions.PermissionDenied: ("auth.permission_denied",
