@@ -13,11 +13,11 @@
     "signup": "Sign up"
   },
   "auth": {
-    "login": "Login",
-    "signin": "Sign in",
-    "forgotPassword": "Forgot password?",
-    "createAccount": "Create an account",
-    "loginFailed": "Login failed: {{message}}"
+    "login": "Sisselogimine",
+    "signin": "Logi sisse",
+    "forgotPassword": "Unustasid parooli?",
+    "createAccount": "Loo konto",
+    "loginFailed": "Sisselogimine ebaõnnestus: {{message}}"
   },
   "signup": {
     "email": "Email",

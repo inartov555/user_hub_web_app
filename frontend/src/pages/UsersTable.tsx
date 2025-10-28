@@ -163,7 +163,7 @@ export default function UsersTable(props: Props) {
     }] : []),
     {
       accessorKey: "username",
-      meta: { i18nKey: "auth.username" },
+      meta: { i18nKey: "signup.username" },
       header: ({ column }) => (
         <button
           type="button"
