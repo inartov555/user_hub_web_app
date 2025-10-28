@@ -153,9 +153,9 @@ MIDDLEWARE = [
     "corsheaders.middleware.CorsMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
-    "core.middleware.normalize_language_middleware.NormalizeLanguageMiddleware",
-    "django.middleware.locale.LocaleMiddleware",
     "django.middleware.common.CommonMiddleware",
+    "django.middleware.locale.LocaleMiddleware",
+    "core.middleware.normalize_language_middleware.NormalizeLanguageMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
@@ -169,7 +169,7 @@ USE_I18N = True
 LANGUAGE_CODE = "en-us"
 LANGUAGES = [
     ("en-us", translation.gettext_lazy("English (US)")),
-    ("et-ee", translation.gettext_lazy("Estonian")),
+    ("et-ee", translation.gettext_lazy("Eesti (Eesti)")),
 ]
 LOCALE_PATHS = [BASE_DIR / "locale"]
 
