@@ -15,7 +15,7 @@ Expected behavior:
 
 from django.http import JsonResponse
 from rest_framework_simplejwt.authentication import JWTAuthentication
-from rest_framework_simplejwt.exceptions import TokenError, InvalidToken
+from rest_framework_simplejwt.exceptions import InvalidToken
 from rest_framework.exceptions import AuthenticationFailed
 
 from ..boot import get_boot_id
