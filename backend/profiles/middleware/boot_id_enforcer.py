@@ -26,8 +26,8 @@ def boot_header(get_response):
     def middleware(request):
         response = get_response(request)
         try:
-            response["X-Boot-Id"] = str(int(get_boot_epoch()))
-        except Exception:
+            response["X-Boot-Id"] = str(int(get_boot_id()))
+        except (TypeError, ValueError):
             # Never break responses if boot reading fails
             pass
         return response
@@ -43,18 +43,39 @@ class BootIdEnforcerMiddleware:
         self.get_response = get_response
 
     def __call__(self, request):
-        resp = self.get_response(request)
-
+        # Pre-response check: only enforce if a validated SimpleJWT token is present.
         user = getattr(request, "user", None)
-        if not user or not user.is_authenticated:
-            return resp
+        token = getattr(request, "auth", None)  # SimpleJWT validated token (if any)
 
-        token = getattr(request, "auth", None)  # SimpleJWT validated token
-        if not token:
-            return resp
+        if user is not None and getattr(user, "is_authenticated", False) and token is not None:
+            try:
+                current_boot = int(get_boot_id())
+            except (TypeError, ValueError):
+                # If boot id can't be read, do NOT hard-fail the request.
+                current_boot = None
 
-        curr = get_boot_id()
-        if token and token.payload.get("boot_id") != curr:
-            return JsonResponse({"detail": "Session expired due to server restart."}, status=401)
+            if current_boot is not None:
+                # Token may be an instance of AccessToken/RefreshToken or a dict-like object
+                payload = getattr(token, "payload", None) or getattr(token, "payload", {}) or {}
+                try:
+                    token_boot = int(payload.get("boot_id"))
+                except (TypeError, ValueError):
+                    token_boot = None
 
-        return resp
+                if token_boot is not None and token_boot != current_boot:
+                    return JsonResponse(
+                        {"detail": "Session expired due to server restart."},
+                        status=401,
+                    )
+
+        # Call downstream view/middleware
+        response = self.get_response(request)
+
+        # Best-effort header with current boot id
+        try:
+            response["X-Boot-Id"] = str(int(get_boot_id()))
+        except (TypeError, ValueError):
+            # Never break responses if boot reading fails
+            pass
+
+        return response

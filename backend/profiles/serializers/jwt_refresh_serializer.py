@@ -9,7 +9,6 @@ from typing import Any, Dict
 
 from django.conf import settings
 from django.contrib.auth import get_user_model
-from rest_framework import serializers
 from rest_framework_simplejwt.serializers import TokenRefreshSerializer
 from rest_framework_simplejwt.tokens import RefreshToken, AccessToken, Token
 from rest_framework_simplejwt.exceptions import InvalidToken, TokenError
@@ -55,7 +54,7 @@ class CustomTokenRefreshSerializer(TokenRefreshSerializer):
             if blacklist_after_rotation and "rest_framework_simplejwt.token_blacklist" in settings.INSTALLED_APPS:
                 try:
                     refresh_in.blacklist()
-                except Exception:  # best-effort
+                except (AttributeError, TokenError):
                     pass
 
             # Create a fresh refresh for the same user and stamp current boot_id
@@ -75,3 +74,11 @@ class CustomTokenRefreshSerializer(TokenRefreshSerializer):
         user_id_field = settings.SIMPLE_JWT.get("USER_ID_FIELD", "id")
         user_id = token.get(settings.SIMPLE_JWT.get("USER_ID_CLAIM", "user_id"))
         return user_model.objects.get(**{user_id_field: user_id})
+
+    def create(self, validated_data):
+        # Not used for token refresh; defined to satisfy BaseSerializer interface.
+        return validated_data
+
+    def update(self, instance, validated_data):
+        # Not supported for this serializer.
+        return instance
