@@ -8,6 +8,7 @@ This allows clients to recover after a server restart without forcing a full re-
 from typing import Any, Dict
 
 from django.conf import settings
+from django.contrib.auth import get_user_model
 from rest_framework import serializers
 from rest_framework_simplejwt.serializers import TokenRefreshSerializer
 from rest_framework_simplejwt.tokens import RefreshToken, AccessToken, Token
@@ -70,7 +71,6 @@ class CustomTokenRefreshSerializer(TokenRefreshSerializer):
         """
         Map token.sub (user id) to a user instance, honoring SIMPLE_JWT user id field/type.
         """
-        from django.contrib.auth import get_user_model
         user_model = get_user_model()
         user_id_field = settings.SIMPLE_JWT.get("USER_ID_FIELD", "id")
         user_id = token.get(settings.SIMPLE_JWT.get("USER_ID_CLAIM", "user_id"))
