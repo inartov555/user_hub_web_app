@@ -95,7 +95,7 @@ export default function ExcelImportPanel() {
   return (
     <div className="max-w-xl mx-auto p-4 rounded-2xl shadow bg-white border">
       <h2 className="text-xl font-semibold mb-3">Excel import</h2>
-      <p className="text-sm text-gray-600 mb-4">Upload an .xlsx file with columns: <code>Email</code>, <code>Username</code>, <code>First Name</code>, <code>Last Name</code>, <code>Bio</code>.</p>
+      <p className="text-sm text-gray-600 mb-4">{t("excelImport.fileUploadMessage")} <code>{t("signup.email")}</code>, <code>{t("auth.username")}</code>, <code>{t("users.firstName")}</code>, <code>{t("users.lastName")}</code>, <code>{t("excelImport.bio")}</code>.</p>
 
       <form onSubmit={onSubmit} className="space-y-3">
         <Input
@@ -118,17 +118,17 @@ export default function ExcelImportPanel() {
 
         <div className="flex gap-2">
           <button className="btn px-4 py-2 rounded-xl bg-black text-white disabled:opacity-50" type="submit" disabled={!file || submitting}>
-            {submitting ? "Uploading…" : "Start import"}
+            {submitting ? t("excelImport.uploading") : t("excelImport.startImport")}
           </button>
 
           {/* If you rely on cookie auth, a plain anchor works: href={`${api.defaults.baseURL}/import-excel/`} */}
           {accessToken ? (
             <button className="btn btn-ghost px-4 py-2 rounded-xl border" onClick={downloadTemplate}>
-              Download template
+              {t("excelImport.downloadTemplate")}
             </button>
           ) : (
             <a className="btn btn-ghost px-4 py-2 rounded-xl border" href={`${api.defaults.baseURL}/import-excel/`} download>
-              Download template
+              {t("excelImport.downloadTemplate")}
             </a>
           )}
         </div>
@@ -142,9 +142,9 @@ export default function ExcelImportPanel() {
         <div className="mt-4 p-3 rounded-2xl border">
           <div className="font-medium mb-2">Result</div>
           <ul className="text-sm space-y-1">
-            <li>Processed: <span className="font-semibold">{summary.processed}</span></li>
-            <li>Created: <span className="font-semibold">{summary.created}</span></li>
-            <li>Updated: <span className="font-semibold">{summary.updated}</span></li>
+            <li>{t("excelImport.processed")} <span className="font-semibold">{summary.processed}</span></li>
+            <li>{t("excelImport.created")} <span className="font-semibold">{summary.created}</span></li>
+            <li>{t("excelImport.updated")} <span className="font-semibold">{summary.updated}</span></li>
           </ul>
 
           {summary.errors?.length ? (

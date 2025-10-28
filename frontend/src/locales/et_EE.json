@@ -52,5 +52,15 @@
   },
   "stats": {
     "onlineHeader": "Hetkel online kasutajad (viimased 5 minutit)"
+  },
+  "excelImport": {
+    "bio": "Tutvustus",
+    "fileUploadMessage": "Laadi üles .xlsx-fail, mille veerud on:",
+    "uploading": "Üleslaadimine…",
+    "startImport": "Alusta importi",
+    "downloadTemplate": "Laadi alla mall",
+    "processed": "Töödeldud:",
+    "created": "Loodud:",
+    "updated": "Uuendatud:"
   }
 }

@@ -49,10 +49,13 @@
     "onlineHeader": "Currently online users (last 5 minutes)"
   },
   "excelImport": {
-    "email": "E-post",
-    "username": "Kasutajanimi",
-    "password": "Parool",
-    "signin": "Loo konto",
-    "signupFailed": "Registreerimine ebaõnnestus: {{message}}"
+    "bio": "Bio",
+    "fileUploadMessage": "Upload an .xlsx file with columns:",
+    "uploading": "Uploading...",
+    "startImport": "Start import",
+    "downloadTemplate": "Download template",
+    "processed": "Processed:",
+    "created": "Created:",
+    "updated": "Updated:"
   }
 }

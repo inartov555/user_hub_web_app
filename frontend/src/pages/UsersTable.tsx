@@ -131,7 +131,7 @@ export default function UsersTable(props: Props) {
   const columns = useMemo<ColumnDef<User>[]>(() => [
     ...(isAdmin ? [{
       accessorKey: "select",
-      label: t("users.select"),
+      meta: { i18nKey: "users.select" },
       enableHiding: false,
       header: ({ table }) => {
         const all = table.getIsAllRowsSelected();
@@ -163,7 +163,7 @@ export default function UsersTable(props: Props) {
     }] : []),
     {
       accessorKey: "username",
-      label: t("auth.username"),
+      meta: { i18nKey: "auth.username" },
       header: ({ column }) => (
         <button
           type="button"
@@ -171,7 +171,7 @@ export default function UsersTable(props: Props) {
           onClick={column.getToggleSortingHandler()}
           title={
             column.getIsSorted()
-            ? `{t("users.sorted")} ${sortLabel(column)} (#${column.getSortIndex() + 1})`
+            ? `${t("users.sorted")} ${sortLabel(column)} (#${column.getSortIndex() + 1})`
             : t("users.clickToSort")
           }
         >
@@ -184,7 +184,7 @@ export default function UsersTable(props: Props) {
     },
     {
       accessorKey: "email",
-      label: t("signup.email"),
+      meta: { i18nKey: "signup.email" },
       header: ({ column }) => (
         <button
           type="button"
@@ -192,7 +192,7 @@ export default function UsersTable(props: Props) {
           onClick={column.getToggleSortingHandler()}
           title={
             column.getIsSorted()
-            ? `{t("users.sorted")} ${sortLabel(column)} (#${column.getSortIndex() + 1})`
+            ? `${t("users.sorted")} ${sortLabel(column)} (#${column.getSortIndex() + 1})`
             : t("users.clickToSort")
           }
         >
@@ -205,7 +205,7 @@ export default function UsersTable(props: Props) {
     },
     {
       accessorKey: "first_name",
-      label: t("users.firstName"),
+      meta: { i18nKey: "users.firstName" },
       header: ({ column }) => (
         <button
           type="button"
@@ -213,7 +213,7 @@ export default function UsersTable(props: Props) {
           onClick={column.getToggleSortingHandler()}
           title={
             column.getIsSorted()
-            ? `{t("users.sorted")} ${sortLabel(column)} (#${column.getSortIndex() + 1})`
+            ? `${t("users.sorted")} ${sortLabel(column)} (#${column.getSortIndex() + 1})`
             : t("users.clickToSort")
           }
         >
@@ -226,7 +226,7 @@ export default function UsersTable(props: Props) {
     },
     {
       accessorKey: "last_name",
-      label: t("users.lastName"),
+      meta: { i18nKey: "users.lastName" },
       header: ({ column }) => (
         <button
           type="button"
@@ -234,7 +234,7 @@ export default function UsersTable(props: Props) {
           onClick={column.getToggleSortingHandler()}
           title={
             column.getIsSorted()
-            ? `{t("users.sorted")} ${sortLabel(column)} (#${column.getSortIndex() + 1})`
+            ? `${t("users.sorted")} ${sortLabel(column)} (#${column.getSortIndex() + 1})`
             : t("users.clickToSort")
           }
         >
@@ -247,7 +247,7 @@ export default function UsersTable(props: Props) {
     },
     ...(isAdmin ? [{
       accessorKey: "change_password_action",
-      label: t("users.changePassword"),
+      meta: { i18nKey: "users.changePassword" },
       enableHiding: false,
       header: t("users.changePassword"),
       enableSorting: false,
@@ -358,7 +358,12 @@ export default function UsersTable(props: Props) {
                   .getAllLeafColumns()
                   .filter((col) => col.columnDef.enableHiding !== false)
                   .map((col) => {
-                  const label = typeof col.columnDef.label === "string" ? col.columnDef.label : col.id;
+                  const accessorKey = typeof col.columnDef.header === "string" ? col.columnDef.header : col.id;
+                  // Safely derive a localized string
+                  const meta = col.columnDef.meta as { label?: string; i18nKey?: string } | undefined;
+                  const label =
+                    meta?.label ??
+                    (meta?.i18nKey ? t(meta.i18nKey) : undefined);
                   return (
                     <label key={col.id} className="flex cursor-pointer items-center gap-2 rounded px-2 py-1.5 hover:bg-slate-50">
                       <input
