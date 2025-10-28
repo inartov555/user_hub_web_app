@@ -17,6 +17,23 @@ from django.http import JsonResponse
 from ..boot import get_boot_id
 
 
+def boot_header(get_response):
+    """
+    Attach the current boot id to every HTTP response so the frontend
+    can detect deploys/restarts without making a separate call.
+    Header: X-Boot-Id: <int>
+    """
+    def middleware(request):
+        response = get_response(request)
+        try:
+            response["X-Boot-Id"] = str(int(get_boot_epoch()))
+        except Exception:
+            # Never break responses if boot reading fails
+            pass
+        return response
+    return middleware
+
+
 class BootIdEnforcerMiddleware:
     """
     Middleware to enforce logout of JWT-authenticated users after a server "boot epoch"

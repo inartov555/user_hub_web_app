@@ -49,4 +49,4 @@ def get_boot_id() -> int:
                 return int(boot_id)
             except (TypeError, ValueError):
                 pass
-    return _FALLBACK_BOOT_ID
+    return int(_FALLBACK_BOOT_ID)

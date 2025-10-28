@@ -52,7 +52,7 @@ LOG_TO_DIR = _dir_writable(LOG_PATH)
 # Login session properties start
 # Derive a per-boot signing key from your stable secret + BOOT_ID
 SECRET_KEY = "user_hub_web_app-secret_key"
-BOOT_ID = datetime.now(timezone.utc).timestamp()
+BOOT_ID = int(datetime.now(timezone.utc).timestamp())
 SIGNING_KEY = hashlib.sha256(f"{SECRET_KEY}.{BOOT_ID}".encode("utf-8")).hexdigest()
 JWT_RENEW_AT_SECONDS=int(os.getenv("JWT_RENEW_AT_SECONDS", "100"))
 # This becomes your idle timeout window (example: 1800 seconds (30 minutes))
@@ -166,6 +166,7 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "profiles.middleware.jwt_authentication_middleware.JWTAuthenticationMiddleware",
     "profiles.middleware.boot_id_enforcer.BootIdEnforcerMiddleware",
+    "profiles.middleware.boot_id_enforcer.boot_header",
     "profiles.middleware.idle_timeout_middleware.IdleTimeoutMiddleware",
     "profiles.middleware.last_activity_middle_ware.LastActivityMiddleware",
 ]
