@@ -93,7 +93,7 @@ def localized_exception_handler(exc, context):
                     "message": _("Invalid input."),
                     "i18n_key": "errors.validation.invalid",
                     "details": data,
-                    "lang": get_language(),
+                    "lang": translation.get_language(),
                 }
             },
             status=status.HTTP_400_BAD_REQUEST,
@@ -108,7 +108,7 @@ def localized_exception_handler(exc, context):
                     "message": _("A server error occurred."),
                     "i18n_key": "errors.common.server_error",
                     "details": None,
-                    "lang": get_language(),
+                    "lang": translation.get_language(),
                 }
             },
             status=status.HTTP_500_INTERNAL_SERVER_ERROR,
@@ -132,7 +132,7 @@ def localized_exception_handler(exc, context):
                 "message": msg,
                 "i18n_key": i18n_key,
                 "details": details,
-                "lang": get_language(),
+                "lang": translation.get_language(),
             }
         }
         return response
@@ -145,7 +145,7 @@ def localized_exception_handler(exc, context):
                 "message": _("Invalid input."),
                 "i18n_key": "errors.validation.invalid",
                 "details": _serialize_validation_errors(exc.detail),
-                "lang": get_language(),
+                "lang": translation.get_language(),
             }
         }
         return response
@@ -159,7 +159,7 @@ def localized_exception_handler(exc, context):
                 "message": str(_(detail)) if detail else _("A server error occurred."),
                 "i18n_key": "errors.common.error",
                 "details": None if detail else _serialize_validation_errors(response.data),
-                "lang": get_language(),
+                "lang": translation.get_language(),
             }
         }
     return response

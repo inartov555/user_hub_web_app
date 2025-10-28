@@ -43,9 +43,9 @@ class NormalizeLanguageMiddleware(MiddlewareMixin):
 
         # ?lang= and language cookie normalizations (optional)
         if "lang" in request.GET:
-            request.GET._mutable = True
-            request.GET["lang"] = canon(request.GET["lang"])
-            request.GET._mutable = False
+            req = request.GET.copy()
+            req["lang"] = canon(req.get("lang"))
+            request.GET = req
 
         cookie_name = "django_language"
         if cookie_name in request.COOKIES:
