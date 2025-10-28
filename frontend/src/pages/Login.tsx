@@ -36,7 +36,7 @@ export default function Login() {
         <FormInput placeholder={t("signup.username")} type="username" value={username} onChange={e=>setUsername(e.target.value)} required />
         <FormInput placeholder={t("signup.password")} type="password" value={password} onChange={e=>setPassword(e.target.value)} required />
         {error && <p className="text-red-600 text-sm">{t("auth.loginFailed", { message: error })}</p>}
-        <button className="btn w-full" type="submit">Sign in</button>
+        <button className="btn w-full" type="submit">{t("auth.signin")}</button>
       </form>
       <div className="mt-4 text-sm flex justify-between">
         <Link to="/signup">{t("auth.createAccount")}</Link>

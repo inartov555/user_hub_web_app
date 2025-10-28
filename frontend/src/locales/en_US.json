@@ -12,11 +12,11 @@
     "logout": "Logout"
   },
   "auth": {
-    "login": "Sisselogimine",
-    "signin": "Logi sisse",
-    "forgotPassword": "Unustasid parooli?",
-    "createAccount": "Loo konto",
-    "loginFailed": "Sisselogimine ebaõnnestus: {{message}}"
+    "login": "Log in",
+    "signin": "Sign in",
+    "forgotPassword": "Forgot password?",
+    "createAccount": "Create account",
+    "loginFailed": "Login failed: {{message}}"
   },
   "signup": {
     "email": "Email",
@@ -45,9 +45,6 @@
     "page": "Page",
     "of": "of",
     "rowsPerPage": "Rows per page"
-  },
-  "stats": {
-    "onlineHeader": "Currently online users (last 5 minutes)"
   },
   "excelImport": {
     "bio": "Bio",

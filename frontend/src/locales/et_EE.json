@@ -46,10 +46,6 @@
     "of": " / ",
     "rowsPerPage": "Ridu lehe kohta"
   },
-  "stats": {
-    "onlineHeader": "Praegu veebis olevad kasutajad (viimase 5 minuti jooksul)",
-    "curOnline5Mins": "Praegu veebis olevad kasutajad (viimase 5 minuti jooksul)"
-  },
   "excelImport": {
     "bio": "Tutvustus",
     "fileUploadMessage": "Laadi üles .xlsx-fail, mille veerud on:",
@@ -97,6 +93,9 @@
     "more": "veel",
     "deleteUsers": "Kustuta kasutajad",
     "deleting": "Kustutamine…"
+  },
+  "stats": {
+    "curOnline5Mins": "Praegu veebis olevad kasutajad (viimase 5 minuti jooksul)"
   },
   "resetPassword": {
     "resetPassword": "Lähtesta parool",
