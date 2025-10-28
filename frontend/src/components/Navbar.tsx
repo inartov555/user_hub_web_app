@@ -31,10 +31,14 @@ export default function Navbar() {
         </div>
         {/* Language switcher */}
         {/* Show current flag next to the select */}
-        <div>
-    	  <LocaleFlag locale={locale} size={18} />
+        <div className="border rounded px-2 py-1 text-sm flex items-center gap-2">
+          <span
+            className="inline-flex items-center justify-center bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded px-2 py-1"
+          >
+    	    <LocaleFlag locale={locale} size={18} />
+    	  </span>
           <select
-            className="border rounded px-2 py-1 text-sm"
+            className="border border-slate-300 dark:border-slate-700 rounded bg-white dark:bg-slate-900 px-2 py-1 text-sm"
             value={locale}
             onChange={(e) => {
               const next = e.target.value;

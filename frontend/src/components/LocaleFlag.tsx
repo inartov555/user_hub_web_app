@@ -46,11 +46,7 @@ export const LocaleFlag: React.FC<Props> = ({
   try {
     countryCode = countryFromStrictLocale(locale);
   } catch (e) {
-    // Fail safe: don't crash the tree; log and fall back
-    if (process.env.NODE_ENV !== "production") {
-      // eslint-disable-next-line no-console
-      console.error(e);
-    }
+    // Nothing to do, for now
   }
 
   return (
