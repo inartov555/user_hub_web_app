@@ -44,7 +44,8 @@
     "toggleColumns": "Toggle columns",
     "page": "Page",
     "of": "of",
-    "rowsPerPage": "Rows per page"
+    "rowsPerPage": "Rows per page",
+    "updating": "Updating…"
   },
   "excelImport": {
     "bio": "Bio",

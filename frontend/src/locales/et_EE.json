@@ -44,7 +44,8 @@
     "toggleColumns": "Kuva/peida veerud",
     "page": "Leht",
     "of": " / ",
-    "rowsPerPage": "Ridu lehe kohta"
+    "rowsPerPage": "Ridu lehe kohta",
+    "updating": "Uuendamine…"
   },
   "excelImport": {
     "bio": "Tutvustus",
