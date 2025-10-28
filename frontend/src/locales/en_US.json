@@ -1,4 +1,10 @@
 {
+  "httpError": {
+    "fallBack": "Request failed. Please try again.",
+    "networkError": "Network error. Check your connection and try again.",
+    "serverError": "Server error",
+    "validationError": "Validation error."
+  },
   "app": {
     "title": "Users App",
     "hiUser": "Hi, {{username}}"

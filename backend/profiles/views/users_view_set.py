@@ -44,6 +44,7 @@ class UsersViewSet(viewsets.ReadOnlyModelViewSet):
         """
         instance.delete()
 
+    # POST /bulk-delete
     @action(detail=False, methods=["post"], url_path="bulk-delete",
             permission_classes=[permissions.IsAuthenticated])
     def bulk_delete(self, request):
@@ -65,7 +66,7 @@ class UsersViewSet(viewsets.ReadOnlyModelViewSet):
         qs.delete()
         return Response({"deleted": count}, status=status.HTTP_200_OK)
 
-    # DELETE users/<id>/delete-user
+    # DELETE /users/<id>/delete-user
     @action(detail=True, methods=["delete"], url_path="delete-user",
             permission_classes=[permissions.IsAuthenticated])
     def delete_user(self, request, pk=None) -> Response:  # pylint: disable=unused-argument

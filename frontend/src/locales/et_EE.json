@@ -1,4 +1,10 @@
 {
+  "httpError": {
+    "fallBack": "Päring ebaõnnestus. Palun proovi uuesti.",
+    "networkError": "Võrguviga. Kontrolli ühendust ja proovi uuesti.",
+    "serverError": "Serveri viga",
+    "validationError": "Valideerimisviga."
+  },
   "app": {
     "title": "Kasutajate rakendus",
     "hiUser": "Tere, {{username}}"

@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import axios, { type AxiosError } from "axios";
 
 type DRFError = {
@@ -7,7 +8,8 @@ type DRFError = {
 };
 
 export function extractApiError(err: unknown): { message: string; fields?: Record<string,string[]> } {
-  const fallback = { message: "Request failed. Please try again." };
+  const { t, i18n } = useTranslation();
+  const fallback = { message: t("httpError.fallBack") };
   let status: number | undefined;
   let data: unknown;
   // Is Axios error?
@@ -17,7 +19,7 @@ export function extractApiError(err: unknown): { message: string; fields?: Recor
     data = ax.response?.data;
     // Network/timeout: Axios error without a response object
     if (!ax.response) {
-      return { message: "Network error. Check your connection and try again." };
+      return { message: t("httpError.networkError") };
     }
   } else if (typeof err === "object" && err !== null) {
     const anyErr = err as any;
@@ -26,7 +28,7 @@ export function extractApiError(err: unknown): { message: string; fields?: Recor
     data = anyErr?.data ?? anyErr?.response?.data ?? anyErr?.value?.data ?? anyErr;
   }
 
-  if (!data) return { message: `Server error (${status}).` };
+  if (!data) return { message: `t("httpError.serverError") (${status}).` };
   /*
     TODO: add text retrieving for the HTTP error when plain HTML is returned.
     Example (but it returns plain HTML at the moment):
@@ -69,7 +71,7 @@ export function extractApiError(err: unknown): { message: string; fields?: Recor
       topMessage = fields.email.join(" ");
     }
 
-    return { message: topMessage || "Validation error.", fields: Object.keys(fields).length ? fields : undefined };
+    return { message: topMessage || t("httpError.validationError"), fields: Object.keys(fields).length ? fields : undefined };
   }
 
   return fallback;
