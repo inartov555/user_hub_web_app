@@ -1,0 +1,71 @@
+"Project-Id-Version: user_hub_web_app\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-28 12:42+0000\n"
+"PO-Revision-Date: 2025-10-28 12:42+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: et-ee\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+# Core DRF & Django errors
+msgid "Not authenticated."
+msgstr "Pole autentitud."
+
+msgid "Authentication credentials were not provided."
+msgstr "Autentimisandmeid ei esitatud."
+
+msgid "You do not have permission to perform this action."
+msgstr "Sul pole selle toimingu õigust."
+
+msgid "Not found."
+msgstr "Ei leitud."
+
+msgid "A server error occurred."
+msgstr "Tekkis serveripoolne viga."
+
+msgid "Invalid input."
+msgstr "Vigane sisend."
+
+msgid "Malformed request."
+msgstr "Vigase vorminguga päring."
+
+msgid "Unsupported media type."
+msgstr "Mitterahuldatud meediatüüp."
+
+msgid "Not acceptable."
+msgstr "Ei ole vastuvõetav."
+
+msgid "Request was throttled."
+msgstr "Päringute arvu on piiratud."
+
+msgid "Method \"%(method)s\" not allowed."
+msgstr "Meetod \"%(method)s\" pole lubatud."
+
+# Your custom messages (examples already present)
+msgid "ids must be a list of integers"
+msgstr "ids peab olema täisarvude loend"
+
+msgid "Cannot delete current user."
+msgstr "Praegust kasutajat ei saa kustutada."
+
+msgid "Passwords do not match."
+msgstr "Paroolid ei ühti."
+
+# SimpleJWT / auth-ish
+msgid "Invalid token."
+msgstr "Vigane tunnus."
+
+msgid "Token is invalid or expired"
+msgstr "Tunnus on vigane või aegunud."
+
+msgid "Given token not valid for any token type"
+msgstr "Antud tunnus ei sobi ühegi tüübi jaoks."
+
+msgid "User is inactive"
+msgstr "Kasutaja on mitteaktiivne."
+
+msgid "No active account found with the given credentials"
+msgstr "Antud andmetega aktiivset kontot ei leitud."
