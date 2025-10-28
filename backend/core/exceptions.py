@@ -65,10 +65,10 @@ def _to_str(value: Any) -> str:
     """
     try:
         return str(translation.gettext(value))  # translate if it's a raw string key
-    except Exception:
+    except Exception:  # pylint: disable=broad-exception-caught
         try:
             return str(value)  # fall back, return the save string, if localization not found
-        except Exception:
+        except Exception:  # pylint: disable=broad-exception-caught
             return translation.gettext("Unknown error.")
 
 def _serialize_validation_errors(detail) -> Any:
