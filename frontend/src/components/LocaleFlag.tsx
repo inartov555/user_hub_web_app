@@ -1,16 +1,38 @@
-// LocaleFlag.tsx
+// src/components/LocaleFlag.tsx
 import React from "react";
 import CountryFlag from "react-country-flag";
-import { localeToCountry } from "./localeToCountry";
 
 type Props = {
-  locale: string;               // e.g., "en-US", "et-EE", "fr"
-  size?: number;                // px, both width/height; default 20
-  squared?: boolean;            // if you want square corners instead of round
+  locale: string; // STRICT: "ll-rr" e.g., "en-us", "et-ee"
+  size?: number;
+  squared?: boolean;
   className?: string;
-  title?: string;               // a11y/title override
-  svg?: boolean;                // use SVG (crisper) instead of emoji
+  title?: string;
+  svg?: boolean;
 };
+
+const LOCALE_RE = /^[a-z]{2}-[a-z]{2}$/;
+const REGION_ALIASES: Record<string, string> = {
+  en: "us", // English (US)
+  et: "ee", // Estonian
+};
+
+function normalizeStrictLocale(locale: string): string {
+  const norm = String(locale || "").replace(/_/g, "-").toLowerCase().trim();
+  if (!LOCALE_RE.test(norm)) {
+    throw new Error(
+      `Locale must be in "ll-rr" format (e.g., "en-us", "et-ee"). Got: "${locale}".`
+    );
+  }
+  return norm;
+}
+
+function countryFromStrictLocale(locale: string): string {
+  const [_, regionRaw] = normalizeStrictLocale(locale).split("-");
+  const region = regionRaw.toLowerCase();
+  const iso2 = (REGION_ALIASES[region] ?? region).toUpperCase(); // e.g., "us", "ee" -> "US", "EE"
+  return iso2;
+}
 
 export const LocaleFlag: React.FC<Props> = ({
   locale,
@@ -20,12 +42,22 @@ export const LocaleFlag: React.FC<Props> = ({
   title,
   svg = true,
 }) => {
-  const cc = localeToCountry(locale);
+  let countryCode = "US";
+  try {
+    countryCode = countryFromStrictLocale(locale);
+  } catch (e) {
+    // Fail safe: don't crash the tree; log and fall back
+    if (process.env.NODE_ENV !== "production") {
+      // eslint-disable-next-line no-console
+      console.error(e);
+    }
+  }
+
   return (
     <CountryFlag
-      countryCode={cc}
+      countryCode={countryCode}
       svg={svg}
-      aria-label={title ?? cc}
+      aria-label={title ?? countryCode}
       title={title ?? locale}
       className={className}
       style={{
