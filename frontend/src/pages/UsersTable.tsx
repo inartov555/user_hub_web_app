@@ -66,7 +66,7 @@ type Props = {
 };
 
 export default function UsersTable(props: Props) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const cur_user = useAuthStore((s) => s.user) as (User & AdminFlags) | null | undefined;
   const isAdmin = Boolean(cur_user?.is_admin || cur_user?.is_staff || cur_user?.is_superuser);
   const navigate = useNavigate();
@@ -249,7 +249,7 @@ export default function UsersTable(props: Props) {
       accessorKey: "change_password_action",
       meta: { i18nKey: "users.changePassword" },
       enableHiding: false,
-      header: t("users.changePassword"),
+      header: () => t("users.changePassword"),
       enableSorting: false,
       size: 180,
       cell: ({ row }) => (
@@ -265,7 +265,7 @@ export default function UsersTable(props: Props) {
         </div>
       ),
     }] : []),
-  ], [navigate, isAdmin]);
+  ], [navigate, isAdmin, i18n.resolvedLanguage]);
 
   // Sync TanStack sorting - server ordering
   const handleSortingChange = (updater: React.SetStateAction<SortingState>) => {
