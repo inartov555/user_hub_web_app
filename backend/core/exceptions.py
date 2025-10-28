@@ -1,46 +1,19 @@
 """
 Localized DRF exception handler that returns a consistent, translatable error envelope.
 
-This module wraps Django REST Framework’s default `exception_handler` to:
-  • Normalize all error responses into a single JSON schema.  
-  • Translate human-readable messages via gettext, honoring the active language.  
-  • Map common DRF exceptions to stable error codes and i18n keys (see `EXC_MAP`).  
-  • Handle both DRF `ValidationError` and Django’s `ValidationError`.  
-  • Provide sensible fallbacks for unmapped/unhandled exceptions.
-
 Response shape
 --------------
 Every error response follows this envelope:
 
 {
   "error": {
-    "code": "<stable.machine.code>",            # e.g. "auth.not_authenticated"
-    "message": "<localized.human.message>",     # translated with gettext
-    "i18n_key": "<namespaced.i18n.key>",        # e.g. "errors.auth.not_authenticated"
-    "details": null | list | dict,              # validation fields, nested, translated
-    "lang": "<active-language-code>"            # e.g. "en", "et"
+    "code": "<stable.machine.code>",  # e.g. "auth.not_authenticated"
+    "message": "<localized.human.message>",  # translated with gettext
+    "i18n_key": "<namespaced.i18n.key>",  # e.g. "errors.auth.not_authenticated"
+    "details": null | list | dict,  # validation fields, nested, translated
+    "lang": "<active-language-code>"  # e.g. "en", "et"
   }
 }
-
-Integration
------------
-In your Django settings:
-
-    REST_FRAMEWORK = {
-        "EXCEPTION_HANDLER": "path.to.this_module.localized_exception_handler",
-    }
-
-Internationalization notes
---------------------------
-• Ensure `LocaleMiddleware` is enabled and `.mo` files are compiled.  
-• Strings are wrapped with `_()` for extraction and runtime translation.  
-• Validation error structures (dict/list/str) are recursively translated.
-
-Security & UX
--------------
-• Generic server errors avoid leaking internals.  
-• Validation errors preserve field structure to aid clients.  
-• Add/adjust mappings in `EXC_MAP` to align with your API error taxonomy.
 """
 
 from typing import Any, Dict, Optional
