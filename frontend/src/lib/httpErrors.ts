@@ -1,4 +1,5 @@
-import { useTranslation } from "react-i18next";
+import { TFunction } from "i18next";
+import i18next from "i18next";
 import axios, { type AxiosError } from "axios";
 
 type DRFError = {
@@ -7,9 +8,13 @@ type DRFError = {
   [key: string]: string | string[] | undefined; // index signature
 };
 
-export function extractApiError(err: unknown): { message: string; fields?: Record<string,string[]> } {
-  const { t, i18n } = useTranslation();
-  const fallback = { message: t("httpError.fallBack") };
+function authErrorMessage(err_loc_code: string, t?: TFunction): string {
+  const tf = t ?? i18next.t.bind(i18next);
+  return tf(err_loc_code);
+}
+
+export function extractApiError(err: unknown, t?: TFunction): { message: string; fields?: Record<string,string[]> } {
+  const fallback = { message: authErrorMessage("httpError.fallBack", t) };
   let status: number | undefined;
   let data: unknown;
   // Is Axios error?
@@ -19,7 +24,7 @@ export function extractApiError(err: unknown): { message: string; fields?: Recor
     data = ax.response?.data;
     // Network/timeout: Axios error without a response object
     if (!ax.response) {
-      return { message: t("httpError.networkError") };
+      return { message: authErrorMessage("httpError.networkError", t) };
     }
   } else if (typeof err === "object" && err !== null) {
     const anyErr = err as any;
@@ -28,7 +33,7 @@ export function extractApiError(err: unknown): { message: string; fields?: Recor
     data = anyErr?.data ?? anyErr?.response?.data ?? anyErr?.value?.data ?? anyErr;
   }
 
-  if (!data) return { message: `t("httpError.serverError") (${status}).` };
+  if (!data) return { message: `authErrorMessage("httpError.serverError", t) (${status}).` };
   /*
     TODO: add text retrieving for the HTTP error when plain HTML is returned.
     Example (but it returns plain HTML at the moment):
@@ -71,7 +76,7 @@ export function extractApiError(err: unknown): { message: string; fields?: Recor
       topMessage = fields.email.join(" ");
     }
 
-    return { message: topMessage || t("httpError.validationError"), fields: Object.keys(fields).length ? fields : undefined };
+    return { message: topMessage || authErrorMessage("httpError.validationError", t), fields: Object.keys(fields).length ? fields : undefined };
   }
 
   return fallback;

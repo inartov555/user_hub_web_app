@@ -155,7 +155,7 @@ MIDDLEWARE = [
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.locale.LocaleMiddleware",
-    "core.middleware.normalize_language_middleware.NormalizeLanguageMiddleware",
+    "profiles.middleware.normalize_language_middleware.NormalizeLanguageMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
@@ -236,8 +236,7 @@ REST_FRAMEWORK = {
         "rest_framework.filters.SearchFilter",
     ),
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
-    # "EXCEPTION_HANDLER": "core.exceptions.localized_exception_handler",
-    "EXCEPTION_HANDLER": "rest_framework.views.exception_handler",
+    "EXCEPTION_HANDLER": "core.exceptions.localized_exception_handler",
 }
 
 SIMPLE_JWT = {
