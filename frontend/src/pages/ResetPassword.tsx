@@ -23,6 +23,9 @@ export default function ResetPassword() {
           <button className="btn w-full" type="submit">{t("resetPassword.sendResetEmail")}</button>
         </form>
       )}
+      <div className="mt-4 text-sm flex justify-between">
+        <Link to="/login">{t("auth.signin")}</Link>
+      </div>
     </div>
   );
 }

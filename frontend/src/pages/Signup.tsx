@@ -34,6 +34,9 @@ export default function Signup() {
         {error && <p className="text-red-600 text-sm">{t("signup.signupFailed", { message: error })}</p>}
         <button className="btn w-full" type="submit">{t("auth.createAccount")}</button>
       </form>
+      <div className="mt-4 text-sm flex justify-between">
+        <Link to="/login">{t("auth.signin")}</Link>
+      </div>
     </div>
   );
 }
