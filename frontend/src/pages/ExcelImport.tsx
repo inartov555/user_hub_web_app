@@ -55,7 +55,7 @@ export default function ExcelImportPanel() {
 
       const payload = resp?.data;
       setSummary(payload?.result ?? payload);
-      setMessage({t("excelImport.importSuccessful")});
+      setMessage(t("excelImport.importSuccessful"));
 
       // Reset the input for the *next* upload (without interfering with current display)
       setFile(null);
