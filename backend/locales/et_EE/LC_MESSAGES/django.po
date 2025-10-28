@@ -72,3 +72,36 @@ msgstr "Kasutaja on mitteaktiivne."
 
 msgid "No active account found with the given credentials"
 msgstr "Antud andmetega aktiivset kontot ei leitud."
+
+msgid "No refresh token provided"
+msgstr "Värskendustokenit ei ole esitatud"
+
+msgid "Session expired due to server restart."
+msgstr "Seanss aegus serveri taaskäivitamise tõttu."
+
+msgid "Invalid refresh token."
+msgstr "Kehtetu värskendustoken."
+
+msgid "Failed to blacklist token."
+msgstr "Tokeni musta nimekirja lisamine ebaõnnestus."
+
+msgid "Database error while applying changes."
+msgstr "Andmebaasi viga muudatuste rakendamisel."
+
+msgid "Password updated."
+msgstr "Parool uuendatud."
+
+msgid "No file provided"
+msgstr "Faili ei esitatud"
+
+msgid "Must include 'login' (or 'email'/'username') and 'password'."
+msgstr "Tuleb esitada 'login' (või 'email'/'username') ja 'password'."
+
+msgid "Email required"
+msgstr "E-posti aadress on nõutav"
+
+msgid "user_id claim missing"
+msgstr "user_id nõue puudub"
+
+msgid "Session expired due to inactivity."
+msgstr "Seanss aegus tegevusetuse tõttu."

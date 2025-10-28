@@ -73,11 +73,6 @@ msgstr "User is inactive"
 msgid "No active account found with the given credentials"
 msgstr "No active account found with the given credentials"
 
-
-
-
-
-
 msgid "No refresh token provided"
 msgstr "No refresh token provided"
 
