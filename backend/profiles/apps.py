@@ -1,7 +1,6 @@
 """
 App configuration
 """
-
 from django.apps import AppConfig, apps
 from django.conf import settings
 from django.db.models.signals import post_save, post_migrate
@@ -9,30 +8,32 @@ from django.db.models.signals import post_save, post_migrate
 
 class ProfilesConfig(AppConfig):
     """
-    Custom config for the profiles app
+    App configuration
     """
     default_auto_field = "django.db.models.BigAutoField"
     name = "profiles"
+    label = "profiles"  # keep label stable
 
     def ready(self):
         """
-        Wire up signals in a registry-safe way.
+        Resolve the user model lazily/safely
         """
-        # Resolve user model lazily
         app_label, model_name = settings.AUTH_USER_MODEL.split(".")
-        _user = apps.get_model(app_label, model_name)
+        UserModel = apps.get_model(app_label, model_name)
 
-        from . import signals   # pylint: disable=import-outside-toplevel
+        # Import the signals module so its functions exist
+        from . import signals  # pylint: disable=import-outside-toplevel
 
+        # Qualify the callables with the module
         post_save.connect(
-            create_profile_on_user_create,
-            sender=_user,
+            signals.create_profile_on_user_create,
+            sender=UserModel,
             dispatch_uid="profiles.create_profile_on_user_create",
         )
 
-        # IMPORTANT: only run backfill after *this* app’s migrations
+        # Scope post_migrate to this app only
         post_migrate.connect(
-            backfill_profiles,
-            sender=self,  # <- scope to profiles app
+            signals.backfill_profiles,
+            sender=self,
             dispatch_uid="profiles.backfill_profiles",
         )
