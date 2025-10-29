@@ -42,14 +42,7 @@ export default function App() {
         <Outlet />
       </main>
       {!user && (
-        /*
         // Add a new component, if needed
-        // This one is a sign in pop-up in the bottom left corner of the login page
-	<div className="fixed bottom-4 right-4 card">
-	  <p className="mb-2">Use a superuser (create in Django admin) to log in.</p>
-	  <Link to="/login" className="btn">Login</Link>
-        </div>
-        */
         <div></div>
       )}
     </div>

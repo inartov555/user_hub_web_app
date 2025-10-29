@@ -42,7 +42,7 @@ load_dotenv()
 
 # This variable DEBUG can be (0, 1) which means not debug/debug
 DEBUG = os.getenv("DEBUG", "1") == "1"
-LOG_LEVEL = os.getenv("DJANGO_LOG_LEVEL", "DEBUG").upper()
+LOG_LEVEL = os.getenv("DJANGO_LOG_LEVEL", "INFO").upper()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 LOG_DIR = os.getenv("HOST_ARTIFACTS", "workspace/artifacts")
@@ -54,12 +54,12 @@ LOG_TO_DIR = _dir_writable(LOG_PATH)
 SECRET_KEY = "user_hub_web_app-secret_key"
 BOOT_ID = int(datetime.now(timezone.utc).timestamp())
 SIGNING_KEY = hashlib.sha256(f"{SECRET_KEY}.{BOOT_ID}".encode("utf-8")).hexdigest()
-JWT_RENEW_AT_SECONDS=int(os.getenv("JWT_RENEW_AT_SECONDS", "100"))
+JWT_RENEW_AT_SECONDS=int(os.getenv("JWT_RENEW_AT_SECONDS", "1200"))
 # This becomes your idle timeout window (example: 1800 seconds (30 minutes))
 # If the user is inactive for > IDLE_TIMEOUT_SECONDS seconds, their refresh expires and the session ends.
-IDLE_TIMEOUT_SECONDS = int(os.getenv("IDLE_TIMEOUT_SECONDS", "60"))
+IDLE_TIMEOUT_SECONDS = int(os.getenv("IDLE_TIMEOUT_SECONDS", "900"))
 # Short access — forces periodic refreshes
-ACCESS_TOKEN_LIFETIME = timedelta(seconds=int(os.getenv("ACCESS_TOKEN_LIFETIME", "120")))
+ACCESS_TOKEN_LIFETIME = timedelta(seconds=int(os.getenv("ACCESS_TOKEN_LIFETIME", "1800")))
 # Turn on rotation so that each refresh "slides" the window forward
 ROTATE_REFRESH_TOKENS = bool(os.getenv("ROTATE_REFRESH_TOKENS", "1"))
 BLACKLIST_AFTER_ROTATION = bool(os.getenv("BLACKLIST_AFTER_ROTATION", "1"))

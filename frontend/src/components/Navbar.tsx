@@ -19,7 +19,7 @@ export default function Navbar() {
             <>
               <Link className={navCls(pathname, "/users")} to="/users">{t("nav.users")}</Link>
               <Link className={navCls(pathname, "/stats")} to="/stats">{t("nav.stats")}</Link>
-              <Link className={navCls(pathname, "/profile-view")} to="/profile-view">{t("nav.profile")}</Link>
+              <Link className={navCls(pathname, ["/profile-view", "/profile-edit"])} to="/profile-view">{t("nav.profile")}</Link>
               <Link className={navCls(pathname, "/import-excel")} to="/import-excel">{t("nav.importFromExcel")}</Link>
             </>
           )}
@@ -60,7 +60,9 @@ export default function Navbar() {
   );
 }
 
-function navCls(path: string, href: string) {
-  const active = path.startsWith(href);
+function navCls(path: string, hrefs: string | string[]) {
+  // This function is responsible for tab activity/inactivity styles
+  const list = Array.isArray(hrefs) ? hrefs : [hrefs];
+  const active = list.some(h => path.startsWith(h));
   return `px-3 py-1 rounded-lg ${active ? "bg-slate-900 text-white" : "hover:bg-slate-100"}`;
 }
