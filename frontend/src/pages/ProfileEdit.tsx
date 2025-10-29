@@ -84,13 +84,14 @@ export default function ProfileEdit() {
 
   return (
     <div className="card grid grid-cols-1 md:grid-cols-3 gap-6">
-      <div>
+      {/* Left: Avatar */}
+      <div className="flex items-start justify-center md:justify-start">
         <img
-          className="w-40 h-40 rounded-full object-cover border"
           src={avatarSrc}
           alt={t("profileEdit.profileAvatar")}
           width={160}
           height={160}
+          style={{ objectFit: "cover", borderRadius: "50%" }}
         />
       </div>
 
