@@ -1,5 +1,5 @@
 """
-App configuratio
+App configuration
 """
 
 from django.apps import AppConfig, apps
@@ -22,7 +22,7 @@ class ProfilesConfig(AppConfig):
         app_label, model_name = settings.AUTH_USER_MODEL.split(".")
         _user = apps.get_model(app_label, model_name)
 
-        from .signals import create_profile_on_user_create, backfill_profiles  # noqa
+        from . import signals   # pylint: disable=import-outside-toplevel
 
         post_save.connect(
             create_profile_on_user_create,
