@@ -1,0 +1,109 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: user_hub_web_app\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-28 12:42+0000\n"
+"PO-Revision-Date: 2025-10-28 12:42+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: fi_FI\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+# Core DRF & Django errors
+msgid "Unknown error."
+msgstr "Tuntematon virhe."
+
+msgid "Not authenticated."
+msgstr "Ei todennettu."
+
+msgid "Authentication credentials were not provided."
+msgstr "Tunnistautumistietoja ei annettu."
+
+msgid "You do not have permission to perform this action."
+msgstr "Sinulla ei ole oikeuksia suorittaa tätä toimintoa."
+
+msgid "Not found."
+msgstr "Ei löytynyt."
+
+msgid "A server error occurred."
+msgstr "Palvelimessa tapahtui virhe."
+
+msgid "Invalid input."
+msgstr "Virheellinen syöte."
+
+msgid "Malformed request."
+msgstr "Väärin muodostettu pyyntö."
+
+msgid "Unsupported media type."
+msgstr "Mediatyyppiä ei tueta."
+
+msgid "Not acceptable."
+msgstr "Ei hyväksyttävä."
+
+msgid "Request was throttled."
+msgstr "Pyyntöä rajoitettiin."
+
+msgid "Method "%(method)s" not allowed."
+msgstr "Metodi "%(method)s" ei ole sallittu."
+
+# Your custom messages (examples already present)
+msgid "ids must be a list of integers"
+msgstr "ids-arvon on oltava kokonaislukujen lista"
+
+msgid "Cannot delete current user."
+msgstr "Nykyistä käyttäjää ei voi poistaa."
+
+msgid "Passwords do not match."
+msgstr "Salasanat eivät täsmää."
+
+# SimpleJWT / auth-ish
+msgid "Invalid token."
+msgstr "Virheellinen tunnus."
+
+msgid "Token is invalid or expired"
+msgstr "Tunnus on virheellinen tai vanhentunut"
+
+msgid "Given token not valid for any token type"
+msgstr "Annettu tunnus ei kelpaa millekään tunnustyypille"
+
+msgid "User is inactive"
+msgstr "Käyttäjä on passiivinen"
+
+msgid "No active account found with the given credentials"
+msgstr "Annetuilla tunnistetiedoilla ei löytynyt aktiivista tiliä"
+
+msgid "No refresh token provided"
+msgstr "Refresh-tunnusta ei annettu"
+
+msgid "Session expired due to server restart."
+msgstr "Istunto vanhentui palvelimen uudelleenkäynnistyksen vuoksi."
+
+msgid "Invalid refresh token."
+msgstr "Virheellinen refresh-tunnus."
+
+msgid "Failed to blacklist token."
+msgstr "Tunnuksen lisääminen estolistalle epäonnistui."
+
+msgid "Database error while applying changes."
+msgstr "Tietokantavirhe muutoksia sovellettaessa."
+
+msgid "Password updated."
+msgstr "Salasana päivitetty."
+
+msgid "No file provided"
+msgstr "Tiedostoa ei annettu"
+
+msgid "Must include 'login' (or 'email'/'username') and 'password'."
+msgstr "Täytyy sisältää 'login' (tai 'email'/'username') ja 'password'."
+
+msgid "Email required"
+msgstr "Sähköpostiosoite on pakollinen"
+
+msgid "user_id claim missing"
+msgstr "user_id-claim puuttuu"
+
+msgid "Session expired due to inactivity."
+msgstr "Istunto vanhentui toimettomuuden vuoksi."

@@ -1,0 +1,114 @@
+{
+  "httpError": {
+    "fallBack": "Pyyntö epäonnistui. Yritä uudelleen.",
+    "networkError": "Verkkovirhe. Tarkista yhteys ja yritä uudelleen.",
+    "serverError": "Palvelinvirhe",
+    "validationError": "Validointivirhe."
+  },
+  "app": {
+    "title": "Käyttäjäsovellus",
+    "hiUser": "Hei, {{username}}"
+  },
+  "nav": {
+    "users": "Käyttäjät",
+    "stats": "Tilastot",
+    "profile": "Profiili",
+    "importFromExcel": "Tuo Excelistä",
+    "login": "Kirjautuminen",
+    "logout": "Kirjaudu ulos"
+  },
+  "auth": {
+    "login": "Kirjaudu sisään",
+    "signin": "Kirjaudu sisään",
+    "forgotPassword": "Unohditko salasanan?",
+    "createAccount": "Luo tili",
+    "loginFailed": "Kirjautuminen epäonnistui: {{message}}"
+  },
+  "signup": {
+    "email": "Sähköposti",
+    "username": "Käyttäjänimi",
+    "password": "Salasana",
+    "signupFailed": "Rekisteröinti epäonnistui: {{message}}"
+  },
+  "users": {
+    "title": "Käyttäjät",
+    "people": "Henkilöt",
+    "loading": "Ladataan…",
+    "deleteSelected": "Poista valitut",
+    "deleteSelectedTitle": "Poista valitut käyttäjät",
+    "clickToSort": "Napsauta lajittelua varten; monilajittelu käytössä",
+    "sorted": "Lajiteltu",
+    "ascending": "nouseva",
+    "descending": "laskeva",
+    "select": "Valitse",
+    "firstName": "Etunimi",
+    "lastName": "Sukunimi",
+    "changePassword": "Vaihda salasana",
+    "search": "Haku…",
+    "columns": "Sarakkeet",
+    "clearSort": "Tyhjennä lajittelu",
+    "toggleColumns": "Näytä/piilota sarakkeet",
+    "page": "Sivu",
+    "of": " / ",
+    "rowsPerPage": "Rivejä sivulla",
+    "updating": "Päivitetään…"
+  },
+  "excelImport": {
+    "bio": "Esittely",
+    "fileUploadMessage": "Lataa .xlsx-tiedosto, jossa on sarakkeet:",
+    "uploading": "Lähetetään…",
+    "startImport": "Käynnistä tuonti",
+    "downloadTemplate": "Lataa malli",
+    "processed": "Käsitelty:",
+    "created": "Luotu:",
+    "updated": "Päivitetty:",
+    "result": "Tulos",
+    "importSuccessful": "Tuonti valmistui onnistuneesti",
+    "selectedFile": "Valittu:"
+  },
+  "profileEdit": {
+    "profileLoadError": "Profiilin lataaminen epäonnistui.",
+    "save": "Tallenna",
+    "profileAvatar": "Profiilikuva"
+  },
+  "profileView": {
+    "pViewError": "Virhe: {{message}}",
+    "noProfileFound": "Profiilia ei löytynyt.",
+    "createEditProfile": "Luo / muokkaa profiilia",
+    "profile": "Profiili",
+    "yourPersonalDetails": "Henkilötietosi",
+    "fullName": "Koko nimi",
+    "pId": "ID",
+    "editProfile": "Muokkaa profiilia",
+    "changePassword": "Vaihda salasana"
+  },
+  "changePassword": {
+    "atLeast8Chars": "Salasanan on oltava vähintään 8 merkkiä.",
+    "notMatch": "Salasanat eivät täsmää.",
+    "setPasswordFailed": "Salasanan asettaminen epäonnistui.",
+    "newPassword": "Uusi salasana",
+    "confirmPassword": "Vahvista salasana",
+    "saving": "Tallennetaan…"
+  },
+  "userDeleteConfirm": {
+    "bulkDeleteFailed": "Massapoisto epäonnistui:",
+    "failedToDelete": "Poisto epäonnistui",
+    "failedToDeleteSelectedUsers": "Valittujen käyttäjien poisto epäonnistui:",
+    "confirmDelete": "Vahvista poisto",
+    "youAboutToDelete": "Olet poistamassa pysyvästi",
+    "cannotBeUndone": "käyttäjä(ä). Toimintoa ei voi perua.",
+    "and": "…ja",
+    "more": "lisää",
+    "deleteUsers": "Poista käyttäjät",
+    "deleting": "Poistetaan…",
+    "cancel": "Peruuta"
+  },
+  "stats": {
+    "curOnline5Mins": "Tällä hetkellä verkossa olevat käyttäjät (viimeiset 5 minuuttia)"
+  },
+  "resetPassword": {
+    "resetPassword": "Nollaa salasana",
+    "checkEmailForResetLink": "Tarkista konsolin sähköpostitaustapalvelusta palautuslinkki.",
+    "sendResetEmail": "Lähetä salasanan palautusviesti"
+  }
+}
