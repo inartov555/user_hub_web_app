@@ -1,0 +1,114 @@
+{
+  "httpError": {
+    "fallBack": "Požadavek selhal. Zkuste to prosím znovu.",
+    "networkError": "Chyba sítě. Zkontrolujte připojení a zkuste to znovu.",
+    "serverError": "Chyba serveru",
+    "validationError": "Chyba validace."
+  },
+  "app": {
+    "title": "Aplikace uživatelů",
+    "hiUser": "Ahoj, {{username}}"
+  },
+  "nav": {
+    "users": "Uživatelé",
+    "stats": "Statistiky",
+    "profile": "Profil",
+    "importFromExcel": "Import z Excelu",
+    "login": "Přihlášení",
+    "logout": "Odhlásit se"
+  },
+  "auth": {
+    "login": "Přihlásit se",
+    "signin": "Přihlásit se",
+    "forgotPassword": "Zapomněli jste heslo?",
+    "createAccount": "Vytvořit účet",
+    "loginFailed": "Přihlášení se nezdařilo: {{message}}"
+  },
+  "signup": {
+    "email": "E-mail",
+    "username": "Uživatelské jméno",
+    "password": "Heslo",
+    "signupFailed": "Registrace se nezdařila: {{message}}"
+  },
+  "users": {
+    "title": "Uživatelé",
+    "people": "Lidé",
+    "loading": "Načítání…",
+    "deleteSelected": "Smazat vybrané",
+    "deleteSelectedTitle": "Smazat vybrané uživatele",
+    "clickToSort": "Kliknutím seřadíte; vícenásobné řazení povoleno",
+    "sorted": "Seřazeno",
+    "ascending": "vzestupně",
+    "descending": "sestupně",
+    "select": "Vybrat",
+    "firstName": "Jméno",
+    "lastName": "Příjmení",
+    "changePassword": "Změnit heslo",
+    "search": "Hledat…",
+    "columns": "Sloupce",
+    "clearSort": "Zrušit řazení",
+    "toggleColumns": "Zobrazit/skrýt sloupce",
+    "page": "Stránka",
+    "of": " z ",
+    "rowsPerPage": "Řádků na stránku",
+    "updating": "Aktualizace…"
+  },
+  "excelImport": {
+    "bio": "O mně",
+    "fileUploadMessage": "Nahrajte soubor .xlsx se sloupci:",
+    "uploading": "Nahrávání…",
+    "startImport": "Spustit import",
+    "downloadTemplate": "Stáhnout šablonu",
+    "processed": "Zpracováno:",
+    "created": "Vytvořeno:",
+    "updated": "Aktualizováno:",
+    "result": "Výsledek",
+    "importSuccessful": "Import byl úspěšně dokončen",
+    "selectedFile": "Vybráno:"
+  },
+  "profileEdit": {
+    "profileLoadError": "Načtení profilu se nezdařilo.",
+    "save": "Uložit",
+    "profileAvatar": "Profilová fotka"
+  },
+  "profileView": {
+    "pViewError": "Chyba: {{message}}",
+    "noProfileFound": "Profil nenalezen.",
+    "createEditProfile": "Vytvořit / upravit profil",
+    "profile": "Profil",
+    "yourPersonalDetails": "Vaše osobní údaje",
+    "fullName": "Celé jméno",
+    "pId": "ID",
+    "editProfile": "Upravit profil",
+    "changePassword": "Změnit heslo"
+  },
+  "changePassword": {
+    "atLeast8Chars": "Heslo musí mít alespoň 8 znaků.",
+    "notMatch": "Hesla se neshodují.",
+    "setPasswordFailed": "Nastavení hesla se nezdařilo.",
+    "newPassword": "Nové heslo",
+    "confirmPassword": "Potvrdit heslo",
+    "saving": "Ukládání…"
+  },
+  "userDeleteConfirm": {
+    "bulkDeleteFailed": "Hromadné mazání se nezdařilo:",
+    "failedToDelete": "Mazání se nezdařilo",
+    "failedToDeleteSelectedUsers": "Mazání vybraných uživatelů se nezdařilo:",
+    "confirmDelete": "Potvrdit smazání",
+    "youAboutToDelete": "Chystáte se trvale smazat",
+    "cannotBeUndone": "uživatele. Tuto akci nelze vrátit zpět.",
+    "and": "…a",
+    "more": "další",
+    "deleteUsers": "Smazat uživatele",
+    "deleting": "Mazání…",
+    "cancel": "Zrušit"
+  },
+  "stats": {
+    "curOnline5Mins": "Aktuálně online uživatelé (posledních 5 minut)"
+  },
+  "resetPassword": {
+    "resetPassword": "Obnovit heslo",
+    "checkEmailForResetLink": "Zkontrolujte v konzolovém e-mailovém backendu odkaz pro obnovení.",
+    "sendResetEmail": "Odeslat e-mail pro obnovení hesla"
+  }
+}
