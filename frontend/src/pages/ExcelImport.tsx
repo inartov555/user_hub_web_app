@@ -113,7 +113,7 @@ export default function ExcelImportPanel() {
           "
         />
         {file && (
-          <div className="text-sm text-gray-600 mt-1">{t("excelImport.uploading")} {file.name}</div>
+          <div className="text-sm text-gray-600 mt-1">{t("excelImport.selectedFile")} {file.name}</div>
         )}
 
         <div className="flex gap-2">

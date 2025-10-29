@@ -28,7 +28,7 @@ RUN apt-get update \
 # If your manage.py is one level up, adjust WORKDIR accordingly
 # RUN python -m django compilemessages -l et -l en -v 2
 # RUN django-admin compilemessages -l et_EE -l en_US -v 2
-RUN python manage.py compilemessages -l et -l en -v 2
+RUN python manage.py compilemessages -v 2
 
 EXPOSE 8000
 # don't run pip install at container start!
