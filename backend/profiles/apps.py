@@ -19,7 +19,7 @@ class ProfilesConfig(AppConfig):
         Resolve the user model lazily/safely
         """
         app_label, model_name = settings.AUTH_USER_MODEL.split(".")
-        UserModel = apps.get_model(app_label, model_name)
+        user_model = apps.get_model(app_label, model_name)
 
         # Import the signals module so its functions exist
         from . import signals  # pylint: disable=import-outside-toplevel
@@ -27,7 +27,7 @@ class ProfilesConfig(AppConfig):
         # Qualify the callables with the module
         post_save.connect(
             signals.create_profile_on_user_create,
-            sender=UserModel,
+            sender=user_model,
             dispatch_uid="profiles.create_profile_on_user_create",
         )
 

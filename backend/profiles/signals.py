@@ -40,22 +40,10 @@ def create_profile_on_user_create(sender, instance, created, **kwargs):  # pylin
     transaction.on_commit(_create)
 
 
-def backfill_profiles(sender, **kwargs):  # pylint: disable=unused-argument
-    """
-    Post-migrate hook to ensure every user has a Profile.
-
-    Runs once after migrations complete. Bulk-creates missing profiles.
-    """
-    user_model, profile_model = _get_user_and_profile_models()
-    missing_users = user_model.objects.filter(profile__isnull=True).only("id")
-    profile_model.objects.bulk_create(
-        [profile_model(user=u) for u in missing_users],
-        ignore_conflicts=True,
-    )
-
 def _table_exists(table_name: str) -> bool:
     with connection.cursor() as cursor:
         return table_name in connection.introspection.table_names(cursor)
+
 
 @receiver(post_migrate)
 def backfill_profiles(sender, app_config=None, using=None, **kwargs):
