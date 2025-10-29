@@ -90,6 +90,23 @@ class User(AbstractBaseUser, PermissionsMixin):
         objects (UserManager): Custom manager handling user and superuser
         creation with proper email normalization and password hashing.
     """
+    # Override PermissionsMixin relations to avoid reverse accessor clashes
+    groups = models.ManyToManyField(
+        "auth.Group",
+        blank=True,
+        help_text="The groups this user belongs to.",
+        related_name="profiles_user_set",
+        related_query_name="profiles_user",
+        verbose_name="groups",
+    )
+    user_permissions = models.ManyToManyField(
+        "auth.Permission",
+        blank=True,
+        help_text="Specific permissions for this user.",
+        related_name="profiles_user_set_permissions",
+        related_query_name="profiles_user_permission",
+        verbose_name="user permissions",
+    )
     email = models.EmailField(unique=True)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
