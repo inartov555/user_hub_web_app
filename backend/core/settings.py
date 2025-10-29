@@ -175,7 +175,12 @@ USE_I18N = True
 LANGUAGE_CODE = "en-us"
 LANGUAGES = [
     ("en-us", translation.gettext_lazy("English (US)")),
-    ("et-ee", translation.gettext_lazy("Eesti (Eesti)")),
+    ("uk-ua", translation.gettext_lazy("Ukrainian")),
+    ("et-ee", translation.gettext_lazy("Estonian")),
+    ("fi-fi", translation.gettext_lazy("Finnish")),
+    ("cs-cz", translation.gettext_lazy("Czech")),
+    ("pl-pl", translation.gettext_lazy("Polish")),
+    ("es-es", translation.gettext_lazy("Spanish")),
 ]
 LOCALE_PATHS = [BASE_DIR / "locale"]
 
