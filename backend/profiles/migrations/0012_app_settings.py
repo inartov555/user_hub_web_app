@@ -10,7 +10,7 @@ class Migration(migrations.Migration):
     Migration class
     """
     dependencies = [
-        ("profiles", "001_initial"),
+        ("profiles", "0001_initial"),
     ]
 
     operations = [
