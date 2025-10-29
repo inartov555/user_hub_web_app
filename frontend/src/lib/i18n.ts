@@ -5,6 +5,7 @@ import LanguageDetector from "i18next-browser-languagedetector";
 // Static JSON import (keeps tree-shaking simple)
 // For many languages, swap to lazy loading with i18next-http-backend.
 import en_US from "../locale/en_US.json";
+import uk_UA from "../locale/uk_UA.json";
 import et_EE from "../locale/et_EE.json";
 import fi_FI from "../locale/fi_FI.json";
 import cs_CZ from "../locale/cs_CZ.json";
@@ -16,13 +17,14 @@ i18n
   .init({
     resources: {
       "en-US": { translation: en_US },
+      "uk-UA": { translation: uk_UA },
       "et-EE": { translation: et_EE },
       "fi-FI": { translation: fi_FI },
       "cs-CZ": { translation: cs_CZ },
       "pl-PL": { translation: pl_PL },
     },
     fallbackLng: "en-US",
-    supportedLngs: ["en-US", "et-EE", "fi-FI", "cs-CZ", "pl-PL"],
+    supportedLngs: ["en-US", "et-EE", "fi-FI", "cs-CZ", "pl-PL", "uk-UA"],
     interpolation: { escapeValue: false },
     detection: {
       order: ["querystring", "localStorage", "navigator", "htmlTag"],

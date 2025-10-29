@@ -47,6 +47,7 @@ export default function Navbar() {
             }}
           >
             <option value="en-US">English - US</option>
+            <option value="uk-UA">Українська</option>
             <option value="et-EE">Eesti</option>
             <option value="fi-FI">Suomi</option>
             <option value="cs-CZ">Čeština</option>

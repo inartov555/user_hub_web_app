@@ -1,0 +1,114 @@
+{
+  "httpError": {
+    "fallBack": "Запит не виконано. Спробуйте ще раз.",
+    "networkError": "Помилка мережі. Перевірте підключення й спробуйте ще раз.",
+    "serverError": "Помилка сервера",
+    "validationError": "Помилка валідації."
+  },
+  "app": {
+    "title": "Застосунок користувачів",
+    "hiUser": "Привіт, {{username}}"
+  },
+  "nav": {
+    "users": "Користувачі",
+    "stats": "Статистика",
+    "profile": "Профіль",
+    "importFromExcel": "Імпорт з Excel",
+    "login": "Вхід",
+    "logout": "Вийти"
+  },
+  "auth": {
+    "login": "Увійти",
+    "signin": "Увійти",
+    "forgotPassword": "Забули пароль?",
+    "createAccount": "Створити обліковий запис",
+    "loginFailed": "Не вдалося увійти: {{message}}"
+  },
+  "signup": {
+    "email": "Електронна пошта",
+    "username": "Ім’я користувача",
+    "password": "Пароль",
+    "signupFailed": "Реєстрація не вдалася: {{message}}"
+  },
+  "users": {
+    "title": "Користувачі",
+    "people": "Люди",
+    "loading": "Завантаження…",
+    "deleteSelected": "Видалити вибране",
+    "deleteSelectedTitle": "Видалити вибраних користувачів",
+    "clickToSort": "Клацніть для сортування; багаторазове сортування ввімкнено",
+    "sorted": "Відсортовано",
+    "ascending": "за зростанням",
+    "descending": "за спаданням",
+    "select": "Вибрати",
+    "firstName": "Ім’я",
+    "lastName": "Прізвище",
+    "changePassword": "Змінити пароль",
+    "search": "Пошук…",
+    "columns": "Стовпці",
+    "clearSort": "Скинути сортування",
+    "toggleColumns": "Показати/сховати стовпці",
+    "page": "Сторінка",
+    "of": " з ",
+    "rowsPerPage": "Рядків на сторінку",
+    "updating": "Оновлення…"
+  },
+  "excelImport": {
+    "bio": "Біографія",
+    "fileUploadMessage": "Завантажте файл .xlsx з такими стовпцями:",
+    "uploading": "Надсилання…",
+    "startImport": "Почати імпорт",
+    "downloadTemplate": "Завантажити шаблон",
+    "processed": "Опрацьовано:",
+    "created": "Створено:",
+    "updated": "Оновлено:",
+    "result": "Результат",
+    "importSuccessful": "Імпорт успішно завершено",
+    "selectedFile": "Вибрано:"
+  },
+  "profileEdit": {
+    "profileLoadError": "Не вдалося завантажити профіль.",
+    "save": "Зберегти",
+    "profileAvatar": "Фото профілю"
+  },
+  "profileView": {
+    "pViewError": "Помилка: {{message}}",
+    "noProfileFound": "Профіль не знайдено.",
+    "createEditProfile": "Створити / редагувати профіль",
+    "profile": "Профіль",
+    "yourPersonalDetails": "Ваші особисті дані",
+    "fullName": "Повне ім’я",
+    "pId": "ID",
+    "editProfile": "Редагувати профіль",
+    "changePassword": "Змінити пароль"
+  },
+  "changePassword": {
+    "atLeast8Chars": "Пароль має містити щонайменше 8 символів.",
+    "notMatch": "Паролі не збігаються.",
+    "setPasswordFailed": "Не вдалося встановити пароль.",
+    "newPassword": "Новий пароль",
+    "confirmPassword": "Підтвердьте пароль",
+    "saving": "Збереження…"
+  },
+  "userDeleteConfirm": {
+    "bulkDeleteFailed": "Масове видалення не вдалося:",
+    "failedToDelete": "Не вдалося видалити",
+    "failedToDeleteSelectedUsers": "Не вдалося видалити вибраних користувачів:",
+    "confirmDelete": "Підтвердити видалення",
+    "youAboutToDelete": "Ви збираєтеся назавжди видалити",
+    "cannotBeUndone": "користувача(ів). Цю дію не можна скасувати.",
+    "and": "…та",
+    "more": "ще",
+    "deleteUsers": "Видалити користувачів",
+    "deleting": "Видалення…",
+    "cancel": "Скасувати"
+  },
+  "stats": {
+    "curOnline5Mins": "Зараз онлайн користувачі (останні 5 хвилин)"
+  },
+  "resetPassword": {
+    "resetPassword": "Скинути пароль",
+    "checkEmailForResetLink": "Перевірте в консольному поштовому бекенді посилання для скидання.",
+    "sendResetEmail": "Надіслати лист для скидання пароля"
+  }
+}
