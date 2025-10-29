@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { NavLink, Link, useLocation, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useAuthStore } from "../auth/store";
@@ -25,6 +25,13 @@ export default function Navbar() {
   // Show row 2 if user clicked Additional *or* a second-row route is active
   const [additionalOpen, setAdditionalOpen] = useState(false);
   const isAdditionalActive = additionalOpen || routeIsSecondRow;
+
+  // Close Additional whenever we navigate to a first-row route
+  useEffect(() => {
+    if (!routeIsSecondRow && additionalOpen) {
+      setAdditionalOpen(false);
+    }
+  }, [pathname, routeIsSecondRow, additionalOpen]);
 
   // When opening "Additional", show row 2 and select its first tab (/stats)
   const onToggleAdditional = () => {
@@ -125,7 +132,7 @@ export default function Navbar() {
           {/* Language switcher */}
           <div className="bg-gray-200 border rounded-full px-2 py-1 text-sm flex items-center gap-2">
             <span className="bg-gray-200 border border-transparent rounded px-2 py-1 text-sm flex items-center gap-2">
-              <LocaleFlag locale={locale} size={22} />
+              <LocaleFlag locale={locale} size={24} />
             </span>
             <select
               className="border border-slate-300 dark:border-slate-700 rounded bg-white dark:bg-slate-900 px-2 py-1 text-sm"
