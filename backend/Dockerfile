@@ -11,9 +11,9 @@ ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 # Create a compatibility symlink so compilemessages can find the catalogs
 # RUN if [ -d /app/locale ] && [ ! -d /app/locale ]; then ln -s /app/locale /app/locale; fi
 
-WORKDIR /app
 # now copy the app code (doesn't bust dependency layer unless reqs changed)
 COPY backend/ /app/
+WORKDIR /app
 
 RUN pip install --upgrade pip && \
     if [ -f requirements.txt ]; then pip install -r requirements.txt; fi && \
@@ -24,11 +24,16 @@ RUN apt-get update \
  && apt-get install -y --no-install-recommends gettext \
  && rm -rf /var/lib/apt/lists/*
 
-# Compile translations after code is copied & deps installed
-# If your manage.py is one level up, adjust WORKDIR accordingly
-# RUN python -m django compilemessages -l et -l en -v 2
-# RUN django-admin compilemessages -l et_EE -l en_US -v 2
+# OPTIONAL: validate .po syntax (correct paths: /app/locale/**)
+RUN msgfmt -c -o /dev/null locale/en_US/LC_MESSAGES/django.po \
+ && msgfmt -c -o /dev/null locale/et_EE/LC_MESSAGES/django.po
+
+# Compile all message catalogs (manage.py is at /app/manage.py)
 RUN python manage.py compilemessages -v 2
+
+# Confirm compiled catalogs exist
+RUN ls -l locale/en_US/LC_MESSAGES/django.mo
+RUN ls -l locale/et_EE/LC_MESSAGES/django.mo
 
 EXPOSE 8000
 # don't run pip install at container start!

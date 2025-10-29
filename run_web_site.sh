@@ -51,13 +51,13 @@ esac
 echo "Building images..."
 case "$clear_cache" in
   true)
-    echo "Cache will be preserved when starting the service"
+    echo "Cache will be cleared when starting the service"
     docker compose build db --no-cache
     docker compose build backend --no-cache
     docker compose build frontend --no-cache
     ;;
   *)
-    echo "Cache will be cleared when starting the service"
+    echo "Cache will be preserved when starting the service"
     docker compose build db
     docker compose build backend
     docker compose build frontend
