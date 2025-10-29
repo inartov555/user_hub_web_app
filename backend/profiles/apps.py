@@ -1,5 +1,5 @@
 """
-App configuration
+App configuratio
 """
 
 from django.apps import AppConfig, apps
@@ -16,15 +16,18 @@ class ProfilesConfig(AppConfig):
 
     def ready(self):
         """
-        Importing signals registers signal receivers. It's imported here (not at module top)
-        to avoid import-order issues and ensure models are loaded before connecting signals.
+        Wire up signals in a registry-safe way.
         """
-        # Get models safely after apps are loaded
+        # Resolve the user model lazily to avoid early app loading issues
         app_label, model_name = settings.AUTH_USER_MODEL.split(".")
         _user = apps.get_model(app_label, model_name)
-        from .signals import (  # pylint: disable=import-outside-toplevel, unused-import
-            create_profile_on_user_create, backfill_profiles
+
+        # Import here to avoid side effects at import time
+        from .signals import (  # pylint: disable=import-outside-toplevel
+            create_profile_on_user_create,
+            backfill_profiles,
         )
+
         # Connect with stable dispatch_uids to prevent duplicate connections
         post_save.connect(
             create_profile_on_user_create,

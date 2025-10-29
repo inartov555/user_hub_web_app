@@ -179,8 +179,6 @@ LANGUAGES = [
 ]
 LOCALE_PATHS = [BASE_DIR / "locale"]
 
-AUTH_USER_MODEL = "profiles.User"
-
 ROOT_URLCONF = "core.urls"
 TEMPLATES = [{
     "BACKEND": "django.template.backends.django.DjangoTemplates",

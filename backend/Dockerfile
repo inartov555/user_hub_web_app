@@ -29,7 +29,16 @@ RUN msgfmt -c -o /dev/null locale/en_US/LC_MESSAGES/django.po \
  && msgfmt -c -o /dev/null locale/et_EE/LC_MESSAGES/django.po
 
 # Compile all message catalogs (manage.py is at /app/manage.py)
-RUN python manage.py compilemessages -v 2
+# RUN python manage.py compilemessages -v 2
+
+# Compile all PO files to MO without importing Django
+# This finds every 'django.po' in any app/locale/<lang>/LC_MESSAGES/
+RUN sh -c 'set -eu; \
+  for PO in $(find /app -type f -path "*/locale/*/LC_MESSAGES/django.po"); do \
+    MO="${PO%.po}.mo"; \
+    echo "Compiling $PO -> $MO"; \
+    msgfmt -c -o "$MO" "$PO"; \
+  done'
 
 # Confirm compiled catalogs exist
 RUN ls -l locale/en_US/LC_MESSAGES/django.mo

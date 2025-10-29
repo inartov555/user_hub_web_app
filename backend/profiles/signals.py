@@ -1,62 +1,51 @@
+"""Profiles app signals and backfills.
+
+- create_profile_on_user_create: creates a Profile when a new User is created
+- backfill_profiles: bulk-creates missing profiles after migrations
+
+Both functions are idempotent and safe to run multiple times.
 """
-This module wires up a Django signal.
-"""
+
+from __future__ import annotations
 
 from django.apps import apps
 from django.conf import settings
-from django.contrib.auth import get_user_model
 from django.db import transaction
 
-from .models.profile import Profile
 
-
-user_mod = get_user_model()
-
-
-def create_profile(sender, instance, created, **kwargs):  # pylint: disable=unused-argument
+def _get_user_and_profile_models():
     """
-    Every time a new User is created, a matching Profile row is created automatically.
+    Resolve the AUTH_USER_MODEL and profiles.Profile lazily.
     """
-    if created:
-        Profile.objects.create(user=instance)
+    app_label, model_name = settings.AUTH_USER_MODEL.split(".")
+    user_model = apps.get_model(app_label, model_name)
+    profile_model = apps.get_model("profiles", "Profile")
+    return user_model, profile_model
 
 
 def create_profile_on_user_create(sender, instance, created, **kwargs):  # pylint: disable=unused-argument
     """
-    When a new user is created, ensure a matching Profile exists.
+    Post-save hook to create a profile for newly created users.
     """
     if not created:
         return
-    # Create after commit so we never run during migrations/flush/fixtures
-    def _make():
-        profile_model = apps.get_model("profiles", "Profile")
+
+    # avoid creating profile within an open transaction; wait until commit
+    def _create():
+        _, profile_model = _get_user_and_profile_models()
         profile_model.objects.get_or_create(user=instance)
-    transaction.on_commit(_make)
+
+    transaction.on_commit(_create)
 
 
-def backfill_profiles(sender, app_config, **kwargs):  # pylint: disable=unused-argument
+def backfill_profiles(sender, **kwargs):  # pylint: disable=unused-argument
     """
-    After migrations, ensure every user has a Profile.
-    Only run when *this* app (profiles) finishes migrating.
+    Post-migrate hook to ensure every user has a Profile.
+
+    Runs once after migrations complete. Bulk-creates missing profiles.
     """
-    if app_config.label not in {"auth", "profiles"}:
-        return
-
-    # Make sure the necessary tables exist before querying
-    from django.db import connection  # pylint: disable=import-outside-toplevel
-    with connection.cursor() as cursor:
-        tables = set(connection.introspection.table_names(cursor))
-    if not {"auth_user", "profiles_profile"}.issubset(tables):
-        return
-
-    # Resolve models lazily
-    app_label, model_name = settings.AUTH_USER_MODEL.split(".")
-    user_model = apps.get_model(app_label, model_name)
-    profile_model = apps.get_model("profiles", "Profile")
-
-    # Create profiles only for users missing one
+    user_model, profile_model = _get_user_and_profile_models()
     missing_users = user_model.objects.filter(profile__isnull=True).only("id")
-    # idempotent; safe to run multiple times
     profile_model.objects.bulk_create(
         [profile_model(user=u) for u in missing_users],
         ignore_conflicts=True,
