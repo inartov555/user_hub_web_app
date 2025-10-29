@@ -110,5 +110,19 @@
     "resetPassword": "Obnovit heslo",
     "checkEmailForResetLink": "Zkontrolujte v konzolovém e-mailovém backendu odkaz pro obnovení.",
     "sendResetEmail": "Odeslat e-mail pro obnovení hesla"
+  },
+  "appSettings": {
+    "loadError": "Při načítání nastavení aplikace došlo k chybě",
+    "saveError": "Při ukládání nastavení aplikace došlo k chybě",
+    "title": "Nastavení aplikace",
+    "jwtRenew": "JWT_RENEW_AT_SECONDS",
+    "jwtRenewHelp": "Když má přístupový token zbývající dobu v sekundách rovnou nebo menší, klient jej proaktivně obnoví (pokud je obnovovací token stále platný). Nastavte 0 pro vypnutí proaktivního obnovování. Tip: nechte hodnotu výrazně nižší než životnost přístupového tokenu (např. 120–300 s).",
+    "idleTimeout": "IDLE_TIMEOUT_SECONDS",
+    "idleTimeoutHelp": "Maximální doba (v sekundách), po kterou může být relace nečinná bez aktivity API, než vyprší obnovovací token. Poté se uživatel musí znovu přihlásit. Obvyklý rozsah: 900–3600. Vyšší hodnoty ponechají uživatele přihlášené déle; nižší jsou bezpečnější.",
+    "accessLifetime": "ACCESS_TOKEN_LIFETIME",
+    "accessLifetimeHelp": "Životnost (v sekundách) každého přístupového tokenu. Po vypršení je k získání nového tokenu nutné obnovit. Kratší doba je bezpečnější, ale vyžaduje častější obnovování. Obvyklý rozsah: 300–1800. Doporučeno ponechat méně než limit nečinnosti.",
+    "noteNewSessions": "Uložená nastavení se použijí při příštím přihlášení",
+    "saved": "Nastavení aplikace byla uložena",
+    "saving": "Ukládání nastavení aplikace..."
   }
 }

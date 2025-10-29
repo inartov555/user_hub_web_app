@@ -110,5 +110,19 @@
     "resetPassword": "Restablecer contraseña",
     "checkEmailForResetLink": "Consulta en la consola del backend de correo el enlace de restablecimiento.",
     "sendResetEmail": "Enviar correo de restablecimiento"
+  },
+  "appSettings": {
+    "loadError": "Se produjo un error al cargar la configuración de la aplicación",
+    "saveError": "Se produjo un error al guardar la configuración de la aplicación",
+    "title": "Configuración de la aplicación",
+    "jwtRenew": "JWT_RENEW_AT_SECONDS",
+    "jwtRenewHelp": "Cuando al token de acceso le queden estos segundos o menos, el cliente lo actualizará de forma proactiva (si el token de actualización sigue siendo válido). Establece 0 para desactivar la actualización proactiva. Consejo: mantén este valor claramente por debajo de la vida útil del token de acceso (p. ej., 120–300 s).",
+    "idleTimeout": "IDLE_TIMEOUT_SECONDS",
+    "idleTimeoutHelp": "Tiempo máximo (en segundos) que una sesión puede permanecer inactiva sin actividad de API antes de que caduque el token de actualización. Después de esto, el usuario debe iniciar sesión de nuevo. Rango típico: 900–3600. Valores más altos mantienen la sesión más tiempo; valores más bajos son más seguros.",
+    "accessLifetime": "ACCESS_TOKEN_LIFETIME",
+    "accessLifetimeHelp": "Vida útil (en segundos) de cada token de acceso. Cuando caduque, será necesario actualizar para obtener un nuevo token. Un periodo más corto es más seguro, pero implica más actualizaciones. Rango típico: 300–1800. Se recomienda mantenerlo por debajo del tiempo de inactividad.",
+    "noteNewSessions": "La configuración guardada se aplicará en el próximo inicio de sesión",
+    "saved": "La configuración de la aplicación se ha guardado",
+    "saving": "Guardando la configuración de la aplicación..."
   }
 }

@@ -110,5 +110,19 @@
     "resetPassword": "Lähtesta parool",
     "checkEmailForResetLink": "Vaata konsoolis e-posti backendi, et leida lähtestamislink.",
     "sendResetEmail": "Saada parooli lähtestamise e-kiri"
+  },
+  "appSettings": {
+    "loadError": "Rakenduse sätete laadimisel tekkis viga",
+    "saveError": "Rakenduse sätete salvestamisel tekkis viga",
+    "title": "Rakenduse sätted",
+    "jwtRenew": "JWT_RENEW_AT_SECONDS",
+    "jwtRenewHelp": "Kui juurdepääsutokenil on jäänud nii palju sekundeid või vähem, värskendab klient seda proaktiivselt (kui värskendustoken on endiselt kehtiv). Väärtus 0 keelab proaktiivse värskendamise. Vihje: hoia see selgelt allpool juurdepääsutokeni eluiga (nt 120–300 s).",
+    "idleTimeout": "IDLE_TIMEOUT_SECONDS",
+    "idleTimeoutHelp": "Maksimaalne aeg (sekundites), mil seanss võib olla tühikäigul ilma API-tegevuseta, enne kui värskendustoken aegub. Seejärel peab kasutaja uuesti sisse logima. Tüüpiline vahemik: 900–3600. Suurem väärtus hoiab kasutajad kauem sisselogituna; väiksem on turvalisem.",
+    "accessLifetime": "ACCESS_TOKEN_LIFETIME",
+    "accessLifetimeHelp": "Iga juurdepääsutokeni eluiga (sekundites). Pärast aegumist on uue tokeni saamiseks vaja värskendada. Lühem aeg on turvalisem, kuid põhjustab sagedasemaid värskendusi. Tüüpiline vahemik: 300–1800. Soovitus: hoia väiksem kui tühikäigu ajapiir.",
+    "noteNewSessions": "Salvestatud sätted rakenduvad järgmisel sisselogimisel",
+    "saved": "Rakenduse sätted on salvestatud",
+    "saving": "Rakenduse sätete salvestamine..."
   }
 }

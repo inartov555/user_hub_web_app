@@ -110,5 +110,19 @@
     "resetPassword": "Nollaa salasana",
     "checkEmailForResetLink": "Tarkista konsolin sähköpostitaustapalvelusta palautuslinkki.",
     "sendResetEmail": "Lähetä salasanan palautusviesti"
+  },
+  "appSettings": {
+    "loadError": "Sovelluksen asetusten lataamisessa tapahtui virhe",
+    "saveError": "Sovelluksen asetusten tallentamisessa tapahtui virhe",
+    "title": "Sovelluksen asetukset",
+    "jwtRenew": "JWT_RENEW_AT_SECONDS",
+    "jwtRenewHelp": "Kun käyttöoikeustunnuksella on jäljellä enintään tämä määrä sekunteja, asiakas päivittää sen ennakoivasti (kunhan päivitystunnus on yhä voimassa). Aseta arvoksi 0, jos haluat poistaa ennakoivan päivityksen käytöstä. Vinkki: pidä arvo selvästi pienempänä kuin käyttöoikeustunnuksen elinaika (esim. 120–300 s).",
+    "idleTimeout": "IDLE_TIMEOUT_SECONDS",
+    "idleTimeoutHelp": "Suurin aika (sekunteina), jonka istunto voi olla toimettomana ilman API-aktiivisuutta ennen kuin päivitystunnus vanhenee. Tämän jälkeen käyttäjän on kirjauduttava uudelleen. Tyypillinen vaihteluväli: 900–3600. Suurempi arvo pitää käyttäjät kirjautuneina pidempään; pienempi on turvallisempi.",
+    "accessLifetime": "ACCESS_TOKEN_LIFETIME",
+    "accessLifetimeHelp": "Kunkin käyttöoikeustunnuksen elinaika (sekunteina). Kun se vanhenee, uuden tunnuksen saamiseksi tarvitaan päivitys. Lyhyempi aika on turvallisempi, mutta vaatii useampia päivityksiä. Tyypillinen vaihteluväli: 300–1800. Suositus: pidä arvo pienempänä kuin toimettomuusraja.",
+    "noteNewSessions": "Tallennetut asetukset otetaan käyttöön seuraavassa kirjautumisessa",
+    "saved": "Sovelluksen asetukset on tallennettu",
+    "saving": "Tallennetaan sovelluksen asetuksia..."
   }
 }

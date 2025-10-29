@@ -110,5 +110,19 @@
     "resetPassword": "Zresetuj hasło",
     "checkEmailForResetLink": "Sprawdź w konsoli backendu e-mail link do resetowania.",
     "sendResetEmail": "Wyślij e-mail resetujący hasło"
+  },
+  "appSettings": {
+    "loadError": "Wystąpił błąd podczas wczytywania ustawień aplikacji",
+    "saveError": "Wystąpił błąd podczas zapisywania ustawień aplikacji",
+    "title": "Ustawienia aplikacji",
+    "jwtRenew": "JWT_RENEW_AT_SECONDS",
+    "jwtRenewHelp": "Gdy do wygaśnięcia tokenu dostępu pozostanie tyle sekund lub mniej, klient proaktywnie go odświeży (o ile token odświeżania jest nadal ważny). Ustaw 0, aby wyłączyć proaktywne odświeżanie. Wskazówka: ustaw wartość wyraźnie niższą niż czas życia tokenu dostępu (np. 120–300 s).",
+    "idleTimeout": "IDLE_TIMEOUT_SECONDS",
+    "idleTimeoutHelp": "Maksymalny czas bezczynności sesji (w sekundach) bez aktywności API, po którym token odświeżania wygasa. Potem użytkownik musi zalogować się ponownie. Typowy zakres: 900–3600. Wyższe wartości dłużej utrzymują zalogowanie; niższe są bezpieczniejsze.",
+    "accessLifetime": "ACCESS_TOKEN_LIFETIME",
+    "accessLifetimeHelp": "Czas życia (w sekundach) każdego tokenu dostępu. Po upływie wymagane jest odświeżenie, aby uzyskać nowy token. Krótszy czas jest bezpieczniejszy, ale powoduje częstsze odświeżenia. Typowy zakres: 300–1800. Zalecane, aby było mniejsze niż limit bezczynności.",
+    "noteNewSessions": "Zapisane ustawienia zostaną zastosowane przy następnym logowaniu",
+    "saved": "Ustawienia aplikacji zostały zapisane",
+    "saving": "Zapisywanie ustawień aplikacji..."
   }
 }
