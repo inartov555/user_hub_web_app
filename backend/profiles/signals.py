@@ -11,6 +11,9 @@ from __future__ import annotations
 from django.apps import apps
 from django.conf import settings
 from django.db import transaction
+from django.db import connection, router, transaction
+from django.db.models.signals import post_migrate
+from django.dispatch import receiver
 
 
 def _get_user_and_profile_models():
@@ -50,3 +53,32 @@ def backfill_profiles(sender, **kwargs):  # pylint: disable=unused-argument
         [profile_model(user=u) for u in missing_users],
         ignore_conflicts=True,
     )
+
+def _table_exists(table_name: str) -> bool:
+    with connection.cursor() as cursor:
+        return table_name in connection.introspection.table_names(cursor)
+
+@receiver(post_migrate)
+def backfill_profiles(sender, app_config=None, using=None, **kwargs):
+    # Only run after the 'profiles' app itself has been migrated
+    app_label = (sender.label if sender else (app_config.label if app_config else None))
+    if app_label != "profiles":
+        return
+
+    Profile = apps.get_model("profiles", "Profile")
+    User = apps.get_model("auth", "User")
+
+    # Ensure the table exists before querying it
+    if not _table_exists(Profile._meta.db_table):
+        return
+
+    db_alias = using or router.db_for_read(Profile)
+
+    # Find users without a profile and backfill in bulk
+    existing_user_ids = Profile.objects.using(db_alias).values_list("user_id", flat=True)
+    missing_users = User.objects.using(db_alias).exclude(id__in=existing_user_ids)
+
+    to_create = [Profile(user=u) for u in missing_users]
+    if to_create:
+        with transaction.atomic(using=db_alias):
+            Profile.objects.using(db_alias).bulk_create(to_create, ignore_conflicts=True)

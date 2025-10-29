@@ -18,24 +18,21 @@ class ProfilesConfig(AppConfig):
         """
         Wire up signals in a registry-safe way.
         """
-        # Resolve the user model lazily to avoid early app loading issues
+        # Resolve user model lazily
         app_label, model_name = settings.AUTH_USER_MODEL.split(".")
         _user = apps.get_model(app_label, model_name)
 
-        # Import here to avoid side effects at import time
-        from .signals import (  # pylint: disable=import-outside-toplevel
-            create_profile_on_user_create,
-            backfill_profiles,
-        )
+        from .signals import create_profile_on_user_create, backfill_profiles  # noqa
 
-        # Connect with stable dispatch_uids to prevent duplicate connections
         post_save.connect(
             create_profile_on_user_create,
             sender=_user,
             dispatch_uid="profiles.create_profile_on_user_create",
         )
-        # Defer backfill until migrations are done (fires once per app migration)
+
+        # IMPORTANT: only run backfill after *this* app’s migrations
         post_migrate.connect(
             backfill_profiles,
+            sender=self,  # <- scope to profiles app
             dispatch_uid="profiles.backfill_profiles",
         )
