@@ -10,7 +10,7 @@ class Migration(migrations.Migration):
     Migration class
     """
     dependencies = [
-        ("profiles", "0011_auto"),  # <-- replace with your last migration name
+        ("profiles", "001_initial"),
     ]
 
     operations = [
