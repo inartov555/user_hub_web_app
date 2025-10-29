@@ -26,6 +26,17 @@ export default function Navbar() {
   const [additionalOpen, setAdditionalOpen] = useState(false);
   const isAdditionalActive = additionalOpen || routeIsSecondRow;
 
+  // When opening "Additional", show row 2 and select its first tab (/stats)
+  const onToggleAdditional = () => {
+    setAdditionalOpen((prev) => {
+      const next = !prev;
+      if (next && !routeIsSecondRow) {
+        navigate("/stats");
+      }
+      return next;
+    });
+  };
+
   return (
     <header className="sticky top-0 z-10 bg-white/70 backdrop-blur border-b border-slate-200">
       {/* 3-column grid: Left (logo) | Middle (two tab rows) | Right (user/lang) */}
@@ -44,11 +55,18 @@ export default function Navbar() {
             <nav className="flex flex-wrap gap-2 md:gap-4">
               {user && (
                 <>
-                  <NavLink to="/users" className={({ isActive }) => tabCls(isActive)}>
+                  {/* While Additional is active, force row-1 tabs to look inactive */}
+                  <NavLink
+                    to="/users"
+                    className={({ isActive }) => tabCls(isActive && !isAdditionalActive)}
+                  >
                     {t("nav.users")}
                   </NavLink>
 
-                  <NavLink to="/profile-view" className={() => tabCls(isProfileActive)}>
+                  <NavLink
+                    to="/profile-view"
+                    className={() => tabCls(isProfileActive && !isAdditionalActive)}
+                  >
                     {t("nav.profile")}
                   </NavLink>
 
@@ -57,7 +75,7 @@ export default function Navbar() {
                     <button
                       type="button"
                       className={tabCls(isAdditionalActive)}
-                      onClick={() => setAdditionalOpen((v) => !v)}
+                      onClick={onToggleAdditional}
                       aria-expanded={isAdditionalActive}
                       aria-controls="secondary-nav"
                     >
@@ -68,12 +86,9 @@ export default function Navbar() {
               )}
             </nav>
 
-            {/* Row 2 (staff-only) — hidden until Additional is selected or a second-row route is active */}
+            {/* Row 2 (staff-only) — hidden until Additional is active or a second-row route is active */}
             {user?.is_staff && isAdditionalActive && (
-              <nav
-                id="secondary-nav"
-                className="flex flex-wrap gap-2 md:gap-4"
-              >
+              <nav id="secondary-nav" className="flex flex-wrap gap-2 md:gap-4">
                 <NavLink to="/stats" className={({ isActive }) => tabCls(isActive)}>
                   {t("nav.stats")}
                 </NavLink>
