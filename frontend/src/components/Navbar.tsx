@@ -19,6 +19,12 @@ export default function Navbar() {
     }`;
   // Helper: treat multiple routes as active for one tab
   const isProfileActive = pathname.startsWith("/profile-view") || pathname.startsWith("/profile-edit");
+    // "Additional" tab logic
+  const secondRowRoutes = ["/stats", "/settings", "/import-excel"];
+  const routeIsSecondRow = secondRowRoutes.some((p) => pathname.startsWith(p));
+  // Show row 2 if user clicked Additional *or* a second-row route is active
+  const [additionalOpen, setAdditionalOpen] = useState(false);
+  const isAdditionalActive = additionalOpen || routeIsSecondRow;
 
   return (
     <header className="sticky top-0 z-10 bg-white/70 backdrop-blur border-b border-slate-200">
@@ -46,18 +52,28 @@ export default function Navbar() {
                     {t("nav.profile")}
                   </NavLink>
 
+                  {/* Additional tab (first row) — reveals row 2 */}
                   {user?.is_staff && (
-                    <NavLink to="/additional-actions className={() => tabCls(isActive)}>
-                      {t("nav.addtional")}
-                    </NavLink>
+                    <button
+                      type="button"
+                      className={tabCls(isAdditionalActive)}
+                      onClick={() => setAdditionalOpen((v) => !v)}
+                      aria-expanded={isAdditionalActive}
+                      aria-controls="secondary-nav"
+                    >
+                      {t("nav.additional", "Additional")}
+                    </button>
                   )}
                 </>
               )}
             </nav>
 
-            {/* Row 2 (staff-only) */}
-            {user?.is_staff && (
-              <nav className="flex flex-wrap gap-2 md:gap-4">
+            {/* Row 2 (staff-only) — hidden until Additional is selected or a second-row route is active */}
+            {user?.is_staff && isAdditionalActive && (
+              <nav
+                id="secondary-nav"
+                className="flex flex-wrap gap-2 md:gap-4"
+              >
                 <NavLink to="/stats" className={({ isActive }) => tabCls(isActive)}>
                   {t("nav.stats")}
                 </NavLink>
