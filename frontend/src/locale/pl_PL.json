@@ -1,0 +1,114 @@
+{
+  "httpError": {
+    "fallBack": "Żądanie nie powiodło się. Spróbuj ponownie.",
+    "networkError": "Błąd sieci. Sprawdź połączenie i spróbuj ponownie.",
+    "serverError": "Błąd serwera",
+    "validationError": "Błąd walidacji."
+  },
+  "app": {
+    "title": "Aplikacja użytkowników",
+    "hiUser": "Cześć, {{username}}"
+  },
+  "nav": {
+    "users": "Użytkownicy",
+    "stats": "Statystyki",
+    "profile": "Profil",
+    "importFromExcel": "Importuj z Excela",
+    "login": "Zaloguj się",
+    "logout": "Wyloguj się"
+  },
+  "auth": {
+    "login": "Zaloguj się",
+    "signin": "Zaloguj się",
+    "forgotPassword": "Nie pamiętasz hasła?",
+    "createAccount": "Utwórz konto",
+    "loginFailed": "Logowanie nie powiodło się: {{message}}"
+  },
+  "signup": {
+    "email": "E-mail",
+    "username": "Nazwa użytkownika",
+    "password": "Hasło",
+    "signupFailed": "Rejestracja nie powiodła się: {{message}}"
+  },
+  "users": {
+    "title": "Użytkownicy",
+    "people": "Osoby",
+    "loading": "Ładowanie…",
+    "deleteSelected": "Usuń wybrane",
+    "deleteSelectedTitle": "Usuń wybranych użytkowników",
+    "clickToSort": "Kliknij, aby sortować; włączone sortowanie wielokrotne",
+    "sorted": "Posortowano",
+    "ascending": "rosnąco",
+    "descending": "malejąco",
+    "select": "Wybierz",
+    "firstName": "Imię",
+    "lastName": "Nazwisko",
+    "changePassword": "Zmień hasło",
+    "search": "Szukaj…",
+    "columns": "Kolumny",
+    "clearSort": "Wyczyść sortowanie",
+    "toggleColumns": "Pokaż/ukryj kolumny",
+    "page": "Strona",
+    "of": " z ",
+    "rowsPerPage": "Wierszy na stronę",
+    "updating": "Aktualizowanie…"
+  },
+  "excelImport": {
+    "bio": "O mnie",
+    "fileUploadMessage": "Prześlij plik .xlsx z kolumnami:",
+    "uploading": "Przesyłanie…",
+    "startImport": "Rozpocznij import",
+    "downloadTemplate": "Pobierz szablon",
+    "processed": "Przetworzono:",
+    "created": "Utworzono:",
+    "updated": "Zaktualizowano:",
+    "result": "Wynik",
+    "importSuccessful": "Import zakończony pomyślnie",
+    "selectedFile": "Wybrano:"
+  },
+  "profileEdit": {
+    "profileLoadError": "Nie udało się wczytać profilu.",
+    "save": "Zapisz",
+    "profileAvatar": "Zdjęcie profilowe"
+  },
+  "profileView": {
+    "pViewError": "Błąd: {{message}}",
+    "noProfileFound": "Nie znaleziono profilu.",
+    "createEditProfile": "Utwórz / edytuj profil",
+    "profile": "Profil",
+    "yourPersonalDetails": "Twoje dane osobowe",
+    "fullName": "Imię i nazwisko",
+    "pId": "ID",
+    "editProfile": "Edytuj profil",
+    "changePassword": "Zmień hasło"
+  },
+  "changePassword": {
+    "atLeast8Chars": "Hasło musi mieć co najmniej 8 znaków.",
+    "notMatch": "Hasła nie są zgodne.",
+    "setPasswordFailed": "Ustawienie hasła nie powiodło się.",
+    "newPassword": "Nowe hasło",
+    "confirmPassword": "Potwierdź hasło",
+    "saving": "Zapisywanie…"
+  },
+  "userDeleteConfirm": {
+    "bulkDeleteFailed": "Masowe usuwanie nie powiodło się:",
+    "failedToDelete": "Nie udało się usunąć",
+    "failedToDeleteSelectedUsers": "Nie udało się usunąć wybranych użytkowników:",
+    "confirmDelete": "Potwierdź usunięcie",
+    "youAboutToDelete": "Zamierzasz trwale usunąć",
+    "cannotBeUndone": "użytkownika(-ów). Tej operacji nie można cofnąć.",
+    "and": "…i",
+    "more": "więcej",
+    "deleteUsers": "Usuń użytkowników",
+    "deleting": "Usuwanie…",
+    "cancel": "Anuluj"
+  },
+  "stats": {
+    "curOnline5Mins": "Aktualnie użytkownicy online (ostatnie 5 minut)"
+  },
+  "resetPassword": {
+    "resetPassword": "Zresetuj hasło",
+    "checkEmailForResetLink": "Sprawdź w konsoli backendu e-mail link do resetowania.",
+    "sendResetEmail": "Wyślij e-mail resetujący hasło"
+  }
+}
