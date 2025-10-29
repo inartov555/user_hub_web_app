@@ -99,8 +99,6 @@ export default function UsersTable(props: Props) {
   };
 
   const queryClient = useQueryClient();
-  const [deleting, setDeleting] = useState(false);
-  const [deleteError, setDeleteError] = useState<string | null>(null);
 
   // Build server-side ordering tokens from TanStack sorting, with stable tiebreaker
   const ordering = React.useMemo(
@@ -540,10 +538,6 @@ export default function UsersTable(props: Props) {
             </label>
           </div>
         </div>
-
-        {deleteError && (
-          <div className="mt-3 text-sm text-red-600">{deleteError}</div>
-        )}
       </CardContent>
     </Card>
   );
