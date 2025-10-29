@@ -22,13 +22,15 @@ export default function Navbar() {
 
   return (
     <header className="sticky top-0 z-10 bg-white/70 backdrop-blur border-b border-slate-200">
-      <div className="max-w-6xl mx-auto flex items-center justify-between p-3">
+      {/* 3-column grid: Left (logo) | Middle (two tab rows) | Right (user/lang) */}
+      <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-[auto_1fr_auto] items-start gap-3 p-3">
+        {/* Left: app title */}
         <div className="rounded-full bg-gray-200">
-          <Link to="/" className="font-semibold">{t("app.title")}</Link>
+          <Link to="/" className="font-semibold">
+            {t("app.title")}
+          </Link>
         </div>
-        
-        
-        
+
         {/* Middle: TWO ROWS, left-aligned; row 2 starts exactly under row 1 */}
         <div className="justify-self-start w-full">
           <div className="flex flex-col gap-2 items-start">
@@ -43,6 +45,12 @@ export default function Navbar() {
                   <NavLink to="/profile-view" className={() => tabCls(isProfileActive)}>
                     {t("nav.profile")}
                   </NavLink>
+
+                  {user?.is_staff && (
+                    <NavLink to="/additional-actions className={() => tabCls(isActive)}>
+                      {t("nav.addtional")}
+                    </NavLink>
+                  )}
                 </>
               )}
             </nav>
@@ -107,8 +115,6 @@ export default function Navbar() {
             </select>
           </div>
         </div>
-          
-
       </div>
     </header>
   );
