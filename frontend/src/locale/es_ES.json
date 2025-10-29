@@ -13,6 +13,7 @@
     "users": "Usuarios",
     "stats": "Estadísticas",
     "profile": "Perfil",
+    "settings": "Configuración de la aplicación",
     "importFromExcel": "Importar desde Excel",
     "login": "Iniciar sesión",
     "logout": "Cerrar sesión"
@@ -54,6 +55,7 @@
     "updating": "Actualizando…"
   },
   "excelImport": {
+    "title": "Importación desde Excel",
     "bio": "Biografía",
     "fileUploadMessage": "Sube un archivo .xlsx con las columnas:",
     "uploading": "Subiendo…",

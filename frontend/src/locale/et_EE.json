@@ -13,6 +13,7 @@
     "users": "Kasutajad",
     "stats": "Statistika",
     "profile": "Profiil",
+    "settings": "Rakenduse sätted",
     "importFromExcel": "Impordi Excelist",
     "login": "Sisselogimine",
     "logout": "Logi välja"
@@ -54,6 +55,7 @@
     "updating": "Uuendamine…"
   },
   "excelImport": {
+    "title": "Exceli import",
     "bio": "Tutvustus",
     "fileUploadMessage": "Laadi üles .xlsx-fail, mille veerud on:",
     "uploading": "Üleslaadimine…",

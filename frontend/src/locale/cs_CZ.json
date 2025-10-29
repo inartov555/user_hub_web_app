@@ -13,6 +13,7 @@
     "users": "Uživatelé",
     "stats": "Statistiky",
     "profile": "Profil",
+    "settings": "Nastavení aplikace",
     "importFromExcel": "Import z Excelu",
     "login": "Přihlášení",
     "logout": "Odhlásit se"
@@ -54,6 +55,7 @@
     "updating": "Aktualizace…"
   },
   "excelImport": {
+    "title": "Import z Excelu",
     "bio": "O mně",
     "fileUploadMessage": "Nahrajte soubor .xlsx se sloupci:",
     "uploading": "Nahrávání…",

@@ -13,6 +13,7 @@
     "users": "Користувачі",
     "stats": "Статистика",
     "profile": "Профіль",
+    "settings": "Налаштування застосунку",
     "importFromExcel": "Імпорт з Excel",
     "login": "Вхід",
     "logout": "Вийти"
@@ -54,6 +55,7 @@
     "updating": "Оновлення…"
   },
   "excelImport": {
+    "title": "Імпорт з Excel",
     "bio": "Біографія",
     "fileUploadMessage": "Завантажте файл .xlsx з такими стовпцями:",
     "uploading": "Надсилання…",

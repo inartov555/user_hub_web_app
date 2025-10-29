@@ -13,6 +13,7 @@
     "users": "Käyttäjät",
     "stats": "Tilastot",
     "profile": "Profiili",
+    "settings": "Sovelluksen asetukset",
     "importFromExcel": "Tuo Excelistä",
     "login": "Kirjautuminen",
     "logout": "Kirjaudu ulos"
@@ -54,6 +55,7 @@
     "updating": "Päivitetään…"
   },
   "excelImport": {
+    "title": "Tuonti Excelistä",
     "bio": "Esittely",
     "fileUploadMessage": "Lataa .xlsx-tiedosto, jossa on sarakkeet:",
     "uploading": "Lähetetään…",
