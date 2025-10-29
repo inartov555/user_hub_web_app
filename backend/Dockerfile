@@ -8,20 +8,14 @@ ENV VIRTUAL_ENV=/opt/venv \
 RUN python -m venv $VIRTUAL_ENV
 ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 
-# Install gettext (provides msgfmt)
-RUN apt-get update && apt-get install -y --no-install-recommends gettext \
-  && rm -rf /var/lib/apt/lists/*
-
 WORKDIR /app
-# copy only requirements files first to leverage Docker layer cache
-COPY backend/requirements*.txt /app/
+# now copy the app code (doesn't bust dependency layer unless reqs changed)
+COPY backend/ /app/
+
+
 RUN pip install --upgrade pip && \
     if [ -f requirements.txt ]; then pip install -r requirements.txt; fi && \
     if [ -f requirements-dev.txt ]; then pip install -r requirements-dev.txt; fi
-
-# Compile translations after code is copied & deps installed
-# If your manage.py is one level up, adjust WORKDIR accordingly
-RUN python -m django compilemessages -l et -l en
 
 # --- runtime
 FROM python:3.12-slim AS runtime
@@ -33,9 +27,18 @@ ENV VIRTUAL_ENV=/opt/venv \
 # copy prebuilt venv from builder
 COPY --from=builder /opt/venv /opt/venv
 
-WORKDIR /app
-# now copy the app code (doesn't bust dependency layer unless reqs changed)
-COPY backend/ /app/
+# Install GNU gettext (provides msgfmt) in the runtime image
+RUN apt-get update \
+ && apt-get install -y --no-install-recommends gettext \
+ && rm -rf /var/lib/apt/lists/*
+
+# Create a compatibility symlink so compilemessages can find the catalogs
+RUN if [ -d /app/locales ] && [ ! -d /app/locale ]; then ln -s /app/locales /app/locale; fi
+
+# Compile translations after code is copied & deps installed
+# If your manage.py is one level up, adjust WORKDIR accordingly
+# RUN python -m django compilemessages -l et -l en
+RUN django-admin compilemessages -l et_EE -l en_US -v 2
 
 EXPOSE 8000
 # don't run pip install at container start!

@@ -177,7 +177,8 @@ LANGUAGES = [
     ("en-us", translation.gettext_lazy("English (US)")),
     ("et-ee", translation.gettext_lazy("Eesti (Eesti)")),
 ]
-LOCALE_PATHS = [BASE_DIR / "backend/locales"]
+LOCALE_PATHS = [BASE_DIR / "locale"]
+print(f"\n\n\n\n LOCALE_PATHS = {LOCALE_PATHS} \n\n\n\n")
 
 ROOT_URLCONF = "core.urls"
 TEMPLATES = [{
