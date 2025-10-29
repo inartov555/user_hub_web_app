@@ -42,7 +42,12 @@ RUN sh -c 'set -eu; \
 
 # Confirm compiled catalogs exist
 RUN ls -l locale/en_US/LC_MESSAGES/django.mo
+RUN ls -l locale/uk_UA/LC_MESSAGES/django.mo
 RUN ls -l locale/et_EE/LC_MESSAGES/django.mo
+RUN ls -l locale/fi_FI/LC_MESSAGES/django.mo
+RUN ls -l locale/cs_CZ/LC_MESSAGES/django.mo
+RUN ls -l locale/pl_PL/LC_MESSAGES/django.mo
+RUN ls -l locale/es_ES/LC_MESSAGES/django.mo
 
 EXPOSE 8000
 # don't run pip install at container start!
