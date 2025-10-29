@@ -33,6 +33,7 @@ services:
       HOST_ARTIFACTS: $HOST_ARTIFACTS
     ports: ["8000:8000"]
     volumes:
+      # - ./:/app
       - $HOST_ARTIFACTS:$HOST_ARTIFACTS
     stop_signal: SIGINT
     stop_grace_period: 5s
