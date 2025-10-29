@@ -10,9 +10,6 @@ export default function Navbar() {
   const { pathname } = useLocation();
   const { user, logout, accessToken } = useAuthStore();
   const navigate = useNavigate();
-  // Controls the "Additional" dropdown
-  const [moreOpen, setMoreOpen] = useState(false);
-  // className="bg-gray-200 text-blue-800 border rounded px-2 py-1 text-sm flex items-center gap-2"
   // Unified tab styles
   const tabCls = (isActive: boolean) =>
     `px-3 py-1 rounded-lg transition-colors ${
@@ -48,6 +45,65 @@ export default function Navbar() {
               </NavLink>
             </>
           )}
+          
+          
+          
+          {/* Additional tab with dropdown for Stats / Settings / Import */}
+          {user && user.is_staff && (
+            <>
+          <div className="relative group">
+            <button
+              type="button"
+              className={navCls(pathname, ["/stats", "/settings", "/import-excel"])}
+              aria-haspopup="menu"
+            >
+              {t("nav.additional", "Additional")}
+              <span className="ml-1 inline-block align-middle">▾</span>
+            </button>
+
+            {/* stays open when hovering trigger or panel, and when keyboard focusing links */}
+            <div
+              className="absolute right-0 mt-2 w-56 rounded-lg border border-slate-200 bg-white shadow-lg p-2
+                         hidden group-hover:block group-focus-within:block"
+              role="menu"
+              aria-label="Additional"
+            >
+              {/* Stats – visible to any logged-in user */}
+              <Link
+                to="/stats"
+                className={dropdownItemCls(pathname.startsWith("/stats"))}
+                role="menuitem"
+              >
+                {t("nav.stats")}
+              </Link>
+
+              {/* Staff-only */}
+              {user?.is_staff && (
+                <>
+                  <Link
+                    to="/settings"
+                    className={dropdownItemCls(pathname.startsWith("/settings"))}
+                    role="menuitem"
+                  >
+                    {t("nav.settings")}
+                  </Link>
+                  <Link
+                    to="/import-excel"
+                    className={dropdownItemCls(pathname.startsWith("/import-excel"))}
+                    role="menuitem"
+                  >
+                    {t("nav.importFromExcel")}
+                  </Link>
+                </>
+              )}
+            </div>
+          </div>
+              </>
+          )}
+          
+          
+          
+          
           {user && user.is_staff && (
             <>
               <NavLink
@@ -73,6 +129,78 @@ export default function Navbar() {
 	    </>
 	  )}
         </nav>
+        
+        
+        <nav className="flex gap-4">
+        
+        
+                  {/* Additional tab with dropdown for Stats / Settings / Import */}
+          {user && user.is_staff && (
+            <>
+          <div className="relative group">
+            <button
+              type="button"
+              className={navCls(pathname, ["/stats", "/settings", "/import-excel"])}
+              aria-haspopup="menu"
+            >
+              {t("nav.additional", "Additional")}
+              <span className="ml-1 inline-block align-middle">▾</span>
+            </button>
+
+            {/* stays open when hovering trigger or panel, and when keyboard focusing links */}
+            <div
+              className="absolute right-0 mt-2 w-56 rounded-lg border border-slate-200 bg-white shadow-lg p-2
+                         hidden group-hover:block group-focus-within:block"
+              role="menu"
+              aria-label="Additional"
+            >
+              {/* Stats – visible to any logged-in user */}
+              <Link
+                to="/stats"
+                className={dropdownItemCls(pathname.startsWith("/stats"))}
+                role="menuitem"
+              >
+                {t("nav.stats")}
+              </Link>
+
+              {/* Staff-only */}
+              {user?.is_staff && (
+                <>
+                  <Link
+                    to="/settings"
+                    className={dropdownItemCls(pathname.startsWith("/settings"))}
+                    role="menuitem"
+                  >
+                    {t("nav.settings")}
+                  </Link>
+                  <Link
+                    to="/import-excel"
+                    className={dropdownItemCls(pathname.startsWith("/import-excel"))}
+                    role="menuitem"
+                  >
+                    {t("nav.importFromExcel")}
+                  </Link>
+                </>
+              )}
+            </div>
+          </div>
+              </>
+          )}
+          
+          
+          
+          
+        </nav>
+        
+        
+        
+        <nav className="flex gap-4">
+
+        </nav>
+        
+        
+        
+        
         <div className="flex items-center gap-3">
           {user && (
             <span className="text-sm">{t("app.hiUser", { username: user.username })}</span>)}
@@ -110,21 +238,16 @@ export default function Navbar() {
 }
 
 function navCls(path: string, hrefs: string | string[]) {
-  // This function is responsible for tab activity/inactivity styles
+  // Tab active/inactive styles
   const list = Array.isArray(hrefs) ? hrefs : [hrefs];
-  // active if exact match or a sub-route
-  const isActive = list.some((href) => {
-    if (!href) return false;
-    if (href === "/") return path === "/";
-    return path === href || path.startsWith(href + "/");
-  });
+  const active = list.some((h) => path.startsWith(h));
+  return `px-3 py-1 rounded-lg ${
+    active ? "bg-slate-900 text-white" : "hover:bg-slate-100"
+  }`;
+}
 
-  const base =
-    "border rounded px-2 py-1 text-sm flex items-center gap-2 transition-colors";
-  const active =
-    "bg-slate-900 text-white border-slate-900 shadow-sm";
-  const inactive =
-    "bg-gray-200 text-blue-800 hover:bg-slate-100";
-
-  return `${base} ${isActive ? active : inactive}`;
+function dropdownItemCls(active: boolean) {
+  return `block w-full text-left px-3 py-2 rounded-md text-sm ${
+    active ? "bg-slate-100 font-medium" : "hover:bg-slate-50"
+  }`;
 }
