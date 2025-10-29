@@ -10,22 +10,37 @@ export default function Navbar() {
   const { pathname } = useLocation();
   const { user, logout, accessToken } = useAuthStore();
   const navigate = useNavigate();
+  // Controls the "Additional" dropdown
+  const [moreOpen, setMoreOpen] = useState(false);
+
   return (
     <header className="sticky top-0 z-10 bg-white/70 backdrop-blur border-b border-slate-200">
       <div className="max-w-6xl mx-auto flex items-center justify-between p-3">
-        <Link to="/" className="font-semibold">{t("app.title")}</Link>
+        <div className="rounded-full bg-gray-200">
+          <Link to="/" className="font-semibold">{t("app.title")}</Link>
+        </div>
         <nav className="flex gap-4">
           {user && (
             <>
-              <Link className={navCls(pathname, "/users")} to="/users">{t("nav.users")}</Link>
-              <Link className={navCls(pathname, ["/profile-view", "/profile-edit"])} to="/profile-view">{t("nav.profile")}</Link>
+              <div className="bg-gray-200 text-blue-800 border rounded px-2 py-1 text-sm flex items-center gap-2">
+                <Link className={`navCls(pathname, "/users")`} to="/users">{t("nav.users")}</Link>
+              </div>
+              <div className="bg-gray-200 text-blue-800 border rounded px-2 py-1 text-sm flex items-center gap-2">
+                <Link className={`navCls(pathname, ["/profile-view", "/profile-edit"])`} to="/profile-view">{t("nav.profile")}</Link>
+              </div>
             </>
           )}
           {user && user.is_staff && (
             <>
-              <Link className={navCls(pathname, "/stats")} to="/stats">{t("nav.stats")}</Link>
-	      <Link className={navCls(pathname, "/settings")} to="/settings">{t("nav.settings")}</Link>
-	      <Link className={navCls(pathname, "/import-excel")} to="/import-excel">{t("nav.importFromExcel")}</Link>
+              <div className="bg-gray-200 text-blue-800 border rounded px-2 py-1 text-sm flex items-center gap-2">
+                <Link className={`navCls(pathname, "/stats"), bg-gray-200`} to="/stats">{t("nav.stats")}</Link>
+              </div>
+              <div className="bg-gray-200 text-blue-800 border rounded px-2 py-1 text-sm flex items-center gap-2">
+	        <Link className={`navCls(pathname, "/settings"), bg-gray-200`} to="/settings">{t("nav.settings")}</Link>
+	      </div>
+	      <div className="bg-gray-200 text-blue-800 border rounded px-2 py-1 text-sm flex items-center gap-2">
+	        <Link className={`navCls(pathname, "/import-excel"), bg-gray-200`} to="/import-excel">{t("nav.importFromExcel")}</Link>
+	      </div>
 	    </>
 	  )}
         </nav>
@@ -36,11 +51,11 @@ export default function Navbar() {
         </div>
         {/* Language switcher */}
         {/* Show current flag next to the select */}
-        <div className="border rounded px-2 py-1 text-sm flex items-center gap-2">
+        <div className="bg-gray-200 border rounded-full px-2 py-1 text-sm flex items-center gap-2">
           <span
-            className="inline-flex items-center justify-center bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded px-2 py-1"
+            className="bg-gray-200 border border-transparent rounded px-2 py-1 text-sm flex items-center gap-2"
           >
-    	    <LocaleFlag locale={locale} size={18} />
+    	    <LocaleFlag locale={locale} size={22} />
     	  </span>
           <select
             className="border border-slate-300 dark:border-slate-700 rounded bg-white dark:bg-slate-900 px-2 py-1 text-sm"
@@ -68,6 +83,20 @@ export default function Navbar() {
 function navCls(path: string, hrefs: string | string[]) {
   // This function is responsible for tab activity/inactivity styles
   const list = Array.isArray(hrefs) ? hrefs : [hrefs];
-  const active = list.some(h => path.startsWith(h));
-  return `px-3 py-1 rounded-lg ${active ? "bg-slate-900 text-white" : "hover:bg-slate-100"}`;
+
+  // Active if the path equals the href OR starts with "href/"
+  const isActive = list.some((href) => {
+    if (!href) return false;
+    if (href === "/") return path === "/";
+    return path === href || path.startsWith(href + "/");
+  });
+
+  const base =
+    "px-3 py-1 rounded-lg transition-colors outline-none focus-visible:ring-2 focus-visible:ring-blue-500";
+  const active =
+    "bg-blue-700 text-white shadow-sm";
+  const inactive =
+    "text-blue-800 hover:bg-slate-100";
+
+  return `${base} ${isActive ? active : inactive}`;
 }
