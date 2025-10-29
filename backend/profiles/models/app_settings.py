@@ -4,7 +4,6 @@ Dynamic App settings which can be set via web site UI
 
 from __future__ import annotations
 from dataclasses import dataclass
-from datetime import timedelta
 from typing import Dict, Any
 
 from django.conf import settings
@@ -28,6 +27,9 @@ class AppSetting(models.Model):
 
     @staticmethod
     def get_value(key: str) -> str | None:
+        """
+        Getting value
+        """
         try:
             return AppSetting.objects.only("value").get(key=key).value
         except AppSetting.DoesNotExist:
@@ -42,11 +44,17 @@ ACCESS_TOKEN_LIFETIME_KEY = "ACCESS_TOKEN_LIFETIME"  # seconds
 
 @dataclass(frozen=True)
 class EffectiveAuthSettings:
+    """
+    Effective app settings
+    """
     jwt_renew_at_seconds: int
     idle_timeout_seconds: int
     access_token_lifetime_seconds: int
 
     def as_dict(self) -> Dict[str, Any]:
+        """
+        Get settings in the dictionary format
+        """
         return {
             "JWT_RENEW_AT_SECONDS": self.jwt_renew_at_seconds,
             "IDLE_TIMEOUT_SECONDS": self.idle_timeout_seconds,

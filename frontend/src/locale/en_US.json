@@ -13,6 +13,7 @@
     "users": "Users",
     "stats": "Stats",
     "profile": "Profile",
+    "settings": "App Settings",
     "importFromExcel": "Import from Excel",
     "login": "Login",
     "logout": "Logout"
@@ -54,6 +55,7 @@
     "updating": "Updating…"
   },
   "excelImport": {
+    "title": "Excel import",
     "bio": "Bio",
     "fileUploadMessage": "Upload an .xlsx file with columns:",
     "uploading": "Uploading...",
@@ -110,5 +112,19 @@
     "resetPassword": "Reset password",
     "checkEmailForResetLink": "Check console email backend for the reset link.",
     "sendResetEmail": "Send reset email"
+  },
+  "appSettings": {
+    "loadError": "Error occurred while loading app settings",
+    "saveError": "Error occurred while saving app settings",
+    "title": "App Settings",
+    "jwtRenew": "JWT_RENEW_AT_SECONDS",
+    "jwtRenewHelp": "When an access token has this many seconds or less remaining, the client will proactively refresh it (as long as the refresh token is still valid). Set 0 to disable proactive renewal. Tip: keep this well below the access-token lifetime (e.g., 120–300 seconds).",
+    "idleTimeout": "IDLE_TIMEOUT_SECONDS",
+    "idleTimeoutHelp": "Maximum time (in seconds) a session can be idle with no API activity before the refresh token expires. After this, the user must sign in again. Typical range: 900–3600. Higher values keep users signed in longer; lower values are more secure.",
+    "accessLifetime": "ACCESS_TOKEN_LIFETIME",
+    "accessLifetimeHelp": "Lifetime (in seconds) of each access token. After it expires, requests require a refresh to obtain a new access token. Shorter is more secure but causes more frequent refreshes. Typical range: 300–1800. Recommended to keep this less than the idle timeout.",
+    "noteNewSessions": "Saved settings will be applied on the next login",
+    "saved": "The app settings have been saved",
+    "saving": "Saving app settings..."
   }
 }

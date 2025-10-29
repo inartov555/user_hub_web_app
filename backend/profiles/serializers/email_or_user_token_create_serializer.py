@@ -41,7 +41,7 @@ class EmailOrUsernameTokenCreateSerializer(TokenObtainPairSerializer):
 
             token = super().get_token(user)  # REFRESH token
             token["boot_id"] = int(get_boot_id())
-            # (Optional) include current renew threshold so clients can adapt (not required)
+            # Include current renew threshold so clients can adapt
             token["jwt_renew_at_seconds"] = eff.jwt_renew_at_seconds
             return token
         finally:
