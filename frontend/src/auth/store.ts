@@ -1,6 +1,12 @@
 import { create } from "zustand";
 
-type User = { id: number; username: string; email: string } | null;
+type User = {
+  id: number;
+  username: string;
+  email: string;
+  is_staff?: boolean;
+  is_superuser?: boolean;
+} | null;
 
 type State = {
   accessToken: string | null;

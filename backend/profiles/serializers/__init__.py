@@ -7,8 +7,9 @@ from .email_or_user_token_create_serializer import EmailOrUsernameTokenCreateSer
 from .user_serializer import UserSerializer
 from .profile_serializer import ProfileSerializer
 from .profile_update_serializer import ProfileUpdateSerializer
+from .settings_serializer import SettingsSerializer
 
 
 __all__ = ["ChangePasswordSerializer", "CustomTokenRefreshSerializer", "UserCreateSerializer",
            "EmailOrUsernameTokenCreateSerializer", "UserSerializer", "ProfileSerializer",
-           "ProfileUpdateSerializer"]
+           "ProfileUpdateSerializer", "SettingsSerializer"]

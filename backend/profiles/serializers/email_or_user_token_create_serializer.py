@@ -12,6 +12,7 @@ from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework import serializers
 
 from ..boot import get_boot_id
+from ..models.app_settings import get_effective_auth_settings
 
 
 class EmailOrUsernameTokenCreateSerializer(TokenObtainPairSerializer):
@@ -25,9 +26,26 @@ class EmailOrUsernameTokenCreateSerializer(TokenObtainPairSerializer):
         """
         Getting token
         """
-        token = super().get_token(user)  # this is the REFRESH token
-        token["boot_id"] = int(get_boot_id())
-        return token
+        # Snapshot effective settings at the moment of login
+        eff = get_effective_auth_settings()
+
+        # Temporarily override token lifetimes for this issuance only
+        prev_access = AccessToken.lifetime
+        prev_refresh = RefreshToken.lifetime
+        try:
+            AccessToken.lifetime = timedelta(seconds=eff.access_token_lifetime_seconds)
+            # We use "idle timeout" as refresh lifetime as in your core.settings
+            RefreshToken.lifetime = timedelta(seconds=eff.idle_timeout_seconds)
+
+            token = super().get_token(user)  # REFRESH token
+            token["boot_id"] = int(get_boot_id())
+            # (Optional) include current renew threshold so clients can adapt (not required)
+            token["jwt_renew_at_seconds"] = eff.jwt_renew_at_seconds
+            return token
+        finally:
+            # Restore class attributes
+            AccessToken.lifetime = prev_access
+            RefreshToken.lifetime = prev_refresh
 
     def _resolve_login_field(self) -> str:
         """

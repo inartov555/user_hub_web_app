@@ -1,10 +1,12 @@
 """
-Migration module
+Migration module for Profiles
 """
+
 from django.db import migrations, models
 from django.conf import settings
 
 import profiles.models.profile  # ensures `avatar_upload_path` import path is resolvable (if used)
+
 
 class Migration(migrations.Migration):
     """

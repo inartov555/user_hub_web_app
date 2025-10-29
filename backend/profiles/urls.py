@@ -10,6 +10,7 @@ from .views.excel_upload_view import ExcelUploadView
 from .views.me_profile_view import MeProfileView
 from .views.online_users_view import OnlineUsersView
 from .views.users_view_set import UsersViewSet
+from .views.settings_view import SettingsView
 
 
 router = DefaultRouter()
@@ -20,4 +21,5 @@ urlpatterns = [
     path("me/profile/", MeProfileView.as_view(), name="me-profile"),
     path("import-excel/", ExcelUploadView.as_view(), name="users-import-excel"),
     path("stats/online-users/", OnlineUsersView.as_view(), name="online-users"),
+    path("system/settings/", SettingsView.as_view(), name="system-settings"),
 ]

@@ -7,6 +7,7 @@ from django.contrib import admin
 from django.utils.timezone import localtime
 
 from ..models.profile import Profile
+from ..models.app_settings import AppSetting
 
 
 @admin.register(Profile)
@@ -33,3 +34,12 @@ class ProfileAdmin(admin.ModelAdmin):
 
     last_activity.short_description = "Last activity"
     last_activity.admin_order_field = "user__last_login"  # enables sorting by the related field
+
+
+@admin.register(AppSetting)
+class AppSettingAdmin(admin.ModelAdmin):
+    """
+    App settings
+    """
+    list_display = ("key", "value", "updated_at")
+    search_fields = ("key",)

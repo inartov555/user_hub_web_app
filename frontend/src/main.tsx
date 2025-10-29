@@ -40,6 +40,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
               <Route path="import-excel" element={<ExcelImport />} />
               <Route path="/users/:id/change-password" element={<ChangePassword />} />
               <Route path="/users/confirm-delete" element={<UserDeleteConfirm />} />
+              <Route path="settings" element={<Settings />} />
             </Route>
             {/* Fallback */}
             <Route path="*" element={<Navigate to="/" replace />} />
