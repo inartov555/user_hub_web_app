@@ -18,12 +18,12 @@ export default function Navbar() {
           {user && (
             <>
               <Link className={navCls(pathname, "/users")} to="/users">{t("nav.users")}</Link>
-              <Link className={navCls(pathname, "/stats")} to="/stats">{t("nav.stats")}</Link>
               <Link className={navCls(pathname, ["/profile-view", "/profile-edit"])} to="/profile-view">{t("nav.profile")}</Link>
             </>
           )}
           {user && user.is_staff && (
             <>
+              <Link className={navCls(pathname, "/stats")} to="/stats">{t("nav.stats")}</Link>
 	      <Link className={navCls(pathname, "/settings")} to="/settings">{t("nav.settings")}</Link>
 	      <Link className={navCls(pathname, "/import-excel")} to="/import-excel">{t("nav.importFromExcel")}</Link>
 	    </>

@@ -79,7 +79,7 @@ export default function Settings() {
           />
           <div className="flex gap-3 items-center">
             <button className="btn" disabled={saving} type="submit">
-              {saving ? t("common.saving") : t("common.save")}
+              {saving ? t("appSettings.saving") : t("profileEdit.save")}
             </button>
             {saved && <span className="text-green-600 text-sm">{t("appSettings.saved")}</span>}
             {error && <span className="text-red-600 text-sm">{error}</span>}
