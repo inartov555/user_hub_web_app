@@ -46,8 +46,8 @@ msgstr "Ei hyväksyttävä."
 msgid "Request was throttled."
 msgstr "Pyyntöä rajoitettiin."
 
-msgid "Method \\"%(method)s\\" not allowed."
-msgstr "Menetelmä \\"%(method)s\\" ei ole sallittu."
+msgid "Method \"%(method)s\" not allowed."
+msgstr "Menetelmä \"%(method)s\" ei ole sallittu."
 
 # Your custom messages (examples already present)
 msgid "ids must be a list of integers"
