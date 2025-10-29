@@ -1,3 +1,5 @@
+msgid ""
+msgstr ""
 "Project-Id-Version: user_hub_web_app\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-10-28 12:42+0000\n"
