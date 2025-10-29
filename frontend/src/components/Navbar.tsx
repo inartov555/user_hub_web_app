@@ -23,8 +23,10 @@ export default function Navbar() {
             </>
           )}
           {user && user.is_staff && (
-	    <Link className={navCls(pathname, "/settings")}{t("nav.settings")}</Link>
-	    <Link className={navCls(pathname, "/import-excel")} to="/import-excel">{t("nav.importFromExcel")}</Link>
+            <>
+	      <Link className={navCls(pathname, "/settings")} to="/settings">{t("nav.settings")}</Link>
+	      <Link className={navCls(pathname, "/import-excel")} to="/import-excel">{t("nav.importFromExcel")}</Link>
+	    </>
 	  )}
         </nav>
         <div className="flex items-center gap-3">
