@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { NavLink, Link, useLocation, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useAuthStore } from "../auth/store";
 import { LocaleFlag } from "./LocaleFlag";
@@ -12,6 +12,16 @@ export default function Navbar() {
   const navigate = useNavigate();
   // Controls the "Additional" dropdown
   const [moreOpen, setMoreOpen] = useState(false);
+  // className="bg-gray-200 text-blue-800 border rounded px-2 py-1 text-sm flex items-center gap-2"
+  // Unified tab styles
+  const tabCls = (isActive: boolean) =>
+    `px-3 py-1 rounded-lg transition-colors ${
+      isActive
+        ? "bg-slate-900 text-white"
+        : "bg-gray-200 text-blue-800 hover:bg-slate-100"
+    }`;
+  // Helper: treat multiple routes as active for one tab
+  const isProfileActive = pathname.startsWith("/profile-view") || pathname.startsWith("/profile-edit");
 
   return (
     <header className="sticky top-0 z-10 bg-white/70 backdrop-blur border-b border-slate-200">
@@ -22,25 +32,44 @@ export default function Navbar() {
         <nav className="flex gap-4">
           {user && (
             <>
-              <div className="bg-gray-200 text-blue-800 border rounded px-2 py-1 text-sm flex items-center gap-2">
-                <Link className={`navCls(pathname, "/users")`} to="/users">{t("nav.users")}</Link>
-              </div>
-              <div className="bg-gray-200 text-blue-800 border rounded px-2 py-1 text-sm flex items-center gap-2">
-                <Link className={`navCls(pathname, ["/profile-view", "/profile-edit"])`} to="/profile-view">{t("nav.profile")}</Link>
-              </div>
+              <NavLink
+                to="/users"
+                className={({ isActive }) => tabCls(isActive)}
+              >
+                {t("nav.users")}
+              </NavLink>
+
+              {/* Mark active for both /profile-view and /profile-edit */}
+              <NavLink
+                to="/profile-view"
+                className={() => tabCls(isProfileActive)}
+              >
+                {t("nav.profile")}
+              </NavLink>
             </>
           )}
           {user && user.is_staff && (
             <>
-              <div className="bg-gray-200 text-blue-800 border rounded px-2 py-1 text-sm flex items-center gap-2">
-                <Link className={`navCls(pathname, "/stats"), bg-gray-200`} to="/stats">{t("nav.stats")}</Link>
-              </div>
-              <div className="bg-gray-200 text-blue-800 border rounded px-2 py-1 text-sm flex items-center gap-2">
-	        <Link className={`navCls(pathname, "/settings"), bg-gray-200`} to="/settings">{t("nav.settings")}</Link>
-	      </div>
-	      <div className="bg-gray-200 text-blue-800 border rounded px-2 py-1 text-sm flex items-center gap-2">
-	        <Link className={`navCls(pathname, "/import-excel"), bg-gray-200`} to="/import-excel">{t("nav.importFromExcel")}</Link>
-	      </div>
+              <NavLink
+                to="/stats"
+                className={({ isActive }) => tabCls(isActive)}
+              >
+                {t("nav.stats")}
+              </NavLink>
+
+              <NavLink
+                to="/settings"
+                className={({ isActive }) => tabCls(isActive)}
+              >
+                {t("nav.settings")}
+              </NavLink>
+
+              <NavLink
+                to="/import-excel"
+                className={({ isActive }) => tabCls(isActive)}
+              >
+                {t("nav.importFromExcel")}
+              </NavLink>
 	    </>
 	  )}
         </nav>
@@ -83,8 +112,7 @@ export default function Navbar() {
 function navCls(path: string, hrefs: string | string[]) {
   // This function is responsible for tab activity/inactivity styles
   const list = Array.isArray(hrefs) ? hrefs : [hrefs];
-
-  // Active if the path equals the href OR starts with "href/"
+  // active if exact match or a sub-route
   const isActive = list.some((href) => {
     if (!href) return false;
     if (href === "/") return path === "/";
@@ -92,11 +120,11 @@ function navCls(path: string, hrefs: string | string[]) {
   });
 
   const base =
-    "px-3 py-1 rounded-lg transition-colors outline-none focus-visible:ring-2 focus-visible:ring-blue-500";
+    "border rounded px-2 py-1 text-sm flex items-center gap-2 transition-colors";
   const active =
-    "bg-blue-700 text-white shadow-sm";
+    "bg-slate-900 text-white border-slate-900 shadow-sm";
   const inactive =
-    "text-blue-800 hover:bg-slate-100";
+    "bg-gray-200 text-blue-800 hover:bg-slate-100";
 
   return `${base} ${isActive ? active : inactive}`;
 }
