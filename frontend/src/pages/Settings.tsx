@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { fetchAuthSettings, updateAuthSettings, AuthSettings } from "../lib/api/settings";
+import { fetchAuthSettings, updateAuthSettings, AuthSettings } from "../lib/settings";
 import { useAuthStore } from "../auth/store";
 
 export default function Settings() {

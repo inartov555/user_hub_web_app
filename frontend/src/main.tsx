@@ -18,6 +18,7 @@ import ExcelImport from "./pages/ExcelImport";
 import ChangePassword from "./pages/ChangePassword";
 import UserDeleteConfirm from "./pages/UserDeleteConfirm";
 import ProtectedRoute from "./auth/ProtectedRoute";
+import Settings from "./pages/Settings";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>

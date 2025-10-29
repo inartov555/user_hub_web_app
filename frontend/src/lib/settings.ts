@@ -1,4 +1,4 @@
-import { api } from "../axios";
+import { api } from "./axios";
 
 export type AuthSettings = {
   JWT_RENEW_AT_SECONDS: number;
