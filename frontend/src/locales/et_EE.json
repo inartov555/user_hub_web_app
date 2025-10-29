@@ -63,7 +63,8 @@
     "created": "Loodud:",
     "updated": "Uuendatud:",
     "result": "Tulemus",
-    "importSuccessful": "Import lõpetati edukalt"
+    "importSuccessful": "Import lõpetati edukalt",
+    "selectedFile": "Valitud:"
   },
   "profileEdit": {
     "profileLoadError": "Profiili laadimine ebaõnnestus.",

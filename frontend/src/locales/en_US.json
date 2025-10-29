@@ -63,7 +63,8 @@
     "created": "Created:",
     "updated": "Updated:",
     "result": "Result",
-    "importSuccessful": "Import finished successfully"
+    "importSuccessful": "Import finished successfully",
+    "selectedFile": "Selected:"
   },
   "profileEdit": {
     "profileLoadError": "Failed to load profile.",

@@ -12,7 +12,6 @@ WORKDIR /app
 # now copy the app code (doesn't bust dependency layer unless reqs changed)
 COPY backend/ /app/
 
-
 RUN pip install --upgrade pip && \
     if [ -f requirements.txt ]; then pip install -r requirements.txt; fi && \
     if [ -f requirements-dev.txt ]; then pip install -r requirements-dev.txt; fi
