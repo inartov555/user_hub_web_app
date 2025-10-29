@@ -10,6 +10,7 @@ import et_EE from "../locale/et_EE.json";
 import fi_FI from "../locale/fi_FI.json";
 import cs_CZ from "../locale/cs_CZ.json";
 import pl_PL from "../locale/pl_PL.json";
+import es_ES from "../locale/es_ES.json";
 
 i18n
   .use(LanguageDetector) // detects from localStorage, navigator, querystring, etc.
@@ -22,9 +23,10 @@ i18n
       "fi-FI": { translation: fi_FI },
       "cs-CZ": { translation: cs_CZ },
       "pl-PL": { translation: pl_PL },
+      "es-ES": { translation: es_ES },
     },
     fallbackLng: "en-US",
-    supportedLngs: ["en-US", "et-EE", "fi-FI", "cs-CZ", "pl-PL", "uk-UA"],
+    supportedLngs: ["en-US", "et-EE", "fi-FI", "cs-CZ", "pl-PL", "uk-UA", "es-ES"],
     interpolation: { escapeValue: false },
     detection: {
       order: ["querystring", "localStorage", "navigator", "htmlTag"],
