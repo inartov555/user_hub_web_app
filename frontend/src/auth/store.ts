@@ -1,5 +1,15 @@
 import { create } from "zustand";
 
+const decodeAccessExp = (jwt: string | null): number | null => {
+  if (!jwt) return null;
+  try {
+    const payload = JSON.parse(atob(jwt.split(".")[1]));
+    return typeof payload?.exp === "number" ? payload.exp * 1000 : null;
+  } catch {
+    return null;
+  }
+};
+
 type RuntimeAuth = {
   ACCESS_TOKEN_LIFETIME: number;
   JWT_RENEW_AT_SECONDS: number;
@@ -19,6 +29,7 @@ type State = {
   setRuntimeAuth: (r: RuntimeAuth) => void;
   accessToken: string | null;
   refreshToken: string | null;
+  accessExpiresAt: number | null;
   lastActivityAt: number;
   idleTimer?: number | null;
   setActivityNow: () => void;
@@ -46,6 +57,7 @@ export const useAuthStore = create<State>((set, get) => ({
   },
   accessToken: localStorage.getItem("access"),
   refreshToken: localStorage.getItem("refresh"),
+  accessExpiresAt: decodeAccessExp(localStorage.getItem("access")),
   user: null,
 
   lastActivityAt: Date.now(),
@@ -91,7 +103,7 @@ export const useAuthStore = create<State>((set, get) => ({
   setAccessToken: (t) => {
     if (t) localStorage.setItem("access", t);
     else localStorage.removeItem("access");
-    set({ accessToken: t });
+    set({ accessToken: t, accessExpiresAt: decodeAccessExp(t) });
   },
 
   setRefreshToken: (t) => {
@@ -100,28 +112,27 @@ export const useAuthStore = create<State>((set, get) => ({
     set({ refreshToken: t });
   },
 
-  setTokens: (access, refresh) => {
-    localStorage.setItem("access", access);
-    localStorage.setItem("refresh", refresh);
-    set({ accessToken: access, refreshToken: refresh });
-  },
+  setTokens: (access: string, refresh?: string) => set((state) => ({
+    accessToken: access,
+    refreshToken: refresh ?? state.refreshToken,
+    accessExpiresAt: decodeAccessExp(access),
+    lastActivityAt: Date.now(), // nice to stamp activity
+  })),
 
   // Use this after a successful refresh call
-  applyRefreshedTokens: (newAccess, newRefresh) => {
-    const patch: Partial<State> = { accessToken: newAccess };
-    localStorage.setItem("access", newAccess);
-    if (newRefresh) {
-      patch.refreshToken = newRefresh;
-      localStorage.setItem("refresh", newRefresh);
-    }
-    set(patch);
-  },
+  applyRefreshedTokens: (access: string, refresh?: string) => set((state) => ({
+    accessToken: access,
+    // rotate refresh if backend returned one
+    ...(refresh ? { refreshToken: refresh } : {}),
+    accessExpiresAt: decodeAccessExp(access),
+    lastActivityAt: Date.now(),
+  })),
 
   setUser: (u) => set({ user: u }),
 
   logout: () => {
     localStorage.removeItem("access");
     localStorage.removeItem("refresh");
-    set({ accessToken: null, refreshToken: null, user: null });
+    set({ accessToken: null, refreshToken: null, accessExpiresAt: null, user: null });
   },
 }));

@@ -72,31 +72,49 @@ async function refreshOnce(): Promise<string> {
 }
 
 api.interceptors.request.use(async (config) => {
-  const { accessToken, refreshToken, runtimeAuth, lastActivityAt } = useAuthStore.getState();
-  const nowMs = Date.now();
-  const hasIdle = !!(runtimeAuth && runtimeAuth.IDLE_TIMEOUT_SECONDS > 0);
-
-  // If idle has already elapsed, do not try to refresh; force logout
-  if (hasIdle && lastActivityAt && nowMs - lastActivityAt >= runtimeAuth!.IDLE_TIMEOUT_SECONDS * 1000) {
-    useAuthStore.getState().logout();
-    return config; // request will 401 and the response interceptor will redirect
+  // allow explicitly skipping client-side checks for bootstrap calls
+  const skip = (config.headers as any)?.["X-Skip-Auth-Checks"];
+  if (skip) {
+    const { accessToken } = useAuthStore.getState();
+    if (accessToken) (config.headers as any).Authorization = `Bearer ${accessToken}`;
+    delete (config.headers as any)["X-Skip-Auth-Checks"];
+    return config;
   }
 
-  // Attach access
-  if (accessToken) {
-    (config.headers as any).Authorization = `Bearer ${accessToken}`;
-  }
+  const {
+    accessToken,
+    refreshToken,
+    accessExpiresAt,
+    runtimeAuth, // has JWT_RENEW_AT_SECONDS, IDLE_TIMEOUT_SECONDS, etc.
+  } = useAuthStore.getState();
 
-  // Proactive refresh only if WITHIN renew window AND user is active
-  if (accessToken && runtimeAuth) {
-    try {
-      const { exp } = jwtDecode<{ exp:number }>(accessToken);
-      const now = Math.floor(nowMs / 1000);
-      if (exp - now <= runtimeAuth.JWT_RENEW_AT_SECONDS) {
-        await refreshOnce(); // your existing refresh logic
+  // PROACTIVE REFRESH: compare against JWT exp
+  if (accessToken && accessExpiresAt && runtimeAuth?.JWT_RENEW_AT_SECONDS > 0) {
+    const remainingMs = accessExpiresAt - Date.now();
+    if (remainingMs <= runtimeAuth.JWT_RENEW_AT_SECONDS * 1000) {
+      try {
+        // refresh synchronously to avoid sending a request with a soon-to-expire token
+        const resp = await api.post(
+          "/auth/jwt/refresh/",
+          { refresh: refreshToken },
+          { headers: { "X-Skip-Auth-Checks": "1" } } // don't recurse into this logic
+        );
+
+        // SimpleJWT returns at least .access; with rotation it also returns .refresh
+        const { access, refresh } = resp.data || {};
+        if (!access) throw new Error("No access token in refresh response");
+
+        useAuthStore.getState().applyRefreshedTokens(access, refresh);
+      } catch (e) {
+        // cannot refresh -> clear and let response flow to 401 handler
+        useAuthStore.getState().logout?.();
       }
-    } catch { /* ignore decode errors */ }
+    }
   }
+
+  // attach Authorization with the latest token (maybe refreshed above)
+  const latestAccess = useAuthStore.getState().accessToken;
+  if (latestAccess) (config.headers as any).Authorization = `Bearer ${latestAccess}`;
 
   return config;
 });
