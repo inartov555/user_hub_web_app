@@ -5,6 +5,7 @@ import { useAuthStore } from "../auth/store";
 import { LocaleFlag } from "./LocaleFlag";
 import Brand from "./Brand";
 import Button from "../components/button";
+import DarkModeToggle from "./DarkModeToggle";
 
 export default function Navbar() {
   const { t, i18n } = useTranslation();
@@ -153,6 +154,7 @@ export default function Navbar() {
               <option value="pl-PL">Polszczyzna</option>
               <option value="es-ES">Español</option>
             </select>
+            <DarkModeToggle />
           </div>
         </div>
       </div>

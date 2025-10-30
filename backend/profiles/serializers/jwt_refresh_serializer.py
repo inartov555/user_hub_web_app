@@ -20,6 +20,7 @@ from rest_framework_simplejwt.exceptions import InvalidToken, TokenError
 
 from ..boot import get_boot_id
 from ..models.app_settings import get_effective_auth_settings
+from ..utils.auth_tokens import temporary_token_lifetimes
 
 
 class CustomTokenRefreshSerializer(TokenRefreshSerializer):
@@ -35,27 +36,31 @@ class CustomTokenRefreshSerializer(TokenRefreshSerializer):
         Validation
         """
         eff = get_effective_auth_settings()
-        prev_access, prev_refresh = AccessToken.lifetime, RefreshToken.lifetime
-        try:
-            AccessToken.lifetime = timedelta(seconds=eff.access_token_lifetime_seconds)
-            RefreshToken.lifetime = timedelta(seconds=eff.idle_timeout_seconds)
-            data = super().validate(attrs)
-            # stamp current boot id on returned tokens
-            current_boot = int(get_boot_id())
-            new_access = AccessToken(data["access"])
-            new_access["boot_id"] = current_boot
-            data["access"] = str(new_access)
-            # if rotation is on and refresh is present, stamp boot id too
-            if "refresh" in data:
-                new_rt = RefreshToken(data["refresh"])
-                new_rt["boot_id"] = current_boot
-                data["refresh"] = str(new_rt)
+        with temporary_token_lifetimes(
+            access_seconds=eff.access_token_lifetime_seconds,
+            refresh_seconds=eff.idle_timeout_seconds,
+        ):
+            prev_access, prev_refresh = AccessToken.lifetime, RefreshToken.lifetime
+            try:
+                AccessToken.lifetime = timedelta(seconds=eff.access_token_lifetime_seconds)
+                RefreshToken.lifetime = timedelta(seconds=eff.idle_timeout_seconds)
+                data = super().validate(attrs)
+                # stamp current boot id on returned tokens
+                current_boot = int(get_boot_id())
+                new_access = AccessToken(data["access"])
+                new_access["boot_id"] = current_boot
+                data["access"] = str(new_access)
+                # if rotation is on and refresh is present, stamp boot id too
+                if "refresh" in data:
+                    new_rt = RefreshToken(data["refresh"])
+                    new_rt["boot_id"] = current_boot
+                    data["refresh"] = str(new_rt)
 
-            return data
-        except TokenError as exc:
-            raise InvalidToken(str(exc)) from exc
-        finally:
-            AccessToken.lifetime, RefreshToken.lifetime = prev_access, prev_refresh
+                return data
+            except TokenError as exc:
+                raise InvalidToken(str(exc)) from exc
+            finally:
+                AccessToken.lifetime, RefreshToken.lifetime = prev_access, prev_refresh
 
     def _try_blacklist_refresh(self, refresh_token: RefreshToken) -> None:
         """

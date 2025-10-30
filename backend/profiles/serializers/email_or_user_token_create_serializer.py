@@ -15,6 +15,7 @@ from rest_framework import serializers
 
 from ..boot import get_boot_id
 from ..models.app_settings import get_effective_auth_settings
+from ..utils.auth_tokens import temporary_token_lifetimes
 
 
 class EmailOrUsernameTokenCreateSerializer(TokenObtainPairSerializer):
@@ -29,18 +30,22 @@ class EmailOrUsernameTokenCreateSerializer(TokenObtainPairSerializer):
         Getting token
         """
         # Snapshot effective settings at the moment of login
-        eff = get_effective_auth_settings()  # <- snapshot DB overrides now
-        prev_access, prev_refresh = AccessToken.lifetime, RefreshToken.lifetime
-        try:
-            AccessToken.lifetime = timedelta(seconds=eff.access_token_lifetime_seconds)
-            RefreshToken.lifetime = timedelta(seconds=eff.idle_timeout_seconds)
+        eff = get_effective_auth_settings()  # snapshot DB overrides now
+        with temporary_token_lifetimes(
+            access_seconds=eff.access_token_lifetime_seconds,
+            refresh_seconds=eff.idle_timeout_seconds,
+        ):
+            prev_access, prev_refresh = AccessToken.lifetime, RefreshToken.lifetime
+            try:
+                AccessToken.lifetime = timedelta(seconds=eff.access_token_lifetime_seconds)
+                RefreshToken.lifetime = timedelta(seconds=eff.idle_timeout_seconds)
 
-            token = super().get_token(user)         # refresh token
-            token["boot_id"] = int(get_boot_id())    # stamp current boot epoch
-            token["jwt_renew_at_seconds"] = eff.jwt_renew_at_seconds
-            return token
-        finally:
-            AccessToken.lifetime, RefreshToken.lifetime = prev_access, prev_refresh
+                token = super().get_token(user)  # refresh token
+                token["boot_id"] = int(get_boot_id())  # stamp current boot epoch
+                token["jwt_renew_at_seconds"] = eff.jwt_renew_at_seconds
+                return token
+            finally:
+                AccessToken.lifetime, RefreshToken.lifetime = prev_access, prev_refresh
 
     def _resolve_login_field(self) -> str:
         """
