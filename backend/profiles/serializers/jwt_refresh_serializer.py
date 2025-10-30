@@ -6,7 +6,6 @@ This allows clients to recover after a server restart without forcing a full re-
 """
 
 from typing import Any, Dict, Optional, Callable
-from datetime import timedelta
 
 from django.conf import settings
 from django.apps import apps
@@ -61,7 +60,7 @@ class CustomTokenRefreshSerializer(TokenRefreshSerializer):
         if refresh_str:
             try:
                 ref_tok = RefreshToken(refresh_str)
-            except Exception:
+            except TokenError:
                 ref_tok = None
             if ref_tok is not None:
                 ref_tok["boot_id"] = boot_id
