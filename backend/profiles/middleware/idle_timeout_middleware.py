@@ -1,56 +1,50 @@
 """
 Idle-timeout middleware for Django session authentication.
 
-This middleware enforces an inactivity window for authenticated users.
-If the elapsed time since the last request exceeds ``IDLE_TIMEOUT_SECONDS``,
-the user is logged out and the session is invalidated.
+This enforces an inactivity window for authenticated users.
+It uses the *effective* app settings (DB override or defaults).
 """
 
 import time
-
-from django.conf import settings
 from django.http import JsonResponse
 from django.utils.deprecation import MiddlewareMixin
 from django.utils import translation
 from django.contrib import auth
 from django.shortcuts import redirect
 
-
-IDLE_TIMEOUT_SECONDS = getattr(settings, "IDLE_TIMEOUT_SECONDS", 30 * 60)
+# NEW: read from the app settings model instead of a module-level constant
+from ..models.app_settings import get_effective_auth_settings
 
 
 class IdleTimeoutMiddleware(MiddlewareMixin):
     """
-    Idle-timeout middleware for Django session authentication.
-
-    This middleware enforces an inactivity window for authenticated users.
-    If the elapsed time since the last request exceeds ``IDLE_TIMEOUT_SECONDS``,
-    the user is logged out and the session is invalidated.
+    If elapsed time since the last request exceeds idle timeout,
+    logout the user and invalidate the session.
     """
+
+    SESSION_KEY = "last_request_ts"
+
     def process_request(self, request):
         """
         Enforce inactivity timeout for the current request.
         """
-        # Skip for anonymous users or for endpoints you want to ignore
-        if not request.user.is_authenticated:
+        user = getattr(request, "user", None)
+        if not (user and user.is_authenticated):
             return None
 
-        now = int(time.time())
-        last = request.session.get("last_activity_ts", now)
-        request.session["last_activity_ts"] = now  # always update
+        # NEW: pull the current effective value each request (cheap; or cache if you like)
+        idle_timeout_seconds = get_effective_auth_settings().idle_timeout_seconds
 
-        if now - last > IDLE_TIMEOUT_SECONDS:
-            # Invalidate the session and logout the user
+        now = int(time.time())
+        last = request.session.get(self.SESSION_KEY, now)
+        request.session[self.SESSION_KEY] = now
+        request.session.modified = True
+
+        if now - last > idle_timeout_seconds:
             auth.logout(request)
             request.session.flush()
-
-            # For API requests, return 401 JSON; for normal pages, redirect if you prefer
             if request.path.startswith("/api/"):
                 return JsonResponse({"detail": translation.gettext("Session expired due to inactivity.")}, status=401)
-            # Non-API requests - redirect to login
             return redirect("/login")
-            # For non-API, redirect:
-            # from django.shortcuts import redirect  # pylint: disable=import-outside-toplevel
-            # return redirect("login")
 
         return None

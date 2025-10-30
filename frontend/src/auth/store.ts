@@ -1,5 +1,11 @@
 import { create } from "zustand";
 
+type RuntimeAuth = {
+  ACCESS_TOKEN_LIFETIME: number;
+  JWT_RENEW_AT_SECONDS: number;
+  IDLE_TIMEOUT_SECONDS: number;
+} | null;
+
 type User = {
   id: number;
   username: string;
@@ -9,6 +15,8 @@ type User = {
 } | null;
 
 type State = {
+  runtimeAuth: RuntimeAuth;
+  setRuntimeAuth: (r: RuntimeAuth) => void;
   accessToken: string | null;
   refreshToken: string | null;
   user: User;
@@ -22,6 +30,8 @@ type State = {
 };
 
 export const useAuthStore = create<State>((set, get) => ({
+  runtimeAuth: null,
+  setRuntimeAuth: (r) => set({ runtimeAuth: r }),
   accessToken: localStorage.getItem("access"),
   refreshToken: localStorage.getItem("refresh"),
   user: null,

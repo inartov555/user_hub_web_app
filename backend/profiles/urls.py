@@ -11,6 +11,7 @@ from .views.me_profile_view import MeProfileView
 from .views.online_users_view import OnlineUsersView
 from .views.users_view_set import UsersViewSet
 from .views.settings_view import SettingsView
+from .views.runtime_auth_view import runtime_auth_config
 
 
 router = DefaultRouter()
@@ -22,4 +23,5 @@ urlpatterns = [
     path("import-excel/", ExcelUploadView.as_view(), name="users-import-excel"),
     path("stats/online-users/", OnlineUsersView.as_view(), name="online-users"),
     path("system/settings/", SettingsView.as_view(), name="system-settings"),
+    path("system/runtime-auth/", runtime_auth_config, name="runtime-auth-config"),
 ]

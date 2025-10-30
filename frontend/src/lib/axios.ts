@@ -18,25 +18,89 @@ function onRefreshed(token: string|null) {
   pending = [];
 }
 
-api.interceptors.request.use((config: InternalAxiosRequestConfig) => {
-  // Do NOT attach Authorization on JWT endpoints
+export async function fetchRuntimeAuth() {
+  const { data } = await api.get("/system/runtime-auth/");
+  return data as {
+    ACCESS_TOKEN_LIFETIME: number;
+    JWT_RENEW_AT_SECONDS: number;
+    IDLE_TIMEOUT_SECONDS: number;
+  };
+}
+
+api.interceptors.request.use(async (config: InternalAxiosRequestConfig) => {
   const url = (config.url || "").toString();
   const isJwtEndpoint =
     url.includes("/auth/jwt/refresh/") ||
     url.includes("/auth/jwt/create/") ||
     url.includes("/auth/jwt/verify/");
 
-  if (!isJwtEndpoint) {
-    const token = useAuthStore.getState().accessToken || localStorage.getItem("access");
-    if (token) {
-      if (!config.headers) config.headers = new AxiosHeaders();
-      if (config.headers instanceof AxiosHeaders && !config.headers?.Authorization) {
-        config.headers.set("Authorization", `Bearer ${token}`);
-        config.headers["Accept-Language"] = i18n.resolvedLanguage ?? "en-US";
+  // Always add language header
+  if (!config.headers) config.headers = new AxiosHeaders();
+  (config.headers as any)["Accept-Language"] = i18n.resolvedLanguage ?? "en-US";
+
+  // Skip attaching tokens on JWT endpoints
+  if (isJwtEndpoint) return config;
+
+  // Read token
+  const token = useAuthStore.getState().accessToken || localStorage.getItem("access");
+  const refresh = useAuthStore.getState().refreshToken || localStorage.getItem("refresh");
+
+  if (!token) return config;
+
+  // Proactive refresh if within renew window
+  try {
+    const { exp } = jwtDecode<{ exp: number }>(token);
+    const now = Math.floor(Date.now() / 1000);
+    const runtime = useAuthStore.getState().runtimeAuth;
+
+    // If server embedded the renew threshold into access token in step (2),
+    // you could also read it from the token. We prefer the API so it updates instantly.
+    const renewAt = runtime?.JWT_RENEW_AT_SECONDS ?? 0;
+
+    // Only try if we have refresh and renew threshold enabled
+    if (refresh && renewAt > 0) {
+      const secondsLeft = Math.max(0, exp - now);
+      if (secondsLeft <= renewAt) {
+        if (!isRefreshing) {
+          isRefreshing = true;
+          try {
+            const { data } = await api.post("/auth/jwt/refresh/", { refresh });
+            const newAccess = data.access as string;
+            const newRefresh = (data.refresh as string | undefined) ?? null;
+
+            useAuthStore.getState().setAccessToken(newAccess);
+            localStorage.setItem("access", newAccess);
+            if (newRefresh) localStorage.setItem("refresh", newRefresh);
+
+            onRefreshed(newAccess);
+          } catch (e) {
+            onRefreshed(null);
+            useAuthStore.getState().logout();
+            if (typeof window !== "undefined" && window.location.pathname !== "/login") {
+              window.location.assign("/login");
+            }
+            return Promise.reject(e);
+          } finally {
+            isRefreshing = false;
+          }
+        }
+
+        // Queue this request until refresh finishes
+        const newToken = await new Promise<string | null>((resolve) => pending.push(resolve));
+        if (!newToken) {
+          // Refresh failed; do not send with stale token
+          return Promise.reject(new Error("Auth refresh failed"));
+        }
+        (config.headers as AxiosHeaders).set("Authorization", `Bearer ${newToken}`);
+        return config;
       }
     }
+  } catch {
+    // If decode fails, fall through and let the response interceptor handle 401
   }
 
+  // Normal path: attach current token
+  (config.headers as AxiosHeaders).set("Authorization", `Bearer ${token}`);
   return config;
 });
 

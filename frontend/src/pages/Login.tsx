@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { api } from "../lib/axios";
+import { api, fetchRuntimeAuth } from "../lib/axios";
 import { useAuthStore } from "../auth/store";
 import FormInput from "../components/FormInput";
 import { extractApiError } from "../lib/httpErrors";
@@ -23,6 +23,8 @@ export default function Login() {
       const { data: tokens } = await api.post("/auth/jwt/create/", { username, password });
       useAuthStore.getState().applyRefreshedTokens?.(tokens.access, tokens.refresh);
       setTokens(tokens.access, tokens.refresh);
+      const runtime = await fetchRuntimeAuth();
+      useAuthStore.getState().setRuntimeAuth(runtime);
       const { data: me } = await api.get("/auth/users/me/");
       setUser(me);
       navigate("/users", { replace: true }); // navigating to /users and clearing back history

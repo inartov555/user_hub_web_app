@@ -4,6 +4,7 @@ import { fetchAuthSettings, updateAuthSettings, AuthSettings } from "../lib/sett
 import { useAuthStore } from "../auth/store";
 import { extractApiError } from "../lib/httpErrors";
 import Button from "../components/button";
+import { fetchRuntimeAuth } from "../lib/axios";
 
 export default function Settings() {
   const { t } = useTranslation();
@@ -49,6 +50,8 @@ export default function Settings() {
       setError(`${t("appSettings.saveError")} ${parsed.message}`);
     } finally {
       setSaving(false);
+      const runtime = await fetchRuntimeAuth();
+      useAuthStore.getState().setRuntimeAuth(runtime);
     }
   }
 
