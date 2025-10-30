@@ -71,6 +71,15 @@ async function refreshOnce(): Promise<string> {
   }
 }
 
+api.interceptors.request.use((config: InternalAxiosRequestConfig) => {
+  config.headers = AxiosHeaders.from(config.headers || {});
+  const headers = config.headers as AxiosHeaders;
+  const uiLang = (i18n?.language || navigator.language || "en-US").toLowerCase().replace("_", "-");
+  headers.set("Accept-Language", uiLang);
+  headers.set("X-Locale", uiLang);
+  return config;
+});
+
 api.interceptors.request.use(async (config) => {
   // allow explicitly skipping client-side checks for bootstrap calls
   const skip = (config.headers as any)?.["X-Skip-Auth-Checks"];
