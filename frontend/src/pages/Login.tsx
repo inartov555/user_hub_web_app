@@ -5,6 +5,7 @@ import { api } from "../lib/axios";
 import { useAuthStore } from "../auth/store";
 import FormInput from "../components/FormInput";
 import { extractApiError } from "../lib/httpErrors";
+import Button from "../components/button";
 
 export default function Login() {
   const { t } = useTranslation();
@@ -38,7 +39,7 @@ export default function Login() {
         <FormInput placeholder={t("signup.username")} type="username" value={username} onChange={e=>setUsername(e.target.value)} required />
         <FormInput placeholder={t("signup.password")} type="password" value={password} onChange={e=>setPassword(e.target.value)} required />
         {error && <p className="text-red-600 text-sm">{t("auth.loginFailed", { message: error })}</p>}
-        <button className="btn w-full" type="submit">{t("auth.signin")}</button>
+        <Button variant="secondary" className="gap-2" type="submit">{t("auth.signin")}</Button>
       </form>
       <div className="mt-4 text-sm flex justify-between">
         <Link to="/signup">{t("auth.createAccount")}</Link>

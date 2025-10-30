@@ -138,6 +138,9 @@ export default function ProfileEdit() {
 
         <div className="pt-2">
           <Button variant="secondary" className="gap-2" onClick={onSave}>{t("profileEdit.save")}</Button>
+          <Button variant="secondary" className="gap-2">
+            <Link to="/profile-view">{t("userDeleteConfirm.cancel")}</Link>
+          </Button>
         </div>
       </div>
     </div>

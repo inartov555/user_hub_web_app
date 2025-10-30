@@ -1,10 +1,11 @@
 import { useEffect, useRef, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { api } from "../lib/axios";
 import FormInput from "../components/FormInput";
 import { extractApiError } from "../lib/httpErrors";
 import { useAuthStore } from "../auth/store";
+import Button from "../components/button";
 
 export default function ChangePassword() {
   const { t, i18n } = useTranslation();
@@ -64,9 +65,12 @@ export default function ChangePassword() {
           required
         />
         {error && <p className="text-red-600 text-sm">{error}</p>}
-        <button className="btn w-full" type="submit" disabled={saving}>
+        <Button variant="secondary" className="gap-2" type="submit" disabled={saving}>
           {saving ? t("changePassword.saving") : t("profileEdit.save")}
-        </button>
+        </Button>
+        <Button variant="secondary" className="gap-2">
+          <Link to="/users">{t("userDeleteConfirm.cancel")}</Link>
+        </Button>
       </form>
     </div>
   );
