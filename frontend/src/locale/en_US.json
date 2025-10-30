@@ -127,5 +127,9 @@
     "noteNewSessions": "Saved settings will be applied on the next login",
     "saved": "The app settings have been saved",
     "saving": "Saving app settings..."
+  },
+  "lightDarkThemeToggle": {
+    "light": "Light",
+    "dark": "Dark"
   }
 }

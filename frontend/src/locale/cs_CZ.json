@@ -126,5 +126,9 @@
     "noteNewSessions": "Uložená nastavení se použijí při příštím přihlášení",
     "saved": "Nastavení aplikace byla uložena",
     "saving": "Ukládání nastavení aplikace..."
+  },
+  "lightDarkThemeToggle": {
+    "light": "Světlý",
+    "dark": "Tmavý"
   }
 }

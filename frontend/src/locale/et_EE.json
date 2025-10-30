@@ -126,5 +126,9 @@
     "noteNewSessions": "Salvestatud sätted rakenduvad järgmisel sisselogimisel",
     "saved": "Rakenduse sätted on salvestatud",
     "saving": "Rakenduse sätete salvestamine..."
+  },
+  "lightDarkThemeToggle": {
+    "light": "Hele",
+    "dark": "Tume"
   }
 }

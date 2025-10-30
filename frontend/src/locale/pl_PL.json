@@ -126,5 +126,9 @@
     "noteNewSessions": "Zapisane ustawienia zostaną zastosowane przy następnym logowaniu",
     "saved": "Ustawienia aplikacji zostały zapisane",
     "saving": "Zapisywanie ustawień aplikacji..."
+  },
+  "lightDarkThemeToggle": {
+    "light": "Jasny",
+    "dark": "Ciemny"
   }
 }

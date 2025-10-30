@@ -126,5 +126,9 @@
     "noteNewSessions": "La configuración guardada se aplicará en el próximo inicio de sesión",
     "saved": "La configuración de la aplicación se ha guardado",
     "saving": "Guardando la configuración de la aplicación..."
+  },
+  "lightDarkThemeToggle": {
+    "light": "Claro",
+    "dark": "Oscuro"
   }
 }

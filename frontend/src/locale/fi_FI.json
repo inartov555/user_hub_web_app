@@ -126,5 +126,9 @@
     "noteNewSessions": "Tallennetut asetukset otetaan käyttöön seuraavassa kirjautumisessa",
     "saved": "Sovelluksen asetukset on tallennettu",
     "saving": "Tallennetaan sovelluksen asetuksia..."
+  },
+  "lightDarkThemeToggle": {
+    "light": "Vaalea",
+    "dark": "Tumma"
   }
 }
