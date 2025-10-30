@@ -44,8 +44,20 @@ export default function Login() {
         </div>
       </form>
       <div className="mt-4 text-sm flex justify-between">
-        <Link to="/signup">{t("auth.createAccount")}</Link>
-        <Link to="/reset-password">{t("auth.forgotPassword")}</Link>
+        <Link
+          className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 underline underline-offset-4 decoration-2
+             transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 rounded-md"
+          to="/signup"
+        >
+          {t("auth.createAccount")}
+        </Link>
+        <Link
+          className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 underline underline-offset-4 decoration-2
+             transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 rounded-md"
+          to="/reset-password"
+        >
+          {t("auth.forgotPassword")}
+        </Link>
       </div>
     </div>
   );

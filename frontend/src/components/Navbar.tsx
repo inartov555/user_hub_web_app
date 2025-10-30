@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 import { useAuthStore } from "../auth/store";
 import { LocaleFlag } from "./LocaleFlag";
 import Brand from "./Brand";
+import Button from "../components/button";
 
 export default function Navbar() {
   const { t, i18n } = useTranslation();
@@ -112,20 +113,22 @@ export default function Navbar() {
         {/* Right: user + language */}
         <div className="flex items-center gap-3 justify-self-end">
           {user && (
-            <span className="text-sm">
-              {t("app.hiUser", { username: user.username })}
-            </span>
-          )}
-          {user && (
-            <button
-              className="btn"
-              onClick={() => {
-                logout();
-                navigate("/login");
-              }}
-            >
-              {t("nav.logout")}
-            </button>
+            <>
+              <div className="bg-gray-200 border rounded-full px-2 py-1 text-sm flex items-center gap-2">
+                <span className="text-sm">
+                  {t("app.hiUser", { username: user.username })}
+                </span>
+              </div>
+              <Button
+                className="border-red-600 text-red-700 hover:bg-red-50"
+                onClick={() => {
+                  logout();
+                  navigate("/login");
+                }}
+              >
+                {t("nav.logout")}
+              </Button>
+            </>
           )}
 
           {/* Language switcher */}
