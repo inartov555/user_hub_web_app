@@ -20,8 +20,8 @@ import {
 import type { RowSelectionState } from "@tanstack/react-table";
 import { api } from "../lib/axios";
 import { useAuthStore } from "../auth/store";
-import { Button } from "../components/button";
-import { Card, CardContent, CardHeader, CardTitle } from "../components/card";
+import Button from "../components/button";
+import { Card, CardBody, CardHeader } from "../components/card";
 import { Input } from "../components/input";
 import { Checkbox } from "../components/checkbox";
 
@@ -253,8 +253,7 @@ export default function UsersTable(props: Props) {
       cell: ({ row }) => (
         <div className="flex flex-wrap gap-2">
           <Button
-            variant="outline"
-            size="sm"
+            variant="secondary"
             onClick={() => navigate(`/users/${row.original.id}/change-password`)}
             title={t("users.changePassword")}
           >
@@ -330,8 +329,8 @@ export default function UsersTable(props: Props) {
 
   return (
     <Card className="w-full mx-auto">
-      <CardHeader className="flex flex-row items-center justify-between gap-4">
-        <CardTitle className="text-xl">{t("users.people")}</CardTitle>
+      <CardHeader title={t("users.people")} />
+      <CardBody className="flex items-center justify-between gap-2">
         <div className="flex items-center gap-2">
           <Input
             placeholder={t("users.search")}
@@ -342,7 +341,7 @@ export default function UsersTable(props: Props) {
 
           {/* Columns menu */}
           <div className="relative">
-            <Button variant="outline" size="sm" className="gap-2" onClick={() => setShowColumns((v) => !v)}>
+            <Button variant="secondary" className="gap-2" onClick={() => setShowColumns((v) => !v)}>
               <Columns className="h-4 w-4" /> {t("users.columns")}
             </Button>
             {showColumns && (
@@ -379,8 +378,7 @@ export default function UsersTable(props: Props) {
 
           {/* Clear sort */}
           <Button
-            variant="outline"
-            size="sm"
+            variant="secondary"
             onClick={() => {
               setSorting([]);
               setPage(1);
@@ -393,8 +391,7 @@ export default function UsersTable(props: Props) {
           {/* Delete selected (admin only) */}
           {isAdmin && (
             <Button
-              variant="outline"
-              size="sm"
+              variant="secondary"
               onClick={handleGoToDeleteConfirm}
               disabled={table.getSelectedRowModel().rows.length === 0}
               className="gap-2 border-red-600 text-red-700 hover:bg-red-50"
@@ -406,9 +403,9 @@ export default function UsersTable(props: Props) {
 
           )}
         </div>
-      </CardHeader>
+      </CardBody>
 
-      <CardContent>
+      <CardBody>
         <div className="overflow-auto rounded-xl border">
           <table className="w-full text-sm table-auto border-collapse">
             <thead className="bg-muted/50">
@@ -476,32 +473,28 @@ export default function UsersTable(props: Props) {
         <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
           <div className="flex items-center gap-2">
             <Button
-              variant="outline"
-              size="sm"
+              variant="secondary"
               onClick={() => (table.setPageIndex(0), setPage(1))}
               disabled={!table.getCanPreviousPage()}
             >
               <ChevronsLeft className="h-4 w-4" />
             </Button>
             <Button
-              variant="outline"
-              size="sm"
+              variant="secondary"
               onClick={() => (table.previousPage(), setPage((p) => Math.max(1, p - 1)))}
               disabled={!table.getCanPreviousPage()}
             >
               <ChevronLeft className="h-4 w-4" />
             </Button>
             <Button
-              variant="outline"
-              size="sm"
+              variant="secondary"
               onClick={() => (table.nextPage(), setPage((p) => p + 1))}
               disabled={!table.getCanNextPage()}
             >
               <ChevronRight className="h-4 w-4" />
             </Button>
             <Button
-              variant="outline"
-              size="sm"
+              variant="secondary"
               onClick={() => {
                 const last = Math.max(0, table.getPageCount() - 1);
                 table.setPageIndex(last);
@@ -538,7 +531,7 @@ export default function UsersTable(props: Props) {
             </label>
           </div>
         </div>
-      </CardContent>
+      </CardBody>
     </Card>
   );
 }

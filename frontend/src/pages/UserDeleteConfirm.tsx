@@ -3,8 +3,8 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useQueryClient } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 import { api } from "../lib/axios";
-import { Card, CardHeader, CardTitle, CardContent } from "../components/card";
-import { Button } from "../components/button";
+import { Card, CardHeader, CardBody } from "../components/card";
+import Button from "../components/button";
 import { extractApiError } from "../lib/httpErrors";
 import { useAuthStore } from "../auth/store";
 
@@ -79,10 +79,8 @@ export default function UserDeleteConfirm() {
 
   return (
     <Card className="w-full mx-auto max-w-3xl">
-      <CardHeader>
-        <CardTitle>{t("userDeleteConfirm.confirmDelete")}</CardTitle>
-      </CardHeader>
-      <CardContent className="space-y-4">
+      <CardHeader title={t("userDeleteConfirm.confirmDelete")} />
+      <CardBody className="space-y-4">
         <p className="text-sm text-slate-700">
           {t("userDeleteConfirm.youAboutToDelete")} <strong>{users.length}</strong> {t("userDeleteConfirm.cannotBeUndone")}
         </p>
@@ -120,12 +118,12 @@ export default function UserDeleteConfirm() {
         {error && <div className="text-sm text-red-600" style={{ whiteSpace: "pre-line" }}>{error}</div>}
 
         <div className="flex items-center gap-2">
-          <Button variant="outline" onClick={handleCancel} disabled={loading}>
+          <Button variant="secondary" onClick={handleCancel} disabled={loading}>
             {t("userDeleteConfirm.cancel")}
           </Button>
           <Button
             className="border-red-600 text-red-700 hover:bg-red-50"
-            variant="outline"
+            variant="secondary"
             onClick={handleConfirm}
             disabled={loading}
             title={t("userDeleteConfirm.deleteUsers")}
@@ -133,7 +131,7 @@ export default function UserDeleteConfirm() {
             {loading ? t("userDeleteConfirm.deleting") : `${t("users.deleteSelected")} ${users.length}`}
           </Button>
         </div>
-      </CardContent>
+      </CardBody>
     </Card>
   );
 }
