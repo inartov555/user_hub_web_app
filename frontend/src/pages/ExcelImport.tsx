@@ -93,7 +93,7 @@ export default function ExcelImportPanel() {
   }
 
   return (
-    <div className="max-w-xl mx-auto p-4 rounded-2xl shadow bg-white border">
+    <div className="max-w-xl mx-auto p-4 rounded-2xl shadow bg-white border dark:bg-slate-800 dark:text-slate-100 dark:border-slate-700">
       <h2 className="text-xl font-semibold mb-3">{t("excelImport.title")}</h2>
       <p className="text-sm text-gray-600 mb-4">{t("excelImport.fileUploadMessage")} <code>{t("signup.email")}</code>, <code>{t("signup.username")}</code>, <code>{t("users.firstName")}</code>, <code>{t("users.lastName")}</code>, <code>{t("excelImport.bio")}</code>.</p>
 
@@ -106,24 +106,24 @@ export default function ExcelImportPanel() {
           accept=".xlsx,.xls,.csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel,text/csv"
           onChange={onFileChange}
           onClick={(e) => { (e.currentTarget as HTMLInputElement).value = ""; }} // allow re-select same file
-          className="
-            block w-full text-sm text-gray-900 !appearance-auto
-            file:mr-3 file:py-2 file:px-3 file:rounded-xl file:border
-            file:bg-gray-50 file:hover:bg-gray-100 file:cursor-pointer
-          "
         />
         {file && (
-          <div className="text-sm text-gray-600 mt-1">{t("excelImport.selectedFile")} {file.name}</div>
+          <div className="text-sm text-gray-600 dark:text-slate-300 mt-1">{t("excelImport.selectedFile")} {file.name}</div>
         )}
 
         <div className="flex gap-2">
-          <button className="btn px-4 py-2 rounded-xl bg-black text-white disabled:opacity-50" type="submit" disabled={!file || submitting}>
+          <button className="px-4 py-2 rounded-xl bg-brand-600 text-white hover:bg-brand-700
+              focus:outline-none focus:ring-2 focus:ring-brand-500
+              disabled:opacity-50 disabled:cursor-not-allowed" type="submit" disabled={!file || submitting}>
             {submitting ? t("excelImport.uploading") : t("excelImport.startImport")}
           </button>
 
           {/* If you rely on cookie auth, a plain anchor works: href={`${api.defaults.baseURL}/import-excel/`} */}
           {accessToken ? (
-            <button className="btn btn-ghost px-4 py-2 rounded-xl border" onClick={downloadTemplate}>
+            <button className="px-4 py-2 rounded-xl border text-slate-700 bg-white
+              hover:bg-slate-50
+              dark:text-slate-100 dark:bg-slate-800 dark:border-slate-600
+              dark:hover:bg-slate-700" onClick={downloadTemplate}>
               {t("excelImport.downloadTemplate")}
             </button>
           ) : (
@@ -135,11 +135,12 @@ export default function ExcelImportPanel() {
       </form>
 
       {message && (
-        <div className="mt-4 text-sm p-2 rounded-xl border bg-gray-50">{message}</div>
+        <div className="mt-4 text-sm p-2 rounded-xl border bg-gray-50 dark:bg-slate-800 dark:text-slate-100 dark:border-slate-700">{message}</div>
       )}
 
       {summary && (
-        <div className="mt-4 p-3 rounded-2xl border">
+        <div className="mt-4 p-3 rounded-2xl border bg-white
+                dark:bg-slate-800 dark:border-slate-700">
           <div className="font-medium mb-2">{t("excelImport.result")}</div>
           <ul className="text-sm space-y-1">
             <li>{t("excelImport.processed")} <span className="font-semibold">{summary.processed}</span></li>
@@ -152,7 +153,7 @@ export default function ExcelImportPanel() {
               <div className="font-medium mb-1">Errors ({summary.errors.length})</div>
               <div className="max-h-48 overflow-auto border rounded-xl">
                 <table className="w-full text-sm">
-                  <thead className="sticky top-0 bg-white">
+                  <thead className="sticky top-0 bg-white dark:bg-slate-900">
                     <tr>
                       <th className="text-left p-2 border-b w-24">Row</th>
                       <th className="text-left p-2 border-b">Message</th>
@@ -160,7 +161,7 @@ export default function ExcelImportPanel() {
                   </thead>
                   <tbody>
                     {summary.errors.map((e, idx) => (
-                      <tr key={idx} className="odd:bg-gray-50">
+                      <tr key={idx} className="odd:bg-gray-50 dark:odd:bg-slate-800">
                         <td className="p-2 border-b">{e.row}</td>
                         <td className="p-2 border-b">{e.msg}</td>
                       </tr>

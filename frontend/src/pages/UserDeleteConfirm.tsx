@@ -78,7 +78,7 @@ export default function UserDeleteConfirm() {
   if (!users.length) return null;
 
   return (
-    <Card className="w-full mx-auto max-w-3xl">
+    <Card className="w-full mx-auto max-w-3xl dark:bg-slate-800 dark:text-slate-100 dark:border-slate-700">
       <CardHeader title={t("userDeleteConfirm.confirmDelete")} />
       <CardBody className="space-y-4">
         <p className="text-sm text-slate-700">

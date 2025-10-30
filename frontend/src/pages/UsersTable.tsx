@@ -328,7 +328,7 @@ export default function UsersTable(props: Props) {
   if (isLoading && !data) return <div>{t("users.loading")}</div>;
 
   return (
-    <Card className="w-full mx-auto">
+    <Card className="w-full mx-auto dark:bg-slate-800 dark:text-slate-100 dark:border-slate-700">
       <CardHeader title={t("users.people")} />
       <CardBody className="flex justify-end mt-2">
         <div className="flex items-center gap-2">

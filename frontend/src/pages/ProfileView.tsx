@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 import { api } from "../lib/axios";
 import { useAuthStore } from "../auth/store";
 import Button from "../components/button";
+import Field from "../components/Field";
 
 type ProfileUser = {
   id: number;
@@ -76,7 +77,7 @@ export default function ProfileView() {
     (profile.avatar ? mediaBase + profile.avatar : `https://placehold.co/160x160?text=${encodeURIComponent(initials || "👤")}`);
 
   return (
-    <div className="card grid grid-cols-1 gap-6 md:grid-cols-3 p-4 rounded-2xl border bg-white">
+    <div className="card grid grid-cols-1 gap-6 md:grid-cols-3 p-4 rounded-2xl border bg-white dark:bg-slate-800 dark:text-slate-100 dark:border-slate-700">
       {/* Left: Avatar */}
       <div className="flex items-start justify-center md:justify-start">
         <img
@@ -134,14 +135,4 @@ export default function ProfileView() {
 /* UI helpers */
 function Label({ children }: { children: React.ReactNode }) {
   return <div className="text-xs font-medium text-slate-500">{children}</div>;
-}
-function Field({ label, value }: { label: string; value: string }) {
-  return (
-    <div>
-      <Label>{label}</Label>
-      <div className="mt-1 rounded-md border bg-slate-50 px-3 py-2 text-slate-900">
-        {value}
-      </div>
-    </div>
-  );
 }

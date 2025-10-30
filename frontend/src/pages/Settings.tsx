@@ -5,6 +5,7 @@ import { useAuthStore } from "../auth/store";
 import { extractApiError } from "../lib/httpErrors";
 import Button from "../components/button";
 import { fetchRuntimeAuth } from "../lib/axios";
+import Field from "../components/Field";
 
 export default function Settings() {
   const { t } = useTranslation();
@@ -56,10 +57,10 @@ export default function Settings() {
   }
 
   return (
-    <div className="max-w-xl mx-auto p-4 rounded-2xl shadow bg-white border">
+    <div className="max-w-xl mx-auto p-4 rounded-2xl shadow bg-white border dark:bg-slate-800 dark:text-slate-100 dark:border-slate-700">
       <div className="max-w-3xl mx-auto p-4">
         <h1 className="text-xl font-semibold mb-4">{t("appSettings.title")}</h1>
-        <p className="text-xs text-blue-800 mt-6">
+        <p className="text-xs text-blue-800 dark:text-blue-200 mt-6">
           {t("appSettings.noteNewSessions")}
         </p>
         <br />
@@ -94,30 +95,6 @@ export default function Settings() {
           </div>
         </form>
       </div>
-    </div>
-  );
-}
-
-function Field({
-  label, help, value, onChange, min = 0,
-}: {
-  label: string;
-  help?: string;
-  value: number;
-  onChange: (v: number) => void;
-  min?: number;
-}) {
-  return (
-    <div className="space-y-1">
-      <label className="block text-sm font-medium">{label}</label>
-      {help && <p className="text-xs text-slate-500">{help}</p>}
-      <input
-        type="number"
-        className="border rounded px-3 py-2 w-60"
-        min={min}
-        value={value}
-        onChange={(e) => onChange(parseInt(e.target.value || "0", 10))}
-      />
     </div>
   );
 }

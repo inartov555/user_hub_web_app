@@ -87,7 +87,7 @@ export default function ProfileEdit() {
     (data.avatar ? mediaBase + data.avatar : `https://placehold.co/160x160?text=${encodeURIComponent(initials)}`);
 
   return (
-    <div className="card grid grid-cols-1 md:grid-cols-3 gap-6 p-4 rounded-2xl border bg-white">
+    <div className="card grid grid-cols-1 md:grid-cols-3 gap-6 p-4 rounded-2xl border bg-white dark:bg-slate-800 dark:text-slate-100 dark:border-slate-700">
       {/* Left: Avatar */}
       <div className="flex items-start justify-center md:justify-start">
         <img
@@ -105,23 +105,45 @@ export default function ProfileEdit() {
           <h2 className="text-xl font-semibold">{t("profileEdit.editProfile")}</h2>
           <p className="text-sm text-slate-500">{t("profileView.yourPersonalDetails")}</p>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <FormInput
             placeholder={t("users.firstName")}
             value={first_name}
             onChange={(e) => setFirstName(e.target.value)}
+            className="
+              w-full rounded-xl px-3 py-2
+              bg-white text-slate-900 placeholder-slate-500
+              border border-slate-300
+              focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500
+              dark:bg-slate-900 dark:text-slate-100 dark:placeholder-slate-500
+              dark:border-slate-700
+            "
           />
           <FormInput
             placeholder={t("users.lastName")}
             value={last_name}
             onChange={(e) => setLastName(e.target.value)}
+            className="
+              w-full rounded-xl px-3 py-2
+              bg-white text-slate-900 placeholder-slate-500
+              border border-slate-300
+              focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500
+              dark:bg-slate-900 dark:text-slate-100 dark:placeholder-slate-500
+              dark:border-slate-700
+            "
           />
         </div>
 
         <label className="block space-y-1">
           <span className="text-sm text-slate-700">{t("excelImport.bio")}</span>
           <textarea
-            className="w-full rounded-md border px-3 py-2 min-h-[120px] outline-none focus:ring"
+            className="w-full rounded-md border px-3 py-2 min-h-[120px] outline-none focus:ring
+            bg-white text-slate-900 placeholder-slate-500
+            border border-slate-300
+            focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500
+            dark:bg-slate-900 dark:text-slate-100 dark:placeholder-slate-500
+            dark:border-slate-700
+          "
             placeholder={t("excelImport.bio")}
             value={bio}
             onChange={(e) => setBio(e.target.value)}
