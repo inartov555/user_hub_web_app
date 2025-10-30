@@ -74,9 +74,10 @@ async function refreshOnce(): Promise<string> {
 api.interceptors.request.use(async (config) => {
   const { accessToken, refreshToken, runtimeAuth, lastActivityAt } = useAuthStore.getState();
   const nowMs = Date.now();
+  const hasIdle = !!(runtimeAuth && runtimeAuth.IDLE_TIMEOUT_SECONDS > 0);
 
   // If idle has already elapsed, do not try to refresh; force logout
-  if (runtimeAuth && nowMs - lastActivityAt >= runtimeAuth.IDLE_TIMEOUT_SECONDS * 1000) {
+  if (hasIdle && lastActivityAt && nowMs - lastActivityAt >= runtimeAuth!.IDLE_TIMEOUT_SECONDS * 1000) {
     useAuthStore.getState().logout();
     return config; // request will 401 and the response interceptor will redirect
   }

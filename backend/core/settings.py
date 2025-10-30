@@ -71,8 +71,8 @@ IDLE_TIMEOUT_SECONDS = int(os.getenv("IDLE_TIMEOUT_SECONDS", "900"))
 # Short access — forces periodic refreshes
 ACCESS_TOKEN_LIFETIME = timedelta(seconds=int(os.getenv("ACCESS_TOKEN_LIFETIME", "1800")))
 # Turn on rotation so that each refresh "slides" the window forward
-ROTATE_REFRESH_TOKENS = env_bool(os.getenv("ROTATE_REFRESH_TOKENS", "0"))
-BLACKLIST_AFTER_ROTATION = env_bool(os.getenv("BLACKLIST_AFTER_ROTATION", "0"))
+ROTATE_REFRESH_TOKENS = env_bool(os.getenv("ROTATE_REFRESH_TOKENS", "1"))
+BLACKLIST_AFTER_ROTATION = env_bool(os.getenv("BLACKLIST_AFTER_ROTATION", "1"))
 ALGORITHM = str(os.getenv("ALGORITHM", "HS256"))
 SECRET_KEY = str(os.getenv("SECRET_KEY", "dev-secret"))
 SIGNING_KEY = SECRET_KEY

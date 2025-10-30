@@ -35,7 +35,15 @@ type State = {
 
 export const useAuthStore = create<State>((set, get) => ({
   runtimeAuth: null,
-  setRuntimeAuth: (r) => set({ runtimeAuth: r }),
+  setRuntimeAuth: (r) => {
+    const now = Date.now();
+    set({ runtimeAuth: r, lastActivityAt: now });
+    if (r && r.IDLE_TIMEOUT_SECONDS > 0) {
+      get().startIdleWatch();
+    } else {
+      get().stopIdleWatch();
+    }
+  },
   accessToken: localStorage.getItem("access"),
   refreshToken: localStorage.getItem("refresh"),
   user: null,
@@ -52,20 +60,23 @@ export const useAuthStore = create<State>((set, get) => ({
 
     const tick = () => {
       const rt = get().runtimeAuth;
-      if (!rt) return;
+      if (!rt || !(rt.IDLE_TIMEOUT_SECONDS > 0)) return; // <- guard
+
       const idleFor = Date.now() - get().lastActivityAt;
       if (idleFor >= rt.IDLE_TIMEOUT_SECONDS * 1000) {
         get().logout();
         get().stopIdleWatch();
       } else {
-        // check again in 1s
-        const id = window.setTimeout(tick, 1000);
+        // schedule next check precisely at the remaining time (min 1s)
+        const remaining = rt.IDLE_TIMEOUT_SECONDS * 1000 - idleFor;
+        const id = window.setTimeout(tick, Math.max(remaining, 1000));
         set({ idleTimer: id });
       }
     };
 
-    // kick off once
-    set({ idleTimer: window.setTimeout(tick, 1000) });
+    // kick off
+    const id = window.setTimeout(tick, 1000);
+    set({ idleTimer: id });
   },
 
   stopIdleWatch: () => {

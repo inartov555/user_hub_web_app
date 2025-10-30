@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { api, fetchRuntimeAuth } from "../lib/axios";
@@ -15,6 +15,15 @@ export default function Login() {
   const navigate = useNavigate();
   const { setTokens, setUser, user } = useAuthStore();
   const { pathname } = useLocation();
+  
+  // if already logged in, leave /login immediately
+  useEffect(() => {
+    if (user) {
+      const intended = localStorage.getItem("postLoginRedirect");
+      if (intended) localStorage.removeItem("postLoginRedirect");
+      navigate(intended || "/users", { replace: true });
+    }
+  }, [user, navigate]);
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -23,11 +32,20 @@ export default function Login() {
       const { data: tokens } = await api.post("/auth/jwt/create/", { username, password });
       useAuthStore.getState().applyRefreshedTokens?.(tokens.access, tokens.refresh);
       setTokens(tokens.access, tokens.refresh);
-      const runtime = await fetchRuntimeAuth();
-      useAuthStore.getState().setRuntimeAuth(runtime);
       const { data: me } = await api.get("/auth/users/me/");
       setUser(me);
-      navigate("/users", { replace: true }); // navigating to /users and clearing back history
+      const runtime = await fetchRuntimeAuth();
+      useAuthStore.getState().setRuntimeAuth(runtime);
+      // respect the ProtectedRoute’s saved destination
+      const intended = localStorage.getItem("postLoginRedirect");
+      if (intended) localStorage.removeItem("postLoginRedirect");
+      navigate(intended || "/users", { replace: true }); // navigating to /users and clearing back history
+
+      // @DUPLICATE 3 LINES ABOVE
+      // respect the ProtectedRoute’s saved destination
+      // const intended = localStorage.getItem("postLoginRedirect");
+      // if (intended) localStorage.removeItem("postLoginRedirect");
+      // window.location.replace(intended || "/users"); // hard navigation beats any race
     } catch (err: any) {
       const parsed = extractApiError(err as unknown);
       setError(`${parsed.message}`);

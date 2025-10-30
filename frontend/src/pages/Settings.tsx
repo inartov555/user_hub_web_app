@@ -65,6 +65,13 @@ export default function Settings() {
         <br />
         <form className="space-y-6" onSubmit={onSubmit}>
           <Field
+            label={t("appSettings.jwtRenew")}
+            help={t("appSettings.jwtRenewHelp")}
+            value={form.JWT_RENEW_AT_SECONDS}
+            onChange={(v) => onChange("JWT_RENEW_AT_SECONDS", v)}
+            min={0}
+          />
+          <Field
             label={t("appSettings.idleTimeout")}
             help={t("appSettings.idleTimeoutHelp")}
             value={form.IDLE_TIMEOUT_SECONDS}
