@@ -35,17 +35,10 @@ class EmailOrUsernameTokenCreateSerializer(TokenObtainPairSerializer):
             access_seconds=eff.access_token_lifetime_seconds,
             refresh_seconds=eff.idle_timeout_seconds,
         ):
-            prev_access, prev_refresh = AccessToken.lifetime, RefreshToken.lifetime
-            try:
-                AccessToken.lifetime = timedelta(seconds=eff.access_token_lifetime_seconds)
-                RefreshToken.lifetime = timedelta(seconds=eff.idle_timeout_seconds)
-
-                token = super().get_token(user)  # refresh token
-                token["boot_id"] = int(get_boot_id())  # stamp current boot epoch
-                token["jwt_renew_at_seconds"] = eff.jwt_renew_at_seconds
-                return token
-            finally:
-                AccessToken.lifetime, RefreshToken.lifetime = prev_access, prev_refresh
+            token = super().get_token(user)
+            token["boot_id"] = int(get_boot_id())
+            token["jwt_renew_at_seconds"] = eff.jwt_renew_at_seconds
+            return token
 
     def _resolve_login_field(self) -> str:
         """

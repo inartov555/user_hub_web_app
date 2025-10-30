@@ -39,15 +39,15 @@ def _dir_writable(_path: Path) -> bool:
         pass
     return True
 
-def env_bool(name: str, default: str = "1") -> bool:
+def env_bool(prop_val: str, default: str = "1") -> bool:
     """
     Safely get bool value from a configuration property
     """
-    val = os.getenv(name, default)
-    if val is None:
-        return False
-    s = str(val).strip().lower()
-    return s in {"1", "true", "t", "yes", "y", "on"}
+    if prop_val:
+        str_val = str(prop_val).strip().lower()
+        return str_val in {"1", "true", "t", "yes", "y", "on"}
+    else:
+        return default in {"1", "true", "t", "yes", "y", "on"}
 
 load_dotenv()
 
