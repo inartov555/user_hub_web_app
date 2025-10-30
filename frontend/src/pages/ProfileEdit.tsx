@@ -135,7 +135,9 @@ export default function ProfileEdit() {
         </div>
 
         <label className="block space-y-1">
-          <span className="text-sm text-slate-700">{t("excelImport.bio")}</span>
+          <span className="
+            text-sm text-slate-700 dark:text-slate-100
+          ">{t("excelImport.bio")}</span>
           <textarea
             className="w-full rounded-md border px-3 py-2 min-h-[120px] outline-none focus:ring
             bg-white text-slate-900 placeholder-slate-500

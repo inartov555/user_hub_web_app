@@ -4,7 +4,6 @@ import { useTranslation } from "react-i18next";
 import { api } from "../lib/axios";
 import { useAuthStore } from "../auth/store";
 import Button from "../components/button";
-import Field from "../components/Field";
 
 type ProfileUser = {
   id: number;
@@ -12,6 +11,7 @@ type ProfileUser = {
   email: string;
   first_name?: string | null;
   last_name?: string | null;
+  bio?: string | null;
 };
 
 type Profile = {
@@ -104,10 +104,7 @@ export default function ProfileView() {
         </div>
 
         <div>
-          <Label>{t("excelImport.bio")}</Label>
-          <p className="mt-1 whitespace-pre-wrap text-slate-800">
-            {profile.bio?.trim() ? profile.bio : "—"}
-          </p>
+          <Field label={t("excelImport.bio")} value={String(profile.user?.bio ?? "—")} />
         </div>
 
         <div className="pt-2">
@@ -135,4 +132,21 @@ export default function ProfileView() {
 /* UI helpers */
 function Label({ children }: { children: React.ReactNode }) {
   return <div className="text-xs font-medium text-slate-500">{children}</div>;
+}
+function Field({ label, value }: { label: string; value: string }) {
+  return (
+    <div>
+      <Label>{label}</Label>
+      <div className="
+            w-full rounded-xl px-3 py-2
+            bg-white text-slate-900 placeholder-slate-500
+            border border-slate-300
+            focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500
+            dark:bg-slate-900 dark:text-slate-100 dark:placeholder-slate-500
+            dark:border-slate-700
+          ">
+        {value}
+      </div>
+    </div>
+  );
 }

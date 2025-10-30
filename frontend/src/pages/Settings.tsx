@@ -5,7 +5,6 @@ import { useAuthStore } from "../auth/store";
 import { extractApiError } from "../lib/httpErrors";
 import Button from "../components/button";
 import { fetchRuntimeAuth } from "../lib/axios";
-import Field from "../components/Field";
 
 export default function Settings() {
   const { t } = useTranslation();
@@ -95,6 +94,37 @@ export default function Settings() {
           </div>
         </form>
       </div>
+    </div>
+  );
+}
+
+function Field({
+  label, help, value, onChange, min = 0,
+}: {
+  label: string;
+  help?: string;
+  value: number;
+  onChange: (v: number) => void;
+  min?: number;
+}) {
+  return (
+    <div className="space-y-1">
+      <label className="block text-sm font-medium">{label}</label>
+      {help && <p className="text-xs text-slate-500">{help}</p>}
+      <input
+        type="number"
+        min={min}
+        value={value}
+        onChange={(e) => onChange(parseInt(e.target.value || "0", 10))}
+        className="
+            w-full rounded-xl px-3 py-2
+            bg-white text-slate-900 placeholder-slate-500
+            border border-slate-300
+            focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500
+            dark:bg-slate-900 dark:text-slate-100 dark:placeholder-slate-500
+            dark:border-slate-700
+          "
+      />
     </div>
   );
 }
