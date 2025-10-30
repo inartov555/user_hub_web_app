@@ -19,8 +19,12 @@ type State = {
   setRuntimeAuth: (r: RuntimeAuth) => void;
   accessToken: string | null;
   refreshToken: string | null;
+  lastActivityAt: number;
+  idleTimer?: number | null;
+  setActivityNow: () => void;
+  startIdleWatch: () => void;
+  stopIdleWatch: () => void;
   user: User;
-
   setAccessToken: (t: string | null) => void;
   setRefreshToken: (t: string | null) => void;
   setTokens: (access: string, refresh: string) => void;
@@ -35,6 +39,43 @@ export const useAuthStore = create<State>((set, get) => ({
   accessToken: localStorage.getItem("access"),
   refreshToken: localStorage.getItem("refresh"),
   user: null,
+
+  lastActivityAt: Date.now(),
+  idleTimer: null,
+  setActivityNow: () => set({ lastActivityAt: Date.now() }),
+
+  startIdleWatch: () => {
+    const onActivity = () => get().setActivityNow();
+    ["mousemove","keydown","click","touchstart","visibilitychange","focus"].forEach(evt =>
+      window.addEventListener(evt, onActivity, { passive: true })
+    );
+
+    const tick = () => {
+      const rt = get().runtimeAuth;
+      if (!rt) return;
+      const idleFor = Date.now() - get().lastActivityAt;
+      if (idleFor >= rt.IDLE_TIMEOUT_SECONDS * 1000) {
+        get().logout();
+        get().stopIdleWatch();
+      } else {
+        // check again in 1s
+        const id = window.setTimeout(tick, 1000);
+        set({ idleTimer: id });
+      }
+    };
+
+    // kick off once
+    set({ idleTimer: window.setTimeout(tick, 1000) });
+  },
+
+  stopIdleWatch: () => {
+    const id = get().idleTimer;
+    if (id) clearTimeout(id);
+    ["mousemove","keydown","click","touchstart","visibilitychange","focus"].forEach(evt =>
+      window.removeEventListener(evt, get().setActivityNow as any)
+    );
+    set({ idleTimer: null });
+  },
 
   setAccessToken: (t) => {
     if (t) localStorage.setItem("access", t);

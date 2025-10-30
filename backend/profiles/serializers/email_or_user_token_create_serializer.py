@@ -9,6 +9,7 @@ from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.utils import translation
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+from rest_framework_simplejwt.tokens import AccessToken, RefreshToken
 from rest_framework import serializers
 
 from ..boot import get_boot_id
@@ -27,16 +28,22 @@ class EmailOrUsernameTokenCreateSerializer(TokenObtainPairSerializer):
         """
         Getting token
         """
-        # Snapshot effective settings at the moment of login
-        eff = get_effective_auth_settings()  # snapshot DB overrides now
-        with temporary_token_lifetimes(
-            access_seconds=eff.access_token_lifetime_seconds,
-            refresh_seconds=eff.idle_timeout_seconds,
-        ):
-            token = super().get_token(user)
-            token["boot_id"] = int(get_boot_id())
-            token["jwt_renew_at_seconds"] = eff.jwt_renew_at_seconds
-            return token
+        eff = get_effective_auth_settings()
+        at = AccessToken.for_user(user)
+        rt = RefreshToken.for_user(user)
+
+        # Force expiries from DB-driven settings
+        now = dj_tz.now()
+        at.set_exp(from_time=now, lifetime=timedelta(seconds=eff.access_token_lifetime_seconds))
+        rt.set_exp(from_time=now, lifetime=timedelta(seconds=eff.idle_timeout_seconds))  # note: “idle” drives refresh exp
+
+        # Keep any custom claims you rely on (e.g., BOOT_ID)
+        boot_id = settings.SIMPLE_JWT.get("BOOT_ID")
+        if boot_id:
+            at["boot_id"] = boot_id
+            rt["boot_id"] = boot_id
+
+        return at, rt
 
     def _resolve_login_field(self) -> str:
         """

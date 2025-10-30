@@ -6,6 +6,7 @@ This allows clients to recover after a server restart without forcing a full re-
 """
 
 from typing import Any, Dict, Optional, Callable
+from datetime import datetime
 
 from django.conf import settings
 from django.apps import apps
@@ -34,15 +35,26 @@ class CustomTokenRefreshSerializer(TokenRefreshSerializer):
         """
         Validation
         """
-        eff = get_effective_auth_settings()
-        with temporary_token_lifetimes(
-            access_seconds=eff.access_token_lifetime_seconds,
-            refresh_seconds=eff.idle_timeout_seconds,
-        ):
-            result = super().validate(attrs)
-            # ensure boot_id on access (and on rotated refresh if present)
-            self._inject_boot_id_into_tokens(result)
-            return result
+        eff = get_effective_auth_settings()  # pulls DB overrides live
+        raw = attrs.get("refresh")
+        rt = RefreshToken(raw)
+
+        # Enforce idle on refresh even if token's original exp is longer
+        iat = datetime.fromtimestamp(int(rt["iat"]), tz=timezone.utc)
+        now = datetime.now(timezone.utc)
+        if (now - iat).total_seconds() > eff.idle_timeout_seconds:
+            raise ValidationError("Session expired due to inactivity.")
+
+        data = super().validate(attrs)
+
+        # (Optional) ensure new access token carries current BOOT_ID etc.
+        boot_id = settings.SIMPLE_JWT.get("BOOT_ID")
+        if boot_id:
+            at = AccessToken(data["access"])
+            at["boot_id"] = boot_id
+            data["access"] = str(at)
+
+        return data
 
     def _inject_boot_id_into_tokens(self, result: Dict[str, Any]) -> None:
         """

@@ -19,6 +19,11 @@ export default function App() {
 
   useEffect(() => {
     bootstrapAuth().finally(() => setAuthReady(true));
+    useAuthStore.getState().startIdleWatch();
+    return () => useAuthStore.getState().stopIdleWatch();
+    // fetchRuntimeAuth()
+    //  .then((rt) => useAuthStore.getState().setRuntimeAuth(rt))
+    //  .catch(() => {/* ignore */});
   }, []);
 
   useEffect(() => {
