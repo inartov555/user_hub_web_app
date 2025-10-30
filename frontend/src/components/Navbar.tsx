@@ -49,11 +49,23 @@ export default function Navbar() {
       {/* 3-column grid: Left (logo) | Middle (two tab rows) | Right (user/lang) */}
       <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-[auto_1fr_auto] items-start gap-3 p-3">
         {/* Left: app title */}
-        <div className="rounded-full bg-gray-200">
-          <Link to="/" className="font-semibold">
-            {t("app.title")}
-          </Link>
-        </div>
+        <Link
+          to="/"
+          className="mr-[30px] inline-flex items-center gap-2 rounded-2xl
+                     px-3 py-1.5 text-sm font-semibold tracking-wide
+                     bg-gradient-to-r from-indigo-50 to-purple-50
+                     border border-indigo-200/70 text-slate-900 shadow-sm
+                     hover:from-indigo-100 hover:to-purple-100
+                     hover:shadow-md hover:ring-1 hover:ring-indigo-300 transition"
+          aria-label={t('app.title')}
+        >
+          <span className="inline-flex h-6 w-6 items-center justify-center
+                           rounded-full bg-indigo-600 text-white text-xs
+                           font-bold shadow ring-1 ring-white/60">
+            UA
+          </span>
+          <span>{t("app.title")}</span>
+        </Link>
 
         {/* Middle: TWO ROWS, left-aligned; row 2 starts exactly under row 1 */}
         <div className="justify-self-start w-full">
