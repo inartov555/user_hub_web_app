@@ -6,13 +6,13 @@ This allows clients to recover after a server restart without forcing a full re-
 """
 
 from typing import Any, Dict, Optional, Callable
-from datetime import datetime
+from datetime import datetime, timezone
 
 from django.conf import settings
 from django.apps import apps
 from django.contrib.auth import get_user_model
 from django.db import DatabaseError, IntegrityError
-from django.utils import translation, timezone
+from django.utils import translation
 from rest_framework.exceptions import APIException, ValidationError  # <-- add imports
 from rest_framework_simplejwt.serializers import TokenRefreshSerializer
 from rest_framework_simplejwt.tokens import RefreshToken, AccessToken, Token
