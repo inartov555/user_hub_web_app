@@ -32,29 +32,6 @@ class EmailOrUsernameTokenCreateSerializer(TokenObtainPairSerializer):
         """
         return RefreshToken.for_user(user)
 
-    '''
-    @classmethod
-    def get_token(cls, user) -> dict:
-        """
-        Getting token
-        """
-        eff = get_effective_auth_settings()
-        at = AccessToken.for_user(user)
-        rt = RefreshToken.for_user(user)
-
-        # Force expiries from DB-driven settings
-        now = timezone.now()
-        at.set_exp(from_time=now, lifetime=timedelta(seconds=eff.access_token_lifetime_seconds))
-        rt.set_exp(from_time=now, lifetime=timedelta(seconds=eff.idle_timeout_seconds))  # note: “idle” drives refresh exp
-
-        boot_id = get_boot_id
-        if boot_id:
-            at["boot_id"] = boot_id
-            rt["boot_id"] = boot_id
-
-        return at, rt
-    '''
-
     def _resolve_login_field(self) -> str:
         """
         Prefer the underlying user's USERNAME_FIELD (what auth actually uses).
