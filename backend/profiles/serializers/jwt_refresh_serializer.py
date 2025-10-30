@@ -34,7 +34,6 @@ class CustomTokenRefreshSerializer(TokenRefreshSerializer):
         """
         Validation
         """
-        refresh_in = RefreshToken(attrs["refresh"])  # will raise if exp/blacklisted
         eff = get_effective_auth_settings()
 
         prev_access, prev_refresh = AccessToken.lifetime, RefreshToken.lifetime
