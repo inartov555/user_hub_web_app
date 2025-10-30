@@ -154,6 +154,7 @@ export default function Navbar() {
               <option value="pl-PL">Polszczyzna</option>
               <option value="es-ES">Español</option>
             </select>
+            <DarkModeToggle />
           </div>
         </div>
       </div>
