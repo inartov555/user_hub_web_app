@@ -69,6 +69,7 @@
     "selectedFile": "Selected:"
   },
   "profileEdit": {
+    "editProfile": "Edit profile",
     "profileLoadError": "Failed to load profile.",
     "save": "Save",
     "profileAvatar": "Profile avatar"
