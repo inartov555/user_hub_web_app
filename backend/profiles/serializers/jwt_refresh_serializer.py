@@ -12,7 +12,7 @@ from django.conf import settings
 from django.apps import apps
 from django.contrib.auth import get_user_model
 from django.db import DatabaseError, IntegrityError
-from django.utils import translation
+from django.utils import translation, timezone
 from rest_framework.exceptions import APIException, ValidationError  # <-- add imports
 from rest_framework_simplejwt.serializers import TokenRefreshSerializer
 from rest_framework_simplejwt.tokens import RefreshToken, AccessToken, Token
@@ -20,7 +20,6 @@ from rest_framework_simplejwt.exceptions import TokenError
 
 from ..boot import get_boot_id
 from ..models.app_settings import get_effective_auth_settings
-from ..utils.auth_tokens import temporary_token_lifetimes
 
 
 class CustomTokenRefreshSerializer(TokenRefreshSerializer):

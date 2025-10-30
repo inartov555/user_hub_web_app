@@ -291,6 +291,9 @@ DJOSER = {
     "SERIALIZERS": {
         "token_create": \
             "profiles.serializers.email_or_user_token_create_serializer.EmailOrUsernameTokenCreateSerializer",
+        "jwt_create": \
+            "profiles.serializers.email_or_user_token_create_serializer.EmailOrUsernameTokenCreateSerializer",
+        "jwt_refresh": "profiles.serializers.jwt_refresh_serializer.CustomTokenRefreshSerializer",
         "user_create": "profiles.serializers.user_create_serializer.UserCreateSerializer",
         "user": "profiles.serializers.user_serializer.UserSerializer",
         "current_user": "profiles.serializers.user_serializer.UserSerializer"

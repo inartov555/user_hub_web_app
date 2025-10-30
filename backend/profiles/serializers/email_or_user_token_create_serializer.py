@@ -4,17 +4,17 @@ It defines which user fields are exposed through your API and which of them are 
 """
 
 from typing import Any, Dict
+from datetime import timedelta
 
 from django.conf import settings
 from django.contrib.auth import get_user_model
-from django.utils import translation
+from django.utils import translation, timezone
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.tokens import AccessToken, RefreshToken
 from rest_framework import serializers
 
 from ..boot import get_boot_id
 from ..models.app_settings import get_effective_auth_settings
-from ..utils.auth_tokens import temporary_token_lifetimes
 
 
 class EmailOrUsernameTokenCreateSerializer(TokenObtainPairSerializer):
@@ -33,12 +33,11 @@ class EmailOrUsernameTokenCreateSerializer(TokenObtainPairSerializer):
         rt = RefreshToken.for_user(user)
 
         # Force expiries from DB-driven settings
-        now = dj_tz.now()
+        now = timezone.now()
         at.set_exp(from_time=now, lifetime=timedelta(seconds=eff.access_token_lifetime_seconds))
         rt.set_exp(from_time=now, lifetime=timedelta(seconds=eff.idle_timeout_seconds))  # note: “idle” drives refresh exp
 
-        # Keep any custom claims you rely on (e.g., BOOT_ID)
-        boot_id = settings.SIMPLE_JWT.get("BOOT_ID")
+        boot_id = get_boot_id
         if boot_id:
             at["boot_id"] = boot_id
             rt["boot_id"] = boot_id
