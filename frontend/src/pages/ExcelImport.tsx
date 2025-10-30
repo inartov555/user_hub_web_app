@@ -7,8 +7,8 @@ import { Input } from "../components/input";
 
 // Tailwind + shadcn/ui-style minimal UI without extra deps
 // Drop this component anywhere in your frontend. It provides:
-// - File picker + submit to POST /api/import-excel/
-// - "Download template" that calls GET /api/import-excel/ (same endpoint) and downloads the .xlsx
+// - File picker + submit to POST /import-excel/
+// - "Download template" that calls GET /import-excel/ (same endpoint) and downloads the .xlsx
 // - Uses Bearer token (Authorization header) from localStorage
 // - Shows success summary (created/updated/errors)
 

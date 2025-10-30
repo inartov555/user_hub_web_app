@@ -76,7 +76,7 @@ export default function ProfileEdit() {
   if (error) return <div className="card p-4 text-red-600">{error}</div>;
   if (!data) return <div className="card p-4">{t("users.loading")}</div>;
 
-  const mediaBase = (import.meta.env.VITE_API_URL ?? "http://localhost:8000/api").replace(/\/api$/, "");
+  const mediaBase = (import.meta.env.VITE_API_URL ?? "http://localhost:8000/api/v1").replace(/\/api\/v1$/, "");
   const initials =
     ((data.user.first_name?.trim()?.[0] ?? "") + (data.user.last_name?.trim()?.[0] ?? "")).toUpperCase() ||
     data.user.username?.[0]?.toUpperCase() ||

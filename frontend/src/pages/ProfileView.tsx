@@ -63,7 +63,7 @@ export default function ProfileView() {
       </div>
     );
 
-  const mediaBase = (import.meta.env.VITE_API_URL ?? "http://localhost:8000/api").replace(/\/api$/, "");
+  const mediaBase = (import.meta.env.VITE_API_URL ?? "http://localhost:8000/api/v1").replace(/\/api\/v1$/, "");
   const fullName =
     [profile.user?.first_name, profile.user?.last_name].filter(Boolean).join(" ") || "—";
 
