@@ -110,8 +110,29 @@ class EmailOrUsernameTokenCreateSerializer(TokenObtainPairSerializer):
             if k != login_field:
                 attrs.pop(k, None)
 
-        # 5) delegate to Djoser (this will validate credentials & active user)
-        return super().validate(attrs)
+        # 5) Delegate auth to the base class (sets self.user if OK)
+        _ = super().validate(attrs)
+
+        # 6) Rebuild tokens so we can enforce DB-driven expiries and add claims
+        eff = get_effective_auth_settings()
+        now = timezone.now()
+
+        refresh = self.get_token(self.user)
+        refresh.set_exp(from_time=now, lifetime=timedelta(seconds=eff.idle_timeout_seconds))
+
+        access: AccessToken = refresh.access_token
+        access.set_exp(from_time=now, lifetime=timedelta(seconds=eff.access_token_lifetime_seconds))
+
+        boot_id = get_boot_id()
+        if boot_id:
+            # include the boot id on both tokens
+            refresh["boot_id"] = boot_id
+            access["boot_id"] = boot_id
+
+        return {
+            "refresh": str(refresh),
+            "access": str(access),
+        }
 
     # DRF's BaseSerializer declares abstract create/update; implement stubs for pylint.
     def create(self, validated_data: Dict[str, Any]) -> Dict[str, Any]:
