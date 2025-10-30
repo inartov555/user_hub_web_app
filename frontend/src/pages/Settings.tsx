@@ -59,6 +59,9 @@ export default function Settings() {
     <div className="max-w-xl mx-auto p-4 rounded-2xl shadow bg-white border">
       <div className="max-w-3xl mx-auto p-4">
         <h1 className="text-xl font-semibold mb-4">{t("appSettings.title")}</h1>
+        <p className="text-xs text-slate-500 mt-6">
+          {t("appSettings.noteNewSessions")}
+        </p>
         <form className="space-y-6" onSubmit={onSubmit}>
           <Field
             label={t("appSettings.jwtRenew")}
@@ -89,9 +92,6 @@ export default function Settings() {
             {error && <span className="text-red-600 text-sm">{error}</span>}
           </div>
         </form>
-        <p className="text-xs text-slate-500 mt-6">
-          {t("appSettings.noteNewSessions")}
-        </p>
       </div>
     </div>
   );

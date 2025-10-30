@@ -8,6 +8,7 @@ import tempfile
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from dotenv import load_dotenv
+
 from django.utils import translation
 
 
@@ -38,6 +39,16 @@ def _dir_writable(_path: Path) -> bool:
         pass
     return True
 
+def env_bool(name: str, default: str = "1") -> bool:
+    """
+    Safely get bool value from a configuration property
+    """
+    val = os.getenv(name, default)
+    if val is None:
+        return False
+    s = str(val).strip().lower()
+    return s in {"1", "true", "t", "yes", "y", "on"}
+
 load_dotenv()
 
 # This variable DEBUG can be (0, 1) which means not debug/debug
@@ -61,8 +72,8 @@ IDLE_TIMEOUT_SECONDS = int(os.getenv("IDLE_TIMEOUT_SECONDS", "900"))
 # Short access — forces periodic refreshes
 ACCESS_TOKEN_LIFETIME = timedelta(seconds=int(os.getenv("ACCESS_TOKEN_LIFETIME", "1800")))
 # Turn on rotation so that each refresh "slides" the window forward
-ROTATE_REFRESH_TOKENS = bool(os.getenv("ROTATE_REFRESH_TOKENS", "1"))
-BLACKLIST_AFTER_ROTATION = bool(os.getenv("BLACKLIST_AFTER_ROTATION", "1"))
+ROTATE_REFRESH_TOKENS = env_bool(os.getenv("ROTATE_REFRESH_TOKENS", "1"))
+BLACKLIST_AFTER_ROTATION = env_bool(os.getenv("BLACKLIST_AFTER_ROTATION", "1"))
 ALGORITHM = str(os.getenv("ALGORITHM", "HS256"))
 SECRET_KEY = str(os.getenv("SECRET_KEY", "dev-secret"))
 SIGNING_KEY = SECRET_KEY
