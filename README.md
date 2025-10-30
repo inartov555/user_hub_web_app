@@ -80,31 +80,6 @@ user_hub_web_app/
 
 ---
 
-## 🛠️ Local development (no Docker)
-
-### Backend
-```
-cd backend
-python -m venv .venv && source .venv/bin/activate
-pip install -r requirements.txt
-cp .env.example .env  # adjust if needed
-python manage.py migrate
-python manage.py createsuperuser
-python manage.py runserver 0.0.0.0:8000
-```
-
-### Frontend
-```
-cd frontend
-npm install
-# Point the SPA to your API (optional; defaults to /api)
-# echo 'VITE_API_URL=http://localhost:8000/api' > .env.local
-npm run dev
-# Visit http://localhost:5173
-```
-
----
-
 ## 🔐 Authentication
 
 - Login via `POST /api/auth/jwt/create/` with either **email** or **username** + password.
@@ -126,12 +101,6 @@ npm run dev
 
 Endpoint: `POST /api/import-excel/` with a file named `file` (multipart).  
 Use the example file at `test_data/import_template_EXAMPLE.xlsx` as a template.
-
----
-
-## 📚 API Reference
-
-See the full, living **API** contract in [`api_reference.md`](./api_reference.md) and Swagger at `/api/docs/`.
 
 ---
 
