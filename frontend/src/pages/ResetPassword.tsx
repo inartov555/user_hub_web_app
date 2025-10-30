@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 import { api } from "../lib/axios";
 import FormInput from "../components/FormInput";
 import Button from "../components/button";
+import { extractApiError } from "../lib/httpErrors";
 
 export default function ResetPassword() {
   const { t, i18n } = useTranslation();
