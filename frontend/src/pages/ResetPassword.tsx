@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { api } from "../lib/axios";
 import FormInput from "../components/FormInput";
+import Button from "../components/button";
 
 export default function ResetPassword() {
   const { t, i18n } = useTranslation();
@@ -21,7 +22,7 @@ export default function ResetPassword() {
       {sent ? <p>{t("resetPassword.checkEmailForResetLink")}</p> : (
         <form onSubmit={onSubmit} className="space-y-3">
           <FormInput placeholder="Email" type="email" value={email} onChange={e=>setEmail(e.target.value)} required />
-          <button className="btn w-full" type="submit">{t("resetPassword.sendResetEmail")}</button>
+          <Button variant="secondary" className="gap-2" type="submit">{t("resetPassword.sendResetEmail")}</Button>
         </form>
       )}
       <div className="mt-4 text-sm flex justify-between">
