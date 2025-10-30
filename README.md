@@ -25,8 +25,6 @@ It demonstrates modern JWT auth, profile management, Excel import, online‑user
 - **OpenAPI JSON:** http://localhost:8000/api/schema/
 - **Frontend:** depends on your setup (Nginx or `npm run dev`); see below.
 
-> The provided `run_web_site.sh` can set up a local workspace and run everything end‑to‑end with sane defaults.
-
 ---
 
 ## 🔑 Admin credentials (dev)
