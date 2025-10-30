@@ -11,7 +11,6 @@ type ProfileUser = {
   email: string;
   first_name?: string | null;
   last_name?: string | null;
-  bio?: string | null;
 };
 
 type Profile = {
@@ -104,7 +103,7 @@ export default function ProfileView() {
         </div>
 
         <div>
-          <Field label={t("excelImport.bio")} value={String(profile.user?.bio ?? "—")} />
+          <Field label={t("excelImport.bio")} value={String(profile?.bio ?? "—")} />
         </div>
 
         <div className="pt-2">

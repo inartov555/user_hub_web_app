@@ -115,7 +115,8 @@ export default function Navbar() {
         <div className="flex items-center gap-3 justify-self-end">
           {user && (
             <>
-              <div className="bg-gray-200 border rounded-full px-2 py-1 text-sm flex items-center gap-2">
+              <div className="bg-gray-200 border rounded-full px-2 py-1 text-sm flex items-center gap-2 dark:bg-slate-900 dark:text-slate-100 dark:placeholder-slate-500
+            dark:border-slate-700">
                 <span className="text-sm">
                   {t("app.hiUser", { username: user.username })}
                 </span>

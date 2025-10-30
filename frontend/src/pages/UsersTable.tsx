@@ -336,7 +336,8 @@ export default function UsersTable(props: Props) {
             placeholder={t("users.search")}
             value={globalFilter}
             onChange={(e) => setGlobalFilter(e.target.value)}
-            className="w-48"
+            className="w-48 dark:bg-slate-900 dark:text-slate-100 dark:placeholder-slate-500
+            dark:border-slate-700"
           />
 
           {/* Columns menu */}
@@ -346,7 +347,8 @@ export default function UsersTable(props: Props) {
             </Button>
             {showColumns && (
               <div
-                className="absolute right-0 z-10 mt-2 w-56 rounded-md border bg-white p-2 shadow-lg"
+                className="absolute right-0 z-10 mt-2 w-56 rounded-md border bg-white p-2 shadow-lg dark:bg-slate-900 dark:text-slate-100 dark:placeholder-slate-500
+                  dark:border-slate-700"
                 role="menu"
               >
                 <div className="px-2 py-1 text-xs font-medium text-slate-500">{t("users.toggleColumns")}</div>
@@ -514,7 +516,8 @@ export default function UsersTable(props: Props) {
             <label className="flex items-center gap-2">
               {t("users.rowsPerPage")}
               <select
-                className="rounded-md border bg-background px-2 py-1"
+                className="rounded-md border bg-background px-2 py-1 dark:bg-slate-900 dark:text-slate-100 dark:placeholder-slate-500
+                  dark:border-slate-700"
                 value={table.getState().pagination.pageSize}
                 onChange={(e) => {
                   const ps = Number(e.target.value);
