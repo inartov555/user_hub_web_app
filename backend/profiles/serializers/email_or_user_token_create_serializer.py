@@ -24,6 +24,16 @@ class EmailOrUsernameTokenCreateSerializer(TokenObtainPairSerializer):
     """
 
     @classmethod
+    def get_token(cls, user) -> RefreshToken:
+        """
+        SimpleJWT expects get_token() to return a RefreshToken.
+        We’ll customize claims & lifetimes inside validate(), where we can
+        set both refresh and access consistently.
+        """
+        return RefreshToken.for_user(user)
+
+    '''
+    @classmethod
     def get_token(cls, user) -> dict:
         """
         Getting token
@@ -43,6 +53,7 @@ class EmailOrUsernameTokenCreateSerializer(TokenObtainPairSerializer):
             rt["boot_id"] = boot_id
 
         return at, rt
+    '''
 
     def _resolve_login_field(self) -> str:
         """
