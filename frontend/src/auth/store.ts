@@ -1,10 +1,13 @@
 import { create } from "zustand";
+import { jwtDecode } from "jwt-decode";
+
+type JwtPayload = { exp?: number };
 
 const decodeAccessExp = (jwt: string | null): number | null => {
   if (!jwt) return null;
   try {
-    const payload = JSON.parse(atob(jwt.split(".")[1]));
-    return typeof payload?.exp === "number" ? payload.exp * 1000 : null;
+    const { exp } = jwtDecode<JwtPayload>(jwt);   // ✅ reliable exp
+    return typeof exp === "number" ? exp * 1000 : null;
   } catch {
     return null;
   }

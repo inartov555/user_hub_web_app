@@ -104,7 +104,12 @@ api.interceptors.request.use(async (config) => {
         const { access, refresh } = resp.data || {};
         if (!access) throw new Error("No access token in refresh response");
 
+        // Update store (keeps accessExpiresAt correct and rotates refresh if provided)
         useAuthStore.getState().applyRefreshedTokens(access, refresh);
+
+        // Keep localStorage in sync if the app reads tokens from there elsewhere
+        localStorage.setItem("access", access);
+        if (refresh) localStorage.setItem("refresh", refresh);
       } catch (e) {
         // cannot refresh -> clear and let response flow to 401 handler
         useAuthStore.getState().logout?.();
