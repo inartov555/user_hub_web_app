@@ -29,25 +29,18 @@ class EmailOrUsernameTokenCreateSerializer(TokenObtainPairSerializer):
         Getting token
         """
         # Snapshot effective settings at the moment of login
-        eff = get_effective_auth_settings()
-
-        # Temporarily override token lifetimes for this issuance only
-        prev_access = AccessToken.lifetime
-        prev_refresh = RefreshToken.lifetime
+        eff = get_effective_auth_settings()  # <- snapshot DB overrides now
+        prev_access, prev_refresh = AccessToken.lifetime, RefreshToken.lifetime
         try:
             AccessToken.lifetime = timedelta(seconds=eff.access_token_lifetime_seconds)
-            # We use "idle timeout" as refresh lifetime as in your core.settings
             RefreshToken.lifetime = timedelta(seconds=eff.idle_timeout_seconds)
 
-            token = super().get_token(user)  # REFRESH token
-            token["boot_id"] = int(get_boot_id())
-            # Include current renew threshold so clients can adapt
+            token = super().get_token(user)         # refresh token
+            token["boot_id"] = int(get_boot_id())    # stamp current boot epoch
             token["jwt_renew_at_seconds"] = eff.jwt_renew_at_seconds
             return token
         finally:
-            # Restore class attributes
-            AccessToken.lifetime = prev_access
-            RefreshToken.lifetime = prev_refresh
+            AccessToken.lifetime, RefreshToken.lifetime = prev_access, prev_refresh
 
     def _resolve_login_field(self) -> str:
         """

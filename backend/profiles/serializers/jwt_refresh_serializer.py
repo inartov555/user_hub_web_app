@@ -35,20 +35,16 @@ class CustomTokenRefreshSerializer(TokenRefreshSerializer):
         Validation
         """
         eff = get_effective_auth_settings()
-
         prev_access, prev_refresh = AccessToken.lifetime, RefreshToken.lifetime
         try:
             AccessToken.lifetime = timedelta(seconds=eff.access_token_lifetime_seconds)
             RefreshToken.lifetime = timedelta(seconds=eff.idle_timeout_seconds)
-
-            data = super().validate(attrs)  # { "access": "...", optionally "refresh": "..." }
-
+            data = super().validate(attrs)
             # stamp current boot id on returned tokens
             current_boot = int(get_boot_id())
             new_access = AccessToken(data["access"])
             new_access["boot_id"] = current_boot
             data["access"] = str(new_access)
-
             # if rotation is on and refresh is present, stamp boot id too
             if "refresh" in data:
                 new_rt = RefreshToken(data["refresh"])
