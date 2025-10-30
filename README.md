@@ -5,6 +5,35 @@ It demonstrates modern JWT auth, profile management, Excel import, online‑user
 
 ---
 
+## 🚀 Quick start (Docker)
+
+**Prereqs:** Docker & docker‑compose.
+
+```
+./run_web_site.sh param1 param2
+#
+#   - param1 - true - delete the DB data after stopping the service;
+#              false - preserve the DB data after stopping the service;
+#              default = false
+#   - param2 - true - starting service WITHOUT cached data (cache is cleared);
+#              false - starting the service WITH cache (allows to start the service faster);
+#              default = false
+```
+
+4) Open:
+- **API Swagger:** http://localhost:8000/api/docs/
+- **OpenAPI JSON:** http://localhost:8000/api/schema/
+- **Frontend:** depends on your setup (Nginx or `npm run dev`); see below.
+
+> The provided `run_web_site.sh` can set up a local workspace and run everything end‑to‑end with sane defaults.
+
+---
+
+## 🔑 Admin credentials (dev)
+- admin / changeme123 (development only—change for production).
+
+---
+
 ## ✨ Features
 
 - **JWT auth** via SimpleJWT + Djoser (login by **email or username**)
@@ -50,31 +79,6 @@ user_hub_web_app/
 |-- run_web_site.sh
 `-- test_data/import_template_EXAMPLE.xlsx
 ```
-
----
-
-## 🚀 Quick start (Docker)
-
-**Prereqs:** Docker & docker‑compose.
-
-1) Create a `.env` for the backend (optional – defaults work for local dev). See `backend/.env.example` for all keys.
-
-2) Start the stack:
-```
-docker compose up --build
-```
-
-3) Create a superuser (first time only):
-```
-docker compose exec api python manage.py createsuperuser
-```
-
-4) Open:
-- **API Swagger:** http://localhost:8000/api/docs/
-- **OpenAPI JSON:** http://localhost:8000/api/schema/
-- **Frontend:** depends on your setup (Nginx or `npm run dev`); see below.
-
-> The provided `run_web_site.sh` can set up a local workspace and run everything end‑to‑end with sane defaults.
 
 ---
 
