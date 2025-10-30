@@ -59,17 +59,11 @@ export default function Settings() {
     <div className="max-w-xl mx-auto p-4 rounded-2xl shadow bg-white border">
       <div className="max-w-3xl mx-auto p-4">
         <h1 className="text-xl font-semibold mb-4">{t("appSettings.title")}</h1>
-        <p className="text-xs text-slate-500 mt-6">
+        <p className="text-xs text-blue-800 mt-6">
           {t("appSettings.noteNewSessions")}
         </p>
+        <br />
         <form className="space-y-6" onSubmit={onSubmit}>
-          <Field
-            label={t("appSettings.jwtRenew")}
-            help={t("appSettings.jwtRenewHelp")}
-            value={form.JWT_RENEW_AT_SECONDS}
-            onChange={(v) => onChange("JWT_RENEW_AT_SECONDS", v)}
-            min={0}
-          />
           <Field
             label={t("appSettings.idleTimeout")}
             help={t("appSettings.idleTimeoutHelp")}

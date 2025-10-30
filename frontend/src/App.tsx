@@ -13,17 +13,10 @@ export default function App() {
   const location = useLocation();
   const [authReady, setAuthReady] = useState(false);
 
-  // fetchRuntimeAuth()
-  //  .then((rt) => useAuthStore.getState().setRuntimeAuth(rt))
-  //  .catch(() => {/* ignore */});
-
   useEffect(() => {
     bootstrapAuth().finally(() => setAuthReady(true));
     useAuthStore.getState().startIdleWatch();
     return () => useAuthStore.getState().stopIdleWatch();
-    // fetchRuntimeAuth()
-    //  .then((rt) => useAuthStore.getState().setRuntimeAuth(rt))
-    //  .catch(() => {/* ignore */});
   }, []);
 
   useEffect(() => {

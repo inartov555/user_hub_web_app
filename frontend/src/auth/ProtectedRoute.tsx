@@ -1,7 +1,14 @@
 import { Navigate, Outlet, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { jwtDecode } from "jwt-decode";
 import { useAuthStore } from "./store";
 import { bootstrapAuth } from "./bootstrap";
+
+function isExpired(t?: string|null) {
+  if (!t) return true;
+  try { const { exp } = jwtDecode<{exp:number}>(t); return !exp || Date.now() >= exp*1000; }
+  catch { return true; }
+}
 
 export default function ProtectedRoute() {
   const { user, accessToken } = useAuthStore();
@@ -28,7 +35,11 @@ export default function ProtectedRoute() {
   }, []);
 
   const hasTokens = !!(accessToken || localStorage.getItem("access"));
-  const mustRedirect = ready && !user && !hasTokens;
+  // const mustRedirect = ready && !user && !hasTokens;
+  const mustRedirect = !user || isExpired(accessToken);
+
+  useEffect(() => { if (mustRedirect) useAuthStore.getState().logout?.(); }, [mustRedirect]);
+
 
   useEffect(() => {
     if (mustRedirect) {
