@@ -330,7 +330,7 @@ export default function UsersTable(props: Props) {
   return (
     <Card className="w-full mx-auto">
       <CardHeader title={t("users.people")} />
-      <CardBody className="flex items-center justify-between gap-2">
+      <CardBody className="flex justify-end mt-2">
         <div className="flex items-center gap-2">
           <Input
             placeholder={t("users.search")}

@@ -118,9 +118,6 @@ export default function UserDeleteConfirm() {
         {error && <div className="text-sm text-red-600" style={{ whiteSpace: "pre-line" }}>{error}</div>}
 
         <div className="flex items-center gap-2">
-          <Button variant="secondary" onClick={handleCancel} disabled={loading}>
-            {t("userDeleteConfirm.cancel")}
-          </Button>
           <Button
             className="border-red-600 text-red-700 hover:bg-red-50"
             variant="secondary"
@@ -129,6 +126,9 @@ export default function UserDeleteConfirm() {
             title={t("userDeleteConfirm.deleteUsers")}
           >
             {loading ? t("userDeleteConfirm.deleting") : `${t("users.deleteSelected")} ${users.length}`}
+          </Button>
+          <Button variant="secondary" className="border-red-600 text-red-700 hover:bg-red-50" onClick={handleCancel} disabled={loading}>
+            {t("userDeleteConfirm.cancel")}
           </Button>
         </div>
       </CardBody>
