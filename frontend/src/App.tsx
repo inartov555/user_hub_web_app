@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 import { useAuthStore } from "./auth/store";
 import { bootstrapAuth } from "./auth/bootstrap";
 import Navbar from "./components/Navbar";
+import { fetchRuntimeAuth } from "./lib/axios";
 
 export default function App() {
   const { t, i18n } = useTranslation();
@@ -11,6 +12,10 @@ export default function App() {
   const navigate = useNavigate();
   const location = useLocation();
   const [authReady, setAuthReady] = useState(false);
+
+  fetchRuntimeAuth()
+    .then((rt) => useAuthStore.getState().setRuntimeAuth(rt))
+    .catch(() => {/* ignore */});
 
   useEffect(() => {
     bootstrapAuth().finally(() => setAuthReady(true));
