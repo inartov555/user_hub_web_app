@@ -46,8 +46,7 @@ def env_bool(prop_val: str, default: str = "1") -> bool:
     if prop_val:
         str_val = str(prop_val).strip().lower()
         return str_val in {"1", "true", "t", "yes", "y", "on"}
-    else:
-        return default in {"1", "true", "t", "yes", "y", "on"}
+    return default in {"1", "true", "t", "yes", "y", "on"} if default else False
 
 load_dotenv()
 
