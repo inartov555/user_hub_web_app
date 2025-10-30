@@ -1,127 +1,126 @@
-## Project Architecture Overview
+# Project Architecture
 
-This repository implements a **3‑service, containerised SPA**:
+This repository implements a **containerised SPA** with a typed React frontend and a Django/DRF backend.
 
 ```
 [ Browser SPA ]  ──HTTP──>  [ Nginx (frontend) ]  ──/api/*──>  [ Django REST API ]  ──SQL──>  [ PostgreSQL ]
        |                              |                             |
-   React + TS +                       |                             |-- DRF Spectacular (OpenAPI)
+   React + TS +                       |                             |-- DRF Spectacular (OpenAPI + Swagger)
    TanStack Query                     |                             |-- Djoser + SimpleJWT (JWT auth)
-   Zustand auth state                 |                             |-- Profiles app (users/profiles)
-```
-
-- **Frontend**: Vite + React + TypeScript + Tailwind, built into static assets and served by **Nginx**.  
-  Nginx proxies `/api/` to the backend container; all other routes serve the SPA (`index.html`) to support refresh/deep links.
-- **Backend**: Django 5 + DRF + Djoser + **SimpleJWT**, plus the `profiles` domain app.  
-  Two custom middlewares were added recently:
-  - `LastActivityMiddleware` – updates `profile.last_activity` for each authenticated request.
-  - `JWTAuthenticationMiddleware` – _stateless_ header‑based auth; extracts/validates **Access** tokens from `Authorization: Bearer …`.  
-    It does **not** manage cookies; refresh is performed via the `/api/auth/jwt/refresh/` endpoint from the client.
-- **Database**: PostgreSQL 16 with a named Docker volume (`pgdata`) for persistence.
-
----
-
-## Top‑Level Layout
-
-```
-user_hub_web_app/
-├─ docker-compose.yml
-├─ backend/
-│  ├─ core/               # Django project (settings, urls, wsgi)
-│  └─ profiles/           # Users/Profile domain, serializers, views, middleware
-└─ frontend/              # Vite React app, built and served by Nginx
-```
-
-### Containers & Ports
-
-| Service     | Image/Build                     | Port (host→container) | Notes |
-|-------------|----------------------------------|-----------------------|------|
-| `db`        | `postgres:16`                   | `5432 → 5432`         | Database `usersdb` |
-| `backend`   | `python:3.12-slim` (multi‑stage) | `8000 → 8000`         | Runs `python manage.py runserver 0.0.0.0:8000` (swap to Gunicorn for prod) |
-| `frontend`  | build with Node 20 → `nginx:1.27` | `5173 → 80`           | Serves SPA and proxies `/api/` to `backend:8000` |
-
-**Nginx proxy rule (excerpt):**
-```nginx
-location /api/ { proxy_pass http://backend:8000/api/; }
-location /      { try_files $uri /index.html; }  # SPA fallback
+   Zustand auth state                 |                             |-- Profiles app (users/profiles/settings)
 ```
 
 ---
 
-## Backend Details
+## Components
 
-- **Auth**: Djoser + SimpleJWT
-  - `POST /api/auth/jwt/create/` → obtain **access**/**refresh** tokens
-  - `POST /api/auth/jwt/refresh/` → obtain a new **access** token (optionally rotate refresh depending on settings)
-- **Schema/Docs**: DRF Spectacular
-  - `GET /api/schema/` (OpenAPI 3) and `GET /api/docs/` (Swagger UI)
-- **Profiles app**:
-  - `GET /api/users/` … standard CRUD via `UsersViewSet`
-  - `GET /api/me/profile/` … current user profile
-  - `GET /api/stats/online-users/` … users active within last **5 minutes** (uses `profile.last_activity`)
-  - `POST /api/import-excel/` … **bulk upsert** users & profiles from an uploaded Excel file
-- **Middleware**:
-  - `profiles.middleware.LastActivityMiddleware` – sets `Profile.last_activity = timezone.now()` after a successful authenticated request.
-  - `profiles.middleware.JWTAuthenticationMiddleware` – validates access tokens from headers; sets `request.user`; may expose `request.new_access_token` when nearing expiry (client still refreshes via API).
-- **Logging**:
-  - JSON config at `profiles/tools/logger/logging.json`. Root logger writes to a file handler; app logger name: `utaf`.
+### Frontend (Vite + React + TS)
+- **State:** Zustand store for auth (`access`, `refresh`, `user`).
+- **Data fetching:** TanStack Query with request de‑duplication, caching and retries.
+- **HTTP:** Axios instance at `src/lib/axios.ts` with an **interceptor** that:
+  - attaches `Authorization: Bearer <access>`,
+  - decodes expiry to proactively **refresh** near `JWT_RENEW_AT_SECONDS`,
+  - queues concurrent requests during an inflight refresh,
+  - retries once after a successful refresh.
+- **Routing & guards:** ProtectedRoute ensures authenticated access to private pages.
+- **Styling:** Tailwind; UI primitives in `src/components/*`.
+- **i18n:** JSON dictionaries under `src/locale/*`, initialized in `src/lib/i18n.ts`.
 
-> Note: No Celery/Redis queue is used. Excel import runs within the request (synchronous).
+### Backend (Django + DRF)
+- **Apps:** `core` (settings/urls), `profiles` (users, profiles, settings, import, stats).
+- **Auth:** Djoser for endpoints, SimpleJWT for tokens, custom serializers to allow **email or username** login.
+- **OpenAPI:** `drf-spectacular` exposes `/api/schema/` and `/api/docs/`.
+- **Filtering/sorting:** `django-filter`, `OrderingFilter`, `SearchFilter` on list endpoints.
+- **CORS:** `django-cors-headers` configured in settings.
+- **Internationalization:** backend messages localized; language normalization middleware.
 
----
-
-## Frontend Details
-
-- **Stack**: React + TypeScript, TailwindCSS, TanStack Query, React Router, Zustand.
-- **Base URL**: `VITE_API_URL` (Docker build ARG & env) – defaults to `/api`.
-- **Auth flow**:
-  1. User logs in via Djoser (`/api/auth/jwt/create/`).
-  2. Access token is attached in `Authorization: Bearer <token>`.
-  3. An Axios **response interceptor** handles `401` with `token_not_valid` by calling `/api/auth/jwt/refresh/` once, then retries the original request.  
-     If refresh fails, it clears Zustand auth state and navigates to `/login`.
-- **Online users UI**: `/stats` calls `/stats/online-users/` and lists users with activity in last 5 minutes.
+### Database
+- PostgreSQL 16 (Docker). Migrations are managed by Django.
 
 ---
 
-## Environment & Configuration
+## Custom middleware
 
-### Backend `.env` (see `backend/.env.example`)
-- `DEBUG=1`
-- Database connection envs (`POSTGRES_*`) are supplied by Compose networking.
-- SimpleJWT behaviour (expiry/rotation/blacklisting) is configured in `core/settings.py` via `SIMPLE_JWT` dict.
-- Static/media settings are standard; media is served in DEBUG only.
+1) **JWT authentication middleware** (`profiles/middleware/jwt_authentication_middleware.py`)  
+   Extracts access token strictly from the **Authorization header**, validates it, sets `request.user` for DRF,
+   and marks requests that are close to expiry so the client can refresh. It does **not** issue new tokens.
 
-### Frontend build ARGs / env
-- `VITE_API_URL` (ex: `http://localhost:8000/api` in local‑non‑proxy setups).  
-  In Docker, Nginx proxies `/api/` so `VITE_API_URL` can remain `/api`.
+2) **Idle timeout middleware** (`profiles/middleware/idle_timeout_middleware.py`)  
+   Tracks last activity and rejects requests after `IDLE_TIMEOUT_SECONDS` of inactivity to enforce re‑auth.
 
----
+3) **Last activity** (`profiles/middleware/last_activity_middle_ware.py`)  
+   Records per‑user activity timestamps used by the **online users** endpoint.
 
-## Local Development
+4) **Boot‑ID enforcer** (`profiles/middleware/boot_id_enforcer.py`)  
+   Embeds a boot epoch in tokens and rejects requests when the server boots with a **new epoch** (deploy/restart),
+   forcing clients to refresh and preventing acceptance of stale tokens after redeploys.
 
-- **Docker (recommended)**
-  - `./run_web_site.sh [delete_db=true|false] [no_cache=true|false]`
-  - Containers:
-    - Postgres with volume `pgdata`
-    - Backend served on `http://localhost:8000`
-    - Frontend+Nginx on `http://localhost:5173`
-- **Non‑Docker**
-  - Backend: create venv, `pip install -r backend/requirements.txt`, `python backend/manage.py runserver`.
-  - Frontend: `npm i` then `npm run dev` (ensure `VITE_API_URL=http://localhost:8000/api`).
+5) **Language normalizer** (`profiles/middleware/normalize_language_middleware.py`)  
+   Normalizes `Accept-Language`/query params to configured locales and activates Django translations.
 
 ---
 
-## Security Notes
+## Auth timing & runtime settings
 
-- Pure **header‑based JWT**; no auth cookies. CORS allowed origins must be configured if serving frontend from a different origin.
-- Refresh rotation/blacklisting is supported if `token_blacklist` app is enabled; current setup keeps refresh explicit on client.
-- Nginx only proxies `/api/` to the backend; static SPA assets are immutable‑cached under `/assets/`.
+Runtime‑tunable values are persisted in the `AppSetting` model and merged with defaults from Django settings:
+
+- `ACCESS_TOKEN_LIFETIME` (seconds) – DRF SimpleJWT access token TTL
+- `JWT_RENEW_AT_SECONDS` – how long **before** expiry the client should refresh
+- `IDLE_TIMEOUT_SECONDS` – how long of inactivity before user must re‑authenticate
+
+Effective values are exposed at:
+- `GET /api/system/settings/` (read) and `PUT /api/system/settings/` (update)
+- `GET /api/system/runtime-auth/` (read‑only effective values)
+
+The frontend periodically reads these and adjusts its interceptor thresholds.
 
 ---
 
-## Known Limitations / Next Steps
+## Request flow
 
-- Switch backend command to **Gunicorn** for production.
-- Add unit/integration tests for Excel import and JWT middleware.
-- Consider rate‑limiting and stricter CORS in production.
-- Add health/readiness endpoints for backend & Nginx.
+1) SPA makes a request → Axios attaches `Authorization: Bearer <access>`.
+2) Backend middleware authenticates the token and enforces boot‑id and idle timeout.
+3) DRF view/serializer handles the request.
+4) If a 401 is returned due to expiry, the interceptor attempts **one refresh** via `/auth/jwt/refresh/` and retries.
+5) On repeated failure, the SPA clears auth state and redirects to `/login`.
+
+---
+
+## Internationalization (i18n)
+
+- **Frontend:** string keys resolved by `react-i18next`; locale switcher in the UI.
+- **Backend:** `gettext` for server messages; language normalized & activated by middleware.
+
+---
+
+## Static/media
+
+- Frontend build produces static assets served by Nginx.
+- User avatars and other uploads are served from `/media/…` (Django `MEDIA_URL`). Serializers emit absolute URLs.
+
+---
+
+## Observability & DX
+
+- OpenAPI/Swagger at `/api/docs/` for quick exploration.
+- Clear error responses using DRF’s standard format.
+- Developer helper script: `run_web_site.sh` sets up a local workspace and launches services.
+
+---
+
+## Security considerations
+
+- Short‑lived access token; refresh handled explicitly, not via cookies.
+- Boot‑id invalidation to prevent token reuse across deployments.
+- Strong password validation; admin‑only password reset endpoint.
+- CORS restricted; Authorization header only (no token in cookies/localStorage persisted by default).
+- Input validation on Excel import.
+
+---
+
+## Future improvements
+
+- Rate limiting (DRF throttling) and audit logging
+- E2E tests (Playwright/Cypress) + API tests (pytest + APIClient)
+- Background task queue for heavy Excel imports
+- S3‑backed media storage for production
