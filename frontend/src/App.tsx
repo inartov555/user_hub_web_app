@@ -5,6 +5,7 @@ import { useAuthStore } from "./auth/store";
 import { bootstrapAuth } from "./auth/bootstrap";
 import Navbar from "./components/Navbar";
 import { fetchRuntimeAuth, api } from "./lib/axios";
+import LocaleFlagBackground from "./components/LocaleFlagBackground";
 
 export function AppShellHeartbeat() {
   useEffect(() => {
@@ -66,6 +67,7 @@ export default function App() {
   }
 
   return (
+    <LocaleFlagBackground className="min-h-screen p-6">
     <div className="min-h-screen">
       <AppShellHeartbeat />
       <Navbar />
@@ -77,5 +79,6 @@ export default function App() {
         <div></div>
       )}
     </div>
+    </LocaleFlagBackground>
   );
 }
