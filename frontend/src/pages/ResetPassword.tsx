@@ -10,11 +10,22 @@ export default function ResetPassword() {
   const { t, i18n } = useTranslation();
   const [email, setEmail] = useState("");
   const [sent, setSent] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    await api.post("/auth/users/reset_password/", { email });
-    setSent(true);
+    setLoading(true);
+    setError(null);
+    try {
+      await api.post("/auth/users/reset_password/", { email });
+      setSent(true);
+    } catch (err: any) {
+      const parsed = extractApiError(err as unknown);
+      setError(parsed.message);
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
@@ -30,6 +41,7 @@ export default function ResetPassword() {
             dark:bg-slate-900 dark:text-slate-100 dark:placeholder-slate-500
             dark:border-slate-700
           " value={email} onChange={e=>setEmail(e.target.value)} required />
+          {error && <p className="text-red-600 text-sm">{error}</p>}
           <div className="mt-2 flex justify-center">
             <Button variant="secondary" className="gap-2" type="submit">{t("resetPassword.sendResetEmail")}</Button>
           </div>
