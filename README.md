@@ -21,8 +21,8 @@ It demonstrates modern JWT auth, profile management, Excel import, online‑user
 ```
 
 4) Open:
-- **API Swagger:** http://localhost:8000/api/docs/
-- **OpenAPI JSON:** http://localhost:8000/api/schema/
+- **API Swagger:** http://localhost:8000/api/v1/docs/
+- **OpenAPI JSON:** http://localhost:8000/api/v1/schema/
 - **Frontend:** depends on your setup (Nginx or `npm run dev`); see below.
 
 ---
@@ -55,7 +55,7 @@ It demonstrates modern JWT auth, profile management, Excel import, online‑user
 - **Frontend:** React, Vite, TypeScript, TanStack Query, Zustand, Tailwind, Lucide Icons
 - **DB:** PostgreSQL 16
 - **Container orchestration:** docker‑compose
-- **Docs/Dev tooling:** Swagger UI at `/api/docs/`, OpenAPI at `/api/schema/`
+- **Docs/Dev tooling:** Swagger UI at `/api/v1/docs/`, OpenAPI at `/api/v1/schema/`
 
 ---
 
@@ -82,7 +82,7 @@ user_hub_web_app/
 
 ## 🔐 Authentication
 
-- Login via `POST /api/auth/jwt/create/` with either **email** or **username** + password.
+- Login via `POST /api/v1/auth/jwt/create/` with either **email** or **username** + password.
 - Access token is attached to `Authorization: Bearer <token>`. Refresh token is stored in memory in the SPA store.
 - Axios interceptor performs **token refresh** at 401/near‑expiry and retries the original request.
 - **Idle timeout & renew‑at** thresholds are enforced by custom middleware; see **Architecture** for details.
@@ -99,7 +99,7 @@ user_hub_web_app/
 
 ## 📦 Excel import
 
-Endpoint: `POST /api/import-excel/` with a file named `file` (multipart).  
+Endpoint: `POST /api/v1/import-excel/` with a file named `file` (multipart).  
 Use the example file at `test_data/import_template_EXAMPLE.xlsx` as a template.
 
 ---
@@ -126,7 +126,7 @@ Use the example file at `test_data/import_template_EXAMPLE.xlsx` as a template.
 - `ACCESS_TOKEN_LIFETIME` (seconds), `IDLE_TIMEOUT_SECONDS`, `JWT_RENEW_AT_SECONDS` (defaults in settings)
 
 **Frontend:**
-- `VITE_API_URL` (default `/api`)
+- `VITE_API_URL` (default `/api/v1`)
 
 ---
 
