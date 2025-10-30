@@ -40,12 +40,6 @@ export default function Login() {
       const intended = localStorage.getItem("postLoginRedirect");
       if (intended) localStorage.removeItem("postLoginRedirect");
       navigate(intended || "/users", { replace: true }); // navigating to /users and clearing back history
-
-      // @DUPLICATE 3 LINES ABOVE
-      // respect the ProtectedRoute’s saved destination
-      // const intended = localStorage.getItem("postLoginRedirect");
-      // if (intended) localStorage.removeItem("postLoginRedirect");
-      // window.location.replace(intended || "/users"); // hard navigation beats any race
     } catch (err: any) {
       const parsed = extractApiError(err as unknown);
       setError(`${parsed.message}`);
