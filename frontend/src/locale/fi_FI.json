@@ -69,6 +69,7 @@
     "selectedFile": "Valittu:"
   },
   "profileEdit": {
+    "editProfile": "Muokkaa profiilia",
     "profileLoadError": "Profiilin lataaminen epäonnistui.",
     "save": "Tallenna",
     "profileAvatar": "Profiilikuva"

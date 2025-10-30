@@ -69,6 +69,7 @@
     "selectedFile": "Valitud:"
   },
   "profileEdit": {
+    "editProfile": "Muuda profiili",
     "profileLoadError": "Profiili laadimine ebaõnnestus.",
     "save": "Salvesta",
     "profileAvatar": "Profiilipilt"

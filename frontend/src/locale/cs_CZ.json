@@ -69,6 +69,7 @@
     "selectedFile": "Vybráno:"
   },
   "profileEdit": {
+    "editProfile": "Upravit profil",
     "profileLoadError": "Načtení profilu se nezdařilo.",
     "save": "Uložit",
     "profileAvatar": "Profilová fotka"

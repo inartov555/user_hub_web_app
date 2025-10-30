@@ -69,6 +69,7 @@
     "selectedFile": "Вибрано:"
   },
   "profileEdit": {
+    "editProfile": "Редагувати профіль",
     "profileLoadError": "Не вдалося завантажити профіль.",
     "save": "Зберегти",
     "profileAvatar": "Фото профілю"
