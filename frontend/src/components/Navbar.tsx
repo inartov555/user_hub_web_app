@@ -3,6 +3,7 @@ import { NavLink, Link, useLocation, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useAuthStore } from "../auth/store";
 import { LocaleFlag } from "./LocaleFlag";
+import Brand from "./Brand";
 
 export default function Navbar() {
   const { t, i18n } = useTranslation();
@@ -12,11 +13,11 @@ export default function Navbar() {
   const navigate = useNavigate();
   // Unified tab styles
   const tabCls = (isActive: boolean) =>
-    `px-3 py-1 rounded-lg transition-colors ${
-      isActive
-        ? "bg-slate-900 text-white"
-        : "bg-gray-200 text-blue-800 hover:bg-slate-100"
-    }`;
+  `px-3 py-1 rounded-lg transition-colors border ${
+    isActive
+      ? "bg-slate-900 text-white border-slate-900 shadow-soft"
+      : "bg-white/60 text-slate-700 border-slate-200 hover:bg-white shadow-soft"
+  }`;
   // Helper: treat multiple routes as active for one tab
   const isProfileActive = pathname.startsWith("/profile-view") || pathname.startsWith("/profile-edit");
     // "Additional" tab logic
@@ -49,23 +50,9 @@ export default function Navbar() {
       {/* 3-column grid: Left (logo) | Middle (two tab rows) | Right (user/lang) */}
       <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-[auto_1fr_auto] items-start gap-3 p-3">
         {/* Left: app title */}
-        <Link
-          to="/"
-          className="mr-[30px] inline-flex items-center gap-2 rounded-2xl
-                     px-3 py-1.5 text-sm font-semibold tracking-wide
-                     bg-gradient-to-r from-indigo-50 to-purple-50
-                     border border-indigo-200/70 text-slate-900 shadow-sm
-                     hover:from-indigo-100 hover:to-purple-100
-                     hover:shadow-md hover:ring-1 hover:ring-indigo-300 transition"
-          aria-label={t('app.title')}
-        >
-          <span className="inline-flex h-6 w-6 items-center justify-center
-                           rounded-full bg-indigo-600 text-white text-xs
-                           font-bold shadow ring-1 ring-white/60">
-            UA
-          </span>
-          <span>{t("app.title")}</span>
-        </Link>
+        <div className="justify-self-start">
+          <Brand title={t("app.title")} />
+        </div>
 
         {/* Middle: TWO ROWS, left-aligned; row 2 starts exactly under row 1 */}
         <div className="justify-self-start w-full">
@@ -105,7 +92,7 @@ export default function Navbar() {
               )}
             </nav>
 
-            {/* Row 2 (staff-only) — hidden until Additional is active or a second-row route is active */}
+            {/* Row 2 - hidden until Additional is active or a second-row route is active */}
             {user?.is_staff && isAdditionalActive && (
               <nav id="secondary-nav" className="flex flex-wrap gap-2 md:gap-4">
                 <NavLink to="/stats" className={({ isActive }) => tabCls(isActive)}>

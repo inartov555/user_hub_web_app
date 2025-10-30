@@ -1,14 +1,22 @@
-import * as React from "react";
+import React from "react";
 
-export function Card({ className = "", ...props }: React.HTMLAttributes<HTMLDivElement>) {
-  return <div className={`bg-white/80 backdrop-blur rounded-2xl shadow-md ${className}`} {...props} />;
+export function Card({ children, className = "" }: React.PropsWithChildren<{ className?: string }>) {
+  return (
+    <div className={`rounded-2xl bg-white/80 backdrop-blur border border-white/60 shadow-card ${className}`}>
+      {children}
+    </div>
+  );
 }
-export function CardHeader({ className = "", ...props }: React.HTMLAttributes<HTMLDivElement>) {
-  return <div className={`p-6 ${className}`} {...props} />;
+
+export function CardHeader({ title, subtitle }: { title: string; subtitle?: string }) {
+  return (
+    <div className="px-4 sm:px-6 pt-4 sm:pt-5 pb-2">
+      <h2 className="text-base sm:text-lg font-semibold text-slate-900">{title}</h2>
+      {subtitle && <p className="text-sm text-slate-500 mt-0.5">{subtitle}</p>}
+    </div>
+  );
 }
-export function CardTitle({ className = "", ...props }: React.HTMLAttributes<HTMLHeadingElement>) {
-  return <h2 className={`text-xl font-semibold ${className}`} {...props} />;
-}
-export function CardContent({ className = "", ...props }: React.HTMLAttributes<HTMLDivElement>) {
-  return <div className={`p-6 pt-0 ${className}`} {...props} />;
+
+export function CardBody({ children, className = "" }: React.PropsWithChildren<{ className?: string }>) {
+  return <div className={`px-4 sm:px-6 pb-4 sm:pb-6 ${className}`}>{children}</div>;
 }

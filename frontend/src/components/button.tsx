@@ -1,14 +1,14 @@
-import * as React from "react";
+import React from "react";
 
-type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
-  variant?: "default" | "outline";
-  size?: "sm" | "md";
+type Props = React.ButtonHTMLAttributes<HTMLButtonElement> & {
+  variant?: "primary" | "secondary" | "ghost";
 };
-
-export function Button({ variant = "default", size = "md", className = "", ...props }: ButtonProps) {
-  const base = "inline-flex items-center justify-center rounded-xl px-4 py-2 border transition-colors";
-  const v = variant === "outline" ? "border-slate-200 bg-transparent hover:bg-slate-50"
-                                  : "border-slate-200 bg-white hover:bg-slate-50";
-  const s = size === "sm" ? "text-sm px-3 py-1.5" : "";
-  return <button className={`${base} ${v} ${s} ${className}`} {...props} />;
+export default function Button({ variant = "primary", className = "", ...props }: Props) {
+  const base = "inline-flex items-center gap-2 rounded-xl px-3 py-2 text-sm transition";
+  const styles = {
+      primary: "bg-brand-600 text-white hover:bg-brand-700 shadow-soft",
+      secondary: "bg-white text-slate-900 border border-slate-200 hover:bg-slate-50 shadow-soft",
+      ghost: "text-slate-700 hover:bg-slate-100",
+  }[variant];
+  return <button className={`${base} ${styles} ${className}`} {...props} />;
 }
