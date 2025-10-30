@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 import { api } from "../lib/axios";
 import { useAuthStore } from "../auth/store";
 import FormInput from "../components/FormInput";
+import Button from "../components/button";
 
 type ProfileUser = {
   id: number;
@@ -136,7 +137,7 @@ export default function ProfileEdit() {
         </div>
 
         <div className="pt-2">
-          <button className="btn" onClick={onSave}>{t("profileEdit.save")}</button>
+          <Button variant="secondary" className="gap-2" onClick={onSave}>{t("profileEdit.save")}</Button>
         </div>
       </div>
     </div>

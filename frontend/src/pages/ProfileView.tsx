@@ -3,6 +3,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { api } from "../lib/axios";
 import { useAuthStore } from "../auth/store";
+import Button from "../components/button";
 
 type ProfileUser = {
   id: number;
@@ -109,16 +110,20 @@ export default function ProfileView() {
         </div>
 
         <div className="pt-2">
-          <Link to="/profile-edit" className="btn inline-flex">
-            {t("profileView.editProfile")}
-          </Link>
-          {profile?.user?.id != null && (
-            <Link
-              to={`/users/${profile.user.id}/change-password`}
-              className="btn inline-flex"
-            >
-              {t("profileView.changePassword")}
+          <Button variant="secondary" className="gap-2">
+            <Link to="/profile-edit" className="btn inline-flex">
+              {t("profileView.editProfile")}
             </Link>
+          </Button>
+          {profile?.user?.id != null && (
+            <Button variant="secondary" className="gap-2">
+              <Link
+                to={`/users/${profile.user.id}/change-password`}
+                className="btn inline-flex"
+              >
+                {t("profileView.changePassword")}
+              </Link>
+            </Button>
           )}
         </div>
       </div>
