@@ -28,7 +28,7 @@ Open:
 ---
 
 ## 🔑 Admin credentials (dev)
-- admin / changeme123 (development only—change for production).
+- admin / changeme123
 
 ---
 
