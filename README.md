@@ -20,7 +20,7 @@ It demonstrates modern JWT auth, profile management, Excel import, online‑user
 #              default = false
 ```
 
-4) Open:
+Open:
 - **API Swagger:** http://localhost:8000/api/v1/docs/
 - **OpenAPI JSON:** http://localhost:8000/api/v1/schema/
 - **Frontend:** depends on your setup (Nginx or `npm run dev`); see below.
