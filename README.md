@@ -23,8 +23,7 @@ It demonstrates modern JWT auth, profile management, Excel import, online‑user
 Open:
 - **API Swagger:** http://localhost:8000/api/v1/docs/
 - **OpenAPI JSON:** http://localhost:8000/api/v1/schema/
-- **Frontend:** depends on your setup (Nginx or `npm run dev`); see below.
-
+- **Frontend:** http://localhost:5173/
 ---
 
 ## 🔑 Admin credentials (dev)
@@ -83,7 +82,7 @@ user_hub_web_app/
 ## 🔐 Authentication
 
 - Login via `POST /api/v1/auth/jwt/create/` with either **email** or **username** + password.
-- Access token is attached to `Authorization: Bearer <token>`. Refresh token is stored in memory in the SPA store.
+- Access token is attached to `Authorization: Bearer <token>`. The refresh token is stored in the SPA's local storage.
 - Axios interceptor performs **token refresh** at 401/near‑expiry and retries the original request.
 - **Idle timeout & renew‑at** thresholds are enforced by custom middleware; see **Architecture** for details.
 
@@ -108,7 +107,7 @@ Use the example file at `test_data/import_template_EXAMPLE.xlsx` as a template.
 
 - Serializer validation for password change & user creation
 - Excel import happy/edge paths
-- Middleware: idle timeout, boot id enforcement, auth header handling
+- Middleware: idle timeout, boot ID enforcement, and auth header handling
 - Permissions on all endpoints (admin vs regular user)
 - i18n correctness for top locales
 - Frontend: auth store transitions, interceptor logic, protected routes
@@ -137,11 +136,3 @@ Use the example file at `test_data/import_template_EXAMPLE.xlsx` as a template.
 - CORS restricted via `django‑cors‑headers`
 - On backend boot/redeploy, **boot‑id enforcement** invalidates stale JWTs to force refresh
 - Input validation on Excel import & DRF serializers
-
----
-
-## 🧭 Troubleshooting
-
-- **401 after deploy:** expected if boot‑id changed; the SPA should refresh tokens automatically.
-- **CORS error in browser:** verify `CORS_ALLOWED_ORIGINS` and `VITE_API_URL`.
-- **Import fails:** verify Excel columns match the template and server logs for row‑level errors.
