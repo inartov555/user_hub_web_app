@@ -46,7 +46,7 @@ export default function UserDeleteConfirm() {
 
       if (!(bulk.status >= 200 && bulk.status < 300)) {
         const parsed = extractApiError(bulk);
-        setError(prev => (prev ? `${prev}\n` : "") + `${t("userDeleteConfirm.bulkDeleteFailed")} ${parsed.message}`);
+        setError(prev => (prev ? `${prev}` : "") + `${t("userDeleteConfirm.bulkDeleteFailed")} ${parsed.message}`);
         // Fallback to per-user delete
         const results = await Promise.allSettled(
           ids.map((id) => api.delete(`/users/${id}/delete-user/`, { validateStatus: () => true }))
@@ -55,10 +55,10 @@ export default function UserDeleteConfirm() {
 	  (r) => r.status === "rejected" || (r.status === "fulfilled" && r.value.status >= 400)
         );
         if (failed.length) {
-          setError(prev => (prev ? `${prev}\n` : "") + `${t("userDeleteConfirm.failedToDelete")} ${failed.length} of ${ids.length} ${t("users.title")}.`);
+          setError(prev => (prev ? `${prev}` : "") + `${t("userDeleteConfirm.failedToDelete")} ${failed.length} of ${ids.length} ${t("users.title")}.`);
           for (const err_item of failed) {
             const parsed = extractApiError(err_item);
-            setError(prev => (prev ? `${prev}\n` : "") + `${parsed.message}`);
+            setError(prev => (prev ? `${prev}` : "") + `${parsed.message}`);
           }
         }
       }
@@ -67,7 +67,7 @@ export default function UserDeleteConfirm() {
         navigate("/users", { replace: true });
       }
     } catch (erro: any) {
-      setError(prev => (prev ? `${prev}\n` : "") + `${t("userDeleteConfirm.failedToDeleteSelectedUsers")} ${erro}`);
+      setError(prev => (prev ? `${prev}` : "") + `${t("userDeleteConfirm.failedToDeleteSelectedUsers")} ${erro}`);
     } finally {
       setLoading(false);
     }
@@ -115,7 +115,7 @@ export default function UserDeleteConfirm() {
           </table>
         </div>
 
-        {error && <div className="text-sm text-red-600" style={{ whiteSpace: "pre-line" }}>{error}</div>}
+        {error && <div className="text-sm text-red-600 whitespace-pre-line">{error}</div>}
 
         <div className="flex items-center gap-2">
           <Button

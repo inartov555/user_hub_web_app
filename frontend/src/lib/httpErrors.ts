@@ -57,11 +57,55 @@ export function extractApiError(err: unknown, t?: TFunction): { message: string;
       collected.push((data as any).message);
       collected.push("\n")
     }
+
+    // {"detail":"['This password is too common.']"}
+    // {"detail":"Cannot delete current user."}
+    let topDetails: unknown = (data as any).detail;
+    if (typeof topDetails === "string" && /^\s*\[.*\]\s*$/.test(topDetails)) {
+      const parsed = JSON.parse(topDetails.replace(/'/g, '"'));
+      if (Array.isArray(parsed)) {
+          for (const item of parsed) {
+            collected.push(String(item));
+            collected.push("\n");
+          }
+       } else {
+          collected.push(String(parsed));
+          collected.push("\n");
+       }
+    } else if (Array.isArray(topDetails)) {
+      for (const item of topDetails) {
+        collected.push(String(item));
+        collected.push("\n");
+      }
+    } else if (topDetails && typeof (topDetails as any) === "string") {
+      collected.push(String(topDetails));
+      collected.push("\n");
+    }
+
+    /*
+       {
+         "error": {
+           "code": "common.server_error",
+           "message": "A server error occurred.",
+           "i18n_key": "errors.common.server_error",
+           "details": {
+             "password": [
+               "The password is too similar to the username.",
+               "This password is too short. It must contain at least 8 characters.",
+               "This password is too common."
+             ]
+           },
+           "lang": "en-us"
+         }
+       }
+     */
+
     const errorObj = isRecord((data as any).error) ? (data as any).error : null;
     if (errorObj && typeof (errorObj as any).message === "string") {
       collected.push((errorObj as any).message);
       collected.push("\n")
     }
+
     const details = errorObj ? (errorObj as any).details : undefined;
     if (details !== undefined) {
       if (isRecord(details)) {
@@ -72,7 +116,7 @@ export function extractApiError(err: unknown, t?: TFunction): { message: string;
               collected.push("\n")
             }
           }
-          else {
+          else if (topDetails && typeof (topDetails as any) === "string") {
             collected.push(String(v));
             collected.push("\n")
           }
@@ -82,7 +126,7 @@ export function extractApiError(err: unknown, t?: TFunction): { message: string;
           collected.push(String(item));
           collected.push("\n")
         }
-      } else {
+      } else if (topDetails && typeof (topDetails as any) === "string") {
         collected.push(String(details));
         collected.push("\n")
       }
