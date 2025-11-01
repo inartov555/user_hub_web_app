@@ -13,6 +13,7 @@ ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 
 # now copy the app code (doesn't bust dependency layer unless reqs changed)
 COPY backend/ /app/
+
 WORKDIR /app
 
 RUN pip install --upgrade pip && \

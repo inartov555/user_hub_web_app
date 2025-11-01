@@ -73,7 +73,7 @@ msgid "User is inactive"
 msgstr "Käyttäjä on passiivinen"
 
 msgid "No active account found with the given credentials"
-msgstr "Annetuilla tunnuksilla ei löytynyt aktiivista tiliä"
+msgstr "AZGHOMACIMM"
 
 msgid "No refresh token provided"
 msgstr "Virkistystunnistetta ei annettu"
