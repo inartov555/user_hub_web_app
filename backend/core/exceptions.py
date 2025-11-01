@@ -168,7 +168,8 @@ def localized_exception_handler(exc, context):
         response.data = {
             "error": {
                 "code": "common.error",
-                "message": str(_serialize_validation_errors(detail)) if detail else _serialize_validation_errors("A server error occurred."),
+                "message": str(_serialize_validation_errors(detail)) \
+                    if detail else _serialize_validation_errors("A server error occurred."),
                 "i18n_key": "errors.common.error",
                 "details": None if detail else _serialize_validation_errors(response.data),
                 "lang": translation.get_language(),
