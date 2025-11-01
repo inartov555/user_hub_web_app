@@ -64,7 +64,7 @@ def _to_str(value: Any) -> str:
     Convert ErrorDetail/lazy strings/anything to a plain string in the active language.
     """
     try:
-        return str(translation.gettext_lazy(value))  # translate if it's a raw string key
+        return str(value)  # translate if it's a raw string key
     except Exception:  # pylint: disable=broad-exception-caught
         try:
             return str(value)  # fall back, return the save string, if localization not found
@@ -77,14 +77,11 @@ def _serialize_validation_errors(detail) -> Any:
     """
     if isinstance(detail, dict):
         for key, value in detail.items():
-            print(f"\n\n _serialize_validation_errors(value) = {_serialize_validation_errors(value)} \n key = {key} \n\n")
         return {key: _serialize_validation_errors(value) for key, value in detail.items()}
     if isinstance(detail, list):
         for item in detail:
-            print(f"\n\n _serialize_validation_errors(item) = {_serialize_validation_errors(item)} \n item = {item} \n\n")
         return [_serialize_validation_errors(item) for item in detail]
     if isinstance(detail, str):
-        print(f"\n\n _to_str(detail) = {_to_str(detail)} \n detail = {detail} \n\n")
         return str(_to_str(detail))
     return _to_str(detail)
 
