@@ -82,7 +82,7 @@ export default function ChangePassword() {
             dark:border-slate-700
           "
         />
-        {error && <p className="text-red-600 text-sm">{error}</p>}
+        {error && <p className="text-red-600 text-sm whitespace-pre-line">{error}</p>}
         <Button variant="secondary" className="gap-2" type="submit" disabled={saving}>
           {saving ? t("changePassword.saving") : t("profileEdit.save")}
         </Button>

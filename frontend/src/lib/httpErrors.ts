@@ -42,20 +42,56 @@ export function extractApiError(err: unknown, t?: TFunction): { message: string;
       err;
   }
 
-  if (!data) return { message: `authErrorMessage("httpError.serverError", t) (${status}).` };
+  if (!data) {
+    return {
+      message:
+        authErrorMessage("httpError.serverError", t) +
+        (status ? ` (${status}).` : ""),
+    };
+  }
+
+  // Replace the invalid maybeErr/res_list block with this collector:
   if (isRecord(data)) {
-    // let res_list = []
-    const topMsg = data.message;
-    console.log("topMsg = ", topMsg)
-    console.log("data = ", data)
-    if (typeof topMsg === "string") {
-      return { message: topMsg };
+    const collected: string[] = ["\n"];
+    if (typeof (data as any).message === "string") {
+      collected.push((data as any).message);
+      collected.push("\n")
     }
-    const maybeErr = data.error;
-    if (isRecord(maybeErr) && typeof maybeErr.message === "string") {
-      return { message: maybeErr.message };
+    const errorObj = isRecord((data as any).error) ? (data as any).error : null;
+    if (errorObj && typeof (errorObj as any).message === "string") {
+      collected.push((errorObj as any).message);
+      collected.push("\n")
+    }
+    const details = errorObj ? (errorObj as any).details : undefined;
+    if (details !== undefined) {
+      if (isRecord(details)) {
+        for (const v of Object.values(details)) {
+          if (Array.isArray(v)) {
+            for (const item of v) {
+              collected.push(String(item));
+              collected.push("\n")
+            }
+          }
+          else {
+            collected.push(String(v));
+            collected.push("\n")
+          }
+        }
+      } else if (Array.isArray(details)) {
+        for (const item of details) {
+          collected.push(String(item));
+          collected.push("\n")
+        }
+      } else {
+        collected.push(String(details));
+        collected.push("\n")
+      }
+    }
+    if (collected.length) {
+      return { message: collected.join(" ") };
     }
   }
+
   /*
     TODO: add text retrieving for the HTTP error when plain HTML is returned.
     Example (but it returns plain HTML at the moment):

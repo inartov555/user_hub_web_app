@@ -76,15 +76,10 @@ def _serialize_validation_errors(detail) -> Any:
     DRF ValidationError.detail can be a dict/list/str. Keep structure but translate strings.
     """
     if isinstance(detail, dict):
-        for key, value in detail.items():
-            print(f"\n\n _serialize_validation_errors(value) = {_serialize_validation_errors(value)} \n\n")
         return {key: _serialize_validation_errors(value) for key, value in detail.items()}
     if isinstance(detail, list):
-        for item in detail:
-            print(f"\n\n _serialize_validation_errors(item) = {_serialize_validation_errors(item)} \n\n")
         return [_serialize_validation_errors(item) for item in detail]
     if isinstance(detail, str):
-        print(f"\n\n _to_str(detail) = {_to_str(detail)} \n\n")
         return str(_to_str(detail))
     return _to_str(detail)
 
@@ -143,10 +138,6 @@ def localized_exception_handler(exc, context):
         else:
             msg = str(default_msg)
             details = _serialize_validation_errors(response.data)
-            print(f"\n\n details = {details} \n\n")
-            print(f"\n\n details = {response.data} \n\n")
-            this_one = "This password is too short. It must contain at least %(min_length)d characters."
-            print(f"\n\n translation.gettext_lazy(this_one) = {translation.gettext_lazy(this_one)} \n\n")
         response.data = {
             "error": {
                 "code": code,

@@ -66,7 +66,7 @@ export default function Login() {
             dark:bg-slate-900 dark:text-slate-100 dark:placeholder-slate-500
             dark:border-slate-700
           " id="password" type="password" value={password} onChange={e=>setPassword(e.target.value)} required />
-        {error && <p className="text-red-600 text-sm">{t("auth.loginFailed", { message: error })}</p>}
+        {error && <p className="text-red-600 text-sm whitespace-pre-line">{t("auth.loginFailed", { message: error })}</p>}
         <div className="mt-2 flex justify-center">
           <Button variant="secondary" className="gap-2" type="submit">{t("auth.signin")}</Button>
         </div>
