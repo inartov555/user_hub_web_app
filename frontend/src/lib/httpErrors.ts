@@ -8,6 +8,11 @@ type DRFError = {
   [key: string]: string | string[] | undefined; // index signature
 };
 
+// type guard: unknown -> plain object (record)
+function isRecord(v: unknown): v is Record<string, unknown> {
+  return typeof v === "object" && v !== null;
+}
+
 function authErrorMessage(err_loc_code: string, t?: TFunction): string {
   const tf = t ?? i18next.t.bind(i18next);
   return tf(err_loc_code);
@@ -26,14 +31,30 @@ export function extractApiError(err: unknown, t?: TFunction): { message: string;
     if (!ax.response) {
       return { message: authErrorMessage("httpError.networkError", t) };
     }
-  } else if (typeof err === "object" && err !== null) {
-    const anyErr = err as any;
+  } else if (isRecord(err)) {
     // cases: thrown AxiosResponse, or a custom error wrapper
-    status = anyErr?.status ?? anyErr?.response?.status;
-    data = anyErr?.data ?? anyErr?.response?.data ?? anyErr?.value?.data ?? anyErr;
+    status = (err as any)?.status ?? (err as any)?.response?.status;
+    console.log("} else if (isRecord(err)) { ? ", data)
+    data =
+      (err as any)?.data ??
+      (err as any)?.response?.data ??
+      (err as any)?.value?.data ??
+      (err as any)?.error ??
+      err;
   }
+  console.log("AFTER ? ", data)
 
   if (!data) return { message: `authErrorMessage("httpError.serverError", t) (${status}).` };
+  if (isRecord(data)) {
+    const topMsg = data.message;
+    if (typeof topMsg === "string") {
+      return { message: topMsg };
+    }
+    const maybeErr = data.error;
+    if (isRecord(maybeErr) && typeof maybeErr.message === "string") {
+      return { message: maybeErr.message };
+    }
+  }
   /*
     TODO: add text retrieving for the HTTP error when plain HTML is returned.
     Example (but it returns plain HTML at the moment):
@@ -43,7 +64,7 @@ export function extractApiError(err: unknown, t?: TFunction): { message: string;
   */
 
   // DRF common shapes
-  if (typeof data === "object" && data !== null) {
+  if (isRecord(data)) {
     const fields: Record<string, string[]> = {};
 
     // detail
