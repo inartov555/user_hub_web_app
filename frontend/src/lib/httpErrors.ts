@@ -44,6 +44,7 @@ export function extractApiError(err: unknown, t?: TFunction): { message: string;
 
   if (!data) return { message: `authErrorMessage("httpError.serverError", t) (${status}).` };
   if (isRecord(data)) {
+    // let res_list = []
     const topMsg = data.message;
     console.log("topMsg = ", topMsg)
     console.log("data = ", data)
