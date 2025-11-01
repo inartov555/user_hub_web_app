@@ -81,7 +81,6 @@ export default function Settings() {
             min={1}
           />
           <Field
-            param1="let's check it"
             id="accessTokenLifetime"
             label={t("appSettings.accessLifetime")}
             help={t("appSettings.accessLifetimeHelp")}
