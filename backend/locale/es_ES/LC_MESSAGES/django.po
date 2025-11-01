@@ -108,8 +108,8 @@ msgstr "Falta el atributo 'user_id'"
 msgid "Session expired due to inactivity."
 msgstr "La sesión expiró por inactividad."
 
-msgid "This password is too short. It must contain at least %(min_length)d characters."
-msgstr "Esta contraseña es demasiado corta. Debe contener al menos %(min_length)d caracteres."
+msgid "This password is too short. It must contain at least 8 characters."
+msgstr "Esta contraseña es demasiado corta. Debe contener al menos 8 caracteres."
 
 msgid "The password is too similar to the %(verbose_name)s."
 msgstr "La contraseña es demasiado similar al nombre de %(verbose_name)s."

@@ -64,7 +64,7 @@ def _to_str(value: Any) -> str:
     Convert ErrorDetail/lazy strings/anything to a plain string in the active language.
     """
     try:
-        return str(value)  # translate if it's a raw string key
+        return str(translation.gettext_lazy(value))  # translate if it's a raw string key
     except Exception:  # pylint: disable=broad-exception-caught
         try:
             return str(value)  # fall back, return the save string, if localization not found
@@ -76,10 +76,15 @@ def _serialize_validation_errors(detail) -> Any:
     DRF ValidationError.detail can be a dict/list/str. Keep structure but translate strings.
     """
     if isinstance(detail, dict):
+        for key, value in detail.items():
+            print(f"\n\n _serialize_validation_errors(value) = {_serialize_validation_errors(value)} \n\n")
         return {key: _serialize_validation_errors(value) for key, value in detail.items()}
     if isinstance(detail, list):
+        for item in detail:
+            print(f"\n\n _serialize_validation_errors(item) = {_serialize_validation_errors(item)} \n\n")
         return [_serialize_validation_errors(item) for item in detail]
     if isinstance(detail, str):
+        print(f"\n\n _to_str(detail) = {_to_str(detail)} \n\n")
         return str(_to_str(detail))
     return _to_str(detail)
 
@@ -102,7 +107,7 @@ def localized_exception_handler(exc, context):
             {
                 "error": {
                     "code": "validation.error",
-                    "message": _to_str("Invalid input."),
+                    "message": _serialize_validation_errors("Invalid input."),
                     "i18n_key": "errors.validation.invalid",
                     "details": _serialize_validation_errors(data),
                     "lang": translation.get_language(),
@@ -117,7 +122,7 @@ def localized_exception_handler(exc, context):
             {
                 "error": {
                     "code": "common.server_error",
-                    "message": _to_str("A server error occurred."),
+                    "message": _serialize_validation_errors("A server error occurred."),
                     "i18n_key": "errors.common.server_error",
                     "details": None,
                     "lang": translation.get_language(),
@@ -133,11 +138,15 @@ def localized_exception_handler(exc, context):
         # If DRF attached a string/detail, prefer it but translate; else use our default
         if isinstance(response.data, dict) and "detail" in response.data:
             msg = response.data["detail"]
-            msg = str(_to_str(msg))  # translate
+            msg = str(_serialize_validation_errors(msg))  # translate
             details = None
         else:
             msg = str(default_msg)
             details = _serialize_validation_errors(response.data)
+            print(f"\n\n details = {details} \n\n")
+            print(f"\n\n details = {response.data} \n\n")
+            this_one = "This password is too short. It must contain at least %(min_length)d characters."
+            print(f"\n\n translation.gettext_lazy(this_one) = {translation.gettext_lazy(this_one)} \n\n")
         response.data = {
             "error": {
                 "code": code,
@@ -154,7 +163,7 @@ def localized_exception_handler(exc, context):
         response.data = {
             "error": {
                 "code": "validation.error",
-                "message": _to_str("Invalid input."),
+                "message": _serialize_validation_errors("Invalid input."),
                 "i18n_key": "errors.validation.invalid",
                 "details": _serialize_validation_errors(exc.detail),
                 "lang": translation.get_language(),
@@ -168,7 +177,7 @@ def localized_exception_handler(exc, context):
         response.data = {
             "error": {
                 "code": "common.error",
-                "message": str(_to_str(detail)) if detail else _to_str("A server error occurred."),
+                "message": str(_serialize_validation_errors(detail)) if detail else _serialize_validation_errors("A server error occurred."),
                 "i18n_key": "errors.common.error",
                 "details": None if detail else _serialize_validation_errors(response.data),
                 "lang": translation.get_language(),
