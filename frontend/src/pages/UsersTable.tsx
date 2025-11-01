@@ -333,6 +333,7 @@ export default function UsersTable(props: Props) {
       <CardBody className="flex justify-end mt-2">
         <div className="flex items-center gap-2">
           <Input
+            id="search"
             placeholder={t("users.search")}
             value={globalFilter}
             onChange={(e) => setGlobalFilter(e.target.value)}
@@ -342,7 +343,7 @@ export default function UsersTable(props: Props) {
 
           {/* Columns menu */}
           <div className="relative">
-            <Button variant="secondary" className="gap-2" onClick={() => setShowColumns((v) => !v)}>
+            <Button id="columnVisibility" variant="secondary" className="gap-2" onClick={() => setShowColumns((v) => !v)}>
               <Columns className="h-4 w-4" /> {t("users.columns")}
             </Button>
             {showColumns && (
@@ -380,6 +381,7 @@ export default function UsersTable(props: Props) {
 
           {/* Clear sort */}
           <Button
+            id="clearSort"
             variant="secondary"
             onClick={() => {
               setSorting([]);
@@ -393,6 +395,7 @@ export default function UsersTable(props: Props) {
           {/* Delete selected (admin only) */}
           {isAdmin && (
             <Button
+              id="deleteUsers"
               variant="secondary"
               onClick={handleGoToDeleteConfirm}
               disabled={table.getSelectedRowModel().rows.length === 0}

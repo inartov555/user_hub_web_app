@@ -80,6 +80,7 @@ export default function ProfileView() {
       {/* Left: Avatar */}
       <div className="flex items-start justify-center md:justify-start">
         <img
+          id="profileAvatar"
           src={avatarSrc}
           alt={t("profileEdit.profileAvatar")}
           width={160}
@@ -96,24 +97,24 @@ export default function ProfileView() {
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <Field label={t("profileView.fullName")} value={fullName} />
-          <Field label={t("signup.username")} value={profile.user?.username || "—"} />
-          <Field label={t("signup.email")} value={profile.user?.email || "—"} />
-          <Field label={t("profileView.pId")} value={String(profile.user?.id ?? "—")} />
+          <Field id="fullName" label={t("profileView.fullName")} value={fullName} />
+          <Field id="username" label={t("signup.username")} value={profile.user?.username || "—"} />
+          <Field id="email" label={t("signup.email")} value={profile.user?.email || "—"} />
+          <Field id="userid" label={t("profileView.pId")} value={String(profile.user?.id ?? "—")} />
         </div>
 
         <div>
-          <Field label={t("excelImport.bio")} value={String(profile?.bio ?? "—")} />
+          <Field id="bio" label={t("excelImport.bio")} value={String(profile?.bio ?? "—")} />
         </div>
 
         <div className="pt-2">
-          <Button variant="secondary" className="gap-2">
+          <Button id="editProfile" variant="secondary" className="gap-2">
             <Link to="/profile-edit" className="btn inline-flex">
               {t("profileView.editProfile")}
             </Link>
           </Button>
           {profile?.user?.id != null && (
-            <Button variant="secondary" className="gap-2">
+            <Button id="cancel" variant="secondary" className="gap-2">
               <Link
                 to={`/users/${profile.user.id}/change-password`}
                 className="btn inline-flex"
@@ -132,11 +133,11 @@ export default function ProfileView() {
 function Label({ children }: { children: React.ReactNode }) {
   return <div className="text-xs font-medium text-slate-500">{children}</div>;
 }
-function Field({ label, value }: { label: string; value: string }) {
+function Field({ label, value, id }: { label: string; value: string; id: string; }) {
   return (
     <div>
       <Label>{label}</Label>
-      <div className="
+      <div id={id} className="
             w-full rounded-xl px-3 py-2
             bg-white text-slate-900 placeholder-slate-500
             border border-slate-300

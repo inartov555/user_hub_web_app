@@ -53,6 +53,7 @@ export default function ChangePassword() {
           ref={pwRef}
           placeholder={t("changePassword.newPassword")}
           type="password"
+          id="password"
           value={password}
           onChange={e => setPassword(e.target.value)}
           required
@@ -68,6 +69,7 @@ export default function ChangePassword() {
         <FormInput
           placeholder={t("changePassword.confirmPassword")}
           type="password"
+          id="confirmPassword"
           value={confirmPassword}
           onChange={e => setConfirmPassword(e.target.value)}
           required

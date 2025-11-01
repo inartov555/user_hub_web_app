@@ -52,6 +52,7 @@ export const LocaleFlag: React.FC<Props> = ({
   return (
     <CountryFlag
       countryCode={countryCode}
+      id="countryFlag"
       svg={svg}
       aria-label={title ?? countryCode}
       title={title ?? locale}

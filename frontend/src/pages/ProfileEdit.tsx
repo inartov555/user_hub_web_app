@@ -91,6 +91,7 @@ export default function ProfileEdit() {
       {/* Left: Avatar */}
       <div className="flex items-start justify-center md:justify-start">
         <img
+          id="profileAvatar"
           src={avatarSrc}
           alt={t("profileEdit.profileAvatar")}
           width={160}
@@ -107,6 +108,7 @@ export default function ProfileEdit() {
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <FormInput
+            id="firstName"
             placeholder={t("users.firstName")}
             value={first_name}
             onChange={(e) => setFirstName(e.target.value)}
@@ -120,6 +122,7 @@ export default function ProfileEdit() {
             "
           />
           <FormInput
+            id="lastName"
             placeholder={t("users.lastName")}
             value={last_name}
             onChange={(e) => setLastName(e.target.value)}
@@ -139,6 +142,7 @@ export default function ProfileEdit() {
             text-sm text-slate-700 dark:text-slate-100
           ">{t("excelImport.bio")}</span>
           <textarea
+            id="bio"
             className="w-full rounded-md border px-3 py-2 min-h-[120px] outline-none focus:ring
             bg-white text-slate-900 placeholder-slate-500
             border border-slate-300
@@ -161,8 +165,8 @@ export default function ProfileEdit() {
         </div>
 
         <div className="pt-2">
-          <Button variant="secondary" className="gap-2" onClick={onSave}>{t("profileEdit.save")}</Button>
-          <Button variant="secondary" className="gap-2">
+          <Button id="save" variant="secondary" className="gap-2" onClick={onSave}>{t("profileEdit.save")}</Button>
+          <Button id="cancel" variant="secondary" className="gap-2">
             <Link to="/profile-view">{t("userDeleteConfirm.cancel")}</Link>
           </Button>
         </div>

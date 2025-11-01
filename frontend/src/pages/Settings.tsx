@@ -65,6 +65,7 @@ export default function Settings() {
         <br />
         <form className="space-y-6" onSubmit={onSubmit}>
           <Field
+            id="renewAtSeconds"
             label={t("appSettings.jwtRenew")}
             help={t("appSettings.jwtRenewHelp")}
             value={form.JWT_RENEW_AT_SECONDS}
@@ -72,6 +73,7 @@ export default function Settings() {
             min={0}
           />
           <Field
+            id="idleTimeoutSeconds"
             label={t("appSettings.idleTimeout")}
             help={t("appSettings.idleTimeoutHelp")}
             value={form.IDLE_TIMEOUT_SECONDS}
@@ -79,6 +81,7 @@ export default function Settings() {
             min={1}
           />
           <Field
+            id="accessTokenLifetime"
             label={t("appSettings.accessLifetime")}
             help={t("appSettings.accessLifetimeHelp")}
             value={form.ACCESS_TOKEN_LIFETIME}
@@ -99,12 +102,13 @@ export default function Settings() {
 }
 
 function Field({
-  label, help, value, onChange, min = 0,
+  label, help, value, onChange, id, min = 0,
 }: {
   label: string;
   help?: string;
   value: number;
   onChange: (v: number) => void;
+  id: string;
   min?: number;
 }) {
   return (
@@ -112,6 +116,7 @@ function Field({
       <label className="block text-sm font-medium">{label}</label>
       {help && <p className="text-xs text-slate-500">{help}</p>}
       <input
+        id={id}
         type="number"
         min={min}
         value={value}

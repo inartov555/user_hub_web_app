@@ -119,6 +119,7 @@ export default function UserDeleteConfirm() {
 
         <div className="flex items-center gap-2">
           <Button
+            id="confirmDelete"
             className="border-red-600 text-red-700 hover:bg-red-50"
             variant="secondary"
             onClick={handleConfirm}
@@ -127,7 +128,7 @@ export default function UserDeleteConfirm() {
           >
             {loading ? t("userDeleteConfirm.deleting") : `${t("users.deleteSelected")} ${users.length}`}
           </Button>
-          <Button variant="secondary" className="border-red-600 text-red-700 hover:bg-red-50" onClick={handleCancel} disabled={loading}>
+          <Button id="cancel" variant="secondary" className="border-red-600 text-red-700 hover:bg-red-50" onClick={handleCancel} disabled={loading}>
             {t("userDeleteConfirm.cancel")}
           </Button>
         </div>

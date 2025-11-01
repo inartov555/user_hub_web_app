@@ -15,26 +15,30 @@ SUPERUSER_USERNAME="${DJANGO_SUPERUSER_USERNAME:-admin}"
 SUPERUSER_EMAIL="${DJANGO_SUPERUSER_EMAIL:-admin@example.com}"
 SUPERUSER_PASSWORD="${DJANGO_SUPERUSER_PASSWORD:-changeme123}"
 
-ORIGINAL_PROJECT_PATH="$(pwd)"
-source ./setup.sh || { echo "setup.sh failed"; exit 1; }
-if [[ $? -ne 0 ]]; then
-  return 1
-fi
-
 set -Eeuo pipefail
 
 cleanup_data() {
   echo "Cleaning up..."
   # Shutting down services
   docker compose down -v --remove-orphans
+  if ! [[ "$ORIGINAL_PROJECT_PATH" -ef "$(pwd)" ]]; then
+    echo "Returning to the original project path to be able to run the test again with new changes, if there are any"
+    cd "$ORIGINAL_PROJECT_PATH"
+  fi
   echo "Done."
-  echo "Returning to the original project path to be able to run the test again with new changes, if there are any"
-  cd "$ORIGINAL_PROJECT_PATH"
 }
 
+ORIGINAL_PROJECT_PATH="$(pwd)"
+source ./setup.sh || { echo "setup.sh failed"; exit 1; }
+if [[ $? -ne 0 ]]; then
+  exit 1
+fi
+
 cleanup() {
-  echo "Returning to the original project path to be able to run the test again with new changes, if there are any"
-  cd "$ORIGINAL_PROJECT_PATH"
+  if ! [[ "$ORIGINAL_PROJECT_PATH" -ef "$(pwd)" ]]; then
+    echo "Returning to the original project path to be able to run the test again with new changes, if there are any"
+    cd "$ORIGINAL_PROJECT_PATH"
+  fi
 }
 
 echo "Setting the exit function..."
