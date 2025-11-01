@@ -76,10 +76,15 @@ def _serialize_validation_errors(detail) -> Any:
     DRF ValidationError.detail can be a dict/list/str. Keep structure but translate strings.
     """
     if isinstance(detail, dict):
-        return {k: _serialize_validation_errors(v) for k, v in detail.items()}
+        for key, value in detail.items():
+            print(f"\n\n _serialize_validation_errors(value) = {_serialize_validation_errors(value)} \n key = {key} \n\n")
+        return {key: _serialize_validation_errors(value) for key, value in detail.items()}
     if isinstance(detail, list):
-        return [_serialize_validation_errors(x) for x in detail]
+        for item in detail:
+            print(f"\n\n _serialize_validation_errors(item) = {_serialize_validation_errors(item)} \n item = {item} \n\n")
+        return [_serialize_validation_errors(item) for item in detail]
     if isinstance(detail, str):
+        print(f"\n\n _to_str(detail) = {_to_str(detail)} \n detail = {detail} \n\n")
         return str(_to_str(detail))
     return _to_str(detail)
 
@@ -97,14 +102,14 @@ def localized_exception_handler(exc, context):
 
     # Django ValidationError (not DRF)
     if isinstance(exc, DjangoValidationError) and response is None:
-        data = _serialize_validation_errors(exc.message_dict if hasattr(exc, "message_dict") else exc.messages)
+        data = _serialize_validation_errors(exc.message_dict if hasattr(exc, "message_dict") else exc.messages)                
         return Response(
             {
                 "error": {
                     "code": "validation.error",
                     "message": _to_str("Invalid input."),
                     "i18n_key": "errors.validation.invalid",
-                    "details": data,
+                    "details": _serialize_validation_errors(data),
                     "lang": translation.get_language(),
                 }
             },

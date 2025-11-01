@@ -8,26 +8,6 @@ import Button from "../components/button";
 import DarkModeToggle from "./DarkModeToggle";
 import i18n from "../lib/i18n";
 
-export function deleteLanguageCookie() {
-  // delete for common path/domain variants
-  const names = ["django_language"];
-  const paths = ["/", ""];
-  const domains = ["", window.location.hostname];
-
-  names.forEach((name) => {
-    paths.forEach((path) => {
-      // default (no domain)
-      document.cookie = `${name}=; Max-Age=0; expires=Thu, 01 Jan 1970 00:00:00 GMT${path ? `; Path=${path}` : ""}`;
-      // explicit domain
-      domains.forEach((domain) => {
-        if (domain) {
-          document.cookie = `${name}=; Max-Age=0; expires=Thu, 01 Jan 1970 00:00:00 GMT${path ? `; Path=${path}` : ""}; Domain=${domain}`;
-        }
-      });
-    });
-  });
-}
-
 export default function Navbar() {
   const { t } = useTranslation();
   const [locale, setLocale] = useState(i18n.resolvedLanguage || "en-US");
@@ -49,8 +29,6 @@ export default function Navbar() {
   // Show row 2 if user clicked Additional *or* a second-row route is active
   const [additionalOpen, setAdditionalOpen] = useState(false);
   const isAdditionalActive = additionalOpen || routeIsSecondRow;
-
-  deleteLanguageCookie()
 
   // Close Additional whenever we navigate to a first-row route
   useEffect(() => {
