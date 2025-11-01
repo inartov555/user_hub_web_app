@@ -25,13 +25,11 @@ RUN apt-get update \
  && rm -rf /var/lib/apt/lists/*
 
 # OPTIONAL: validate .po syntax (correct paths: /app/locale/**)
-RUN msgfmt -c -o /dev/null locale/en_US/LC_MESSAGES/*.po \
- && msgfmt -c -o /dev/null locale/uk_UA/LC_MESSAGES/*.po \
- && msgfmt -c -o /dev/null locale/et_EE/LC_MESSAGES/*.po \
- && msgfmt -c -o /dev/null locale/fi_FI/LC_MESSAGES/*.po \
- && msgfmt -c -o /dev/null locale/cs_CZ/LC_MESSAGES/*.po \
- && msgfmt -c -o /dev/null locale/pl_PL/LC_MESSAGES/*.po \
- && msgfmt -c -o /dev/null locale/es_ES/LC_MESSAGES/*.po
+RUN sh -c 'set -eu; \
+  for PO in $(find /app -type f -path "*/locale/*/LC_MESSAGES/*.po"); do \
+    echo "Validating *.po file: $PO"; \
+    msgfmt -c -o /dev/null "$PO"; \
+  done'
 
 # Compile all message catalogs (manage.py is at /app/manage.py)
 # RUN python manage.py compilemessages -v 2
@@ -46,13 +44,11 @@ RUN sh -c 'set -eu; \
   done'
 
 # Confirm compiled catalogs exist
-RUN ls -l locale/en_US/LC_MESSAGES/*.mo
-RUN ls -l locale/uk_UA/LC_MESSAGES/*.mo
-RUN ls -l locale/et_EE/LC_MESSAGES/*.mo
-RUN ls -l locale/fi_FI/LC_MESSAGES/*.mo
-RUN ls -l locale/cs_CZ/LC_MESSAGES/*.mo
-RUN ls -l locale/pl_PL/LC_MESSAGES/*.mo
-RUN ls -l locale/es_ES/LC_MESSAGES/*.mo
+RUN sh -c 'set -eu; \
+  for MO in $(find /app -type f -path "*/locale/*/LC_MESSAGES/*.mo"); do \
+    echo "Found compiled catalog: $MO"; \
+    ls -l "$MO"; \
+  done'
 
 EXPOSE 8000
 # don't run pip install at container start!
