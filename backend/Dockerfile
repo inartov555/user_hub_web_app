@@ -25,6 +25,19 @@ RUN apt-get update \
  && apt-get install -y --no-install-recommends gettext \
  && rm -rf /var/lib/apt/lists/*
 
+# 1) Normalize regioned locale dirs to short codes too (e.g. fi_FI -> fi, cs_CZ -> cs)
+#    This guarantees Django will find a catalog when the active code is just "fi" or "cs".
+RUN set -euo pipefail; \
+  for LDIR in $(find /app -type d -path "*/locale/*_*" -maxdepth 1); do \
+    base="$(basename "$LDIR")"; \
+    short="${base%%_*}"; \
+    parent="$(dirname "$LDIR")"; \
+    if [ ! -d "$parent/$short" ]; then \
+      echo "Creating short-code locale: $parent/$short (from $LDIR)"; \
+      cp -a "$LDIR" "$parent/$short"; \
+    fi; \
+  done
+
 # OPTIONAL: validate .po syntax (correct paths: /app/locale/**)
 RUN sh -c 'set -eu; \
   for PO in $(find /app -type f -path "*/locale/*/LC_MESSAGES/*.po"); do \
