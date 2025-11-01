@@ -102,7 +102,7 @@ def localized_exception_handler(exc, context):
 
     # Django ValidationError (not DRF)
     if isinstance(exc, DjangoValidationError) and response is None:
-        data = _serialize_validation_errors(exc.message_dict if hasattr(exc, "message_dict") else exc.messages)                
+        data = _serialize_validation_errors(exc.message_dict if hasattr(exc, "message_dict") else exc.messages)
         return Response(
             {
                 "error": {

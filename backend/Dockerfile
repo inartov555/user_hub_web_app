@@ -25,34 +25,34 @@ RUN apt-get update \
  && rm -rf /var/lib/apt/lists/*
 
 # OPTIONAL: validate .po syntax (correct paths: /app/locale/**)
-RUN msgfmt -c -o /dev/null locale/en_US/*.po \
- && msgfmt -c -o /dev/null locale/uk_UA/*.po \
- && msgfmt -c -o /dev/null locale/et_EE/*.po \
- && msgfmt -c -o /dev/null locale/fi_FI/*.po \
- && msgfmt -c -o /dev/null locale/cs_CZ/*.po \
- && msgfmt -c -o /dev/null locale/pl_PL/*.po \
- && msgfmt -c -o /dev/null locale/es_ES/*.po
+RUN msgfmt -c -o /dev/null locale/en_US/LC_MESSAGES/*.po \
+ && msgfmt -c -o /dev/null locale/uk_UA/LC_MESSAGES/*.po \
+ && msgfmt -c -o /dev/null locale/et_EE/LC_MESSAGES/*.po \
+ && msgfmt -c -o /dev/null locale/fi_FI/LC_MESSAGES/*.po \
+ && msgfmt -c -o /dev/null locale/cs_CZ/LC_MESSAGES/*.po \
+ && msgfmt -c -o /dev/null locale/pl_PL/LC_MESSAGES/*.po \
+ && msgfmt -c -o /dev/null locale/es_ES/LC_MESSAGES/*.po
 
 # Compile all message catalogs (manage.py is at /app/manage.py)
 # RUN python manage.py compilemessages -v 2
 
 # Compile all PO files to MO without importing Django
-# This finds every 'django.po' in any app/locale/<lang>/
+# This finds every 'django.po' in any app/locale/<lang>/LC_MESSAGES/
 RUN sh -c 'set -eu; \
-  for PO in $(find /app -type f -path "*/locale/*/*.po"); do \
+  for PO in $(find /app -type f -path "*/locale/*/LC_MESSAGES/*.po"); do \
     MO="${PO%.po}.mo"; \
     echo "Compiling $PO -> $MO"; \
     msgfmt -c -o "$MO" "$PO"; \
   done'
 
 # Confirm compiled catalogs exist
-RUN ls -l locale/en_US/*.mo
-RUN ls -l locale/uk_UA/*.mo
-RUN ls -l locale/et_EE/*.mo
-RUN ls -l locale/fi_FI/*.mo
-RUN ls -l locale/cs_CZ/*.mo
-RUN ls -l locale/pl_PL/*.mo
-RUN ls -l locale/es_ES/*.mo
+RUN ls -l locale/en_US/LC_MESSAGES/*.mo
+RUN ls -l locale/uk_UA/LC_MESSAGES/*.mo
+RUN ls -l locale/et_EE/LC_MESSAGES/*.mo
+RUN ls -l locale/fi_FI/LC_MESSAGES/*.mo
+RUN ls -l locale/cs_CZ/LC_MESSAGES/*.mo
+RUN ls -l locale/pl_PL/LC_MESSAGES/*.mo
+RUN ls -l locale/es_ES/LC_MESSAGES/*.mo
 
 EXPOSE 8000
 # don't run pip install at container start!
