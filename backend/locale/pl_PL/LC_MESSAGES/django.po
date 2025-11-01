@@ -119,3 +119,6 @@ msgstr "To hasło jest zbyt powszechne."
 
 msgid "Enter a valid email address."
 msgstr "Wprowadź prawidłowy adres e-mail."
+
+msgid "No User matches the given query."
+msgstr "Żaden użytkownik nie pasuje do podanego zapytania."

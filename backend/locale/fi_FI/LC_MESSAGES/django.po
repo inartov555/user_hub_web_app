@@ -119,3 +119,6 @@ msgstr "Tämä salasana on liian yleinen."
 
 msgid "Enter a valid email address."
 msgstr "Anna kelvollinen sähköpostiosoite."
+
+msgid "No User matches the given query."
+msgstr "Yhtään käyttäjää ei löytynyt annetulla haulla."

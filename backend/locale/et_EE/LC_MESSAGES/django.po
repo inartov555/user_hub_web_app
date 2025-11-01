@@ -119,3 +119,6 @@ msgstr "See parool on liiga levinud."
 
 msgid "Enter a valid email address."
 msgstr "Sisestage kehtiv e-posti aadress."
+
+msgid "No User matches the given query."
+msgstr "Ükski kasutaja ei vasta antud päringule."

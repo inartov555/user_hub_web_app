@@ -119,3 +119,6 @@ msgstr "Toto heslo je příliš běžné."
 
 msgid "Enter a valid email address."
 msgstr "Zadejte platnou e-mailovou adresu."
+
+msgid "No User matches the given query."
+msgstr "Žádný uživatel neodpovídá zadanému dotazu."

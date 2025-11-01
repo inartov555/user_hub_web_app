@@ -119,3 +119,6 @@ msgstr "Цей пароль є надто поширеним."
 
 msgid "Enter a valid email address."
 msgstr "Введіть дійсну адресу електронної пошти."
+
+msgid "No User matches the given query."
+msgstr "Жоден користувач не відповідає вказаному запиту."

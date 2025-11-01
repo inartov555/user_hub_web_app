@@ -119,3 +119,6 @@ msgstr "Esta contraseña es demasiado común."
 
 msgid "Enter a valid email address."
 msgstr "Introduzca una dirección de correo electrónico válida."
+
+msgid "No User matches the given query."
+msgstr "No hay ningún usuario que coincida con la consulta dada."
