@@ -17,7 +17,7 @@ export default function Brand({ title }: { title: string }) {
                        shadow ring-1 ring-white/60 select-none">
         UA
       </span>
-      <span className="drop-shadow-[0_1px_0_rgba(255,255,255,0.6)]">
+      <span id="brandText" className="drop-shadow-[0_1px_0_rgba(255,255,255,0.6)]">
         {title}
       </span>
     </Link>

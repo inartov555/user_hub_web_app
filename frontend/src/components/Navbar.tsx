@@ -65,6 +65,7 @@ export default function Navbar() {
                 <>
                   {/* While Additional is active, force row-1 tabs to look inactive */}
                   <NavLink
+                    id="users"
                     to="/users"
                     className={({ isActive }) => tabCls(isActive && !isAdditionalActive)}
                   >
@@ -72,6 +73,7 @@ export default function Navbar() {
                   </NavLink>
 
                   <NavLink
+                    id="profile"
                     to="/profile-view"
                     className={() => tabCls(isProfileActive && !isAdditionalActive)}
                   >
@@ -81,13 +83,14 @@ export default function Navbar() {
                   {/* Additional tab (first row) — reveals row 2 */}
                   {user?.is_staff && (
                     <button
+                      id="additional"
                       type="button"
                       className={tabCls(isAdditionalActive)}
                       onClick={onToggleAdditional}
                       aria-expanded={isAdditionalActive}
                       aria-controls="secondary-nav"
                     >
-                      {t("nav.additional", "Additional")}
+                      {t("nav.additional")}
                     </button>
                   )}
                 </>
@@ -97,13 +100,13 @@ export default function Navbar() {
             {/* Row 2 - hidden until Additional is active or a second-row route is active */}
             {user?.is_staff && isAdditionalActive && (
               <nav id="secondary-nav" className="flex flex-wrap gap-2 md:gap-4">
-                <NavLink to="/stats" className={({ isActive }) => tabCls(isActive)}>
+                <NavLink id="userStats" to="/stats" className={({ isActive }) => tabCls(isActive)}>
                   {t("nav.stats")}
                 </NavLink>
-                <NavLink to="/settings" className={({ isActive }) => tabCls(isActive)}>
+                <NavLink id="settings" to="/settings" className={({ isActive }) => tabCls(isActive)}>
                   {t("nav.settings")}
                 </NavLink>
-                <NavLink to="/import-excel" className={({ isActive }) => tabCls(isActive)}>
+                <NavLink id="excelImport" to="/import-excel" className={({ isActive }) => tabCls(isActive)}>
                   {t("nav.importFromExcel")}
                 </NavLink>
               </nav>
@@ -117,11 +120,12 @@ export default function Navbar() {
             <>
               <div className="bg-gray-200 border rounded-full px-2 py-1 text-sm flex items-center gap-2 dark:bg-slate-900 dark:text-slate-100 dark:placeholder-slate-500
             dark:border-slate-700">
-                <span className="text-sm">
+                <span id="greeting" className="text-sm">
                   {t("app.hiUser", { username: user.username })}
                 </span>
               </div>
               <Button
+                id="logout"
                 className="border-red-600 text-red-700 hover:bg-red-50"
                 onClick={() => {
                   logout();
@@ -139,6 +143,7 @@ export default function Navbar() {
               <LocaleFlag locale={locale} size={24} />
             </span>
             <select
+              id="locale"
               className="border border-slate-300 dark:border-slate-700 rounded bg-white dark:bg-slate-900 px-2 py-1 text-sm"
               value={locale}
               onChange={(e) => {
