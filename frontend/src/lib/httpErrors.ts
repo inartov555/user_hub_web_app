@@ -34,7 +34,6 @@ export function extractApiError(err: unknown, t?: TFunction): { message: string;
   } else if (isRecord(err)) {
     // cases: thrown AxiosResponse, or a custom error wrapper
     status = (err as any)?.status ?? (err as any)?.response?.status;
-    console.log("} else if (isRecord(err)) { ? ", data)
     data =
       (err as any)?.data ??
       (err as any)?.response?.data ??
@@ -42,7 +41,6 @@ export function extractApiError(err: unknown, t?: TFunction): { message: string;
       (err as any)?.error ??
       err;
   }
-  console.log("AFTER ? ", data)
 
   if (!data) return { message: `authErrorMessage("httpError.serverError", t) (${status}).` };
   if (isRecord(data)) {

@@ -29,34 +29,34 @@ from rest_framework.response import Response
 EXC_MAP = {
     exceptions.NotAuthenticated: ("auth.not_authenticated",
                                   "errors.auth.not_authenticated",
-                                  translation.gettext("Not authenticated.")),
+                                  translation.gettext_lazy("Not authenticated.")),
     exceptions.AuthenticationFailed: ("auth.auth_failed",
                                       "errors.auth.auth_failed",
-                                      translation.gettext("Authentication credentials were not provided.")),
+                                      translation.gettext_lazy("Authentication credentials were not provided.")),
     exceptions.PermissionDenied: ("auth.permission_denied",
                                   "errors.auth.permission_denied",
-                                  translation.gettext("You do not have permission to perform this action.")),
+                                  translation.gettext_lazy("You do not have permission to perform this action.")),
     exceptions.NotFound: ("common.not_found",
                           "errors.common.not_found",
-                          translation.gettext("Not found.")),
+                          translation.gettext_lazy("Not found.")),
     exceptions.MethodNotAllowed: ("common.method_not_allowed",
                                   "errors.common.method_not_allowed",
-                                  translation.gettext("Method \"%(method)s\" not allowed.")),
+                                  translation.gettext_lazy("Method \"%(method)s\" not allowed.")),
     exceptions.Throttled: ("common.throttled",
                            "errors.common.throttled",
-                           translation.gettext("Request was throttled.")),
+                           translation.gettext_lazy("Request was throttled.")),
     exceptions.ParseError: ("common.parse_error",
                             "errors.common.parse_error",
-                            translation.gettext("Malformed request.")),
+                            translation.gettext_lazy("Malformed request.")),
     exceptions.UnsupportedMediaType: ("common.unsupported_media_type",
                                       "errors.common.unsupported_media_type",
-                                      translation.gettext("Unsupported media type.")),
+                                      translation.gettext_lazy("Unsupported media type.")),
     exceptions.NotAcceptable: ("common.not_acceptable",
                                "errors.common.not_acceptable",
-                               translation.gettext("Not acceptable.")),
+                               translation.gettext_lazy("Not acceptable.")),
     exceptions.APIException: ("common.server_error",
                               "errors.common.server_error",
-                              translation.gettext("A server error occurred.")),
+                              translation.gettext_lazy("A server error occurred.")),
 }
 
 def _to_str(value: Any) -> str:
@@ -64,12 +64,12 @@ def _to_str(value: Any) -> str:
     Convert ErrorDetail/lazy strings/anything to a plain string in the active language.
     """
     try:
-        return str(translation.gettext(value))  # translate if it's a raw string key
+        return str(translation.gettext_lazy(value))  # translate if it's a raw string key
     except Exception:  # pylint: disable=broad-exception-caught
         try:
             return str(value)  # fall back, return the save string, if localization not found
         except Exception:  # pylint: disable=broad-exception-caught
-            return translation.gettext("Unknown error.")
+            return translation.gettext_lazy("Unknown error.")
 
 def _serialize_validation_errors(detail) -> Any:
     """
