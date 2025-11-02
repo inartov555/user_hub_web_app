@@ -19,18 +19,11 @@ class UserManager(BaseUserManager):
         """
         Create and save a regular user with the given email and password.
 
-        - Normalizes the email using Django's built-in normalization.
-        - Hashes the provided password before saving.
-        - Accepts additional keyword arguments for extra model fields.
-
         Args:
             email (str): The user's email address (required; used as username).
             password (str | None): The user's raw password. If None, the user
                 will need to set a password later.
             **extra: Additional fields to set on the user instance.
-
-        Raises:
-            ValueError: If `email` is not provided.
 
         Returns:
             User: The created user instance.
@@ -46,10 +39,6 @@ class UserManager(BaseUserManager):
     def create_superuser(self, email, password=None, **extra):
         """
         Create and save a superuser with the given email and password.
-
-        Ensures the flags required for admin access are set:
-        - is_staff = True (grants access to Django admin)
-        - is_superuser = True (grants all permissions)
 
         Args:
             email (str): The superuser's email address.
@@ -67,28 +56,6 @@ class UserManager(BaseUserManager):
 class User(AbstractBaseUser, PermissionsMixin):
     """
     Application's custom user model using email as the username field.
-
-    Inherits:
-        - AbstractBaseUser: Provides core authentication fields and password
-          management (password hash, last_login, etc.).
-        - PermissionsMixin: Adds Django's permission and group relationships
-          plus the `is_superuser` flag.
-
-    Fields:
-        email (EmailField): Unique identifier for login.
-        is_active (BooleanField): Soft-delete/activation flag. Inactive users
-            cannot authenticate.
-        is_staff (BooleanField): Grants access to the Django admin site.
-
-    Attributes:
-        USERNAME_FIELD (str): Field used as the unique identifier for auth;
-            here it's "email".
-        REQUIRED_FIELDS (list[str]): Extra fields required when creating a
-            superuser via createsuperuser. Kept empty since email is enough.
-
-    Manager:
-        objects (UserManager): Custom manager handling user and superuser
-        creation with proper email normalization and password hashing.
     """
     # Override PermissionsMixin relations to avoid reverse accessor clashes
     groups = models.ManyToManyField(

@@ -66,10 +66,10 @@ export function extractApiError(err: unknown, t?: TFunction): { message: string;
       const parsed = JSON.parse(topDetails.replace(/'/g, '"'));
       if (Array.isArray(parsed)) {
           for (const item of parsed) {
-            collected.push(String(item));
+            collected.push(String("\t" + item));
           }
        } else {
-          collected.push(String(parsed));
+          collected.push(String("\t" + parsed));
        }
        if (collected.length) {
          return { message: collected.join(" ") };
@@ -78,7 +78,7 @@ export function extractApiError(err: unknown, t?: TFunction): { message: string;
        }
     } else if (Array.isArray(topDetails)) {
       for (const item of topDetails) {
-        collected.push(String(item));
+        collected.push(String("\t" + item));
       }
       if (collected.length) {
         return { message: collected.join(" ") };
@@ -86,7 +86,7 @@ export function extractApiError(err: unknown, t?: TFunction): { message: string;
           return { message: "" };
       }
     } else if (topDetails && typeof (topDetails as any) === "string") {
-      collected.push(String(topDetails));
+      collected.push(String("\t" + topDetails));
       if (collected.length) {
         return { message: collected.join(" ") };
       } else {
@@ -127,22 +127,22 @@ export function extractApiError(err: unknown, t?: TFunction): { message: string;
         for (const v of Object.values(details)) {
           if (Array.isArray(v)) {
             for (const item of v) {
-              collected.push(String(item));
+              collected.push(String("\t" + item));
               collected.push("\n")
             }
           }
           else if (topDetails && typeof (topDetails as any) === "string") {
-            collected.push(String(v));
+            collected.push(String("\t" + v));
             collected.push("\n")
           }
         }
       } else if (Array.isArray(details)) {
         for (const item of details) {
-          collected.push(String(item));
+          collected.push(String("\t" + item));
           collected.push("\n")
         }
       } else if (topDetails && typeof (topDetails as any) === "string") {
-        collected.push(String(details));
+        collected.push(String("\t" + details));
         collected.push("\n")
       }
     }

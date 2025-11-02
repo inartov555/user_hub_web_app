@@ -13,7 +13,7 @@ from django.apps import apps
 from django.contrib.auth import get_user_model
 from django.db import DatabaseError, IntegrityError
 from django.utils import translation
-from rest_framework.exceptions import APIException, ValidationError
+from rest_framework.exceptions import ValidationError
 from rest_framework_simplejwt.serializers import TokenRefreshSerializer
 from rest_framework_simplejwt.tokens import RefreshToken, AccessToken, Token
 from rest_framework_simplejwt.exceptions import TokenError
@@ -106,10 +106,9 @@ class CustomTokenRefreshSerializer(TokenRefreshSerializer):
         except (IntegrityError, DatabaseError) as exc:
             # Database write failed (duplicate/DB down). Tell the client clearly (localized).
             # The global exception handler will wrap this into the standard error envelope.
-            raise APIException(
-                detail=translation.gettext("Failed to blacklist token."),
-                code="auth.blacklist_failed",
-            ) from exc
+            raise ValidationError(
+                {"non_field_errors": ["Failed to blacklist token."]}
+            )
 
     @staticmethod
     def _user_from_token(token: Token):

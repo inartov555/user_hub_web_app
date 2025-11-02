@@ -63,7 +63,7 @@ class JWTAuthentication(BaseAuthentication):
             access_token = AccessToken(raw_access)
             user = self._user_from_token(access_token)
 
-            # Optionally flag near-expiry (no auto-renew)
+            # Flag near-expiry (no auto-renew)
             seconds_left = self._seconds_to_expiry(access_token)
             request.jwt.seconds_to_expiry = seconds_left
             if self._should_renew(access_token):

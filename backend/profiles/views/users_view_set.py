@@ -9,7 +9,7 @@ from django.core.exceptions import ValidationError as DjangoValidationError
 from django.db import IntegrityError
 from django.utils import translation
 from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework import viewsets, permissions
+from rest_framework import viewsets, permissions, status
 from rest_framework.decorators import action
 from rest_framework.exceptions import ValidationError
 from rest_framework.filters import OrderingFilter, SearchFilter
@@ -46,19 +46,6 @@ class UsersViewSet(viewsets.ReadOnlyModelViewSet):
         """
         instance.delete()
 
-    def _validate_user_delete(request):
-        ids = request.data.get("ids", [])
-        if not ids:
-            user = self.get_object()
-            ids = [user.id]
-        if not isinstance(ids, list) or not all(isinstance(i, int) for i in ids):
-            raise ValidationError(
-                {"non_field_errors": ["ids must be a list of integers"]})
-        # Don't allow deleting yourself
-        if request.user and request.user.id in ids:
-            raise ValidationError(
-                {"non_field_errors": ["Cannot delete current user."]})
-
     # POST /bulk-delete
     @action(detail=False, methods=["post"], url_path="bulk-delete",
             permission_classes=[permissions.IsAuthenticated])
@@ -66,7 +53,19 @@ class UsersViewSet(viewsets.ReadOnlyModelViewSet):
         """
         Delete multiple users by id list: { "ids": [1,2,3] }
         """
-        self._validate_user_delete(request)
+        ids = request.data.get("ids", [])
+        if not isinstance(ids, list) or not all(isinstance(i, int) for i in ids):
+            raise ValidationError(
+                {"non_field_errors": ["ids must be a list of integers"]}
+            )
+
+        # optional: don't allow deleting yourself
+        if request.user and request.user.id in ids:
+            
+            raise ValidationError(
+                {"non_field_errors": ["Cannot delete current user."]}
+            )
+
         qs = self.get_queryset().filter(id__in=ids)
         count = qs.count()
         qs.delete()
@@ -79,8 +78,12 @@ class UsersViewSet(viewsets.ReadOnlyModelViewSet):
         """
         Delete a user by id
         """
-        user = self.get_object()  # resolved by {pk}
-        self._validate_user_delete(request)
+        user = self.get_object()  # resolves by {pk}
+        # Don't allow deleting yourself
+        if request.user.id == user.id:
+            raise ValidationError(
+                {"non_field_errors": ["Cannot delete current user."]}
+            )
         self.perform_destroy(user)
         return Response(status=status.HTTP_204_NO_CONTENT)
 
@@ -96,7 +99,8 @@ class UsersViewSet(viewsets.ReadOnlyModelViewSet):
         # Check for admin user
         # if not (request.user.is_staff or request.user == user):
         #    raise ValidationError(
-        #        {"non_field_errors": ["Not permitted."]})
+        #        {"non_field_errors": ["Not permitted."]}
+        #    )
 
         ser = ChangePasswordSerializer(data=request.data)
         ser.is_valid(raise_exception=True)
@@ -107,10 +111,12 @@ class UsersViewSet(viewsets.ReadOnlyModelViewSet):
             password_validation.validate_password(new_pw, user=user)
         except (DjangoValidationError, ValueError) as e:
             raise ValidationError(
-                {"non_field_errors": [str(e)]})
+                {"non_field_errors": [str(e)]}
+            )
         except IntegrityError:
             raise ValidationError(
-                {"non_field_errors": ["Database error while applying changes."]})
+                {"non_field_errors": ["Database error while applying changes."]}
+            )
 
         user.set_password(new_pw)
         user.save(update_fields=["password"])

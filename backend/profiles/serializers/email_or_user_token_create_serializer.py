@@ -10,6 +10,7 @@ from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.utils import translation, timezone
 from rest_framework import serializers
+from rest_framework.exceptions import ValidationError
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.tokens import AccessToken, RefreshToken
 
@@ -76,9 +77,8 @@ class EmailOrUsernameTokenCreateSerializer(TokenObtainPairSerializer):
         # 3) normalize & validate presence
         login_value = self._normalize(provided_login, login_field)
         if not login_value or not password:
-            # consistent, frontend-friendly error shape
-            raise serializers.ValidationError(
-                {"detail": translation.gettext("Must include 'login' (or 'email'/'username') and 'password'.")}
+            raise ValidationError(
+                {"non_field_errors": ["Must include 'login' (or 'email'/'username') and 'password'."]}
             )
 
         # 4) put the login into the correct field; drop the others
