@@ -22,10 +22,11 @@ from django.core.exceptions import ValidationError as DjangoValidationError
 from django.utils import translation
 from rest_framework.views import exception_handler
 from rest_framework import exceptions, status
+from rest_framework_simplejwt.exceptions import TokenError, InvalidToken
 from rest_framework.response import Response
 
 
-# Optional: a small catalog to map common DRF exception classes to our error codes & i18n keys
+# A small catalog to map common DRF exception classes to the error codes & i18n keys
 EXC_MAP = {
     exceptions.NotAuthenticated: ("auth.not_authenticated",
                                   "errors.auth.not_authenticated",
@@ -57,7 +58,14 @@ EXC_MAP = {
     exceptions.APIException: ("common.server_error",
                               "errors.common.server_error",
                               translation.gettext_lazy("A server error occurred.")),
+    InvalidToken: ("auth.token_error",
+                   "errors.auth.token_invalid",
+                   translation.gettext_lazy("Token is invalid")),
+    TokenError: ("auth.token_error",
+                 "errors.auth.token_error",
+                 translation.gettext_lazy("Token error")),
 }
+
 
 def _to_str(value: Any) -> str:
     """
@@ -71,7 +79,8 @@ def _to_str(value: Any) -> str:
         except Exception:  # pylint: disable=broad-exception-caught
             return translation.gettext_lazy("Unknown error.")
 
-def _serialize_validation_errors(detail) -> Any:
+
+def _serialize_validation_errors(detail: Any) -> Any:
     """
     DRF ValidationError.detail can be a dict/list/str. Keep structure but translate strings.
     """
@@ -83,15 +92,21 @@ def _serialize_validation_errors(detail) -> Any:
         return str(_to_str(detail))
     return _to_str(detail)
 
-def _resolve_mapping(exc) -> Optional[tuple[str, str, str]]:
+
+def _resolve_mapping(exc: Exception) -> Optional[tuple[str, str, str]]:
     for cls, triple in EXC_MAP.items():
         if isinstance(exc, cls):
             return triple
     return None
 
-def localized_exception_handler(exc, context):
+
+def localized_exception_handler(exc: Exception, context: dict) -> Response:
     """
     Wrap DRF's exception handling, then output our normalized, localized envelope.
+
+    Args:
+        exc (Exception): error class derived from Exception
+        context (dict): complex item, consists of view, request, args, kwargs
     """
     response = exception_handler(exc, context)
 
@@ -112,7 +127,7 @@ def localized_exception_handler(exc, context):
         )
 
     if response is None:
-        # Unhandled → 500
+        # Unhandled => 500
         return Response(
             {
                 "error": {
@@ -162,7 +177,7 @@ def localized_exception_handler(exc, context):
         }
         return response
 
-    # Fallback: translate "detail" if present and attach a generic code
+    # Fallback: translate "details" if present and attach a generic code
     if isinstance(response.data, dict):
         detail = response.data.get("detail")
         response.data = {

@@ -22,31 +22,6 @@ from rest_framework_simplejwt.exceptions import TokenError, InvalidToken
 logger = logging.getLogger(__name__)
 
 
-def _get_settings():
-    # small helper to avoid attribute errors in tests
-    cfg = getattr(settings, "JWT_COOKIE", {})
-    return {
-        "ACCESS_COOKIE_NAME": cfg.get("ACCESS_COOKIE_NAME"),
-        "REFRESH_COOKIE_NAME": cfg.get("REFRESH_COOKIE_NAME"),
-        "RENEW_AT_SECONDS": cfg.get("RENEW_AT_SECONDS"),
-        "COOKIE_PATH": cfg.get("COOKIE_PATH"),
-        "COOKIE_DOMAIN": cfg.get("COOKIE_DOMAIN"),
-        "COOKIE_SAMESITE": cfg.get("COOKIE_SAMESITE"),
-        "COOKIE_SECURE": bool(cfg.get("COOKIE_SECURE")),
-        "COOKIE_HTTPONLY": bool(cfg.get("COOKIE_HTTPONLY")),
-    }
-
-
-def _delete_cookie(resp, name):
-    cfg = _get_settings()
-    resp.delete_cookie(
-        name,
-        path=cfg["COOKIE_PATH"],
-        domain=cfg["COOKIE_DOMAIN"],
-        samesite=cfg["COOKIE_SAMESITE"],
-    )
-
-
 class JWTAuthenticationMiddleware:
     """
     Stateless auth middleware that:
@@ -61,7 +36,7 @@ class JWTAuthenticationMiddleware:
         self.user_model = get_user_model()
 
     def __call__(self, request):
-        # Namespace to avoid "protected-access" (W0212)
+        # Namespace to avoid "protected-access"
         request.jwt = SimpleNamespace(
             new_access_token=None,  # type: Optional[str]
             new_refresh_token=None,  # type: Optional[str]
@@ -74,8 +49,8 @@ class JWTAuthenticationMiddleware:
         request.jwt_auth_failed: bool = False
 
         access = self._get_access_from_request(request)
-        # We do NOT auto-refresh in middleware anymore. Always return None.
-        # (Clients should call the refresh endpoint and then resend with a new access token.)
+        # middleware is no longer auto-refreshed. Always return None.
+        # Clients should call the refresh endpoint and then resend with a new access token.
         refresh: Optional[str] = None
 
         if access:
