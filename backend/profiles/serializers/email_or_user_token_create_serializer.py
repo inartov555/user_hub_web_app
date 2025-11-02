@@ -8,8 +8,7 @@ from datetime import timedelta
 
 from django.conf import settings
 from django.contrib.auth import get_user_model
-from django.utils import translation, timezone
-from rest_framework import serializers
+from django.utils import timezone
 from rest_framework.exceptions import ValidationError
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.tokens import AccessToken, RefreshToken

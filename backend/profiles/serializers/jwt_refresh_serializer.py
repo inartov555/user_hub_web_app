@@ -102,13 +102,13 @@ class CustomTokenRefreshSerializer(TokenRefreshSerializer):
             blacklister()  # pylint: disable=no-member
         except TokenError as exc:
             # Surface as a field validation error for the client (localized)
-            raise ValidationError({"refresh": [translation.gettext("Invalid refresh token.")]}) from exc
+            raise ValidationError({"refresh": ["Invalid refresh token."]}) from exc
         except (IntegrityError, DatabaseError) as exc:
             # Database write failed (duplicate/DB down). Tell the client clearly (localized).
             # The global exception handler will wrap this into the standard error envelope.
             raise ValidationError(
                 {"non_field_errors": ["Failed to blacklist token."]}
-            )
+            ) from exc
 
     @staticmethod
     def _user_from_token(token: Token):

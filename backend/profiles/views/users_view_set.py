@@ -58,14 +58,11 @@ class UsersViewSet(viewsets.ReadOnlyModelViewSet):
             raise ValidationError(
                 {"non_field_errors": ["ids must be a list of integers"]}
             )
-
-        # optional: don't allow deleting yourself
+        # Don't allow deleting yourself
         if request.user and request.user.id in ids:
-            
             raise ValidationError(
                 {"non_field_errors": ["Cannot delete current user."]}
             )
-
         qs = self.get_queryset().filter(id__in=ids)
         count = qs.count()
         qs.delete()

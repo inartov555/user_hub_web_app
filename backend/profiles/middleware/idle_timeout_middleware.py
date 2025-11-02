@@ -7,12 +7,9 @@ It uses the *effective* app settings (DB override or defaults).
 
 import time
 
-from django.http import JsonResponse
 from django.utils.deprecation import MiddlewareMixin
-from django.utils import translation
 from django.contrib import auth
 from django.shortcuts import redirect
-from rest_framework import status
 from rest_framework.exceptions import ValidationError
 
 from ..models.app_settings import get_effective_auth_settings
