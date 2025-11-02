@@ -46,7 +46,7 @@ class IdleTimeoutMiddleware(MiddlewareMixin):
             if request.path.startswith("/api/"):
                 return JsonResponse(
                 localized_exception_handler({}, "Session expired due to inactivity."),
-                status=status=status.HTTP_401_UNAUTHORIZED)
+                status=status.HTTP_401_UNAUTHORIZED)
             return redirect("/login")
 
         return None
