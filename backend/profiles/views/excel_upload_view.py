@@ -106,7 +106,8 @@ class ExcelUploadView(APIView):
         user_model = get_user_model()
         file = request.FILES.get("file")
         if not file:
-            return Response({"detail": translation.gettext("No file provided")}, status=400)
+            return Response({"detail": translation.gettext("No file provided")},
+                            status=status.HTTP_400_BAD_REQUEST)
         df = pd.read_excel(file)
         created, updated = 0, 0
         for _, row in df.iterrows():

@@ -11,7 +11,6 @@ from django.contrib.auth import get_user_model
 from django.utils import translation, timezone
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.tokens import AccessToken, RefreshToken
-from rest_framework import serializers, status
 
 from ..boot import get_boot_id
 from ..models.app_settings import get_effective_auth_settings
