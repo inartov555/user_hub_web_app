@@ -112,7 +112,7 @@
   },
   "resetPassword": {
     "resetPassword": "Obnovit heslo",
-    "checkEmailForResetLink": "Zkontrolujte v konzolovém e-mailovém backendu odkaz pro obnovení.",
+    "checkEmailForResetLink": "Zkontrolujte v konzolovém e-mailovém backendu odkaz na resetování hesla. Poznámka: e-maily se v tuto chvíli ve skutečnosti neodesílají.",
     "sendResetEmail": "Odeslat e-mail pro obnovení hesla"
   },
   "appSettings": {

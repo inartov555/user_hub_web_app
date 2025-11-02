@@ -112,7 +112,7 @@
   },
   "resetPassword": {
     "resetPassword": "Nollaa salasana",
-    "checkEmailForResetLink": "Tarkista konsolin sähköpostitaustapalvelusta palautuslinkki.",
+    "checkEmailForResetLink": "Tarkista salasanan palautuslinkki konsolin sähköpostitaustapalvelusta. Huom: sähköposteja ei tällä hetkellä oikeasti lähetetä.",
     "sendResetEmail": "Lähetä salasanan palautusviesti"
   },
   "appSettings": {

@@ -112,7 +112,7 @@
   },
   "resetPassword": {
     "resetPassword": "Restablecer contraseña",
-    "checkEmailForResetLink": "Consulta en la consola del backend de correo el enlace de restablecimiento.",
+    "checkEmailForResetLink": "Consulta en la consola del backend de correo el enlace para restablecer la contraseña. Nota: los correos electrónicos no se están enviando ahora mismo.",
     "sendResetEmail": "Enviar correo de restablecimiento"
   },
   "appSettings": {

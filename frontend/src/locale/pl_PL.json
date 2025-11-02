@@ -112,7 +112,7 @@
   },
   "resetPassword": {
     "resetPassword": "Zresetuj hasło",
-    "checkEmailForResetLink": "Sprawdź w konsoli backendu e-mail link do resetowania.",
+    "checkEmailForResetLink": "Sprawdź w konsolowym backendzie e-mail link do resetowania hasła. Uwaga: wiadomości e-mail nie są teraz faktycznie wysyłane.",
     "sendResetEmail": "Wyślij e-mail resetujący hasło"
   },
   "appSettings": {

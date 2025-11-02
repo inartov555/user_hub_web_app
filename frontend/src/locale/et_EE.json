@@ -112,7 +112,7 @@
   },
   "resetPassword": {
     "resetPassword": "Lähtesta parool",
-    "checkEmailForResetLink": "Vaata konsoolis e-posti backendi, et leida lähtestamislink.",
+    "checkEmailForResetLink": "Kontrolli parooli lähtestamise linki konsooli e-posti taustteenusest. Märkus: e-kirju praegu tegelikult ei saadeta.",
     "sendResetEmail": "Saada parooli lähtestamise e-kiri"
   },
   "appSettings": {
