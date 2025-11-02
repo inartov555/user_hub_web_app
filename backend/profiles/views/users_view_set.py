@@ -109,11 +109,11 @@ class UsersViewSet(viewsets.ReadOnlyModelViewSet):
         except (DjangoValidationError, ValueError) as ex:
             raise ValidationError(
                 {"non_field_errors": [str(ex)]}
-            ) as ex
+            ) from ex
         except IntegrityError as ex:
             raise ValidationError(
                 {"non_field_errors": ["Database error while applying changes."]}
-            ) as ex
+            ) from ex
 
         user.set_password(new_pw)
         user.save(update_fields=["password"])
