@@ -53,11 +53,12 @@ export function extractApiError(err: unknown, t?: TFunction): { message: string;
     };
   }
 
-  // {"message": "A server error occurred.", "detail":"['This password is too common.']"}
-  // {"message": "A server error occurred.", "detail":"Cannot delete current user."}
   if (isRecord(data)) {
-    const collected: string[] = ["\n"];
+    // {"message": "A server error occurred.", "detail":"['This password is too common.']"}
+    // {"message": "A server error occurred.", "detail":"Cannot delete current user."}
+    const collected: string[] = [];
     if (typeof (data as any).message === "string") {
+      collected.push("\n")
       collected.push((data as any).message);
     }
 
@@ -69,6 +70,7 @@ export function extractApiError(err: unknown, t?: TFunction): { message: string;
       const parsed = JSON.parse(topDetails.replace(/'/g, '"'));
       if (Array.isArray(parsed)) {
           for (const item of parsed) {
+            collected.push("\n")
             collected.push(String(indent_4 + item));
           }
        } else {
@@ -81,6 +83,7 @@ export function extractApiError(err: unknown, t?: TFunction): { message: string;
        }
     } else if (Array.isArray(topDetails)) {
       for (const item of topDetails) {
+        collected.push("\n")
         collected.push(String(indent_4 + item));
       }
       if (collected.length) {
@@ -89,6 +92,7 @@ export function extractApiError(err: unknown, t?: TFunction): { message: string;
           return { message: "" };
       }
     } else if (topDetails && typeof (topDetails as any) === "string") {
+      collected.push("\n")
       collected.push(String(indent_4 + topDetails));
       if (collected.length) {
         return { message: collected.join(" ") };
@@ -120,33 +124,33 @@ export function extractApiError(err: unknown, t?: TFunction): { message: string;
     // Replace the invalid maybeErr/res_list block with this collector
     const errorObj = isRecord((data as any).error) ? (data as any).error : null;
     if (errorObj && typeof (errorObj as any).message === "string") {
+      collected.push("\n")
       collected.push((errorObj as any).message);
     }
 
     const details = errorObj ? (errorObj as any).details : undefined;
-    if (details !== undefined) {
-      collected.push("\n") // after message text
+    if (details !== undefined && details !== null) {
       if (isRecord(details)) {
         for (const val of Object.values(details)) {
           if (Array.isArray(val)) {
             for (const item of val) {
-              collected.push(String(indent_4 + item));
               collected.push("\n")
+              collected.push(String(indent_4 + item));
             }
           }
-          else if (topDetails && typeof (topDetails as any) === "string") {
-            collected.push(String(indent_4 + val));
+          else if (details && typeof (details as any) === "string") {
             collected.push("\n")
+            collected.push(String(indent_4 + val));
           }
         }
       } else if (Array.isArray(details)) {
         for (const item of details) {
-          collected.push(String(indent_4 + item));
           collected.push("\n")
+          collected.push(String(indent_4 + item));
         }
-      } else if (topDetails && typeof (topDetails as any) === "string") {
-        collected.push(String(indent_4 + details));
+      } else if (details && typeof (details as any) === "string") {
         collected.push("\n")
+        collected.push(String(indent_4 + details));
       }
     }
     if (collected.length) {
