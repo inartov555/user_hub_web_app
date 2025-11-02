@@ -12,7 +12,6 @@ from rest_framework_simplejwt.exceptions import InvalidToken
 from rest_framework.exceptions import AuthenticationFailed
 
 from ..boot import get_boot_id
-from core.exceptions import localized_exception_handler
 
 
 def boot_header(get_response):

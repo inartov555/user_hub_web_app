@@ -102,8 +102,7 @@ class JWTAuthentication(BaseAuthentication):
 
         try:
             return token.decode("utf-8")
-        except Exception:
-            # Leave decoding errors to SimpleJWT for consistent errors
+        except UnicodeDecodeError:
             return token if isinstance(token, str) else None
 
     def _user_from_token(self, token: AccessToken):
@@ -115,7 +114,7 @@ class JWTAuthentication(BaseAuthentication):
     def _seconds_to_expiry(self, token: AccessToken) -> Optional[int]:
         try:
             exp_ts = int(token["exp"])
-        except Exception:
+        except (KeyError, TypeError, ValueError):
             return None
         now_ts = int(timezone.now().timestamp())
         return max(0, exp_ts - now_ts)

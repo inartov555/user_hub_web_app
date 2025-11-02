@@ -13,7 +13,6 @@ from django.contrib import auth
 from django.shortcuts import redirect
 
 from ..models.app_settings import get_effective_auth_settings
-from core.exceptions import localized_exception_handler
 
 
 class IdleTimeoutMiddleware(MiddlewareMixin):
@@ -32,7 +31,7 @@ class IdleTimeoutMiddleware(MiddlewareMixin):
         if not (user and user.is_authenticated):
             return None
 
-        # pull the current effective value each request (cheap; or cache if you like)
+        # NEW: pull the current effective value each request (cheap; or cache if you like)
         idle_timeout_seconds = get_effective_auth_settings().idle_timeout_seconds
 
         now = int(time.time())
@@ -45,7 +44,7 @@ class IdleTimeoutMiddleware(MiddlewareMixin):
             request.session.flush()
             if request.path.startswith("/api/"):
                 return JsonResponse(
-                localized_exception_handler({}, "Session expired due to inactivity."),
+                {"detail": translation.gettext("Session expired due to inactivity.")},
                 status=status.HTTP_401_UNAUTHORIZED)
             return redirect("/login")
 
