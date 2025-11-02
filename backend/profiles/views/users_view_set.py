@@ -46,6 +46,19 @@ class UsersViewSet(viewsets.ReadOnlyModelViewSet):
         """
         instance.delete()
 
+    def _validate_user_delete(request):
+        ids = request.data.get("ids", [])
+        if not ids:
+            user = self.get_object()
+            ids = [user.id]
+        if not isinstance(ids, list) or not all(isinstance(i, int) for i in ids):
+            raise ValidationError(
+                {"non_field_errors": ["ids must be a list of integers"]})
+        # Don't allow deleting yourself
+        if request.user and request.user.id in ids:
+            raise ValidationError(
+                {"non_field_errors": ["Cannot delete current user."]})
+
     # POST /bulk-delete
     @action(detail=False, methods=["post"], url_path="bulk-delete",
             permission_classes=[permissions.IsAuthenticated])
@@ -53,17 +66,7 @@ class UsersViewSet(viewsets.ReadOnlyModelViewSet):
         """
         Delete multiple users by id list: { "ids": [1,2,3] }
         """
-        ids = request.data.get("ids", [])
-        if not isinstance(ids, list) or not all(isinstance(i, int) for i in ids):
-            raise ValidationError(
-                {"non_field_errors": ["ids must be a list of integers"]})
-
-        # optional: don't allow deleting yourself
-        if request.user and request.user.id in ids:
-            
-            raise ValidationError(
-                {"non_field_errors": ["Cannot delete current user."]})
-
+        self._validate_user_delete(request)
         qs = self.get_queryset().filter(id__in=ids)
         count = qs.count()
         qs.delete()
@@ -76,11 +79,8 @@ class UsersViewSet(viewsets.ReadOnlyModelViewSet):
         """
         Delete a user by id
         """
-        user = self.get_object()  # resolves by {pk}
-        # Don't allow deleting yourself
-        if request.user.id == user.id:
-            raise ValidationError(
-                {"non_field_errors": ["Cannot delete current user."]})
+        user = self.get_object()  # resolved by {pk}
+        self._validate_user_delete(request)
         self.perform_destroy(user)
         return Response(status=status.HTTP_204_NO_CONTENT)
 

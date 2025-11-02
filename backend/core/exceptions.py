@@ -94,9 +94,12 @@ def _serialize_validation_errors(detail: Any) -> Any:
 
 
 def _resolve_mapping(exc: Exception) -> Optional[tuple[str, str, str]]:
-    for cls, triple in EXC_MAP.items():
-        if isinstance(exc, cls):
-            return triple
+    """
+    Return the first mapping that matches in the exception's MRO (most-specific first).
+    """
+    for cls in type(exc).mro():  # e.g., NotFound -> APIException -> Exception -> object
+        if cls in EXC_MAP:
+            return EXC_MAP[cls]
     return None
 
 
