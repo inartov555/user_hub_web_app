@@ -8,9 +8,9 @@ so the client can refresh credentials.
 from django.http import JsonResponse
 from django.utils import translation
 from rest_framework import status
+from rest_framework.exceptions import AuthenticationFailed
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework_simplejwt.exceptions import InvalidToken
-from rest_framework.exceptions import AuthenticationFailed
 
 from ..boot import get_boot_id
 

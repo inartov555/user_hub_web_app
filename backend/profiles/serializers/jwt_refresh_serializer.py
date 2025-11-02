@@ -46,7 +46,7 @@ class CustomTokenRefreshSerializer(TokenRefreshSerializer):
 
         data = super().validate(attrs)
 
-        # (Optional) ensure new access token carries current BOOT_ID etc.
+        # Ensure new access token carries current BOOT_ID etc.
         boot_id = settings.SIMPLE_JWT.get("BOOT_ID")
         if boot_id:
             at = AccessToken(data["access"])
@@ -105,7 +105,7 @@ class CustomTokenRefreshSerializer(TokenRefreshSerializer):
             raise ValidationError({"refresh": [translation.gettext("Invalid refresh token.")]}) from exc
         except (IntegrityError, DatabaseError) as exc:
             # Database write failed (duplicate/DB down). Tell the client clearly (localized).
-            # Your global exception handler will wrap this into the standard error envelope.
+            # The global exception handler will wrap this into the standard error envelope.
             raise APIException(
                 detail=translation.gettext("Failed to blacklist token."),
                 code="auth.blacklist_failed",

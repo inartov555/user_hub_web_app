@@ -77,7 +77,7 @@ class JWTAuthentication(BaseAuthentication):
             # but fail the request in DRF terms for protected views.
             request.jwt_auth_failed = True
             request.jwt.auth_failed = True
-            raise AuthenticationFailed(detail=str(exc))
+            raise AuthenticationFailed(detail=str(exc)) from exc
 
     def authenticate_header(self, request) -> str:
         # Controls the WWW-Authenticate header on 401s

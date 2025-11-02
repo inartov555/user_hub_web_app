@@ -22,8 +22,8 @@ from django.core.exceptions import ValidationError as DjangoValidationError
 from django.utils import translation
 from rest_framework import exceptions, status
 from rest_framework.response import Response
-from rest_framework_simplejwt.exceptions import TokenError, InvalidToken
 from rest_framework.views import exception_handler
+from rest_framework_simplejwt.exceptions import InvalidToken, TokenError
 
 
 # A small catalog to map common DRF exception classes to the error codes & i18n keys
