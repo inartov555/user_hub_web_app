@@ -22,6 +22,9 @@ export function extractApiError(err: unknown, t?: TFunction): { message: string;
   const fallback = { message: authErrorMessage("httpError.fallBack", t) };
   let status: number | undefined;
   let data: unknown;
+  const NBSP = "\u00A0";
+  const indent = (n = 4) => NBSP.repeat(n);
+  const indent_4 = indent(4) + "-> "
   // Is Axios error?
   if (axios.isAxiosError<DRFError>(err)) {
     const ax = err as AxiosError<DRFError>;
@@ -66,10 +69,10 @@ export function extractApiError(err: unknown, t?: TFunction): { message: string;
       const parsed = JSON.parse(topDetails.replace(/'/g, '"'));
       if (Array.isArray(parsed)) {
           for (const item of parsed) {
-            collected.push(String("\t" + item));
+            collected.push(String(indent_4 + item));
           }
        } else {
-          collected.push(String("\t" + parsed));
+          collected.push(String(indent_4 + parsed));
        }
        if (collected.length) {
          return { message: collected.join(" ") };
@@ -78,7 +81,7 @@ export function extractApiError(err: unknown, t?: TFunction): { message: string;
        }
     } else if (Array.isArray(topDetails)) {
       for (const item of topDetails) {
-        collected.push(String("\t" + item));
+        collected.push(String(indent_4 + item));
       }
       if (collected.length) {
         return { message: collected.join(" ") };
@@ -86,7 +89,7 @@ export function extractApiError(err: unknown, t?: TFunction): { message: string;
           return { message: "" };
       }
     } else if (topDetails && typeof (topDetails as any) === "string") {
-      collected.push(String("\t" + topDetails));
+      collected.push(String(indent_4 + topDetails));
       if (collected.length) {
         return { message: collected.join(" ") };
       } else {
@@ -124,25 +127,25 @@ export function extractApiError(err: unknown, t?: TFunction): { message: string;
     if (details !== undefined) {
       collected.push("\n") // after message text
       if (isRecord(details)) {
-        for (const v of Object.values(details)) {
-          if (Array.isArray(v)) {
-            for (const item of v) {
-              collected.push(String("\t" + item));
+        for (const val of Object.values(details)) {
+          if (Array.isArray(val)) {
+            for (const item of val) {
+              collected.push(String(indent_4 + item));
               collected.push("\n")
             }
           }
           else if (topDetails && typeof (topDetails as any) === "string") {
-            collected.push(String("\t" + v));
+            collected.push(String(indent_4 + val));
             collected.push("\n")
           }
         }
       } else if (Array.isArray(details)) {
         for (const item of details) {
-          collected.push(String("\t" + item));
+          collected.push(String(indent_4 + item));
           collected.push("\n")
         }
       } else if (topDetails && typeof (topDetails as any) === "string") {
-        collected.push(String("\t" + details));
+        collected.push(String(indent_4 + details));
         collected.push("\n")
       }
     }
@@ -169,11 +172,11 @@ export function extractApiError(err: unknown, t?: TFunction): { message: string;
     }
     // collect field errors & non_field_errors
     let topMessage = "";
-    for (const [k, v] of Object.entries(data)) {
-      if (Array.isArray(v)) {
-        fields[k] = v.map(String);
-      } else if (typeof v === "string") {
-        fields[k] = [v];
+    for (const [key, value] of Object.entries(data)) {
+      if (Array.isArray(value)) {
+        fields[key] = value.map(String);
+      } else if (typeof value === "string") {
+        fields[key] = [value];
       }
     }
     // Prefer non_field_errors as top-level
