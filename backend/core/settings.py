@@ -175,7 +175,6 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "profiles.middleware.boot_id_enforcer.BootIdEnforcerMiddleware",
-    "profiles.middleware.jwt_authentication_middleware.JWTAuthenticationMiddleware",
     "profiles.middleware.boot_id_enforcer.boot_header",
     "profiles.middleware.idle_timeout_middleware.IdleTimeoutMiddleware",
     "profiles.middleware.last_activity_middle_ware.LastActivityMiddleware",
@@ -247,6 +246,7 @@ REST_FRAMEWORK = {
         "rest_framework.authentication.SessionAuthentication",
         "rest_framework.authentication.BasicAuthentication",
         "rest_framework_simplejwt.authentication.JWTAuthentication",
+        "core.jwt_authentication.JWTAuthentication",
     ),
     "DEFAULT_PERMISSION_CLASSES": (
         "rest_framework.permissions.IsAuthenticated",
