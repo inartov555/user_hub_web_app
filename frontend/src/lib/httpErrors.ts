@@ -50,39 +50,53 @@ export function extractApiError(err: unknown, t?: TFunction): { message: string;
     };
   }
 
-  // Replace the invalid maybeErr/res_list block with this collector:
+  // {"message": "A server error occurred.", "detail":"['This password is too common.']"}
+  // {"message": "A server error occurred.", "detail":"Cannot delete current user."}
   if (isRecord(data)) {
     const collected: string[] = ["\n"];
     if (typeof (data as any).message === "string") {
       collected.push((data as any).message);
-      collected.push("\n")
     }
 
     // {"detail":"['This password is too common.']"}
     // {"detail":"Cannot delete current user."}
     let topDetails: unknown = (data as any).detail;
     if (typeof topDetails === "string" && /^\s*\[.*\]\s*$/.test(topDetails)) {
+      collected.push("\n") // after message text
       const parsed = JSON.parse(topDetails.replace(/'/g, '"'));
       if (Array.isArray(parsed)) {
           for (const item of parsed) {
             collected.push(String(item));
-            collected.push("\n");
           }
        } else {
           collected.push(String(parsed));
-          collected.push("\n");
+       }
+       if (collected.length) {
+         return { message: collected.join(" ") };
+       } else {
+         return { message: "" };
        }
     } else if (Array.isArray(topDetails)) {
       for (const item of topDetails) {
         collected.push(String(item));
-        collected.push("\n");
+      }
+      if (collected.length) {
+        return { message: collected.join(" ") };
+      } else {
+          return { message: "" };
       }
     } else if (topDetails && typeof (topDetails as any) === "string") {
       collected.push(String(topDetails));
-      collected.push("\n");
+      if (collected.length) {
+        return { message: collected.join(" ") };
+      } else {
+          return { message: "" };
+      }
     }
 
     /*
+       Example:
+
        {
          "error": {
            "code": "common.server_error",
@@ -100,14 +114,15 @@ export function extractApiError(err: unknown, t?: TFunction): { message: string;
        }
      */
 
+    // Replace the invalid maybeErr/res_list block with this collector
     const errorObj = isRecord((data as any).error) ? (data as any).error : null;
     if (errorObj && typeof (errorObj as any).message === "string") {
       collected.push((errorObj as any).message);
-      collected.push("\n")
     }
 
     const details = errorObj ? (errorObj as any).details : undefined;
     if (details !== undefined) {
+      collected.push("\n") // after message text
       if (isRecord(details)) {
         for (const v of Object.values(details)) {
           if (Array.isArray(v)) {
@@ -133,18 +148,12 @@ export function extractApiError(err: unknown, t?: TFunction): { message: string;
     }
     if (collected.length) {
       return { message: collected.join(" ") };
+    } else {
+      return { message: "" };
     }
   }
 
-  /*
-    TODO: add text retrieving for the HTTP error when plain HTML is returned.
-    Example (but it returns plain HTML at the moment):
-    if (typeof data === "string") {
-      return { message: data || (status ? `Server error (${status}).` : fallback.message) };
-    }
-  */
-
-  // DRF common shapes
+  // Common shapes
   if (isRecord(data)) {
     const fields: Record<string, string[]> = {};
 
