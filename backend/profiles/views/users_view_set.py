@@ -9,9 +9,9 @@ from django.core.exceptions import ValidationError as DjangoValidationError
 from django.db import IntegrityError
 from django.utils import translation
 from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework import viewsets, permissions, status
+from rest_framework import viewsets, permissions
 from rest_framework.decorators import action
-from rest_framework.exceptions import APIException, ValidationError
+from rest_framework.exceptions import ValidationError
 from rest_framework.filters import OrderingFilter, SearchFilter
 from rest_framework.response import Response
 
@@ -55,16 +55,14 @@ class UsersViewSet(viewsets.ReadOnlyModelViewSet):
         """
         ids = request.data.get("ids", [])
         if not isinstance(ids, list) or not all(isinstance(i, int) for i in ids):
-            raise APIException(
-                detail="ids must be a list of integers",
-                status=status.HTTP_400_BAD_REQUEST)
+            raise ValidationError(
+                {"non_field_errors": ["ids must be a list of integers"]})
 
         # optional: don't allow deleting yourself
         if request.user and request.user.id in ids:
             
-            raise APIException(
-                detail="Cannot delete current user.",
-                status=status.HTTP_400_BAD_REQUEST)
+            raise ValidationError(
+                {"non_field_errors": ["Cannot delete current user."]})
 
         qs = self.get_queryset().filter(id__in=ids)
         count = qs.count()
@@ -81,10 +79,8 @@ class UsersViewSet(viewsets.ReadOnlyModelViewSet):
         user = self.get_object()  # resolves by {pk}
         # Don't allow deleting yourself
         if request.user.id == user.id:
-            raise APIException(
-                detail="Cannot delete current user.",
-                status=status.HTTP_400_BAD_REQUEST,
-            )
+            raise ValidationError(
+                {"non_field_errors": ["Cannot delete current user."]})
         self.perform_destroy(user)
         return Response(status=status.HTTP_204_NO_CONTENT)
 
@@ -100,8 +96,7 @@ class UsersViewSet(viewsets.ReadOnlyModelViewSet):
         # Check for admin user
         # if not (request.user.is_staff or request.user == user):
         #    raise ValidationError(
-        #        detail="Not permitted.",
-        #        status=status.HTTP_403_FORBIDDEN)
+        #        {"non_field_errors": ["Not permitted."]})
 
         ser = ChangePasswordSerializer(data=request.data)
         ser.is_valid(raise_exception=True)
@@ -112,12 +107,10 @@ class UsersViewSet(viewsets.ReadOnlyModelViewSet):
             password_validation.validate_password(new_pw, user=user)
         except (DjangoValidationError, ValueError) as e:
             raise ValidationError(
-                detail=str(e),
-                status=status.HTTP_400_BAD_REQUEST)
+                {"non_field_errors": [str(e)]})
         except IntegrityError:
             raise ValidationError(
-                detail="Database error while applying changes.",
-                status=status.HTTP_400_BAD_REQUEST)
+                {"non_field_errors": ["Database error while applying changes."]})
 
         user.set_password(new_pw)
         user.save(update_fields=["password"])
