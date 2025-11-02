@@ -106,14 +106,14 @@ class UsersViewSet(viewsets.ReadOnlyModelViewSet):
         # Run Django password validators
         try:
             password_validation.validate_password(new_pw, user=user)
-        except (DjangoValidationError, ValueError) as e:
+        except (DjangoValidationError, ValueError) as ex:
             raise ValidationError(
-                {"non_field_errors": [str(e)]}
-            )
-        except IntegrityError:
+                {"non_field_errors": [str(ex)]}
+            ) as ex
+        except IntegrityError as ex:
             raise ValidationError(
                 {"non_field_errors": ["Database error while applying changes."]}
-            )
+            ) as ex
 
         user.set_password(new_pw)
         user.save(update_fields=["password"])
