@@ -7,7 +7,6 @@ from django.core.validators import validate_email as dj_validate_email
 from django.core.exceptions import ValidationError as DjangoValidationError
 from django.contrib.auth import get_user_model
 from djoser.serializers import UserCreateSerializer as BaseUserCreateSerializer
-from djoser.serializers import UserCreateSerializer as BaseUserCreateSerializer
 from rest_framework.exceptions import ValidationError
 
 
@@ -36,8 +35,7 @@ class UserCreateSerializer(BaseUserCreateSerializer):
         except DjangoValidationError:
             raise ValidationError("Enter a valid email address.")
         normalized = value.strip().lower()
-        # Enforce uniqueness (LOGIN_FIELD is email)
-        User = get_user_model()
-        if User.objects.filter(email__iexact=normalized).exists():
+        user_model = get_user_model()
+        if user_model.objects.filter(email__iexact=normalized).exists():
             raise ValidationError("A user with this email already exists.")
         return normalized

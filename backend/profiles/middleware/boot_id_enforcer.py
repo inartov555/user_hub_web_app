@@ -5,8 +5,6 @@ If they differ—e.g., after a deploy or restart—the middleware returns a 401
 so the client can refresh credentials.
 """
 
-from django.http import JsonResponse
-from rest_framework import status
 from rest_framework.exceptions import AuthenticationFailed, ValidationError
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework_simplejwt.exceptions import InvalidToken
