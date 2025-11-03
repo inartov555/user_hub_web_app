@@ -45,11 +45,11 @@ echo "Setting the exit function..."
 case "$clean_data_at_exit" in
   true)
     echo "DB will be cleaned up when stopping the service"
-    trap cleanup_data EXIT ERR SIGINT SIGTERM
+    trap cleanup_data EXIT HUP ERR SIGINT SIGTERM
     ;;
   *)
     echo "DB will be preserved when stopping the service"
-    trap cleanup EXIT ERR SIGINT SIGTERM
+    trap cleanup EXIT HUP ERR SIGINT SIGTERM
 esac
 
 echo "Building images..."

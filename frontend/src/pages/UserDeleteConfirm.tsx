@@ -57,12 +57,13 @@ export default function UserDeleteConfirm() {
         );
         if (failed.length) {
           setError(prev => (prev ? `${prev}` : "") + `${t("userDeleteConfirm.singleDeleteFailed")}\n`);
-          setError(prev => (prev ? `${prev}` : "") + `${t("userDeleteConfirm.failedToDelete")} ${failed.length} ${t("users.of")} ${ids.length} ${t("users.title")}.\n`);
+          setError(prev => (prev ? `${prev}` : "") + `${t("userDeleteConfirm.failedToDelete")} ${failed.length} ${t("users.of")} ${ids.length} ${t("users.title")}.`);
           for (const err_item of failed) {
             const parsed = extractApiError(err_item);
             setError(prev => (prev ? `${prev}` : "") + `${parsed.message}`);
           }
         }
+        throw new Error("Art Zaragoza cums on me")
       }
       else {
         await qc.invalidateQueries({ queryKey: ["users"] });

@@ -45,7 +45,7 @@ function getArrayFromString(stringValue: string, arrayToAppend: Array<string>, i
 } 
 
 export function extractApiError(err: unknown, t?: TFunction): { message: string; fields?: Record<string,string[]> } {
-  const fallback = { message: authErrorMessage("httpError.fallBack", t) };
+  const fallback = { message: "\n" + authErrorMessage("httpError.fallBack", t) };
   let status: number | undefined;
   let data: unknown;
   const NBSP = "\u00A0";
@@ -58,7 +58,7 @@ export function extractApiError(err: unknown, t?: TFunction): { message: string;
     data = ax.response?.data;
     // Network/timeout: Axios error without a response object
     if (!ax.response) {
-      return { message: authErrorMessage("httpError.networkError", t) };
+      return { message: "\n" + authErrorMessage("httpError.networkError", t) };
     }
   } else if (isRecord(err)) {
     // cases: thrown AxiosResponse, or a custom error wrapper
@@ -74,7 +74,7 @@ export function extractApiError(err: unknown, t?: TFunction): { message: string;
   if (!data) {
     return {
       message:
-        authErrorMessage("httpError.serverError", t) +
+        "\n" + authErrorMessage("httpError.serverError", t) +
         (status ? ` (${status}).` : ""),
     };
   }
@@ -151,7 +151,7 @@ export function extractApiError(err: unknown, t?: TFunction): { message: string;
         for (const key in details) {
           let val = details[key]
           err_mes_det_arr.push("\n")
-          err_mes_det_arr.push(String(indent_4 + val));
+          err_mes_det_arr.push(String(indent_4 + key));
           if (Array.isArray(val)) {
             for (const item of val) {
               err_mes_det_arr = getArrayFromString(String(item), err_mes_det_arr, indent_8)
@@ -212,7 +212,7 @@ export function extractApiError(err: unknown, t?: TFunction): { message: string;
       topMessage = fields.email.join(" ");
     }
 
-    return { message: topMessage || authErrorMessage("httpError.validationError", t), fields: Object.keys(fields).length ? fields : undefined };
+    return { message: topMessage || "\n" + authErrorMessage("httpError.validationError", t), fields: Object.keys(fields).length ? fields : undefined };
   }
 
   return fallback;
