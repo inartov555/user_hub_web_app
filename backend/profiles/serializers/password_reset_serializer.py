@@ -13,19 +13,22 @@ class CustomPasswordResetSerializer(SendEmailResetSerializer):
     Custom password reset email serializer with strict email validation.
     """
     def validate_email(self, value: str) -> str:
+        """
+        Email validation
+        """
         if not value or not value.strip():
             raise ValidationError("This field may not be blank.")
         try:
             dj_validate_email(value)
-        except DjangoValidationError:
-            raise ValidationError("Enter a valid email address.")
+        except DjangoValidationError as exc:
+            raise ValidationError("Enter a valid email address.") from exc
         # Do NOT reveal whether the email exists (avoid user enumeration).
         return value.strip().lower()
 
     def create(self, validated_data):
-        # Not used by this serializer; required only to satisfy BaseSerializer’s abstract method.
+        # Not used
         return validated_data
 
     def update(self, instance, validated_data):
-        # Not used; included to satisfy BaseSerializer’s abstract method.
+        # Not used
         raise NotImplementedError("Update is not supported for this serializer.")
