@@ -11,9 +11,7 @@
 clean_data_at_exit=${1:-false}
 clear_cache=${2:-false}
 
-SUPERUSER_USERNAME="${DJANGO_SUPERUSER_USERNAME:-admin}"
-SUPERUSER_EMAIL="${DJANGO_SUPERUSER_EMAIL:-admin@example.com}"
-SUPERUSER_PASSWORD="${DJANGO_SUPERUSER_PASSWORD:-changeme123}"
+
 
 set -Eeuo pipefail
 
