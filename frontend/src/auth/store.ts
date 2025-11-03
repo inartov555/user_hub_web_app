@@ -39,6 +39,9 @@ type State = {
   startIdleWatch: () => void;
   stopIdleWatch: () => void;
   user: User;
+  rehydrated: boolean;
+  setRehydrated: (v: boolean) => void;
+  initFromStorage: () => void;
   setAccessToken: (t: string | null) => void;
   setRefreshToken: (t: string | null) => void;
   setTokens: (access: string, refresh: string) => void;
@@ -62,10 +65,36 @@ export const useAuthStore = create<State>((set, get) => ({
   refreshToken: localStorage.getItem("refresh"),
   accessExpiresAt: decodeAccessExp(localStorage.getItem("access")),
   user: null,
-
+  rehydrated: false,
+  setRehydrated: (v) => set({ rehydrated: v }),
   lastActivityAt: Date.now(),
   idleTimer: null,
   setActivityNow: () => set({ lastActivityAt: Date.now() }),
+
+  initFromStorage: () => {
+    try {
+      const access = localStorage.getItem("access");
+      const refresh = localStorage.getItem("refresh");
+
+      let accessExpiresAt: number | null = null;
+      if (access) {
+        try {
+          const { exp } = jwtDecode<JwtPayload>(access);
+          accessExpiresAt = exp ? exp * 1000 : null;
+        } catch {
+          accessExpiresAt = null;
+        }
+      }
+
+      set({
+        accessToken: access || null,
+        refreshToken: refresh || null,
+        accessExpiresAt,
+      });
+    } finally {
+      set({ rehydrated: true });
+    }
+  },
 
   startIdleWatch: () => {
     const onActivity = () => get().setActivityNow();

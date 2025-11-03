@@ -39,6 +39,11 @@ export default function App() {
   const navigate = useNavigate();
   const location = useLocation();
   const [authReady, setAuthReady] = useState(false);
+  const initFromStorage = useAuthStore((s) => s.initFromStorage);
+
+  useEffect(() => {
+    initFromStorage();
+  }, [initFromStorage]);
 
   useEffect(() => {
     bootstrapAuth().finally(() => setAuthReady(true));
