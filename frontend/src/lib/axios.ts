@@ -63,7 +63,7 @@ async function refreshOnce(): Promise<string> {
 
     // Avoid loop if already on /login
     if (typeof window !== "undefined" && window.location.pathname !== "/login") {
-      // window.location.assign("/login");
+      window.location.assign("/login");
     }
     throw e;
   } finally {
@@ -224,7 +224,7 @@ api.interceptors.response.use(
 
       // Only navigate if not already on /login (avoid useless reload loop)
       if (typeof window !== "undefined" && window.location.pathname !== "/login") {
-        // window.location.assign("/login");
+        window.location.assign("/login");
       }
 
       return Promise.reject(error);

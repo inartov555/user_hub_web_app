@@ -74,6 +74,7 @@ export default function ProtectedRoute() {
   return (
     <>
       <Outlet />
+      {shouldRedirect && <Navigate to="/login" replace state={{ from: location }} />}
     </>
   );
 }
