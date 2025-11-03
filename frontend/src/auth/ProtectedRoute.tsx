@@ -1,5 +1,6 @@
 import { Navigate, Outlet, useLocation } from "react-router-dom";
 import { useEffect, useState, useMemo } from "react";
+import { useTranslation } from "react-i18next";
 import { jwtDecode } from "jwt-decode";
 import { useAuthStore } from "./store";
 import { bootstrapAuth } from "./bootstrap";
@@ -15,9 +16,34 @@ function isExpired(t?: string | null) {
 }
 
 export default function ProtectedRoute() {
+  const { t, i18n } = useTranslation();
   const { user, accessToken, logout } = useAuthStore();
   const location = useLocation();
   const [ready, setReady] = useState(false);
+  const [checking, setChecking] = useState(true);
+  const [allowed, setAllowed] = useState(false);
+
+  useEffect(() => {
+    let alive = true;
+
+    (async () => {
+      // Fast path: if we already have a user in store, allow.
+      if (user) {
+        if (alive) { setAllowed(true); setChecking(false); }
+        return;
+      }
+
+      // Otherwise, try to bootstrap from persisted tokens.
+      const ok = await bootstrapAuth().catch(() => false);
+      if (!alive) return;
+
+      setAllowed(!!ok);
+      setChecking(false);
+    })();
+
+    return () => { alive = false; };
+  }, [user]);
+
 
   // Treat these as public routes where we never render a redirect to /login
   const isAuthRoute = useMemo(() => {
@@ -71,10 +97,21 @@ export default function ProtectedRoute() {
     localStorage.setItem("postLoginRedirect", intended);
   }
 
-  return (
-    <>
-      <Outlet />
-      {shouldRedirect && <Navigate to="/login" replace state={{ from: location }} />}
-    </>
-  );
+  /*
+  // While deciding, render nothing (or a skeleton) so children don't fire requests.
+  if (checking) return <div className="p-4">{t("users.loading")}</div>;
+  if (!allowed) {
+    localStorage.setItem("postLoginRedirect", location.pathname + location.search + location.hash);
+    return <Navigate to="/login" replace state={{ from: location }} />;
+  }
+  */
+
+  if (!allowed) {
+    // remember intended path for after login
+    const intended = location.pathname + location.search + location.hash;
+    localStorage.setItem("postLoginRedirect", intended);
+    return <Navigate to="/login" replace state={{ from: location }} />;
+  }
+
+  return <Outlet />;
 }
