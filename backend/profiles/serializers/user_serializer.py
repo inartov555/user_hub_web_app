@@ -22,13 +22,3 @@ class UserSerializer(serializers.ModelSerializer):
         fields = ["id", "username", "email", "first_name", "last_name", "date_joined", "is_active",
                   "is_staff", "is_superuser"]
         read_only_fields = ["id", "date_joined"]
-
-    username = serializers.SerializerMethodField()
-
-    def get_username(self, obj):
-        email = getattr(obj, "email", "") or ""
-        return email.split("@", 1)[0] if email else ""
-
-        fields = ["id", "username", "email", "first_name", "last_name", "date_joined", "is_active",
-                  "is_staff", "is_superuser"]
-        read_only_fields = ["id", "date_joined"]
