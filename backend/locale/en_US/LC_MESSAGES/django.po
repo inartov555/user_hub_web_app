@@ -128,3 +128,6 @@ msgstr "This field may not be blank."
 
 msgid "A user with this email already exists."
 msgstr "A user with this email already exists."
+
+msgid "Not permitted."
+msgstr "Not permitted."

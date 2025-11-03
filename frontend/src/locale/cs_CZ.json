@@ -95,7 +95,8 @@
     "saving": "Ukládání…"
   },
   "userDeleteConfirm": {
-    "bulkDeleteFailed": "Hromadné mazání se nezdařilo:",
+    "bulkDeleteFailed": "Hromadné mazání uživatelů se nezdařilo:",
+    "singleDeleteFailed": "Mazání uživatelů po jednom (jednotlivý uživatel) se nezdařilo:",
     "failedToDelete": "Mazání se nezdařilo",
     "failedToDeleteSelectedUsers": "Mazání vybraných uživatelů se nezdařilo:",
     "confirmDelete": "Potvrdit smazání",

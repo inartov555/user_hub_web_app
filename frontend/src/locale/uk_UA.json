@@ -95,9 +95,10 @@
     "saving": "Збереження…"
   },
   "userDeleteConfirm": {
-    "bulkDeleteFailed": "Масове видалення не вдалося:",
+    "bulkDeleteFailed": "Масове видалення користувачів не вдалося:",
+    "singleDeleteFailed": "Видалення користувачів по одному (окремий користувач) не вдалося:",
     "failedToDelete": "Не вдалося видалити",
-    "failedToDeleteSelectedUsers": "Не вдалося видалити вибраних користувачів:",
+    "failedToDeleteSelectedUsers": "Окреме видалення не вдалося:",
     "confirmDelete": "Підтвердити видалення",
     "youAboutToDelete": "Ви збираєтеся назавжди видалити",
     "cannotBeUndone": "користувача(ів). Цю дію не можна скасувати.",

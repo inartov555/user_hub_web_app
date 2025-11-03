@@ -44,18 +44,20 @@ export default function UserDeleteConfirm() {
       // Try bulk endpoint first
       const bulk = await api.post("/users/bulk-delete/", { ids }, { validateStatus: () => true });
 
-      if (!(bulk.status >= 200 && bulk.status < 300)) {
+      if (bulk.status > 204) {
         const parsed = extractApiError(bulk);
-        setError(prev => (prev ? `${prev}` : "") + `${t("userDeleteConfirm.bulkDeleteFailed")} ${parsed.message}`);
+        setError(prev => (prev ? `${prev}` : "") + `${t("userDeleteConfirm.failedToDeleteSelectedUsers")}\n\n`);
+        setError(prev => (prev ? `${prev}` : "") + `${t("userDeleteConfirm.bulkDeleteFailed")} ${parsed.message}\n\n`);
         // Fallback to per-user delete
         const results = await Promise.allSettled(
           ids.map((id) => api.delete(`/users/${id}/delete-user/`, { validateStatus: () => true }))
         );
         const failed = results.filter(
-	  (r) => r.status === "rejected" || (r.status === "fulfilled" && r.value.status >= 400)
+	      (r) => r.status === "rejected" || (r.status === "fulfilled" && r.value.status > 204)
         );
         if (failed.length) {
-          setError(prev => (prev ? `${prev}` : "") + `${t("userDeleteConfirm.failedToDelete")} ${failed.length} ${t("users.of")} ${ids.length} ${t("users.title")}.`);
+          setError(prev => (prev ? `${prev}` : "") + `${t("userDeleteConfirm.singleDeleteFailed")}`);
+          setError(prev => (prev ? `${prev}` : "") + `${t("userDeleteConfirm.failedToDelete")} ${failed.length} ${t("users.of")} ${ids.length} ${t("users.title")}.\n\n`);
           for (const err_item of failed) {
             const parsed = extractApiError(err_item);
             setError(prev => (prev ? `${prev}` : "") + `${parsed.message}`);
@@ -67,7 +69,8 @@ export default function UserDeleteConfirm() {
         navigate("/users", { replace: true });
       }
     } catch (erro: any) {
-      setError(prev => (prev ? `${prev}` : "") + `${t("userDeleteConfirm.failedToDeleteSelectedUsers")} ${erro}`);
+      const parsed = extractApiError(erro);
+      setError(prev => (prev ? `${prev}` : "") + `${t("userDeleteConfirm.failedToDeleteSelectedUsers")} ${parsed.message}`);
     } finally {
       setLoading(false);
     }

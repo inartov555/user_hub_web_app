@@ -128,3 +128,6 @@ msgstr "Toto pole nesmí být prázdné."
 
 msgid "A user with this email already exists."
 msgstr "Uživatel s touto e-mailovou adresou již existuje."
+
+msgid "Not permitted."
+msgstr "Není povoleno."

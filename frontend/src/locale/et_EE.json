@@ -95,7 +95,8 @@
     "saving": "Salvestamine…"
   },
   "userDeleteConfirm": {
-    "bulkDeleteFailed": "Hulgi kustutamine ebaõnnestus:",
+    "bulkDeleteFailed": "Kasutajate hulgikustutamine ebaõnnestus:",
+    "singleDeleteFailed": "Kustutamine kasutaja kaupa (üksik kasutaja) ebaõnnestus:",
     "failedToDelete": "Kustutamine ebaõnnestus",
     "failedToDeleteSelectedUsers": "Valitud kasutajate kustutamine ebaõnnestus:",
     "confirmDelete": "Kinnita kustutamine",

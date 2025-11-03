@@ -128,3 +128,6 @@ msgstr "Tämä kenttä ei voi olla tyhjä."
 
 msgid "A user with this email already exists."
 msgstr "Tällä sähköpostiosoitteella on jo käyttäjä."
+
+msgid "Not permitted."
+msgstr "Ei sallittu."

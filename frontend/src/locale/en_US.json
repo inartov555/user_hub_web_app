@@ -95,7 +95,8 @@
     "saving": "Saving…"
   },
   "userDeleteConfirm": {
-    "bulkDeleteFailed": "Bulk delete failed:",
+    "bulkDeleteFailed": "Bulk user delete failed:",
+    "singleDeleteFailed": "User by user (single user) delete failed:",
     "failedToDelete": "Failed to delete",
     "failedToDeleteSelectedUsers": "Failed to delete selected users:",
     "confirmDelete": "Confirm deletion",

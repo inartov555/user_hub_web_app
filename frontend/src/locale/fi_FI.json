@@ -95,7 +95,8 @@
     "saving": "Tallennetaan…"
   },
   "userDeleteConfirm": {
-    "bulkDeleteFailed": "Massapoisto epäonnistui:",
+    "bulkDeleteFailed": "Käyttäjien massapoisto epäonnistui:",
+    "singleDeleteFailed": "Poisto käyttäjä kerrallaan (yksittäinen käyttäjä) epäonnistui:",
     "failedToDelete": "Poisto epäonnistui",
     "failedToDeleteSelectedUsers": "Valittujen käyttäjien poisto epäonnistui:",
     "confirmDelete": "Vahvista poisto",

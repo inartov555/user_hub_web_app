@@ -95,7 +95,8 @@
     "saving": "Guardando…"
   },
   "userDeleteConfirm": {
-    "bulkDeleteFailed": "La eliminación masiva falló:",
+    "bulkDeleteFailed": "La eliminación masiva de usuarios falló:",
+    "singleDeleteFailed": "La eliminación usuario por usuario (usuario individual) falló:",
     "failedToDelete": "No se pudo eliminar",
     "failedToDeleteSelectedUsers": "No se pudieron eliminar los usuarios seleccionados:",
     "confirmDelete": "Confirmar eliminación",

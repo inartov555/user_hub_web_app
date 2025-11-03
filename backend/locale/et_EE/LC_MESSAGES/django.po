@@ -128,3 +128,6 @@ msgstr "See väli ei tohi olla tühi."
 
 msgid "A user with this email already exists."
 msgstr "Selle e-posti aadressiga kasutaja on juba olemas."
+
+msgid "Not permitted."
+msgstr "Pole lubatud."

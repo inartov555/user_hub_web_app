@@ -95,7 +95,8 @@
     "saving": "Zapisywanie…"
   },
   "userDeleteConfirm": {
-    "bulkDeleteFailed": "Masowe usuwanie nie powiodło się:",
+    "bulkDeleteFailed": "Masowe usuwanie użytkowników nie powiodło się:",
+    "singleDeleteFailed": "Usuwanie użytkowników po jednym (pojedynczo) nie powiodło się:",
     "failedToDelete": "Nie udało się usunąć",
     "failedToDeleteSelectedUsers": "Nie udało się usunąć wybranych użytkowników:",
     "confirmDelete": "Potwierdź usunięcie",

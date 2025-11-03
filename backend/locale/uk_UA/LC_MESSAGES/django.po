@@ -128,3 +128,6 @@ msgstr "Це поле не може бути порожнім."
 
 msgid "A user with this email already exists."
 msgstr "Користувач із цією електронною адресою вже існує."
+
+msgid "Not permitted."
+msgstr "Не дозволено."
