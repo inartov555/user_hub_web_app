@@ -18,7 +18,37 @@ function authErrorMessage(err_loc_code: string, t?: TFunction): string {
   return tf(err_loc_code);
 }
 
- 
+function getArrayFromString(stringValue: string, arrayToAppend: Array<string>, indent: string) {
+  // Get array from passed string, if present, and append to a collector var.
+  console.log("val = ", stringValue)
+  const valStr = stringValue as string;
+  const looksLikeArray = /^\s*\[.*\]\s*$/.test(valStr);
+  if (looksLikeArray) {
+    console.log("looksLikeArray = ", looksLikeArray)
+    try {
+      const parsed = JSON.parse(valStr.replace(/'/g, '"'));
+      if (Array.isArray(parsed)) {
+        for (const item of parsed) {
+          arrayToAppend.push("\n");
+          arrayToAppend.push(String(indent + item));
+        }
+        console.log("is array = ", arrayToAppend)
+      } else {
+        arrayToAppend.push(String(indent + String(parsed)));
+        console.log("not array after parse = ", arrayToAppend)
+      }
+    } catch {
+      arrayToAppend.push("\n");
+      arrayToAppend.push(String(indent + valStr));
+      console.log("catch = ", arrayToAppend)
+    }
+  } else {
+    arrayToAppend.push("\n");
+    arrayToAppend.push(String(indent + valStr));
+    console.log("not array = ", arrayToAppend)
+  }
+  return arrayToAppend
+} 
 
 export function extractApiError(err: unknown, t?: TFunction): { message: string; fields?: Record<string,string[]> } {
   const fallback = { message: authErrorMessage("httpError.fallBack", t) };
@@ -27,7 +57,6 @@ export function extractApiError(err: unknown, t?: TFunction): { message: string;
   const NBSP = "\u00A0";
   const indent = (n = 4) => NBSP.repeat(n);
   const indent_4 = indent(4) + "-> "
-  // Is Axios error?
   if (axios.isAxiosError<DRFError>(err)) {
     const ax = err as AxiosError<DRFError>;
     status = ax.response?.status;
@@ -58,46 +87,37 @@ export function extractApiError(err: unknown, t?: TFunction): { message: string;
   if (isRecord(data)) {
     // {"message": "A server error occurred.", "detail":"['This password is too common.']"}
     // {"message": "A server error occurred.", "detail":"Cannot delete current user."}
-    const collected: string[] = [];
+    let mes_det_arr: string[] = [];
     if (typeof (data as any).message === "string") {
-      collected.push("\n")
-      collected.push((data as any).message);
+      mes_det_arr.push("\n")
+      mes_det_arr.push((data as any).message);
     }
 
     // {"detail":"['This password is too common.']"}
     // {"detail":"Cannot delete current user."}
     let topDetails: unknown = (data as any).detail;
     if (typeof topDetails === "string" && /^\s*\[.*\]\s*$/.test(topDetails)) {
-      collected.push("\n") // after message text
-      const parsed = JSON.parse(topDetails.replace(/'/g, '"'));
-      if (Array.isArray(parsed)) {
-          for (const item of parsed) {
-            collected.push("\n")
-            collected.push(String(indent_4 + item));
-          }
-       } else {
-          collected.push(String(indent_4 + parsed));
-       }
-       if (collected.length) {
-         return { message: collected.join(" ") };
+      mes_det_arr = getArrayFromString(topDetails, mes_det_arr, indent_4)
+       if (mes_det_arr.length) {
+         return { message: mes_det_arr.join(" ") };
        } else {
          return { message: "" };
        }
     } else if (Array.isArray(topDetails)) {
       for (const item of topDetails) {
-        collected.push("\n")
-        collected.push(String(indent_4 + item));
+        mes_det_arr.push("\n")
+        mes_det_arr.push(String(indent_4 + item));
       }
-      if (collected.length) {
-        return { message: collected.join(" ") };
+      if (mes_det_arr.length) {
+        return { message: mes_det_arr.join(" ") };
       } else {
           return { message: "" };
       }
     } else if (topDetails && typeof (topDetails as any) === "string") {
-      collected.push("\n")
-      collected.push(String(indent_4 + topDetails));
-      if (collected.length) {
-        return { message: collected.join(" ") };
+      mes_det_arr.push("\n")
+      mes_det_arr.push(String(indent_4 + topDetails));
+      if (mes_det_arr.length) {
+        return { message: mes_det_arr.join(" ") };
       } else {
           return { message: "" };
       }
@@ -123,10 +143,11 @@ export function extractApiError(err: unknown, t?: TFunction): { message: string;
        }
      */
 
+    let err_mes_det_arr: string[] = [];
     const errorObj = isRecord((data as any).error) ? (data as any).error : null;
     if (errorObj && typeof (errorObj as any).message === "string") {
-      collected.push("\n")
-      collected.push((errorObj as any).message);
+      err_mes_det_arr.push("\n")
+      err_mes_det_arr.push((errorObj as any).message);
     }
 
     const details = errorObj ? (errorObj as any).details : undefined;
@@ -140,52 +161,26 @@ export function extractApiError(err: unknown, t?: TFunction): { message: string;
             console.log("it is array = ", val)
             for (const item of val) {
               console.log("inside the for-lop in the first if; = ", val)
-              collected.push("\n")
-              collected.push(String(indent_4 + item));
+              err_mes_det_arr = getArrayFromString(String(item), err_mes_det_arr, indent_4)
             }
           }
           else {
-            console.log("val = ", val)
-            const valStr = val as string;
-            const looksLikeArray = /^\s*\[.*\]\s*$/.test(valStr);
-            if (looksLikeArray) {
-              console.log("looksLikeArray = ", looksLikeArray)
-              try {
-                const parsed = JSON.parse(valStr.replace(/'/g, '"'));
-                if (Array.isArray(parsed)) {
-                  for (const item of parsed) {
-                    collected.push("\n");
-                    collected.push(String(indent_4 + item));
-                  }
-                  console.log("is array = ", collected)
-                } else {
-                  collected.push(String(indent_4 + String(parsed)));
-                  console.log("not array after parse = ", collected)
-                }
-              } catch {
-                collected.push("\n");
-                collected.push(String(indent_4 + valStr));
-                console.log("catch = ", collected)
-              }
-            } else {
-              collected.push("\n");
-              collected.push(String(indent_4 + valStr));
-              console.log("not array = ", collected)
-            }
+            console.log("else; val = ", val)
+            err_mes_det_arr = getArrayFromString(String(val), err_mes_det_arr, indent_4)
           }
         }
       } else if (Array.isArray(details)) {
         for (const item of details) {
-          collected.push("\n")
-          collected.push(String(indent_4 + item));
+          err_mes_det_arr.push("\n")
+          err_mes_det_arr.push(String(indent_4 + item));
         }
       } else if (details && typeof (details as any) === "string") {
-        collected.push("\n")
-        collected.push(String(indent_4 + details));
+        err_mes_det_arr.push("\n")
+        err_mes_det_arr.push(String(indent_4 + details));
       }
     }
-    if (collected.length) {
-      return { message: collected.join(" ") };
+    if (err_mes_det_arr.length) {
+      return { message: err_mes_det_arr.join(" ") };
     } else {
       return { message: "" };
     }
