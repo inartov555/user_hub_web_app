@@ -1,71 +1,49 @@
 import { Navigate, Outlet, useLocation } from "react-router-dom";
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { jwtDecode } from "jwt-decode";
 import { useAuthStore } from "./store";
 import { bootstrapAuth } from "./bootstrap";
 
-function isExpired(t?: string | null) {
-  if (!t) return true;
-  try {
-    const { exp } = jwtDecode<{ exp: number }>(t);
-    return !exp || Date.now() >= exp * 1000;
-  } catch {
-    return true;
-  }
-}
-
 export default function ProtectedRoute() {
-  const { user, accessToken, logout } = useAuthStore();
   const location = useLocation();
-  const [ready, setReady] = useState(false);
 
-  // Treat these as public routes where we never render a redirect to /login
   const isAuthRoute = useMemo(() => {
     const p = location.pathname;
-    return p === "/login" || p === "/signup" || p === "/reset-password";
+    return p === "/login" || p === "/signup" || p.startsWith("/reset-password");
   }, [location.pathname]);
 
-  // Proactive local check: if token clearly expired, clear state
-  useEffect(() => {
-    if (!isAuthRoute && isExpired(accessToken)) {
-      logout();
-    }
-  }, [isAuthRoute, accessToken, logout]);
+  const user = useAuthStore((s) => s.user);
+  const accessToken = useAuthStore((s) => s.accessToken);
 
-  // Server validation: run on route changes and when tab regains focus
+  // Consider storage tokens on first paint so we don't misclassify the session
+  const hasTokens = useMemo(() => {
+    return !!accessToken ||
+           !!localStorage.getItem("access") ||
+           !!localStorage.getItem("refresh");
+  }, [accessToken]);
+
+  // One-shot bootstrap if we see any token
+  const [bootstrapping, setBootstrapping] = useState<boolean>(hasTokens && !user);
   useEffect(() => {
-    let aborted = false;
-    const run = async () => {
-      setReady(false);
-      try {
-        await bootstrapAuth();
-      } finally {
-        if (!aborted) setReady(true);
+    let cancelled = false;
+    (async () => {
+      if (!hasTokens || user) {
+        if (!cancelled) setBootstrapping(false);
+        return;
       }
-    };
-    run();
-    const onFocusOrVisible = () => {
-      if (document.visibilityState === "visible") run();
-    };
-    window.addEventListener("focus", onFocusOrVisible);
-    document.addEventListener("visibilitychange", onFocusOrVisible);
-    return () => {
-      aborted = true;
-      window.removeEventListener("focus", onFocusOrVisible);
-      document.removeEventListener("visibilitychange", onFocusOrVisible);
-    };
-  }, [location.pathname, location.search, location.hash]);
+      try {
+        await bootstrapAuth(); // populates user if token is valid
+      } finally {
+        if (!cancelled) setBootstrapping(false);
+      }
+    })();
+    return () => { cancelled = true; };
+  }, [hasTokens, user]);
 
-  // While not ready, never decide to redirect — just render children.
-  if (!ready) {
-    return <Outlet />;
-  }
+  // Do NOT call logout here based on local exp checks. Let axios handle refresh/401.
 
-  // Decide redirect only after validation finished and never from auth pages
-  const hasTokens = !!(accessToken || localStorage.getItem("access"));
-  const shouldRedirect = !isAuthRoute && !user && !hasTokens;
+  const shouldRedirect = !isAuthRoute && !bootstrapping && !user && !hasTokens;
 
-  // Save intended page for post-login redirect
   if (shouldRedirect) {
     const intended = location.pathname + location.search + location.hash;
     localStorage.setItem("postLoginRedirect", intended);
