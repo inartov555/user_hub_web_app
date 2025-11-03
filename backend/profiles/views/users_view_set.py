@@ -94,10 +94,10 @@ class UsersViewSet(viewsets.ReadOnlyModelViewSet):
         """
         user = self.get_object()
         # Check for admin user
-        # if not (request.user.is_staff or request.user == user):
-        #    raise ValidationError(
-        #        {"non_field_errors": ["Not permitted."]}
-        #    )
+        if not (request.user.is_staff or request.user == user):
+            raise ValidationError(
+                {"non_field_errors": ["Not permitted."]}
+            )
 
         ser = ChangePasswordSerializer(data=request.data)
         ser.is_valid(raise_exception=True)
