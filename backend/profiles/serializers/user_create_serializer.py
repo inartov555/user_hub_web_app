@@ -32,8 +32,8 @@ class UserCreateSerializer(BaseUserCreateSerializer):
         # Valid email format
         try:
             dj_validate_email(value)
-        except DjangoValidationError:
-            raise ValidationError("Enter a valid email address.")
+        except DjangoValidationError as exc:
+            raise ValidationError("Enter a valid email address.") from exc
         normalized = value.strip().lower()
         user_model = get_user_model()
         if user_model.objects.filter(email__iexact=normalized).exists():
