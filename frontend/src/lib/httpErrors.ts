@@ -194,7 +194,13 @@ export function extractApiError(err: unknown, t?: TFunction): { message: string;
     }
     // collect field errors & non_field_errors
     let topMessage = "";
-
+    for (const [key, value] of Object.entries(data)) {
+      if (Array.isArray(value)) {
+        fields[key] = value.map(String);
+      } else if (typeof value === "string") {
+        fields[key] = [value];
+      }
+    }
     // Prefer non_field_errors as top-level
     if (fields.non_field_errors?.length) {
       topMessage = fields.non_field_errors.join(" ");
