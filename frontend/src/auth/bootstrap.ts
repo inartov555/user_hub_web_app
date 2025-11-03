@@ -1,5 +1,6 @@
 import { api } from "../lib/axios";
 import { useAuthStore } from "./store";
+import { extractApiError } from "../lib/httpErrors";
 
 export async function bootstrapAuth(): Promise<boolean> {
   const { setUser, logout, setTokens } = useAuthStore.getState();
@@ -16,8 +17,10 @@ export async function bootstrapAuth(): Promise<boolean> {
     const { data } = await api.get("/auth/users/me/");
     setUser(data); // keep user store in sync
     return true;
-  } catch {
+  } catch (erro: any) {
+    const parsed = extractApiError(erro);
+    console.log("bootstrap catch; parsed = ", parsed)
     logout?.(); // tokens invalid/expired — clear them
-    return false;
+    return true;
   }
 }

@@ -1,8 +1,9 @@
 import axios from "axios";
 import { AxiosHeaders, InternalAxiosRequestConfig } from "axios";
 import i18n from "./i18n";
-import { useAuthStore } from "../auth/store";
 import { jwtDecode } from "jwt-decode";
+import { useAuthStore } from "../auth/store";
+import { extractApiError } from "../lib/httpErrors";
 
 export const api = axios.create({
     baseURL: import.meta.env.VITE_API_URL || "/api/v1",
@@ -57,13 +58,15 @@ async function refreshOnce(): Promise<string> {
 
     onRefreshed(newAccess);
     return newAccess;
-  } catch (e) {
+  } catch (e: any) {
+    const parsed = extractApiError(e);
+    console.log("anxios refreshOnce; parsed = ", parsed)
     onRefreshed(null);
     useAuthStore.getState().logout();
 
     // Avoid loop if already on /login
     if (typeof window !== "undefined" && window.location.pathname !== "/login") {
-      window.location.assign("/login");
+      // window.location.assign("/login");
     }
     throw e;
   } finally {
@@ -119,8 +122,10 @@ api.interceptors.request.use(async (config) => {
         // Keep localStorage in sync if the app reads tokens from there elsewhere
         localStorage.setItem("access", access);
         if (refresh) localStorage.setItem("refresh", refresh);
-      } catch (e) {
+      } catch (e: any) {
         // cannot refresh -> clear and let response flow to 401 handler
+        const parsed = extractApiError(e);
+        console.log("anxios PROACTIVE REFRESH; parsed = ", parsed)
         useAuthStore.getState().logout?.();
       }
     }
@@ -218,13 +223,15 @@ api.interceptors.response.use(
       (config as any).__isRetry = true;
 
       return api(config);
-    } catch (e) {
+    } catch (e: any) {
+      const parsed = extractApiError(e);
+      console.log("anxios line #228; parsed = ", parsed)
       onRefreshed(null);
       useAuthStore.getState().logout();
 
       // Only navigate if not already on /login (avoid useless reload loop)
       if (typeof window !== "undefined" && window.location.pathname !== "/login") {
-        window.location.assign("/login");
+        // window.location.assign("/login");
       }
 
       return Promise.reject(error);

@@ -3,13 +3,18 @@ import { useEffect, useState, useMemo } from "react";
 import { jwtDecode } from "jwt-decode";
 import { useAuthStore } from "./store";
 import { bootstrapAuth } from "./bootstrap";
+import { extractApiError } from "../lib/httpErrors";
 
 function isExpired(t?: string | null) {
+  console.log("ProtectedRoute; isExpired BEFORE try; t = ", t)
   if (!t) return true;
   try {
     const { exp } = jwtDecode<{ exp: number }>(t);
+    console.log("ProtectedRoute; isExpired inside try; exp = ", exp)
     return !exp || Date.now() >= exp * 1000;
-  } catch {
+  } catch (err: any) {
+    const parsed = extractApiError(err as unknown);
+    console.log("ProtectedRoute; isExpired catch = ", parsed)
     return true;
   }
 }
@@ -22,12 +27,14 @@ export default function ProtectedRoute() {
   // Treat these as public routes where we never render a redirect to /login
   const isAuthRoute = useMemo(() => {
     const p = location.pathname;
+    console.log("ProtectedRoute; isAuthRoute; location = ", p)
     return p === "/login" || p === "/signup" || p === "/reset-password";
   }, [location.pathname]);
 
   // Proactive local check: if token clearly expired, clear state
   useEffect(() => {
     if (!isAuthRoute && isExpired(accessToken)) {
+      console.log("ProtectedRoute useEffect; !isAuthRoute && isExpired(accessToken) = ", !isAuthRoute && isExpired(accessToken))
       logout();
     }
   }, [isAuthRoute, accessToken, logout]);
@@ -74,7 +81,7 @@ export default function ProtectedRoute() {
   return (
     <>
       <Outlet />
-      {shouldRedirect && <Navigate to="/login" replace state={{ from: location }} />}
+      {shouldRedirect && <Navigate to="/login" />}
     </>
   );
 }

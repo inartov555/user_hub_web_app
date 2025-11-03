@@ -39,6 +39,31 @@ export default function App() {
   const navigate = useNavigate();
   const location = useLocation();
   const [authReady, setAuthReady] = useState(false);
+  const [ready, setReady] = useState(false);
+
+  // Server validation: run on route changes and when tab regains focus
+  useEffect(() => {
+    let aborted = false;
+    const run = async () => {
+      setReady(false);
+      try {
+        await bootstrapAuth();
+      } finally {
+        if (!aborted) setReady(true);
+      }
+    };
+    run();
+    const onFocusOrVisible = () => {
+      if (document.visibilityState === "visible") run();
+    };
+    window.addEventListener("focus", onFocusOrVisible);
+    document.addEventListener("visibilitychange", onFocusOrVisible);
+    return () => {
+      aborted = true;
+      window.removeEventListener("focus", onFocusOrVisible);
+      document.removeEventListener("visibilitychange", onFocusOrVisible);
+    };
+  }, [location.pathname, location.search, location.hash]);
 
   useEffect(() => {
     bootstrapAuth().finally(() => setAuthReady(true));
@@ -56,7 +81,10 @@ export default function App() {
       location.pathname.startsWith("/reset-password");
 
     if (!user && !hasTokens && !isPublic) {
-      navigate("/login", { replace: true, state: { from: location } });
+      console.log("user = ", user)
+      console.log("hasTokens = ", hasTokens)
+      console.log("isPublic = ", isPublic)
+      // navigate("/login", { replace: true, state: { from: location } });
     }
   }, [authReady, user, accessToken, location, navigate]);
 
