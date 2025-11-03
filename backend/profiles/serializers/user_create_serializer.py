@@ -26,10 +26,8 @@ class UserCreateSerializer(BaseUserCreateSerializer):
         """
         Validating email
         """
-        # Not blank
         if not value or not value.strip():
             raise ValidationError("This field may not be blank.")
-        # Valid email format
         try:
             dj_validate_email(value)
         except DjangoValidationError as exc:
