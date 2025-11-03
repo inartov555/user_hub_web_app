@@ -20,11 +20,9 @@ function authErrorMessage(err_loc_code: string, t?: TFunction): string {
 
 function getArrayFromString(stringValue: string, arrayToAppend: Array<string>, indent: string) {
   // Get array from passed string, if present, and append to a collector var.
-  console.log("val = ", stringValue)
   const valStr = stringValue as string;
   const looksLikeArray = /^\s*\[.*\]\s*$/.test(valStr);
   if (looksLikeArray) {
-    console.log("looksLikeArray = ", looksLikeArray)
     try {
       const parsed = JSON.parse(valStr.replace(/'/g, '"'));
       if (Array.isArray(parsed)) {
@@ -32,20 +30,16 @@ function getArrayFromString(stringValue: string, arrayToAppend: Array<string>, i
           arrayToAppend.push("\n");
           arrayToAppend.push(String(indent + item));
         }
-        console.log("is array = ", arrayToAppend)
       } else {
         arrayToAppend.push(String(indent + String(parsed)));
-        console.log("not array after parse = ", arrayToAppend)
       }
     } catch {
       arrayToAppend.push("\n");
       arrayToAppend.push(String(indent + valStr));
-      console.log("catch = ", arrayToAppend)
     }
   } else {
     arrayToAppend.push("\n");
     arrayToAppend.push(String(indent + valStr));
-    console.log("not array = ", arrayToAppend)
   }
   return arrayToAppend
 } 
@@ -151,21 +145,15 @@ export function extractApiError(err: unknown, t?: TFunction): { message: string;
     }
 
     const details = errorObj ? (errorObj as any).details : undefined;
-    console.log("BEFORE details = ", details)
     if (details !== undefined && details !== null) {
       if (isRecord(details)) {
-        console.log("Right before for-loop; details")
         for (const val of Object.values(details)) {
-          console.log("before first if; = ", val)
           if (Array.isArray(val)) {
-            console.log("it is array = ", val)
             for (const item of val) {
-              console.log("inside the for-lop in the first if; = ", val)
               err_mes_det_arr = getArrayFromString(String(item), err_mes_det_arr, indent_4)
             }
           }
           else {
-            console.log("else; val = ", val)
             err_mes_det_arr = getArrayFromString(String(val), err_mes_det_arr, indent_4)
           }
         }
