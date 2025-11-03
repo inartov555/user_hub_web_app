@@ -134,8 +134,8 @@ export const useAuthStore = create<State>((set, get) => ({
   setUser: (u) => set({ user: u }),
 
   logout: () => {
-    localStorage.removeItem("access");
-    localStorage.removeItem("refresh");
-    set({ accessToken: null, refreshToken: null, accessExpiresAt: null, user: null });
+    //localStorage.removeItem("access");
+    //localStorage.removeItem("refresh");
+    // set({ accessToken: null, refreshToken: null, accessExpiresAt: null, user: null });
   },
 }));
