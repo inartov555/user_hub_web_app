@@ -19,6 +19,10 @@ import ChangePassword from "./pages/ChangePassword";
 import UserDeleteConfirm from "./pages/UserDeleteConfirm";
 import ProtectedRoute from "./auth/ProtectedRoute";
 import Settings from "./pages/Settings";
+import { preloadAuthFromStorage } from "./auth/preload";
+
+// Synchronously load tokens & set default Authorization header
+preloadAuthFromStorage();
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
