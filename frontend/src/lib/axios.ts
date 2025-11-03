@@ -1,4 +1,5 @@
-import axios, { AxiosHeaders, InternalAxiosRequestConfig } from "axios";
+import axios from "axios";
+import { AxiosHeaders, InternalAxiosRequestConfig } from "axios";
 import i18n from "./i18n";
 import { useAuthStore } from "../auth/store";
 import { jwtDecode } from "jwt-decode";
@@ -69,19 +70,6 @@ async function refreshOnce(): Promise<string> {
     isRefreshing = false;
   }
 }
-
-// Request interceptor: attach Authorization even before the store hydrates
-api.interceptors.request.use((config: InternalAxiosRequestConfig) => {
-  // try store, then fall back to localStorage for the very first request after a hard reload
-  const state = useAuthStore.getState?.();
-  const accessFromStore = state?.accessToken ?? null;
-  const accessFromStorage = localStorage.getItem("access");
-  const token = accessFromStore || accessFromStorage;
-  if (token) {
-    (config.headers as AxiosHeaders).set?.("Authorization", `Bearer ${token}`);
-  }
-  return config;
-});
 
 api.interceptors.request.use((config: InternalAxiosRequestConfig) => {
   config.headers = AxiosHeaders.from(config.headers || {});
