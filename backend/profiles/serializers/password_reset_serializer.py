@@ -21,3 +21,11 @@ class CustomPasswordResetSerializer(SendEmailResetSerializer):
             raise ValidationError("Enter a valid email address.")
         # Do NOT reveal whether the email exists (avoid user enumeration).
         return value.strip().lower()
+
+    def create(self, validated_data):
+        # Not used by this serializer; required only to satisfy BaseSerializer’s abstract method.
+        return validated_data
+
+    def update(self, instance, validated_data):
+        # Not used; included to satisfy BaseSerializer’s abstract method.
+        raise NotImplementedError("Update is not supported for this serializer.")
