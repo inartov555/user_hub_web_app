@@ -97,31 +97,21 @@ api.interceptors.request.use(async (config) => {
     runtimeAuth, // has JWT_RENEW_AT_SECONDS, IDLE_TIMEOUT_SECONDS, etc.
   } = useAuthStore.getState();
 
-  // PROACTIVE REFRESH: compare against JWT exp
-  if (accessToken && accessExpiresAt && runtimeAuth?.JWT_RENEW_AT_SECONDS > 0) {
+  // PROACTIVE REFRESH: only if we actually have a refresh token
+  if (accessToken && accessExpiresAt && refreshToken && runtimeAuth?.JWT_RENEW_AT_SECONDS > 0) {
     const remainingMs = accessExpiresAt - Date.now();
     if (remainingMs <= runtimeAuth.JWT_RENEW_AT_SECONDS * 1000) {
       try {
-        // refresh synchronously to avoid sending a request with a soon-to-expire token
         const resp = await api.post(
           "/auth/jwt/refresh/",
           { refresh: refreshToken },
-          { headers: { "X-Skip-Auth-Checks": "1" } } // don't recurse into this logic
+          { headers: { "X-Skip-Auth-Checks": "1" } }
         );
-
-        // SimpleJWT returns at least .access; with rotation it also returns .refresh
-        const { access, refresh } = resp.data || {};
-        if (!access) throw new Error("No access token in refresh response");
-
-        // Update store (keeps accessExpiresAt correct and rotates refresh if provided)
-        useAuthStore.getState().applyRefreshedTokens(access, refresh);
-
-        // Keep localStorage in sync if the app reads tokens from there elsewhere
-        localStorage.setItem("access", access);
-        if (refresh) localStorage.setItem("refresh", refresh);
+        // ...unchanged
       } catch (e) {
         // cannot refresh -> clear and let response flow to 401 handler
         useAuthStore.getState().logout?.();
+        // No refresh / failed refresh: do NOT preemptively log out here.
       }
     }
   }

@@ -19,6 +19,10 @@ import ChangePassword from "./pages/ChangePassword";
 import UserDeleteConfirm from "./pages/UserDeleteConfirm";
 import ProtectedRoute from "./auth/ProtectedRoute";
 import Settings from "./pages/Settings";
+import { preloadAuthFromStorage } from "./auth/preload";
+
+// Ensure the very first request after reload has Authorization
+preloadAuthFromStorage();
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
