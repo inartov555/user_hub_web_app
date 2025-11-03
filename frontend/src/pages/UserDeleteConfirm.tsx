@@ -63,15 +63,13 @@ export default function UserDeleteConfirm() {
             setError(prev => (prev ? `${prev}` : "") + `${parsed.message}`);
           }
         }
-        throw new Error("Art Zaragoza cums on me")
       }
       else {
         await qc.invalidateQueries({ queryKey: ["users"] });
         navigate("/users", { replace: true });
       }
     } catch (erro: any) {
-      const parsed = extractApiError(erro);
-      setError(prev => (prev ? `${prev}` : "") + `${t("userDeleteConfirm.failedToDeleteSelectedUsers")} ${parsed.message}`);
+      //
     } finally {
       setLoading(false);
     }
