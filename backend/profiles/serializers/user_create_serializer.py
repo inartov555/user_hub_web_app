@@ -22,10 +22,11 @@ class UserCreateSerializer(BaseUserCreateSerializer):
         # include username so Djoser passes it into create_user()
         fields = ("id", "email", "username", "password")
 
-    def validate_email(self, value: str) -> str:
+    def validate_email(self, value: str) -> str:  # pylint: disable=duplicate-code
         """
         Validating email
         """
+        # It's not a fully duplicate, there's difference
         if not value or not value.strip():
             raise ValidationError("This field may not be blank.")
         try:

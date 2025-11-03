@@ -12,10 +12,11 @@ class CustomPasswordResetSerializer(SendEmailResetSerializer):
     """
     Custom password reset email serializer with strict email validation.
     """
-    def validate_email(self, value: str) -> str:
+    def validate_email(self, value: str) -> str:  # pylint: disable=duplicate-code
         """
         Email validation
         """
+        # It's not a fully duplicate, there's difference
         if not value or not value.strip():
             raise ValidationError("This field may not be blank.")
         try:

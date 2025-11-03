@@ -61,7 +61,7 @@ class EmailOrUsernameTokenCreateSerializer(TokenObtainPairSerializer):
           - attrs['email'] / attrs['username']
         Then map it to the configured login field and call base validation.
         """
-        # 1) extract provided login & password
+        # Extract provided login & password
         provided_login = (
             attrs.get("login")
             or attrs.get("email")
@@ -70,26 +70,26 @@ class EmailOrUsernameTokenCreateSerializer(TokenObtainPairSerializer):
         )
         password = attrs.get("password")
 
-        # 2) figure out which field the project actually uses
+        # Figure out which field the project actually uses
         login_field = self._resolve_login_field()  # "email" or "username" typically
 
-        # 3) normalize & validate presence
+        # Normalize & validate presence
         login_value = self._normalize(provided_login, login_field)
         if not login_value or not password:
             raise ValidationError(
                 {"non_field_errors": ["Must include 'login' (or 'email'/'username') and 'password'."]}
             )
 
-        # 4) put the login into the correct field; drop the others
+        # Put the login into the correct field; drop the others
         attrs[login_field] = login_value
         for k in ("login", "email", "username"):
             if k != login_field:
                 attrs.pop(k, None)
 
-        # 5) Delegate auth to the base class (sets self.user if OK)
+        # Delegate auth to the base class (sets self.user if OK)
         _ = super().validate(attrs)
 
-        # 6) Rebuild tokens so we can enforce DB-driven expiries and add claims
+        # Rebuild tokens so we can enforce DB-driven expiries and add claims
         eff = get_effective_auth_settings()
         now = timezone.now()
 
@@ -110,11 +110,10 @@ class EmailOrUsernameTokenCreateSerializer(TokenObtainPairSerializer):
             "access": str(access),
         }
 
-    # DRF's BaseSerializer declares abstract create/update; implement stubs for pylint.
     def create(self, validated_data: Dict[str, Any]) -> Dict[str, Any]:
-        # Not used by Djoser token creation; present to satisfy linter.
+        # Not used
         return validated_data
 
     def update(self, instance: Any, validated_data: Dict[str, Any]) -> Any:
-        # Not applicable for token creation.
+        # Not used
         raise NotImplementedError("Update is not supported for this serializer.")
