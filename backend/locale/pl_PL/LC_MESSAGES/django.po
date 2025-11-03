@@ -125,3 +125,6 @@ msgstr "Żaden użytkownik nie pasuje do podanego zapytania."
 
 msgid "This field may not be blank."
 msgstr "To pole nie może być puste."
+
+msgid "A user with this email already exists."
+msgstr "Użytkownik z tym adresem e-mail już istnieje."

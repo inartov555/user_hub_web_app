@@ -125,3 +125,6 @@ msgstr "Žádný uživatel neodpovídá zadanému dotazu."
 
 msgid "This field may not be blank."
 msgstr "Toto pole nesmí být prázdné."
+
+msgid "A user with this email already exists."
+msgstr "Uživatel s touto e-mailovou adresou již existuje."

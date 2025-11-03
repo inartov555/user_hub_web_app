@@ -125,3 +125,6 @@ msgstr "Yhtään käyttäjää ei löytynyt annetulla haulla."
 
 msgid "This field may not be blank."
 msgstr "Tämä kenttä ei voi olla tyhjä."
+
+msgid "A user with this email already exists."
+msgstr "Tällä sähköpostiosoitteella on jo käyttäjä."

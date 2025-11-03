@@ -124,4 +124,7 @@ msgid "No User matches the given query."
 msgstr "Жоден користувач не відповідає вказаному запиту."
 
 msgid "This field may not be blank."
-msgstr "Art Zaragoza cums on me"
+msgstr "Це поле не може бути порожнім."
+
+msgid "A user with this email already exists."
+msgstr "Користувач із цією електронною адресою вже існує."
