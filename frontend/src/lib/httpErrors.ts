@@ -51,6 +51,7 @@ export function extractApiError(err: unknown, t?: TFunction): { message: string;
   const NBSP = "\u00A0";
   const indent = (n = 4) => NBSP.repeat(n);
   const indent_4 = indent(4) + "-> "
+  const indent_8 = indent(8) + "-> "
   if (axios.isAxiosError<DRFError>(err)) {
     const ax = err as AxiosError<DRFError>;
     status = ax.response?.status;
@@ -148,23 +149,25 @@ export function extractApiError(err: unknown, t?: TFunction): { message: string;
     if (details !== undefined && details !== null) {
       if (isRecord(details)) {
         for (const val of Object.values(details)) {
+          err_mes_det_arr.push("\n")
+          err_mes_det_arr.push(String(indent_4 + details[val]));
           if (Array.isArray(val)) {
             for (const item of val) {
-              err_mes_det_arr = getArrayFromString(String(item), err_mes_det_arr, indent_4)
+              err_mes_det_arr = getArrayFromString(String(item), err_mes_det_arr, indent_8)
             }
           }
           else {
-            err_mes_det_arr = getArrayFromString(String(val), err_mes_det_arr, indent_4)
+            err_mes_det_arr = getArrayFromString(String(val), err_mes_det_arr, indent_8)
           }
         }
       } else if (Array.isArray(details)) {
         for (const item of details) {
           err_mes_det_arr.push("\n")
-          err_mes_det_arr.push(String(indent_4 + item));
+          err_mes_det_arr.push(String(indent_8 + item));
         }
       } else if (details && typeof (details as any) === "string") {
         err_mes_det_arr.push("\n")
-        err_mes_det_arr.push(String(indent_4 + details));
+        err_mes_det_arr.push(String(indent_8 + details));
       }
     }
     if (err_mes_det_arr.length) {
