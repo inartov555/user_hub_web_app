@@ -9,10 +9,10 @@ from rest_framework.exceptions import ValidationError
 
 def validate_and_normalize_email(value: str, exists: bool = False) -> str:
     """
-    Common email validation used across serializers
+    Email validation
 
     Args:
-        value (str): d
+        value (str): email to validate and normilize
         exists (bool): in some cases, we should not validate the email presence in database
                        to avoid giving any hint what emails are registered (security reasons)
     """

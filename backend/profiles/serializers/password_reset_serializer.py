@@ -2,8 +2,6 @@
 Custom password reset email serializer with strict email validation.
 """
 
-from django.core.validators import validate_email as dj_validate_email
-from django.core.exceptions import ValidationError as DjangoValidationError
 from djoser.serializers import SendEmailResetSerializer
 
 from profiles.validators import validate_and_normalize_email
