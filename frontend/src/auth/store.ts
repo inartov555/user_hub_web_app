@@ -6,7 +6,7 @@ type JwtPayload = { exp?: number };
 const decodeAccessExp = (jwt: string | null): number | null => {
   if (!jwt) return null;
   try {
-    const { exp } = jwtDecode<JwtPayload>(jwt); // reliable exp
+    const { exp } = jwtDecode<JwtPayload>(jwt);   // ✅ reliable exp
     return typeof exp === "number" ? exp * 1000 : null;
   } catch {
     return null;

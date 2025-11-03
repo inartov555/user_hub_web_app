@@ -56,7 +56,7 @@ export default function App() {
       location.pathname.startsWith("/reset-password");
 
     if (!user && !hasTokens && !isPublic) {
-      // navigate("/login", { replace: true, state: { from: location } });
+      navigate("/login", { replace: true, state: { from: location } });
     }
   }, [authReady, user, accessToken, location, navigate]);
 
