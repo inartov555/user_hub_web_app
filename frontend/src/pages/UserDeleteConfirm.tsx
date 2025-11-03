@@ -55,7 +55,7 @@ export default function UserDeleteConfirm() {
 	  (r) => r.status === "rejected" || (r.status === "fulfilled" && r.value.status >= 400)
         );
         if (failed.length) {
-          setError(prev => (prev ? `${prev}` : "") + `${t("userDeleteConfirm.failedToDelete")} ${failed.length} ${users.of} ${ids.length} ${t("users.title")}.`);
+          setError(prev => (prev ? `${prev}` : "") + `${t("userDeleteConfirm.failedToDelete")} ${failed.length} ${t("users.of")} ${ids.length} ${t("users.title")}.`);
           for (const err_item of failed) {
             const parsed = extractApiError(err_item);
             setError(prev => (prev ? `${prev}` : "") + `${parsed.message}`);
