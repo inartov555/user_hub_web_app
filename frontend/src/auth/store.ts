@@ -115,21 +115,29 @@ export const useAuthStore = create<State>((set, get) => ({
     set({ refreshToken: t });
   },
 
-  setTokens: (access: string, refresh?: string) => set((state) => ({
-    accessToken: access,
-    refreshToken: refresh ?? state.refreshToken,
-    accessExpiresAt: decodeAccessExp(access),
-    lastActivityAt: Date.now(), // nice to stamp activity
-  })),
+  setTokens: (access: string, refresh?: string) => {
+    get().setAccessToken(access);
+    // only update refresh if a value was provided; otherwise leave it unchanged
+    if (typeof refresh !== "undefined") {
+      get().setRefreshToken(refresh);
+    }
+    set({
+      lastActivityAt: Date.now(), // nice to stamp activity
+    });
+  },
 
   // Use this after a successful refresh call
-  applyRefreshedTokens: (access: string, refresh?: string) => set((state) => ({
-    accessToken: access,
+  applyRefreshedTokens: (access: string, refresh?: string) => {
     // rotate refresh if backend returned one
-    ...(refresh ? { refreshToken: refresh } : {}),
-    accessExpiresAt: decodeAccessExp(access),
-    lastActivityAt: Date.now(),
-  })),
+    get().setAccessToken(access);
+    // only update refresh if a value was provided; otherwise leave it unchanged
+    if (typeof refresh !== "undefined") {
+      get().setRefreshToken(refresh);
+    }
+    set({
+      lastActivityAt: Date.now(),
+    });
+  },
 
   setUser: (u) => set({ user: u }),
 
