@@ -28,26 +28,18 @@ export default function Login() {
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     try {
-      console.log("Login page; start onSubmit")
       useAuthStore.getState().logout?.(); // clears access+refresh in memory and storage
-      console.log("Login page; onSubmit; before /auth/jwt/create/")
       const { data: tokens } = await api.post("/auth/jwt/create/", { username, password });
       useAuthStore.getState().applyRefreshedTokens?.(tokens.access, tokens.refresh);
-      console.log("Login page; onSubmit; after applyRefreshedTokens")
       setTokens(tokens.access, tokens.refresh);
-      console.log("Login page; onSubmit; after setTokens")
       const { data: me } = await api.get("/auth/users/me/");
       setUser(me);
-      console.log("Login page; onSubmit; after setUser(me);")
       const runtime = await fetchRuntimeAuth();
-      console.log("Login page; onSubmit; after fetchRuntimeAuth")
       useAuthStore.getState().setRuntimeAuth(runtime);
-      console.log("Login page; onSubmit; after setRuntimeAuth")
       // respect the ProtectedRoute’s saved destination
       const intended = localStorage.getItem("postLoginRedirect");
-      console.log("login page onSubmit; intended = ", intended)
       if (intended) localStorage.removeItem("postLoginRedirect");
-      navigate(intended || "/users"); // navigating to /users and clearing back history
+      navigate(intended || "/users", { replace: true }); // navigating to /users and clearing back history
     } catch (err: any) {
       const parsed = extractApiError(err as unknown);
       setError(`${parsed.message}`);

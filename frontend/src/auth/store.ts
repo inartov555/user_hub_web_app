@@ -75,12 +75,10 @@ export const useAuthStore = create<State>((set, get) => ({
 
     const tick = () => {
       const rt = get().runtimeAuth;
-      console.log("startIdleWatch; rt.IDLE_TIMEOUT_SECONDS = ", rt.IDLE_TIMEOUT_SECONDS)
       if (!rt || !(rt.IDLE_TIMEOUT_SECONDS > 0)) return; // <- guard
 
       const idleFor = Date.now() - get().lastActivityAt;
       if (idleFor >= rt.IDLE_TIMEOUT_SECONDS * 1000) {
-        console.log("startIdleWatch; idleFor >= rt.IDLE_TIMEOUT_SECONDS * 1000 = ", rt.IDLE_TIMEOUT_SECONDS)
         get().logout();
         get().stopIdleWatch();
       } else {
@@ -103,21 +101,18 @@ export const useAuthStore = create<State>((set, get) => ({
       window.removeEventListener(evt, get().setActivityNow as any)
     );
     set({ idleTimer: null });
-    console.log("store.ts; stopIdleWatch;")
   },
 
   setAccessToken: (t) => {
     if (t) localStorage.setItem("access", t);
     else localStorage.removeItem("access");
     set({ accessToken: t, accessExpiresAt: decodeAccessExp(t) });
-    console.log("store.ts; setAccessToken; access", localStorage.getItem("access"))
   },
 
   setRefreshToken: (t) => {
     if (t) localStorage.setItem("refresh", t);
     else localStorage.removeItem("refresh");
     set({ refreshToken: t });
-    console.log("store.ts; setRefreshToken; refresh", localStorage.getItem("refresh"))
   },
 
   setTokens: (access: string, refresh?: string) => set((state) => ({
@@ -139,10 +134,6 @@ export const useAuthStore = create<State>((set, get) => ({
   setUser: (u) => set({ user: u }),
 
   logout: () => {
-    // console.trace("Current stack");
-    // new Error("debug")
-    console.log("store.ts; in logout(): access = ", localStorage.getItem("access"))
-    console.log("store.ts; in logout(): refresh = ", localStorage.getItem("refresh"))
     localStorage.removeItem("access");
     localStorage.removeItem("refresh");
     set({ accessToken: null, refreshToken: null, accessExpiresAt: null, user: null });
