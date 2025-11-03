@@ -233,19 +233,3 @@ api.interceptors.response.use(
     }
   }
 );
-
-api.interceptors.request.use((config) => {
-  // Normalize to AxiosHeaders to satisfy TS and avoid '{}' assignment
-  const headers = AxiosHeaders.from(config.headers);
-
-  // get from in-memory store first, fall back to localStorage (survives reloads)
-  const { accessToken } = useAuthStore.getState();
-  const token = accessToken || localStorage.getItem("access");
-
-  if (token && !headers.has("Authorization")) {
-    headers.set("Authorization", `Bearer ${token}`);
-  }
-
-  config.headers = headers; // stays AxiosHeaders, correct type
-  return config;
-});

@@ -55,7 +55,7 @@ export default function App() {
       location.pathname === "/signup" ||
       location.pathname.startsWith("/reset-password");
 
-    if (authReady && !user && !hasTokens && !isPublic) {
+    if (!user && !hasTokens && !isPublic) {
       navigate("/login", { replace: true, state: { from: location } });
     }
   }, [authReady, user, accessToken, location, navigate]);
