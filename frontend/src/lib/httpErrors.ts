@@ -148,9 +148,10 @@ export function extractApiError(err: unknown, t?: TFunction): { message: string;
     const details = errorObj ? (errorObj as any).details : undefined;
     if (details !== undefined && details !== null) {
       if (isRecord(details)) {
-        for (const val of Object.values(details)) {
+        for (const key in details) {
+          let val = details[key]
           err_mes_det_arr.push("\n")
-          err_mes_det_arr.push(String(indent_4 + details[val]));
+          err_mes_det_arr.push(String(indent_4 + val));
           if (Array.isArray(val)) {
             for (const item of val) {
               err_mes_det_arr = getArrayFromString(String(item), err_mes_det_arr, indent_8)
