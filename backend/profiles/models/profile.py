@@ -25,7 +25,8 @@ class Profile(models.Model):
     This defines a model named Profile - an extension of Django’s built-in User data.
     Each user has exactly one profile.
     """
-    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, unique=True)
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE,
+                                related_name="profile", unique=True)
     bio = models.TextField(blank=True)
     avatar = models.ImageField(upload_to=avatar_upload_path, blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -33,4 +34,4 @@ class Profile(models.Model):
     last_activity = models.DateTimeField(null=True, blank=True)
 
     def __str__(self):
-        return f"Profile({self.user.user_id})"
+        return f"Profile({getattr(self.user, 'email', self.user_id)})"
