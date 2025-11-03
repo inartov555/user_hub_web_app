@@ -296,7 +296,8 @@ DJOSER = {
         "jwt_refresh": "profiles.serializers.jwt_refresh_serializer.CustomTokenRefreshSerializer",
         "user_create": "profiles.serializers.user_create_serializer.UserCreateSerializer",
         "user": "profiles.serializers.user_serializer.UserSerializer",
-        "current_user": "profiles.serializers.user_serializer.UserSerializer"
+        "current_user": "profiles.serializers.user_serializer.UserSerializer",
+        "password_reset": "profiles.serializers.password_reset_serializer.CustomPasswordResetSerializer",
     },
     "PERMISSIONS": {
         "token_create": ["rest_framework.permissions.AllowAny"],

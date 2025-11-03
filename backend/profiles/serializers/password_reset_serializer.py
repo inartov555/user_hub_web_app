@@ -12,7 +12,6 @@ class CustomPasswordResetSerializer(SendEmailResetSerializer):
     """
     Custom password reset email serializer with strict email validation.
     """
-    # Djoser expects an `email` field; we validate it.
     def validate_email(self, value: str) -> str:
         if not value or not value.strip():
             raise ValidationError("This field may not be blank.")
