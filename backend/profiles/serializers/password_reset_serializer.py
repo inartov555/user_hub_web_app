@@ -5,26 +5,19 @@ Custom password reset email serializer with strict email validation.
 from django.core.validators import validate_email as dj_validate_email
 from django.core.exceptions import ValidationError as DjangoValidationError
 from djoser.serializers import SendEmailResetSerializer
-from rest_framework.exceptions import ValidationError
+
+from profiles.validators import validate_and_normalize_email
 
 
 class CustomPasswordResetSerializer(SendEmailResetSerializer):
     """
     Custom password reset email serializer with strict email validation.
     """
-    def validate_email(self, value: str) -> str:  # pylint: disable=duplicate-code
+    def validate_email(self, value: str) -> str:
         """
         Email validation
         """
-        # It's not a fully duplicate, there's difference
-        if not value or not value.strip():
-            raise ValidationError("This field may not be blank.")
-        try:
-            dj_validate_email(value)
-        except DjangoValidationError as exc:
-            raise ValidationError("Enter a valid email address.") from exc
-        # Do NOT reveal whether the email exists (avoid user enumeration).
-        return value.strip().lower()
+        return validate_and_normalize_email(value=value, exists=False)
 
     def create(self, validated_data):
         # Not used

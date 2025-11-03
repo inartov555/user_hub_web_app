@@ -7,7 +7,8 @@ from django.core.validators import validate_email as dj_validate_email
 from django.core.exceptions import ValidationError as DjangoValidationError
 from django.contrib.auth import get_user_model
 from djoser.serializers import UserCreateSerializer as BaseUserCreateSerializer
-from rest_framework.exceptions import ValidationError
+
+from profiles.validators import validate_and_normalize_email
 
 
 class UserCreateSerializer(BaseUserCreateSerializer):
@@ -22,19 +23,8 @@ class UserCreateSerializer(BaseUserCreateSerializer):
         # include username so Djoser passes it into create_user()
         fields = ("id", "email", "username", "password")
 
-    def validate_email(self, value: str) -> str:  # pylint: disable=duplicate-code
+    def validate_email(self, value: str) -> str:
         """
         Validating email
         """
-        # It's not a fully duplicate, there's difference
-        if not value or not value.strip():
-            raise ValidationError("This field may not be blank.")
-        try:
-            dj_validate_email(value)
-        except DjangoValidationError as exc:
-            raise ValidationError("Enter a valid email address.") from exc
-        normalized = value.strip().lower()
-        user_model = get_user_model()
-        if user_model.objects.filter(email__iexact=normalized).exists():
-            raise ValidationError("A user with this email already exists.")
-        return normalized
+        return validate_and_normalize_email(value=value, exists=True)
