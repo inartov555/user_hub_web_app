@@ -51,8 +51,8 @@ async function refreshOnce(): Promise<string> {
     localStorage.setItem("access", newAccess);
     if (newRefresh) {
       localStorage.setItem("refresh", newRefresh);
-      // optional: if you have setRefreshToken in the store, call it here
-      // useAuthStore.getState().setRefreshToken?.(newRefresh);
+      // if you have setRefreshToken in the store, call it here
+      useAuthStore.getState().setRefreshToken?.(newRefresh);
     }
 
     onRefreshed(newAccess);
