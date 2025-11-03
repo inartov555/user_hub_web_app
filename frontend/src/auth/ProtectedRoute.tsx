@@ -18,12 +18,36 @@ export default function ProtectedRoute() {
   const { user, accessToken, logout } = useAuthStore();
   const location = useLocation();
   const [ready, setReady] = useState(false);
+  const [booting, setBooting] = useState(true);
 
   // Treat these as public routes where we never render a redirect to /login
   const isAuthRoute = useMemo(() => {
     const p = location.pathname;
     return p === "/login" || p === "/signup" || p === "/reset-password";
   }, [location.pathname]);
+
+  useEffect(() => {
+    let canceled = false;
+    (async () => {
+      try {
+        await bootstrapAuth();
+      } finally {
+        if (!canceled) setBooting(false);
+      }
+    })();
+    return () => {
+      canceled = true;
+    };
+  }, []);
+
+  // Don’t decide until we’ve tried to bootstrap
+  if (booting) return null; // or a spinner
+
+  if (!user) {
+    const intended = location.pathname + location.search + location.hash;
+    localStorage.setItem("postLoginRedirect", intended);
+    return <Navigate to="/login" replace state={{ from: location }} />;
+  }
 
   // Proactive local check: if token clearly expired, clear state
   useEffect(() => {

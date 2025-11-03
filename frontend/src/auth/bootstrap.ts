@@ -2,22 +2,24 @@ import { api } from "../lib/axios";
 import { useAuthStore } from "./store";
 
 export async function bootstrapAuth(): Promise<boolean> {
-  const { setUser, logout, setTokens } = useAuthStore.getState();
-
-  // Require both tokens to even try
+  const { setUser, setTokens, logout } = useAuthStore.getState();
+  // Hydrate tokens from storage FIRST
   const access = localStorage.getItem("access");
   const refresh = localStorage.getItem("refresh");
-  if (!access || !refresh) return false;
+  if (!access || !refresh) {
+    // nothing to bootstrap
+    return false;
+  }
   setTokens?.(access, refresh);
-  // Always validate with the server. If access is expired, the axios
-  // interceptor will attempt a refresh; if refresh is also expired,
-  // it will logout and we return false.
+
+  // Validate with the server; request interceptor will include Authorization
   try {
     const { data } = await api.get("/auth/users/me/");
-    setUser(data); // keep user store in sync
+    setUser?.(data);
     return true;
   } catch {
-    logout?.(); // tokens invalid/expired — clear them
+    // tokens invalid/expired
+    logout?.();
     return false;
   }
 }
