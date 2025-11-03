@@ -222,9 +222,8 @@ api.interceptors.response.use(
       onRefreshed(null);
       useAuthStore.getState().logout();
 
-      const hasRefresh = !!(useAuthStore.getState().refreshToken || localStorage.getItem("refresh"));
       // Only navigate if not already on /login (avoid useless reload loop)
-      if (!hasRefresh && typeof window !== "undefined" && window.location.pathname !== "/login") {
+      if (typeof window !== "undefined" && window.location.pathname !== "/login") {
         window.location.assign("/login");
       }
 
