@@ -98,7 +98,7 @@ api.interceptors.request.use(async (config) => {
   } = useAuthStore.getState();
 
   // PROACTIVE REFRESH: compare against JWT exp
-  if (accessToken && accessExpiresAt && refreshToken && runtimeAuth?.JWT_RENEW_AT_SECONDS > 0) {
+  if (accessToken && accessExpiresAt && runtimeAuth?.JWT_RENEW_AT_SECONDS > 0) {
     const remainingMs = accessExpiresAt - Date.now();
     if (remainingMs <= runtimeAuth.JWT_RENEW_AT_SECONDS * 1000) {
       try {
@@ -121,7 +121,7 @@ api.interceptors.request.use(async (config) => {
         if (refresh) localStorage.setItem("refresh", refresh);
       } catch (e) {
         // cannot refresh -> clear and let response flow to 401 handler
-        // useAuthStore.getState().logout?.(); // don't clear tokens here; let the response handler decide
+        useAuthStore.getState().logout?.();
       }
     }
   }
@@ -130,17 +130,6 @@ api.interceptors.request.use(async (config) => {
   const latestAccess = useAuthStore.getState().accessToken;
   if (latestAccess) (config.headers as any).Authorization = `Bearer ${latestAccess}`;
 
-  return config;
-});
-
-api.interceptors.request.use((config) => {
-  const headers = AxiosHeaders.from(config.headers);
-  const { accessToken } = useAuthStore.getState();
-  const token = accessToken || localStorage.getItem("access");
-  if (token && !headers.has("Authorization")) {
-    headers.set("Authorization", `Bearer ${token}`);
-  }
-  config.headers = headers;
   return config;
 });
 
