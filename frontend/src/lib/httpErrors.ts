@@ -18,6 +18,8 @@ function authErrorMessage(err_loc_code: string, t?: TFunction): string {
   return tf(err_loc_code);
 }
 
+ 
+
 export function extractApiError(err: unknown, t?: TFunction): { message: string; fields?: Record<string,string[]> } {
   const fallback = { message: authErrorMessage("httpError.fallBack", t) };
   let status: number | undefined;
@@ -121,7 +123,6 @@ export function extractApiError(err: unknown, t?: TFunction): { message: string;
        }
      */
 
-    // Replace the invalid maybeErr/res_list block with this collector
     const errorObj = isRecord((data as any).error) ? (data as any).error : null;
     if (errorObj && typeof (errorObj as any).message === "string") {
       collected.push("\n")
@@ -129,18 +130,48 @@ export function extractApiError(err: unknown, t?: TFunction): { message: string;
     }
 
     const details = errorObj ? (errorObj as any).details : undefined;
+    console.log("BEFORE details = ", details)
     if (details !== undefined && details !== null) {
       if (isRecord(details)) {
+        console.log("Right before for-loop; details")
         for (const val of Object.values(details)) {
+          console.log("before first if; = ", val)
           if (Array.isArray(val)) {
+            console.log("it is array = ", val)
             for (const item of val) {
+              console.log("inside the for-lop in the first if; = ", val)
               collected.push("\n")
               collected.push(String(indent_4 + item));
             }
           }
-          else if (details && typeof (details as any) === "string") {
-            collected.push("\n")
-            collected.push(String(indent_4 + val));
+          else {
+            console.log("val = ", val)
+            const valStr = val as string;
+            const looksLikeArray = /^\s*\[.*\]\s*$/.test(valStr);
+            if (looksLikeArray) {
+              console.log("looksLikeArray = ", looksLikeArray)
+              try {
+                const parsed = JSON.parse(valStr.replace(/'/g, '"'));
+                if (Array.isArray(parsed)) {
+                  for (const item of parsed) {
+                    collected.push("\n");
+                    collected.push(String(indent_4 + item));
+                  }
+                  console.log("is array = ", collected)
+                } else {
+                  collected.push(String(indent_4 + String(parsed)));
+                  console.log("not array after parse = ", collected)
+                }
+              } catch {
+                collected.push("\n");
+                collected.push(String(indent_4 + valStr));
+                console.log("catch = ", collected)
+              }
+            } else {
+              collected.push("\n");
+              collected.push(String(indent_4 + valStr));
+              console.log("not array = ", collected)
+            }
           }
         }
       } else if (Array.isArray(details)) {
@@ -166,12 +197,12 @@ export function extractApiError(err: unknown, t?: TFunction): { message: string;
 
     // detail
     if ("detail" in data && typeof data.detail === "string") {
-      const d = (data as any).detail;
-      if (typeof d === "string") {
-        return { message: d };
+      const det = (data as any).detail;
+      if (typeof det === "string") {
+        return { message: det };
       }
-      if (Array.isArray(d)) {
-        return { message: d.map(String).join(" ") };
+      if (Array.isArray(det)) {
+        return { message: det.map(String).join(" ") };
       }
     }
     // collect field errors & non_field_errors
