@@ -13,11 +13,10 @@ import logging
 
 from django.conf import settings
 from django.contrib.auth import get_user_model
-from django.utils import timezone, translation
+from django.utils import timezone
 from django.db import DatabaseError, IntegrityError
-
 from rest_framework.authentication import BaseAuthentication, get_authorization_header
-from rest_framework.exceptions import AuthenticationFailed
+from rest_framework.exceptions import AuthenticationFailed, ValidationError
 from rest_framework_simplejwt.tokens import AccessToken, RefreshToken
 from rest_framework_simplejwt.exceptions import TokenError, InvalidToken
 
@@ -108,7 +107,9 @@ class JWTAuthentication(BaseAuthentication):
     def _user_from_token(self, token: AccessToken):
         user_id = token.get("user_id") or token.get("sub")
         if not user_id:
-            raise InvalidToken(translation.gettext("user_id claim missing"))
+            raise ValidationError(
+                {"non_field_errors": ["user_id claim missing"]}
+            )
         return self.user_model.objects.get(pk=user_id)
 
     def _seconds_to_expiry(self, token: AccessToken) -> Optional[int]:

@@ -122,3 +122,6 @@ msgstr "Введіть дійсну адресу електронної пошт
 
 msgid "No User matches the given query."
 msgstr "Жоден користувач не відповідає вказаному запиту."
+
+msgid "This field may not be blank."
+msgstr "Art Zaragoza cums on me"

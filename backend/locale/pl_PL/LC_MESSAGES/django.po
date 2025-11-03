@@ -122,3 +122,6 @@ msgstr "Wprowadź prawidłowy adres e-mail."
 
 msgid "No User matches the given query."
 msgstr "Żaden użytkownik nie pasuje do podanego zapytania."
+
+msgid "This field may not be blank."
+msgstr "To pole nie może być puste."

@@ -6,9 +6,8 @@ so the client can refresh credentials.
 """
 
 from django.http import JsonResponse
-from django.utils import translation
 from rest_framework import status
-from rest_framework.exceptions import AuthenticationFailed
+from rest_framework.exceptions import AuthenticationFailed, ValidationError
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework_simplejwt.exceptions import InvalidToken
 
@@ -52,9 +51,8 @@ class BootIdEnforcerMiddleware:
                 token = self.jwt_auth.get_validated_token(raw)
                 curr = get_boot_id()
                 if token.payload.get("boot_id") != curr:
-                    return JsonResponse(
-                        {"detail": translation.gettext("Session expired due to server restart.")},
-                        status=status.HTTP_401_UNAUTHORIZED,
+                    raise ValidationError(
+                        {"non_field_errors": ["Session expired due to server restart."]}
                     )
                 request.auth = token
             except (InvalidToken, AuthenticationFailed):

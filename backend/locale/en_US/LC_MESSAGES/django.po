@@ -122,3 +122,9 @@ msgstr "Enter a valid email address."
 
 msgid "No User matches the given query."
 msgstr "No User matches the given query."
+
+msgid "This field may not be blank."
+msgstr "This field may not be blank."
+
+msgid "A user with this email already exists."
+msgstr "A user with this email already exists."

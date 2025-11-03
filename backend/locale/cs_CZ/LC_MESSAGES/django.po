@@ -122,3 +122,6 @@ msgstr "Zadejte platnou e-mailovou adresu."
 
 msgid "No User matches the given query."
 msgstr "Žádný uživatel neodpovídá zadanému dotazu."
+
+msgid "This field may not be blank."
+msgstr "Toto pole nesmí být prázdné."

@@ -122,3 +122,6 @@ msgstr "Sisestage kehtiv e-posti aadress."
 
 msgid "No User matches the given query."
 msgstr "Ükski kasutaja ei vasta antud päringule."
+
+msgid "This field may not be blank."
+msgstr "See väli ei tohi olla tühi."

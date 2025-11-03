@@ -122,3 +122,6 @@ msgstr "Anna kelvollinen sähköpostiosoite."
 
 msgid "No User matches the given query."
 msgstr "Yhtään käyttäjää ei löytynyt annetulla haulla."
+
+msgid "This field may not be blank."
+msgstr "Tämä kenttä ei voi olla tyhjä."
