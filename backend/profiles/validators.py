@@ -2,6 +2,7 @@
 Validators
 """
 
+from django.contrib.auth import get_user_model
 from django.core.validators import validate_email as dj_validate_email
 from django.core.exceptions import ValidationError as DjangoValidationError
 from rest_framework.exceptions import ValidationError

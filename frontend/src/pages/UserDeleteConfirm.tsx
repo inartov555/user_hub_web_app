@@ -69,7 +69,8 @@ export default function UserDeleteConfirm() {
         navigate("/users", { replace: true });
       }
     } catch (erro: any) {
-      //
+      const parsed = extractApiError(erro);
+      setError(prev => (prev ? `${prev}` : "") + `\n${t("userDeleteConfirm.failedToDeleteSelectedUsers")} ${parsed.message}`);
     } finally {
       setLoading(false);
     }
