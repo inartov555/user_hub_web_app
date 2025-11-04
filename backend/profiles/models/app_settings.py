@@ -10,6 +10,13 @@ from django.conf import settings
 from django.db import models
 
 
+# Keys we care about for this task
+JWT_RENEW_AT_SECONDS_KEY = "JWT_RENEW_AT_SECONDS"
+IDLE_TIMEOUT_SECONDS_KEY = "IDLE_TIMEOUT_SECONDS"
+ACCESS_TOKEN_LIFETIME_KEY = "ACCESS_TOKEN_LIFETIME"  # seconds
+ROTATE_REFRESH_TOKENS_KEY = "ROTATE_REFRESH_TOKENS"
+
+
 class AppSetting(models.Model):
     """
     Simple key/value settings store.
@@ -34,13 +41,6 @@ class AppSetting(models.Model):
             return AppSetting.objects.only("value").get(key=key).value
         except AppSetting.DoesNotExist:
             return None
-
-
-# Keys we care about for this task
-JWT_RENEW_AT_SECONDS_KEY = "JWT_RENEW_AT_SECONDS"
-IDLE_TIMEOUT_SECONDS_KEY = "IDLE_TIMEOUT_SECONDS"
-ACCESS_TOKEN_LIFETIME_KEY = "ACCESS_TOKEN_LIFETIME"  # seconds
-ROTATE_REFRESH_TOKENS_KEY = "ROTATE_REFRESH_TOKENS"
 
 
 @dataclass(frozen=True)

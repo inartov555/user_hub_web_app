@@ -19,6 +19,7 @@ from rest_framework_simplejwt.exceptions import TokenError
 
 from ..boot import get_boot_id
 from ..models.app_settings import get_effective_auth_settings
+from profiles.utils.runtime_auth import get_effective_runtime_auth
 
 
 class CustomTokenRefreshSerializer(TokenRefreshSerializer):
