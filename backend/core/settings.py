@@ -280,6 +280,7 @@ SPECTACULAR_SETTINGS = {
     "TITLE": "Users API",
     "DESCRIPTION": "Auth, profiles, users table, excel import",
     "VERSION": "1.0.0",
+    "GREETING": "Welcome to the APIs of the Users App website!",
 }
 
 DJOSER = {
