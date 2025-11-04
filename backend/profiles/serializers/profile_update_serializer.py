@@ -15,13 +15,14 @@ class ProfileUpdateSerializer(serializers.ModelSerializer):
     """
     first_name = serializers.CharField(source="user.first_name", required=False)
     last_name = serializers.CharField(source="user.last_name", required=False)
+    locale = serializers.CharField(required=False, allow_blank=True)
 
     class Meta:
         """
         Serializer configuration for the Profile update operation.
         """
         model = Profile
-        fields = ["bio", "avatar", "first_name", "last_name"]
+        fields = ["first_name", "last_name", "locale", "bio", "avatar"]
 
     def update(self, instance, validated_data):
         """

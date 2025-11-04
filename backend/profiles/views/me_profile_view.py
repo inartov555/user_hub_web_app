@@ -27,6 +27,9 @@ class MeProfileView(generics.RetrieveUpdateAPIView):
 
     def get_object(self):
         """
-        Fetch and return the Profile belonging to the authenticated user.
+        Return the Profile for the authenticated user.
+        Ensure it exists to avoid 500s when a user has no profile yet.
         """
-        return Profile.objects.select_related("user").get(user=self.request.user)
+        profile, _ = Profile.objects.select_related("user").get_or_create(user=self.request.user)
+        # return Profile.objects.select_related("user").get(user=self.request.user)
+        return profile
