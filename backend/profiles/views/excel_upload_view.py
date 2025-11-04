@@ -33,7 +33,7 @@ class ExcelUploadView(APIView):
         """
         if self.request.method == "GET":
             return [permissions.AllowAny()]
-        return [permissions.IsAuthenticated()]
+        return [permissions.IsAuthenticated(), permissions.IsAdminUser()]
 
     def get(self, request, *args, **kwargs):  # pylint: disable=unused-argument
         """
@@ -109,7 +109,7 @@ class ExcelUploadView(APIView):
             return Response({"detail": translation.gettext("No file provided")},
                             status=status.HTTP_400_BAD_REQUEST)
         df = pd.read_excel(file)
-        created, updated = 0, 0
+        created, updated, processed = 0, 0, 0
         for _, row in df.iterrows():
             email = str(row.get("email", "")).strip().lower()
             if not email:
@@ -136,4 +136,5 @@ class ExcelUploadView(APIView):
             if pd.notna(row.get("bio")):
                 profile.bio = row.get("bio")
                 profile.save()
-        return Response({"created": created, "updated": updated})
+        processed = created + updated
+        return Response({"created": created, "updated": updated, "processed": processed})
