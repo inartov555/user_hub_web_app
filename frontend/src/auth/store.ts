@@ -14,9 +14,9 @@ const decodeAccessExp = (jwt: string | null): number | null => {
 };
 
 type RuntimeAuth = {
-  ACCESS_TOKEN_LIFETIME: number;
   JWT_RENEW_AT_SECONDS: number;
   IDLE_TIMEOUT_SECONDS: number;
+  ACCESS_TOKEN_LIFETIME: number;
 } | null;
 
 type User = {
@@ -48,10 +48,14 @@ type State = {
 };
 
 export const useAuthStore = create<State>((set, get) => ({
-  runtimeAuth: null,
+  runtimeAuth: {
+    JWT_RENEW_AT_SECONDS: Number(localStorage.getItem("JWT_RENEW_AT_SECONDS")),
+    IDLE_TIMEOUT_SECONDS: Number(localStorage.getItem("IDLE_TIMEOUT_SECONDS")),
+    ACCESS_TOKEN_LIFETIME: Number(localStorage.getItem("ACCESS_TOKEN_LIFETIME")),
+  },
   setRuntimeAuth: (r) => {
     const now = Date.now();
-    set({ runtimeAuth: r, lastActivityAt: now });
+    set({ lastActivityAt: now });
     if (r && r.IDLE_TIMEOUT_SECONDS > 0) {
       get().startIdleWatch();
     } else {

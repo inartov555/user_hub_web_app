@@ -4,7 +4,7 @@ import { fetchAuthSettings, updateAuthSettings, AuthSettings } from "../lib/sett
 import { useAuthStore } from "../auth/store";
 import { extractApiError } from "../lib/httpErrors";
 import Button from "../components/button";
-import { fetchRuntimeAuth } from "../lib/axios";
+import { fetchRuntimeAuth } from "../lib/settings";
 
 export default function Settings() {
   const { t } = useTranslation();

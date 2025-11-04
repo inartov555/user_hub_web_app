@@ -1,8 +1,8 @@
 import axios from "axios";
 import { AxiosHeaders, InternalAxiosRequestConfig } from "axios";
+import { jwtDecode } from "jwt-decode";
 import i18n from "./i18n";
 import { useAuthStore } from "../auth/store";
-import { jwtDecode } from "jwt-decode";
 
 export const api = axios.create({
     baseURL: import.meta.env.VITE_API_URL || "/api/v1",
@@ -16,15 +16,6 @@ let pending: Array<(t: string|null)=>void> = [];
 function onRefreshed(token: string|null) {
   pending.forEach(cb => cb(token));
   pending = [];
-}
-
-export async function fetchRuntimeAuth() {
-  const { data } = await api.get("/system/runtime-auth/");
-  return data as {
-    ACCESS_TOKEN_LIFETIME: number;
-    JWT_RENEW_AT_SECONDS: number;
-    IDLE_TIMEOUT_SECONDS: number;
-  };
 }
 
 async function refreshOnce(): Promise<string> {

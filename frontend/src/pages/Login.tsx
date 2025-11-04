@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { api, fetchRuntimeAuth } from "../lib/axios";
+import { api } from "../lib/axios";
+import { fetchRuntimeAuth } from "../lib/settings";
 import { useAuthStore } from "../auth/store";
 import FormInput from "../components/FormInput";
 import { extractApiError } from "../lib/httpErrors";

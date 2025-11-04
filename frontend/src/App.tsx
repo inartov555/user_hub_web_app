@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import { useAuthStore } from "./auth/store";
 import { bootstrapAuth } from "./auth/bootstrap";
 import Navbar from "./components/Navbar";
-import { fetchRuntimeAuth, api } from "./lib/axios";
+import { api } from "./lib/axios";
 
 export function AppShellHeartbeat() {
   useEffect(() => {
@@ -24,6 +24,8 @@ export function AppShellHeartbeat() {
       }
       const periodMs = Math.max(15000, Math.min(60000, runtimeAuth ? runtimeAuth.IDLE_TIMEOUT_SECONDS * 500 : 30000));
       timer = window.setTimeout(tick, periodMs);
+      console.log("periodMs = ", periodMs)
+      console.log("runtimeAuth = ", runtimeAuth)
     };
 
     tick();
