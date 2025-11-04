@@ -129,7 +129,7 @@ class JWTAuthentication(BaseAuthentication):
             return False
 
         threshold = eff.jwt_renew_at_seconds
-        should_rotate = eff.rotate_refresh_tokens, False)
+        should_rotate = eff.rotate_refresh_tokens
         try:
             threshold_int = int(threshold)
         except (TypeError, ValueError):

@@ -85,7 +85,7 @@ class CustomTokenRefreshSerializer(TokenRefreshSerializer):
         - Raises localized, specific exceptions for expected failure modes.
         """
         eff = get_effective_auth_settings()  # pulls DB overrides live
-        should_rotate = eff.rotate_refresh_tokens, False)
+        should_rotate = eff.rotate_refresh_tokens
         is_blacklist = settings.SIMPLE_JWT.get("BLACKLIST_AFTER_ROTATION", False)
         # Fast exit if the blacklist app isn’t installed
         if not apps.is_installed("rest_framework_simplejwt.token_blacklist"):
