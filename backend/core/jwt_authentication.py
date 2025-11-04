@@ -128,7 +128,7 @@ class JWTAuthentication(BaseAuthentication):
         if seconds_left is None:
             return False
 
-        threshold = eff.jwt_renew_at_seconds, 0)
+        threshold = eff.jwt_renew_at_seconds
         should_rotate = eff.rotate_refresh_tokens, False)
         try:
             threshold_int = int(threshold)
