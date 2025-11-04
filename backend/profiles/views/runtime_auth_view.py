@@ -20,4 +20,5 @@ def runtime_auth_config(_request):
         "ACCESS_TOKEN_LIFETIME": eff.access_token_lifetime_seconds,
         "JWT_RENEW_AT_SECONDS": eff.jwt_renew_at_seconds,
         "IDLE_TIMEOUT_SECONDS": eff.idle_timeout_seconds,
+        "ROTATE_REFRESH_TOKENS": eff.rotate_refresh_tokens,
     })

@@ -120,6 +120,8 @@
     "loadError": "Rakenduse sätete laadimisel tekkis viga",
     "saveError": "Rakenduse sätete salvestamisel tekkis viga",
     "title": "Rakenduse sätted",
+    "jwtRotateTokens": "ROTATE_REFRESH_TOKENS",
+    "jwtRotateTokensHelp": "Igal värskendamisel väljastatakse uus värskendusmärgis ja vana muudetakse kehtetuks. Keela see, et kasutada sama värskendusmärgist uuesti (keelab 'JWT_RENEW_AT_SECONDS').",
     "jwtRenew": "JWT_RENEW_AT_SECONDS",
     "jwtRenewHelp": "Kui juurdepääsutokenil on jäänud nii palju sekundeid või vähem, värskendab klient seda proaktiivselt (kui värskendustoken on endiselt kehtiv). Väärtus 0 keelab proaktiivse värskendamise. Vihje: hoia see selgelt allpool juurdepääsutokeni eluiga (nt 120–300 s).",
     "idleTimeout": "IDLE_TIMEOUT_SECONDS",

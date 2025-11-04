@@ -40,6 +40,7 @@ class AppSetting(models.Model):
 JWT_RENEW_AT_SECONDS_KEY = "JWT_RENEW_AT_SECONDS"
 IDLE_TIMEOUT_SECONDS_KEY = "IDLE_TIMEOUT_SECONDS"
 ACCESS_TOKEN_LIFETIME_KEY = "ACCESS_TOKEN_LIFETIME"  # seconds
+ROTATE_REFRESH_TOKENS_KEY = "ROTATE_REFRESH_TOKENS"
 
 
 @dataclass(frozen=True)
@@ -50,15 +51,17 @@ class EffectiveAuthSettings:
     jwt_renew_at_seconds: int
     idle_timeout_seconds: int
     access_token_lifetime_seconds: int
+    rotate_refresh_tokens: bool
 
     def as_dict(self) -> Dict[str, Any]:
         """
         Get settings in the dictionary format
         """
         return {
-            "JWT_RENEW_AT_SECONDS": self.jwt_renew_at_seconds,
-            "IDLE_TIMEOUT_SECONDS": self.idle_timeout_seconds,
-            "ACCESS_TOKEN_LIFETIME": self.access_token_lifetime_seconds,
+            JWT_RENEW_AT_SECONDS_KEY: self.jwt_renew_at_seconds,
+            IDLE_TIMEOUT_SECONDS_KEY: self.idle_timeout_seconds,
+            ACCESS_TOKEN_LIFETIME_KEY: self.access_token_lifetime_seconds,
+            ROTATE_REFRESH_TOKENS_KEY: self.rotate_refresh_tokens,
         }
 
 
@@ -75,18 +78,21 @@ def get_effective_auth_settings() -> EffectiveAuthSettings:
             return default
 
     # fallbacks from core.settings
-    default_renew = int(getattr(settings, "JWT_RENEW_AT_SECONDS", 1200))
-    default_idle = int(getattr(settings, "IDLE_TIMEOUT_SECONDS", 900))
+    default_renew = int(getattr(settings, JWT_RENEW_AT_SECONDS_KEY, 1200))
+    default_idle = int(getattr(settings, IDLE_TIMEOUT_SECONDS_KEY, 900))
     # ACCESS_TOKEN_LIFETIME is a timedelta in core.settings
-    default_access_td = getattr(settings, "ACCESS_TOKEN_LIFETIME")
+    default_access_td = getattr(settings, ACCESS_TOKEN_LIFETIME_KEY)
     default_access = int(default_access_td.total_seconds() if default_access_td else 1800)
+    default_is_token_rotate = bool(getattr(settings, ROTATE_REFRESH_TOKENS_KEY))
 
     renew = _int_or(default_renew, AppSetting.get_value(JWT_RENEW_AT_SECONDS_KEY))
     idle  = _int_or(default_idle,  AppSetting.get_value(IDLE_TIMEOUT_SECONDS_KEY))
     access = _int_or(default_access, AppSetting.get_value(ACCESS_TOKEN_LIFETIME_KEY))
+    rotate = _int_or(default_is_token_rotate, AppSetting.get_value(ROTATE_REFRESH_TOKENS_KEY))
 
     return EffectiveAuthSettings(
         jwt_renew_at_seconds=max(0, renew),
         idle_timeout_seconds=max(1, idle),
         access_token_lifetime_seconds=max(1, access),
+        rotate_refresh_tokens=rotate,
     )

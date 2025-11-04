@@ -120,6 +120,8 @@
     "loadError": "Sovelluksen asetusten lataamisessa tapahtui virhe",
     "saveError": "Sovelluksen asetusten tallentamisessa tapahtui virhe",
     "title": "Sovelluksen asetukset",
+    "jwtRotateTokens": "ROTATE_REFRESH_TOKENS",
+    "jwtRotateTokensHelp": "Myönnä jokaisessa päivityksessä uusi päivitystunnus ja mitätöi vanha. Poista käytöstä, jotta samaa päivitystunnusta voidaan käyttää uudelleen (poistaa käytöstä 'JWT_RENEW_AT_SECONDS').",
     "jwtRenew": "JWT_RENEW_AT_SECONDS",
     "jwtRenewHelp": "Kun käyttöoikeustunnuksella on jäljellä enintään tämä määrä sekunteja, asiakas päivittää sen ennakoivasti (kunhan päivitystunnus on yhä voimassa). Aseta arvoksi 0, jos haluat poistaa ennakoivan päivityksen käytöstä. Vinkki: pidä arvo selvästi pienempänä kuin käyttöoikeustunnuksen elinaika (esim. 120–300 s).",
     "idleTimeout": "IDLE_TIMEOUT_SECONDS",

@@ -13,6 +13,7 @@ export default function Settings() {
     JWT_RENEW_AT_SECONDS: 1200,
     IDLE_TIMEOUT_SECONDS: 900,
     ACCESS_TOKEN_LIFETIME: 1800,
+    ROTATE_REFRESH_TOKENS: true,
   });
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -33,7 +34,7 @@ export default function Settings() {
   }
   if (loading) return <div className="max-w-3xl mx-auto p-4">{t("users.loading")}</div>;
 
-  function onChange<K extends keyof AuthSettings>(k: K, v: number) {
+  function onChange<K extends keyof AuthSettings>(k: K, v: AuthSettings[K]) {
     setForm((prev) => ({ ...prev, [k]: v }));
   }
 
@@ -64,14 +65,40 @@ export default function Settings() {
         </p>
         <br />
         <form className="space-y-6" onSubmit={onSubmit}>
-          <Field
-            id="renewAtSeconds"
-            label={t("appSettings.jwtRenew")}
-            help={t("appSettings.jwtRenewHelp")}
-            value={form.JWT_RENEW_AT_SECONDS}
-            onChange={(v) => onChange("JWT_RENEW_AT_SECONDS", v)}
-            min={0}
-          />
+          {/* Rotate refresh tokens (controls visibility & value of renewAtSeconds) */}
+          <label className="block text-sm font-medium">{t("appSettings.jwtRotateTokens")}</label>
+          <p className="text-xs text-slate-500">{t("appSettings.jwtRotateTokensHelp")}</p>
+          <select
+            id="rotateRefreshTokens"
+            className="border border-slate-300 dark:border-slate-700 rounded bg-white dark:bg-slate-900 px-2 py-1 text-sm"
+            value={String(Boolean(form.ROTATE_REFRESH_TOKENS))}
+            onChange={(e) => {
+              const next = e.target.value === "true";
+              onChange("ROTATE_REFRESH_TOKENS", next);
+
+              if (next) {
+                const base = Number(form.ACCESS_TOKEN_LIFETIME) || 0;
+                const renew = Math.floor(base * 0.7);
+                onChange("JWT_RENEW_AT_SECONDS", renew);
+              } else {
+                onChange("JWT_RENEW_AT_SECONDS", 0);
+              }
+            }}
+          >
+            <option value="true">true</option>
+            <option value="false">false</option>
+          </select>
+          {/* Renew at (conditionally visible) */}
+          {form.ROTATE_REFRESH_TOKENS && (
+            <Field
+              id="renewAtSeconds"
+              label={t("appSettings.jwtRenew")}
+              help={t("appSettings.jwtRenewHelp")}
+              value={form.JWT_RENEW_AT_SECONDS}
+              onChange={(v) => onChange("JWT_RENEW_AT_SECONDS", v)}
+              min={0}
+            />
+          )}
           <Field
             id="idleTimeoutSeconds"
             label={t("appSettings.idleTimeout")}
@@ -80,12 +107,20 @@ export default function Settings() {
             onChange={(v) => onChange("IDLE_TIMEOUT_SECONDS", v)}
             min={1}
           />
+          {/* Access token lifetime (also keeps renewAtSeconds at 70% if rotate=true) */}
           <Field
             id="accessTokenLifetime"
             label={t("appSettings.accessLifetime")}
             help={t("appSettings.accessLifetimeHelp")}
             value={form.ACCESS_TOKEN_LIFETIME}
-            onChange={(v) => onChange("ACCESS_TOKEN_LIFETIME", v)}
+            onChange={(v) => {
+              onChange("ACCESS_TOKEN_LIFETIME", v);
+              if (form.ROTATE_REFRESH_TOKENS) {
+                const base = Number(v) || 0;
+                const renew = Math.floor(base * 0.7);
+                onChange("JWT_RENEW_AT_SECONDS", renew);
+              }
+            }}
             min={1}
           />
           <div className="flex gap-3 items-center">

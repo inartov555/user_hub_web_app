@@ -91,7 +91,7 @@ api.interceptors.request.use(async (config) => {
   // PROACTIVE REFRESH: compare against JWT exp
   if (accessToken && accessExpiresAt && runtimeAuth?.JWT_RENEW_AT_SECONDS > 0) {
     const remainingMs = accessExpiresAt - Date.now();
-    if (remainingMs <= runtimeAuth.JWT_RENEW_AT_SECONDS * 1000) {
+    if (remainingMs <= runtimeAuth.JWT_RENEW_AT_SECONDS) {
       try {
         // refresh synchronously to avoid sending a request with a soon-to-expire token
         const resp = await api.post(

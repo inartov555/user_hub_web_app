@@ -9,6 +9,7 @@ from ..models.app_settings import (
     JWT_RENEW_AT_SECONDS_KEY,
     IDLE_TIMEOUT_SECONDS_KEY,
     ACCESS_TOKEN_LIFETIME_KEY,
+    ROTATE_REFRESH_TOKENS_KEY,
 )
 
 
@@ -19,6 +20,7 @@ class SettingsSerializer(serializers.Serializer):
     JWT_RENEW_AT_SECONDS = serializers.IntegerField(min_value=0)
     IDLE_TIMEOUT_SECONDS = serializers.IntegerField(min_value=1)
     ACCESS_TOKEN_LIFETIME = serializers.IntegerField(min_value=1)
+    ROTATE_REFRESH_TOKENS = serializers.BooleanField()
 
     def to_representation(self, instance):
         eff = get_effective_auth_settings()
@@ -32,6 +34,7 @@ class SettingsSerializer(serializers.Serializer):
             ("JWT_RENEW_AT_SECONDS", JWT_RENEW_AT_SECONDS_KEY),
             ("IDLE_TIMEOUT_SECONDS", IDLE_TIMEOUT_SECONDS_KEY),
             ("ACCESS_TOKEN_LIFETIME", ACCESS_TOKEN_LIFETIME_KEY),
+            ("ROTATE_REFRESH_TOKENS", ROTATE_REFRESH_TOKENS_KEY),
         ]:
             AppSetting.objects.update_or_create(
                 key=db_key, defaults={"value": str(validated_data[key])}

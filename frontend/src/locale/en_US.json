@@ -120,6 +120,8 @@
     "loadError": "An error occurred while loading app settings.",
     "saveError": "An error occurred while saving app settings.",
     "title": "App Settings",
+    "jwtRotateTokens": "ROTATE_REFRESH_TOKENS",
+    "jwtRotateTokensHelp": "Issue a new refresh token on each refresh and invalidate the old one. Turn off to reuse the same refresh token (disables 'JWT_RENEW_AT_SECONDS').",
     "jwtRenew": "JWT_RENEW_AT_SECONDS",
     "jwtRenewHelp": "When an access token has this many seconds or fewer remaining, the client will proactively refresh it (as long as the refresh token is still valid). Set to 0 to disable proactive renewal. Tip: keep this well below the access-token lifetime (e.g., 120–300 seconds).",
     "idleTimeout": "IDLE_TIMEOUT_SECONDS",

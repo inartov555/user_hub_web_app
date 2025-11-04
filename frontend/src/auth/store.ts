@@ -17,6 +17,7 @@ type RuntimeAuth = {
   JWT_RENEW_AT_SECONDS: number;
   IDLE_TIMEOUT_SECONDS: number;
   ACCESS_TOKEN_LIFETIME: number;
+  ROTATE_REFRESH_TOKENS: boolean;
 } | null;
 
 type User = {
@@ -52,6 +53,7 @@ export const useAuthStore = create<State>((set, get) => ({
     JWT_RENEW_AT_SECONDS: Number(localStorage.getItem("JWT_RENEW_AT_SECONDS")),
     IDLE_TIMEOUT_SECONDS: Number(localStorage.getItem("IDLE_TIMEOUT_SECONDS")),
     ACCESS_TOKEN_LIFETIME: Number(localStorage.getItem("ACCESS_TOKEN_LIFETIME")),
+    ROTATE_REFRESH_TOKENS: Boolean(localStorage.getItem("ROTATE_REFRESH_TOKENS")),
   },
   setRuntimeAuth: (r) => {
     const now = Date.now();
