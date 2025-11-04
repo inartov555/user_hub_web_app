@@ -13,7 +13,7 @@ export default function Settings() {
     JWT_RENEW_AT_SECONDS: 1200,
     IDLE_TIMEOUT_SECONDS: 900,
     ACCESS_TOKEN_LIFETIME: 1800,
-    ROTATE_REFRESH_TOKENS: true,
+    ROTATE_REFRESH_TOKENS: 1,
   });
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
