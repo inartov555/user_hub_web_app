@@ -6,9 +6,9 @@ describe("PasswordInput", () => {
   it("toggles visibility", async () => {
     render(<PasswordInput label="Password" id="pwd" value="secret" onChange={() => {}} />);
     const reveal = screen.getByRole("button");
-    const input = screen.getByLabelText(/password/i) as HTMLInputElement;
+    const input = screen.getByLabelText(/password/i, { selector: 'input' }) as HTMLInputElement;
     expect(input.type).toBe("password");
     await userEvent.click(reveal);
-    expect((screen.getByLabelText(/password/i) as HTMLInputElement).type).toBe("text");
+    expect((screen.getByLabelText(/password/i, { selector: 'input' }) as HTMLInputElement).type).toBe("text");
   });
 });
