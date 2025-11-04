@@ -1,17 +1,32 @@
+"""
+Unit tests
+"""
+
 import json
+
 from django.urls import reverse
 from django.contrib.auth import get_user_model
 from rest_framework.test import APITestCase, APIClient
 from rest_framework import status
 
+
 class AuthAndProfileTests(APITestCase):
+    """
+    Authentication and profile related tests
+    """
     def setUp(self):
+        """
+        Setup method
+        """
         self.User = get_user_model()
         self.password = "Passw0rd!123"
         self.user = self.User.objects.create_user(email="user@example.com", password=self.password)
         self.client = APIClient()
 
     def test_jwt_create_and_refresh(self):
+        """
+        Login and refresh token it -> success
+        """
         # Obtain access/refresh via Djoser
         resp = self.client.post("/api/v1/auth/jwt/create/", {"email": self.user.email, "password": self.password}, format="json")
         self.assertEqual(resp.status_code, status.HTTP_200_OK, resp.content)
@@ -30,6 +45,9 @@ class AuthAndProfileTests(APITestCase):
         self.assertIn("access", refresh.json())
 
     def test_me_profile_update(self):
+        """
+        Test my profile update
+        """
         # Authenticate
         resp = self.client.post("/api/v1/auth/jwt/create/", {"email": self.user.email, "password": self.password}, format="json")
         access = resp.json()["access"]

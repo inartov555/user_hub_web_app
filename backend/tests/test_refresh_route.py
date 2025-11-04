@@ -1,5 +1,5 @@
 """
-Test refresh route
+Unit tests
 """
 
 from django.test import SimpleTestCase
