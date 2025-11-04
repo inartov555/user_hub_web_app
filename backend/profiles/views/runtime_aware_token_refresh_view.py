@@ -20,7 +20,10 @@ class RuntimeAwareTokenRefreshView(TokenRefreshView):
         if bool(eff.rotate_refresh_tokens):
             return CustomTokenRefreshSerializer
         # Disallow refresh entirely, if token rotation is False
-        def _deny(*args, **kwargs):
-            raise PermissionDenied("Token refresh is disabled.")
+        # def _deny(*args, **kwargs):
+        #    raise PermissionDenied("Token refresh is disabled.")
         # Return a "serializer" that always denies
-        return type("DisabledRefreshSerializer", (), {"validate": _deny})
+        # return type("DisabledRefreshSerializer", (), {"validate": _deny})
+
+        # When rotation is disabled, fall back to SimpleJWT's standard refresh behavior.
+        return TokenRefreshSerializer
