@@ -35,8 +35,8 @@ export default function Login() {
       setTokens(tokens.access, tokens.refresh);
       const { data: me } = await api.get("/auth/users/me/");
       setUser(me);
-      const runtime = await fetchRuntimeAuth();
-      useAuthStore.getState().setRuntimeAuth(runtime);
+      await fetchRuntimeAuth(); // let's store the fresh settings values
+      useAuthStore.getState().setRuntimeAuth();
       // respect the ProtectedRoute’s saved destination
       const intended = localStorage.getItem("postLoginRedirect");
       if (intended) localStorage.removeItem("postLoginRedirect");

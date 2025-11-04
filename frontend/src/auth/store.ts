@@ -30,7 +30,7 @@ type User = {
 
 type State = {
   runtimeAuth: RuntimeAuth;
-  setRuntimeAuth: (r: RuntimeAuth) => void;
+  setRuntimeAuth: () => void;
   accessToken: string | null;
   refreshToken: string | null;
   accessExpiresAt: number | null;
@@ -55,10 +55,10 @@ export const useAuthStore = create<State>((set, get) => ({
     ACCESS_TOKEN_LIFETIME: Number(localStorage.getItem("ACCESS_TOKEN_LIFETIME")),
     ROTATE_REFRESH_TOKENS: Boolean(localStorage.getItem("ROTATE_REFRESH_TOKENS")),
   },
-  setRuntimeAuth: (r) => {
+  setRuntimeAuth: () => {
     const now = Date.now();
     set({ lastActivityAt: now });
-    if (r && r.IDLE_TIMEOUT_SECONDS > 0) {
+    if (get().runtimeAuth && get().runtimeAuth.IDLE_TIMEOUT_SECONDS > 0) {
       get().startIdleWatch();
     } else {
       get().stopIdleWatch();

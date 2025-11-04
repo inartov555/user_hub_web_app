@@ -4,7 +4,7 @@ export type AuthSettings = {
   JWT_RENEW_AT_SECONDS: number;
   IDLE_TIMEOUT_SECONDS: number;
   ACCESS_TOKEN_LIFETIME: number;
-  ROTATE_REFRESH_TOKENS: number;
+  ROTATE_REFRESH_TOKENS: boolean;
 };
 
 export async function fetchRuntimeAuth() {
