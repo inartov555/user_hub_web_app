@@ -128,7 +128,6 @@
     "idleTimeoutHelp": "Max. nečinnost (s) bez API, než relace/refresh vyprší; pak znovu přihlásit. Typicky: 900–3600.",
     "accessLifetime": "ACCESS_TOKEN_LIFETIME",
     "accessLifetimeHelp": "Životnost access tokenu (s). Po vypršení je nutný refresh. Kratší = bezpečnější, ale častější. Typicky: 300–1800; mějte < limit nečinnosti.",
-    "noteNewSessions": "Uložená nastavení se použijí při příštím přihlášení",
     "saved": "Nastavení aplikace byla uložena",
     "saving": "Ukládání nastavení aplikace..."
   },

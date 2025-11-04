@@ -128,7 +128,6 @@
     "idleTimeoutHelp": "Max idle time (s) with no API use before the session/refresh expires; then sign in again. Typical: 900–3600.",
     "accessLifetime": "ACCESS_TOKEN_LIFETIME",
     "accessLifetimeHelp": "Access token lifetime (s). After expiry, a refresh is required. Shorter = safer but more refreshes. Typical: 300–1800; keep < idle timeout.",
-    "noteNewSessions": "Saved settings will be applied on the next login.",
     "saved": "App settings have been saved.",
     "saving": "Saving app settings…"
   },

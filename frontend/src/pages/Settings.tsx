@@ -60,10 +60,6 @@ export default function Settings() {
     <div className="max-w-xl mx-auto p-4 rounded-2xl shadow bg-white border dark:bg-slate-800 dark:text-slate-100 dark:border-slate-700">
       <div className="max-w-3xl mx-auto p-4">
         <h1 className="text-xl font-semibold mb-4">{t("appSettings.title")}</h1>
-        <p className="text-xs text-blue-800 dark:text-blue-200 mt-6">
-          {t("appSettings.noteNewSessions")}
-        </p>
-        <br />
         <form className="space-y-6" onSubmit={onSubmit}>
           {/* Rotate refresh tokens (controls visibility & value of renewAtSeconds) */}
           <label className="block text-sm font-medium">{t("appSettings.jwtRotateTokens")}</label>

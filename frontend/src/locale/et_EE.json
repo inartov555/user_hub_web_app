@@ -128,7 +128,6 @@
     "idleTimeoutHelp": "Maks. jõudeaeg (s) ilma API-ta, enne kui seanss/refresh aegub; seejärel logi uuesti sisse. Tüüpiline: 900–3600.",
     "accessLifetime": "ACCESS_TOKEN_LIFETIME",
     "accessLifetimeHelp": "Access-tokeni eluiga (s). Pärast aegumist on vaja värskendada. Lühem = turvalisem, kuid rohkem uuendusi. Tüüpiline: 300–1800; hoia < jõudeaja piir.",
-    "noteNewSessions": "Salvestatud sätted rakenduvad järgmisel sisselogimisel",
     "saved": "Rakenduse sätted on salvestatud",
     "saving": "Rakenduse sätete salvestamine..."
   },
