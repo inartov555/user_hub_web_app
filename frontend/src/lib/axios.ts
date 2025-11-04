@@ -10,57 +10,6 @@ export const api = axios.create({
     headers: { "Content-Type": "application/json" }
 });
 
-/*
-let isRefreshing = useAuthStore.getState().runtimeAuth.ROTATE_REFRESH_TOKENS && useAuthStore.getState().runtimeAuth.JWT_RENEW_AT_SECONDS > 0;
-let pending: Array<(t: string|null)=>void> = [];
-
-function onRefreshed(token: string|null) {
-  pending.forEach(cb => cb(token));
-  pending = [];
-}
-
-async function refreshOnce(): Promise<string> {
-  // If a refresh is already in progress, queue and wait for the result
-  if (isRefreshing) {
-    return new Promise<string>((resolve, reject) => {
-      pending.push((t) => t ? resolve(t) : reject(new Error("Refresh failed")));
-    });
-  }
-
-  try {
-    const refresh = useAuthStore.getState().refreshToken || localStorage.getItem("refresh");
-    if (!refresh) throw new Error("No refresh token");
-
-    // Call backend refresh endpoint
-    const { data } = await api.post("/auth/jwt/refresh/", { refresh });
-
-    const newAccess = data.access as string;
-    const newRefresh = data.refresh as string | undefined;
-
-    // Persist tokens
-    useAuthStore.getState().setAccessToken(newAccess);
-    localStorage.setItem("access", newAccess);
-    if (newRefresh) {
-      useAuthStore.getState().setRefreshToken?.(newRefresh);
-    }
-
-    onRefreshed(newAccess);
-    return newAccess;
-  } catch (e) {
-    onRefreshed(null);
-    useAuthStore.getState().logout();
-
-    // Avoid loop if already on /login
-    if (typeof window !== "undefined" && window.location.pathname !== "/login") {
-      window.location.assign("/login");
-    }
-    throw e;
-  } finally {
-    // nothing to do
-  }
-}
-*/
-
 // Single-flight refresh to avoid concurrent rotation races
 let refreshPromise: Promise<{ access: string; refresh?: string }> | null = null;
 function startRefresh(): Promise<{ access: string; refresh?: string }> {
@@ -180,54 +129,14 @@ api.interceptors.response.use(
       return Promise.reject(error);
     }
 
-    // Only take over if we *had* tokens; otherwise, let caller handle (public pages).
+    // Only take over if there are tokens; otherwise, let caller handle (public pages).
     const hadAccess = !!(useAuthStore.getState().accessToken || localStorage.getItem("access"));
     const hadRefresh = !!localStorage.getItem("refresh");
     const hadAnyToken = hadAccess || hadRefresh;
     if (!hadAnyToken || !hadRefresh) {
       return Promise.reject(error);
     }
-    /*
-    // Prevent request stampede while refreshing
-    if (isRefreshing) {
-      return new Promise((resolve, reject) => {
-        pending.push((token) => {
-          if (!token) return reject(error);
-          // Ensure headers are AxiosHeaders and set properly
-          if (!config.headers) config.headers = new AxiosHeaders();
-          if (config.headers instanceof AxiosHeaders) {
-            (config.headers as AxiosHeaders).set("Authorization", `Bearer ${token}`);
-          } else {
-            // Fallback for odd shapes
-            (config.headers as any).Authorization = `Bearer ${token}`;
-          }
-          (config as any).__isRetry = true;
-          resolve(api(config));
-        });
-      });
-    }
-
-    // isRefreshing = true;
-    */
     try {
-      /*
-      const refresh = localStorage.getItem("refresh");
-      if (!refresh) throw new Error("No refresh token");
-
-      // Use a *bare* call to avoid intercept loop side effects;
-      // but using `api` is fine since we short-circuit JWT endpoints above.
-      const { data } = await api.post("/auth/jwt/refresh/", { refresh });
-
-      const newAccess = data.access as string;
-      const newRefresh = data.refresh as string | undefined;
-
-      // Persist tokens
-      useAuthStore.getState().setAccessToken(newAccess);
-      localStorage.setItem("access", newAccess);
-      if (newRefresh) localStorage.setItem("refresh", newRefresh);
-
-      onRefreshed(newAccess);
-      */
       const { access: newAccess } = await startRefresh();
 
       // Re-run original request with fresh token
@@ -241,7 +150,6 @@ api.interceptors.response.use(
 
       return api(config);
     } catch (e) {
-      // onRefreshed(null);
       useAuthStore.getState().logout();
 
       // Only navigate if not already on /login (avoid useless reload loop)

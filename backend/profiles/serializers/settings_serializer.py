@@ -31,10 +31,10 @@ class SettingsSerializer(serializers.Serializer):
         Upsert overrides (store ONLY what admin set explicitly)
         """
         for key, db_key in [
-            ("JWT_RENEW_AT_SECONDS", JWT_RENEW_AT_SECONDS_KEY),
-            ("IDLE_TIMEOUT_SECONDS", IDLE_TIMEOUT_SECONDS_KEY),
-            ("ACCESS_TOKEN_LIFETIME", ACCESS_TOKEN_LIFETIME_KEY),
-            ("ROTATE_REFRESH_TOKENS", ROTATE_REFRESH_TOKENS_KEY),
+            (JWT_RENEW_AT_SECONDS_KEY, JWT_RENEW_AT_SECONDS_KEY),
+            (IDLE_TIMEOUT_SECONDS_KEY, IDLE_TIMEOUT_SECONDS_KEY),
+            (ACCESS_TOKEN_LIFETIME_KEY, ACCESS_TOKEN_LIFETIME_KEY),
+            (ROTATE_REFRESH_TOKENS_KEY, ROTATE_REFRESH_TOKENS_KEY),
         ]:
             AppSetting.objects.update_or_create(
                 key=db_key, defaults={"value": str(validated_data[key])}

@@ -44,7 +44,6 @@ export default function Login() {
     } catch (err: any) {
       const parsed = extractApiError(err as unknown);
       setError(`${parsed.message}`);
-      // console.log("login error = ", err)
     }
   }
 
