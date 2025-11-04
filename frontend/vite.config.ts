@@ -13,4 +13,10 @@ export default defineConfig({
       "/api/v1": { target: "http://localhost:8000", changeOrigin: true },
     },
   },
+  test: {
+    environment: "jsdom",
+    globals: true,
+    setupFiles: "src/test/setup.ts",
+    css: true,
+  },
 });
