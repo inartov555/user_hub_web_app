@@ -13,7 +13,7 @@ export default function Settings() {
     JWT_RENEW_AT_SECONDS: 1200,
     IDLE_TIMEOUT_SECONDS: 900,
     ACCESS_TOKEN_LIFETIME: 1800,
-    ROTATE_REFRESH_TOKENS: true
+    ROTATE_REFRESH_TOKENS: true,
   });
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -52,7 +52,7 @@ export default function Settings() {
     } finally {
       setSaving(false);
       await fetchRuntimeAuth(); // let's store the fresh settings values
-      useAuthStore.getState().setRuntimeAuth();
+      useAuthStore.getState().setRuntimeAuth(); // let's set the run time settings
     }
   }
 
@@ -72,7 +72,7 @@ export default function Settings() {
               focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500
               dark:bg-slate-900 dark:text-slate-100 dark:placeholder-slate-500
               dark:border-slate-700"
-            value={String(Boolean(form.ROTATE_REFRESH_TOKENS))}
+            value={form.ROTATE_REFRESH_TOKENS ? "true" : "false"}
             onChange={(e) => {
               const next = e.target.value === "true";
 
@@ -97,7 +97,10 @@ export default function Settings() {
               label={t("appSettings.jwtRenew")}
               help={t("appSettings.jwtRenewHelp")}
               value={form.JWT_RENEW_AT_SECONDS}
-              onChange={(v) => onChange("JWT_RENEW_AT_SECONDS", v)}
+              onChange={(v) => {
+                onChange("JWT_RENEW_AT_SECONDS", v);
+                if (Number(v) === 0) onChange("ROTATE_REFRESH_TOKENS", false);
+              }}
               min={0}
             />
           )}

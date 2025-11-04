@@ -10,6 +10,7 @@ export const api = axios.create({
     headers: { "Content-Type": "application/json" }
 });
 
+/*
 let isRefreshing = useAuthStore.getState().runtimeAuth.ROTATE_REFRESH_TOKENS && useAuthStore.getState().runtimeAuth.JWT_RENEW_AT_SECONDS > 0;
 let pending: Array<(t: string|null)=>void> = [];
 
@@ -58,6 +59,38 @@ async function refreshOnce(): Promise<string> {
     // nothing to do
   }
 }
+*/
+
+// Single-flight refresh to avoid concurrent rotation races
+let refreshPromise: Promise<{ access: string; refresh?: string }> | null = null;
+function startRefresh(): Promise<{ access: string; refresh?: string }> {
+  if (refreshPromise) return refreshPromise;
+  refreshPromise = (async () => {
+    const st = useAuthStore.getState();
+    const currentRefresh = st.refreshToken || localStorage.getItem("refresh");
+    if (!currentRefresh) throw new Error("No refresh token");
+    const { data } = await api.post("/auth/jwt/refresh/", { refresh: currentRefresh }, {
+      headers: { "X-Skip-Auth-Checks": "1" }, // ensure interceptor won't loop
+    });
+    const access = data?.access as string | undefined;
+    const refresh = data?.refresh as string | undefined; // may be undefined when rotation OFF
+    if (!access) throw new Error("No access token in refresh response");
+
+    // Persist consistently (store + localStorage)
+    st.applyRefreshedTokens?.(access, refresh);
+    st.setAccessToken?.(access);
+    localStorage.setItem("access", access);
+    if (refresh) {
+      st.setRefreshToken?.(refresh);
+      localStorage.setItem("refresh", refresh);
+    }
+    return { access, refresh };
+  })().finally(() => {
+    // allow next refresh to start anew
+    refreshPromise = null;
+  });
+  return refreshPromise;
+}
 
 api.interceptors.request.use((config: InternalAxiosRequestConfig) => {
   config.headers = AxiosHeaders.from(config.headers || {});
@@ -73,8 +106,10 @@ api.interceptors.request.use(async (config) => {
   const skip = (config.headers as any)?.["X-Skip-Auth-Checks"];
   if (skip) {
     const { accessToken } = useAuthStore.getState();
-    if (accessToken) (config.headers as any).Authorization = `Bearer ${accessToken}`;
-    delete (config.headers as any)["X-Skip-Auth-Checks"];
+    const headers = AxiosHeaders.from(config.headers || {});
+    if (accessToken) headers.set("Authorization", `Bearer ${accessToken}`);
+    headers.delete("X-Skip-Auth-Checks");
+    config.headers = headers;
     return config;
   }
 
@@ -90,22 +125,16 @@ api.interceptors.request.use(async (config) => {
     accessToken &&
     accessExpiresAt &&
     refreshToken &&
-    runtimeAuth?.JWT_RENEW_AT_SECONDS > 0
+    runtimeAuth?.JWT_RENEW_AT_SECONDS > 0 &&
+    runtimeAuth.ROTATE_REFRESH_TOKENS
   ) {
     // Renew token only if runtimeAuth.ROTATE_REFRESH_TOKENS is true
     const remainingMs = accessExpiresAt - Date.now();
-    if (remainingMs <= runtimeAuth.JWT_RENEW_AT_SECONDS * 1000) { // <-- seconds→ms
+    const renewWindowMs = (runtimeAuth.JWT_RENEW_AT_SECONDS || 0);
+    if (remainingMs <= renewWindowMs) {
       try {
-        const resp = await api.post(
-          "/auth/jwt/refresh/",
-          { refresh: refreshToken },
-          { headers: { "X-Skip-Auth-Checks": "1" } }
-        );
-        const { access, refresh } = resp.data || {};
-        if (!access) throw new Error("No access token in refresh response");
-        useAuthStore.getState().applyRefreshedTokens(access, refresh);
-        localStorage.setItem("access", access);
-        if (refresh) localStorage.setItem("refresh", refresh);
+        const { access, refresh } = await startRefresh();
+        // headers will be set below from store/localStorage
       } catch {
         // Do NOT logout here - let the request go and the response 401 handler decide
       }
@@ -113,11 +142,15 @@ api.interceptors.request.use(async (config) => {
   }
 
   // attach Authorization with the latest token (survives reloads via localStorage)
-  const latestAccess = useAuthStore.getState().accessToken;
-  if (latestAccess) (config.headers as any).Authorization = `Bearer ${latestAccess}`;
+  const latestAccess = useAuthStore.getState().accessToken || localStorage.getItem("access");
+  if (latestAccess) {
+    const headers = AxiosHeaders.from(config.headers || {});
+    headers.set("Authorization", `Bearer ${latestAccess}`);
+    config.headers = headers;
+  }
+  return config;
 });
 
-/*
 api.interceptors.response.use(
   r => r,
   async (error) => {
@@ -154,7 +187,7 @@ api.interceptors.response.use(
     if (!hadAnyToken || !hadRefresh) {
       return Promise.reject(error);
     }
-
+    /*
     // Prevent request stampede while refreshing
     if (isRefreshing) {
       return new Promise((resolve, reject) => {
@@ -175,7 +208,9 @@ api.interceptors.response.use(
     }
 
     // isRefreshing = true;
+    */
     try {
+      /*
       const refresh = localStorage.getItem("refresh");
       if (!refresh) throw new Error("No refresh token");
 
@@ -192,6 +227,8 @@ api.interceptors.response.use(
       if (newRefresh) localStorage.setItem("refresh", newRefresh);
 
       onRefreshed(newAccess);
+      */
+      const { access: newAccess } = await startRefresh();
 
       // Re-run original request with fresh token
       if (!config.headers) config.headers = new AxiosHeaders();
@@ -204,7 +241,7 @@ api.interceptors.response.use(
 
       return api(config);
     } catch (e) {
-      onRefreshed(null);
+      // onRefreshed(null);
       useAuthStore.getState().logout();
 
       // Only navigate if not already on /login (avoid useless reload loop)
@@ -218,4 +255,3 @@ api.interceptors.response.use(
     }
   }
 );
-*/

@@ -53,7 +53,8 @@ export const useAuthStore = create<State>((set, get) => ({
     JWT_RENEW_AT_SECONDS: Number(localStorage.getItem("JWT_RENEW_AT_SECONDS")),
     IDLE_TIMEOUT_SECONDS: Number(localStorage.getItem("IDLE_TIMEOUT_SECONDS")),
     ACCESS_TOKEN_LIFETIME: Number(localStorage.getItem("ACCESS_TOKEN_LIFETIME")),
-    ROTATE_REFRESH_TOKENS: Boolean(localStorage.getItem("ROTATE_REFRESH_TOKENS")),
+    // localStorage stores "true"/"false" strings — parse correctly:
+    ROTATE_REFRESH_TOKENS: localStorage.getItem("ROTATE_REFRESH_TOKENS") === "true",
   },
   setRuntimeAuth: () => {
     const now = Date.now();
@@ -84,12 +85,12 @@ export const useAuthStore = create<State>((set, get) => ({
       if (!rt || !(rt.IDLE_TIMEOUT_SECONDS > 0)) return; // <- guard
 
       const idleFor = Date.now() - get().lastActivityAt;
-      if (idleFor >= rt.IDLE_TIMEOUT_SECONDS * 1000) {
+      if (idleFor >= rt.IDLE_TIMEOUT_SECONDS) {
         get().logout();
         get().stopIdleWatch();
       } else {
         // schedule next check precisely at the remaining time (min 1s)
-        const remaining = rt.IDLE_TIMEOUT_SECONDS * 1000 - idleFor;
+        const remaining = rt.IDLE_TIMEOUT_SECONDS - idleFor;
         const id = window.setTimeout(tick, Math.max(remaining, 1000));
         set({ idleTimer: id });
       }

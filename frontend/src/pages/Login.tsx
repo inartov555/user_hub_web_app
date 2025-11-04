@@ -36,7 +36,7 @@ export default function Login() {
       const { data: me } = await api.get("/auth/users/me/");
       setUser(me);
       await fetchRuntimeAuth(); // let's store the fresh settings values
-      useAuthStore.getState().setRuntimeAuth();
+      useAuthStore.getState().setRuntimeAuth(); // let's set the run time settings
       // respect the ProtectedRoute’s saved destination
       const intended = localStorage.getItem("postLoginRedirect");
       if (intended) localStorage.removeItem("postLoginRedirect");
@@ -44,6 +44,7 @@ export default function Login() {
     } catch (err: any) {
       const parsed = extractApiError(err as unknown);
       setError(`${parsed.message}`);
+      // console.log("login error = ", err)
     }
   }
 

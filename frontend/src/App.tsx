@@ -22,9 +22,12 @@ export function AppShellHeartbeat() {
           // ignore; response interceptor will handle auth failures globally
         }
       }
-      const periodMs = runtimeAuth.IDLE_TIMEOUT_SECONDS * 1000;
+      const periodMs = runtimeAuth.IDLE_TIMEOUT_SECONDS;
       timer = window.setTimeout(tick, periodMs);
     };
+    let rft = localStorage.getItem("ROTATE_REFRESH_TOKENS");
+    console.log('rft = ', rft);
+    console.log('typeof rft = ', typeof rft);
 
     tick();
     return () => { if (timer) window.clearTimeout(timer); };

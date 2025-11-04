@@ -76,6 +76,20 @@ def get_effective_auth_settings() -> EffectiveAuthSettings:
         except ValueError:
             return default
 
+    def _bool_or(default: bool, maybe: str | None) -> bool:
+        if maybe is None:
+            return default
+        s = str(maybe).strip().lower()
+        if s in {"1", "true", "t", "yes", "y", "on"}:
+            return True
+        if s in {"0", "false", "f", "no", "n", "off"}:
+            return False
+        # as a last resort, try int-like strings
+        try:
+            return bool(int(s))
+        except ValueError:
+            return default
+
     # fallbacks from core.settings
     default_renew = int(getattr(settings, JWT_RENEW_AT_SECONDS_KEY, 1200))
     default_idle = int(getattr(settings, IDLE_TIMEOUT_SECONDS_KEY, 900))
@@ -87,7 +101,7 @@ def get_effective_auth_settings() -> EffectiveAuthSettings:
     renew = _int_or(default_renew, AppSetting.get_value(JWT_RENEW_AT_SECONDS_KEY))
     idle  = _int_or(default_idle,  AppSetting.get_value(IDLE_TIMEOUT_SECONDS_KEY))
     access = _int_or(default_access, AppSetting.get_value(ACCESS_TOKEN_LIFETIME_KEY))
-    rotate = _int_or(default_is_token_rotate, AppSetting.get_value(ROTATE_REFRESH_TOKENS_KEY))
+    rotate = _bool_or(default_is_token_rotate, AppSetting.get_value(ROTATE_REFRESH_TOKENS_KEY))
 
     return EffectiveAuthSettings(
         jwt_renew_at_seconds=max(0, renew),
