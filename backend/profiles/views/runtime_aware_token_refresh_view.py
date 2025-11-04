@@ -2,7 +2,7 @@
 Chooses the refresh serializer at request time
 """
 
-from rest_framework_simplejwt.serializers import TokenRefreshSerializer
+from rest_framework.exceptions import PermissionDenied
 from rest_framework_simplejwt.views import TokenRefreshView
 
 from profiles.models.app_settings import get_effective_auth_settings
@@ -19,8 +19,7 @@ class RuntimeAwareTokenRefreshView(TokenRefreshView):
         eff = get_effective_auth_settings()  # pulls DB overrides live
         if bool(eff.rotate_refresh_tokens):
             return CustomTokenRefreshSerializer
-        # Disallow refresh entirely
-        from rest_framework.exceptions import PermissionDenied
+        # Disallow refresh entirely, if token rotation is False
         def _deny(*args, **kwargs):
             raise PermissionDenied("Token refresh is disabled.")
         # Return a "serializer" that always denies
