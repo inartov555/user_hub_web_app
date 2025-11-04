@@ -10,7 +10,7 @@ from __future__ import annotations
 from types import SimpleNamespace
 from typing import Optional
 import logging
-from datetime import timezone
+from datetime import datetime, timezone
 
 from django.contrib.auth import get_user_model
 from rest_framework.authentication import BaseAuthentication, get_authorization_header
@@ -119,7 +119,7 @@ class JWTAuthentication(BaseAuthentication):
             exp_ts = int(token["exp"])
         except (KeyError, TypeError, ValueError):
             return None
-        now_ts = int(timezone.now().timestamp())
+        now_ts = int(datetime.now().timestamp())
         return max(0, exp_ts - now_ts)
 
     def _should_renew(self, token: AccessToken) -> bool:
