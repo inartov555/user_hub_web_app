@@ -113,11 +113,8 @@ api.interceptors.request.use(async (config) => {
   }
 
   // attach Authorization with the latest token (survives reloads via localStorage)
-  const stateAccess = useAuthStore.getState().accessToken;
-  const token = stateAccess || localStorage.getItem("access");
-  if (token) {
-    (config.headers as any).Authorization = `Bearer ${token}`;
-  }
+  const latestAccess = useAuthStore.getState().accessToken;
+  if (latestAccess) (config.headers as any).Authorization = `Bearer ${latestAccess}`;
 });
 
 /*

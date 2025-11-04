@@ -75,14 +75,15 @@ export default function Settings() {
             value={String(Boolean(form.ROTATE_REFRESH_TOKENS))}
             onChange={(e) => {
               const next = e.target.value === "true";
-              onChange("ROTATE_REFRESH_TOKENS", next);
 
               if (next) {
                 const base = Number(form.ACCESS_TOKEN_LIFETIME) || 0;
                 const renew = Math.floor(base * 0.7);
                 onChange("JWT_RENEW_AT_SECONDS", renew);
+                onChange("ROTATE_REFRESH_TOKENS", 1);
               } else {
                 onChange("JWT_RENEW_AT_SECONDS", 0);
+                onChange("ROTATE_REFRESH_TOKENS", 0);
               }
             }}
           >
