@@ -22,10 +22,8 @@ export function AppShellHeartbeat() {
           // ignore; response interceptor will handle auth failures globally
         }
       }
-      const periodMs = Math.max(15000, Math.min(60000, runtimeAuth ? runtimeAuth.IDLE_TIMEOUT_SECONDS * 500 : 30000));
+      const periodMs = runtimeAuth.IDLE_TIMEOUT_SECONDS * 1000;
       timer = window.setTimeout(tick, periodMs);
-      console.log("periodMs = ", periodMs)
-      console.log("runtimeAuth = ", runtimeAuth)
     };
 
     tick();
