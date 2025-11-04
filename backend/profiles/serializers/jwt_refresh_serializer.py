@@ -19,7 +19,6 @@ from rest_framework_simplejwt.exceptions import TokenError
 
 from ..boot import get_boot_id
 from ..models.app_settings import get_effective_auth_settings
-from profiles.utils.runtime_auth import get_effective_runtime_auth
 
 
 class CustomTokenRefreshSerializer(TokenRefreshSerializer):
@@ -90,7 +89,8 @@ class CustomTokenRefreshSerializer(TokenRefreshSerializer):
             return
 
         # Honor SIMPLE_JWT setting (should already be true in caller, but keep defensive)
-        if not settings.SIMPLE_JWT.get("BLACKLIST_AFTER_ROTATION", True):
+        if not settings.SIMPLE_JWT.get("ROTATE_REFRESH_TOKENS", True) and \
+           not settings.SIMPLE_JWT.get("BLACKLIST_AFTER_ROTATION", True):
             return
 
         # Access blacklist() safely to satisfy linters when the attribute may not exist on the type

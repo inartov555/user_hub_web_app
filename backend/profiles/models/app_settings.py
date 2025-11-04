@@ -10,10 +10,9 @@ from django.conf import settings
 from django.db import models
 
 
-# Keys we care about for this task
 JWT_RENEW_AT_SECONDS_KEY = "JWT_RENEW_AT_SECONDS"
 IDLE_TIMEOUT_SECONDS_KEY = "IDLE_TIMEOUT_SECONDS"
-ACCESS_TOKEN_LIFETIME_KEY = "ACCESS_TOKEN_LIFETIME"  # seconds
+ACCESS_TOKEN_LIFETIME_KEY = "ACCESS_TOKEN_LIFETIME"
 ROTATE_REFRESH_TOKENS_KEY = "ROTATE_REFRESH_TOKENS"
 
 
@@ -80,7 +79,7 @@ def get_effective_auth_settings() -> EffectiveAuthSettings:
     # fallbacks from core.settings
     default_renew = int(getattr(settings, JWT_RENEW_AT_SECONDS_KEY, 1200))
     default_idle = int(getattr(settings, IDLE_TIMEOUT_SECONDS_KEY, 900))
-    # ACCESS_TOKEN_LIFETIME is a timedelta in core.settings
+    # ACCESS_TOKEN_LIFETIME_KEY is a timedelta in core.settings
     default_access_td = getattr(settings, ACCESS_TOKEN_LIFETIME_KEY)
     default_access = int(default_access_td.total_seconds() if default_access_td else 1800)
     default_is_token_rotate = bool(getattr(settings, ROTATE_REFRESH_TOKENS_KEY))

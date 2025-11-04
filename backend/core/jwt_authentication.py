@@ -10,15 +10,17 @@ from __future__ import annotations
 from types import SimpleNamespace
 from typing import Optional
 import logging
+from datetime import datetime, timezone
 
 from django.conf import settings
 from django.contrib.auth import get_user_model
-from django.utils import timezone
 from django.db import DatabaseError, IntegrityError
 from rest_framework.authentication import BaseAuthentication, get_authorization_header
 from rest_framework.exceptions import AuthenticationFailed, ValidationError
 from rest_framework_simplejwt.tokens import AccessToken, RefreshToken
 from rest_framework_simplejwt.exceptions import TokenError, InvalidToken
+
+from profiles.models.app_settings import get_effective_auth_settings
 
 
 logger = logging.getLogger(__name__)
@@ -39,6 +41,7 @@ class JWTAuthentication(BaseAuthentication):
         self.user_model = get_user_model()
 
     def authenticate(self, request):
+        eff = get_effective_auth_settings()  # pulls DB overrides live
         # Provide a namespace for side-channel info (mirrors prior middleware)
         if not hasattr(request, "jwt"):
             request.jwt = SimpleNamespace(
@@ -80,78 +83,4 @@ class JWTAuthentication(BaseAuthentication):
 
     def authenticate_header(self, request) -> str:
         # Controls the WWW-Authenticate header on 401s
-        return f'Bearer realm="{self.www_authenticate_realm}"'
-
-    def _get_access_from_request(self, request) -> Optional[str]:
-        """
-        Read `Authorization: Bearer <access>` from headers. No cookies.
-        Accepts any case for "Bearer"; ignores malformed headers.
-        """
-        auth = get_authorization_header(request)
-        if not auth:
-            return None
-
-        parts = auth.split()
-        if len(parts) != 2:
-            return None
-
-        scheme, token = parts[0].lower(), parts[1]
-        if scheme != self.keyword:
-            return None
-
-        try:
-            return token.decode("utf-8")
-        except UnicodeDecodeError:
-            return token if isinstance(token, str) else None
-
-    def _user_from_token(self, token: AccessToken):
-        user_id = token.get("user_id") or token.get("sub")
-        if not user_id:
-            raise ValidationError(
-                {"non_field_errors": ["user_id claim missing"]}
-            )
-        return self.user_model.objects.get(pk=user_id)
-
-    def _seconds_to_expiry(self, token: AccessToken) -> Optional[int]:
-        try:
-            exp_ts = int(token["exp"])
-        except (KeyError, TypeError, ValueError):
-            return None
-        now_ts = int(timezone.now().timestamp())
-        return max(0, exp_ts - now_ts)
-
-    def _should_renew(self, token: AccessToken) -> bool:
-        seconds_left = self._seconds_to_expiry(token)
-        if seconds_left is None:
-            return False
-
-        threshold = getattr(settings, "JWT_RENEW_AT_SECONDS", None)
-        try:
-            threshold_int = int(threshold)
-        except (TypeError, ValueError):
-            threshold_int = 0
-
-        return seconds_left <= max(0, threshold_int)
-
-    # Kept for parity with previous implementation (not used automatically).
-    # If you later decide to rotate on a dedicated endpoint, this is handy.
-    def _refresh_from_refresh(self, refresh_str: str, request):
-        rt = RefreshToken(refresh_str)
-        new_at = rt.access_token
-
-        # Rotate refresh if enabled
-        new_rt_str = None
-        if settings.SIMPLE_JWT.get("ROTATE_REFRESH_TOKENS", False):
-            if "rest_framework_simplejwt.token_blacklist" in settings.INSTALLED_APPS:
-                try:
-                    rt.blacklist()
-                except (DatabaseError, IntegrityError) as exc:
-                    logger.warning("Failed to blacklist refresh token: %s", exc)
-            new_rt = RefreshToken.for_user(self._user_from_token(new_at))
-            new_rt_str = str(new_rt)
-
-        request.new_access_token = str(new_at)
-        request.jwt.new_access_token = str(new_at)
-        if new_rt_str:
-            request.new_refresh_token = new_rt_str
-            request.jwt.new_refresh_token = new_rt_str
+        return f'Bearer  realm="{self.www_authenticate_realm}"'
