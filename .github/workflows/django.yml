@@ -57,12 +57,12 @@ jobs:
       run: |
           # wait for service health in case it’s still warming up
           python - <<'PY'
-            import time, socket
-            for _ in range(60):
-              try:
-                with socket.create_connection(("127.0.0.1", 5432), timeout=1): break
-              except OSError: time.sleep(1)
-            else:
-              raise SystemExit("Postgres never became reachable on 127.0.0.1:5432")
+          import time, socket
+          for _ in range(60):
+            try:
+              with socket.create_connection(("127.0.0.1", 5432), timeout=1): break
+            except OSError: time.sleep(1)
+          else:
+            raise SystemExit("Postgres never became reachable on 127.0.0.1:5432")
           PY
           python manage.py test --noinput -v 2
