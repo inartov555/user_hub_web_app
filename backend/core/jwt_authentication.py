@@ -119,7 +119,7 @@ class JWTAuthentication(BaseAuthentication):
             exp_ts = int(token["exp"])
         except (KeyError, TypeError, ValueError):
             return None
-        now_ts = int(datetime.now().timestamp())
+        now_ts = int(datetime.now(timezone.utc).timestamp())
         return max(0, exp_ts - now_ts)
 
     def _should_renew(self, token: AccessToken) -> bool:
