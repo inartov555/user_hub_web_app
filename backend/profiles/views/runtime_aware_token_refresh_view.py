@@ -17,7 +17,7 @@ class RuntimeAwareTokenRefreshView(TokenRefreshView):
     """
     def get_serializer_class(self):
         eff = get_effective_auth_settings()  # pulls DB overrides live
-        if bool(eff.get("ROTATE_REFRESH_TOKENS", True)):
+        if bool(eff.ROTATE_REFRESH_TOKENS):
             return CustomTokenRefreshSerializer
         # fallback to the stock serializer (no rotation)
         return TokenRefreshSerializer

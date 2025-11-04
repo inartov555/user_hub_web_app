@@ -10,14 +10,12 @@ from __future__ import annotations
 from types import SimpleNamespace
 from typing import Optional
 import logging
-from datetime import datetime, timezone
+from datetime import timezone
 
-from django.conf import settings
 from django.contrib.auth import get_user_model
-from django.db import DatabaseError, IntegrityError
 from rest_framework.authentication import BaseAuthentication, get_authorization_header
 from rest_framework.exceptions import AuthenticationFailed, ValidationError
-from rest_framework_simplejwt.tokens import AccessToken, RefreshToken
+from rest_framework_simplejwt.tokens import AccessToken
 from rest_framework_simplejwt.exceptions import TokenError, InvalidToken
 
 from profiles.models.app_settings import get_effective_auth_settings
@@ -41,7 +39,7 @@ class JWTAuthentication(BaseAuthentication):
         self.user_model = get_user_model()
 
     def authenticate(self, request):
-        eff = get_effective_auth_settings()  # pulls DB overrides live
+        # eff = get_effective_auth_settings()  # pulls DB overrides live
         # Provide a namespace for side-channel info (mirrors prior middleware)
         if not hasattr(request, "jwt"):
             request.jwt = SimpleNamespace(
@@ -130,8 +128,8 @@ class JWTAuthentication(BaseAuthentication):
         if seconds_left is None:
             return False
 
-        threshold = eff.get("JWT_RENEW_AT_SECONDS", 0)
-        should_rotate = eff.get("ROTATE_REFRESH_TOKENS", False)
+        threshold = eff.jwt_renew_at_seconds, 0)
+        should_rotate = eff.rotate_refresh_tokens, False)
         try:
             threshold_int = int(threshold)
         except (TypeError, ValueError):
