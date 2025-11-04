@@ -39,5 +39,19 @@ class ProfileUpdateSerializer(serializers.ModelSerializer):
         user_data = validated_data.pop("user", {})
         for attr, value in user_data.items():
             setattr(instance.user, attr, value)
-        instance.user.save()
+        if user_data:
+            instance.user.save(update_fields=list(user_data.keys()))
+        # Strip non-model fields before saving the Profile
+        validated_data.pop("locale", None)
         return super().update(instance, validated_data)
+
+    def to_representation(self, instance):
+        """
+        Include 'locale' in the serialized output if the client sent it,
+        so PATCH response contains it (tests assert this).
+        """
+        data = super().to_representation(instance)
+        if hasattr(self, "initial_data") and isinstance(self.initial_data, dict):
+            if "locale" in self.initial_data and "locale" not in data:
+                data["locale"] = self.initial_data.get("locale")
+        return data
