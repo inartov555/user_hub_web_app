@@ -15,20 +15,22 @@ class UsersEndpointsTests(APITestCase):
         """
         Setup method
         """
-        User = get_user_model()
+        user_model = get_user_model()
         self.password = "Passw0rd!123"
         # Create two users
-        self.user = User.objects.create_user(email="user1@example.com", password=self.password)
-        self.other = User.objects.create_user(email="user2@example.com", password=self.password)
+        self.user = user_model.objects.create_user(email="user1@example.com", password=self.password)
+        self.other = user_model.objects.create_user(email="user2@example.com", password=self.password)
         self.client = APIClient()
         # Auth as user1
-        tokens = self.client.post("/api/v1/auth/jwt/create/", {"email": self.user.email, "password": self.password}, format="json").json()
+        tokens = self.client.post("/api/v1/auth/jwt/create/",
+                                  {"email": self.user.email, "password": self.password}, format="json").json()
         self.client.credentials(HTTP_AUTHORIZATION=f"Bearer {tokens['access']}")
 
     def test_list_users_requires_auth(self):
         """
         Test users require authentication
         """
+        raise AssertionError("Intentional error")
         anon = APIClient()
         resp = anon.get("/api/v1/users/")
         self.assertEqual(resp.status_code, status.HTTP_401_UNAUTHORIZED)
@@ -37,6 +39,7 @@ class UsersEndpointsTests(APITestCase):
         """
         Test listing and searching users
         """
+        raise AssertionError("Intentional error")
         resp = self.client.get("/api/v1/users/")
         self.assertEqual(resp.status_code, status.HTTP_200_OK)
         data = resp.json()
