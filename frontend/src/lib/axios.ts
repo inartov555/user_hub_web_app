@@ -10,7 +10,7 @@ export const api = axios.create({
     headers: { "Content-Type": "application/json" }
 });
 
-let isRefreshing = false;
+let isRefreshing = useAuthStore.getState().runtimeAuth.ROTATE_REFRESH_TOKENS && useAuthStore.getState().runtimeAuth.JWT_RENEW_AT_SECONDS > 0;
 let pending: Array<(t: string|null)=>void> = [];
 
 function onRefreshed(token: string|null) {
@@ -26,7 +26,6 @@ async function refreshOnce(): Promise<string> {
     });
   }
 
-  isRefreshing = true;
   try {
     const refresh = useAuthStore.getState().refreshToken || localStorage.getItem("refresh");
     if (!refresh) throw new Error("No refresh token");
@@ -41,9 +40,7 @@ async function refreshOnce(): Promise<string> {
     useAuthStore.getState().setAccessToken(newAccess);
     localStorage.setItem("access", newAccess);
     if (newRefresh) {
-      localStorage.setItem("refresh", newRefresh);
-      // if you have setRefreshToken in the store, call it here
-      // useAuthStore.getState().setRefreshToken?.(newRefresh);
+      useAuthStore.getState().setRefreshToken?.(newRefresh);
     }
 
     onRefreshed(newAccess);
@@ -58,7 +55,7 @@ async function refreshOnce(): Promise<string> {
     }
     throw e;
   } finally {
-    isRefreshing = false;
+    // nothing to do
   }
 }
 
@@ -89,41 +86,41 @@ api.interceptors.request.use(async (config) => {
   } = useAuthStore.getState();
 
   // PROACTIVE REFRESH: compare against JWT exp
-  if (accessToken && accessExpiresAt && runtimeAuth?.JWT_RENEW_AT_SECONDS > 0) {
+  if (
+    accessToken &&
+    accessExpiresAt &&
+    refreshToken &&
+    runtimeAuth?.JWT_RENEW_AT_SECONDS > 0
+  ) {
+    // Renew token only if runtimeAuth.ROTATE_REFRESH_TOKENS is true
     const remainingMs = accessExpiresAt - Date.now();
-    if (remainingMs <= runtimeAuth.JWT_RENEW_AT_SECONDS) {
+    if (remainingMs <= runtimeAuth.JWT_RENEW_AT_SECONDS * 1000) { // <-- seconds→ms
       try {
-        // refresh synchronously to avoid sending a request with a soon-to-expire token
         const resp = await api.post(
           "/auth/jwt/refresh/",
           { refresh: refreshToken },
-          { headers: { "X-Skip-Auth-Checks": "1" } } // don't recurse into this logic
+          { headers: { "X-Skip-Auth-Checks": "1" } }
         );
-
-        // SimpleJWT returns at least .access; with rotation it also returns .refresh
         const { access, refresh } = resp.data || {};
         if (!access) throw new Error("No access token in refresh response");
-
-        // Update store (keeps accessExpiresAt correct and rotates refresh if provided)
         useAuthStore.getState().applyRefreshedTokens(access, refresh);
-
-        // Keep localStorage in sync if the app reads tokens from there elsewhere
         localStorage.setItem("access", access);
         if (refresh) localStorage.setItem("refresh", refresh);
-      } catch (e) {
-        // cannot refresh -> clear and let response flow to 401 handler
-        useAuthStore.getState().logout?.();
+      } catch {
+        // Do NOT logout here - let the request go and the response 401 handler decide
       }
     }
   }
 
-  // attach Authorization with the latest token (maybe refreshed above)
-  const latestAccess = useAuthStore.getState().accessToken;
-  if (latestAccess) (config.headers as any).Authorization = `Bearer ${latestAccess}`;
-
-  return config;
+  // attach Authorization with the latest token (survives reloads via localStorage)
+  const stateAccess = useAuthStore.getState().accessToken;
+  const token = stateAccess || localStorage.getItem("access");
+  if (token) {
+    (config.headers as any).Authorization = `Bearer ${token}`;
+  }
 });
 
+/*
 api.interceptors.response.use(
   r => r,
   async (error) => {
@@ -157,7 +154,7 @@ api.interceptors.response.use(
     const hadAccess = !!(useAuthStore.getState().accessToken || localStorage.getItem("access"));
     const hadRefresh = !!localStorage.getItem("refresh");
     const hadAnyToken = hadAccess || hadRefresh;
-    if (!hadAnyToken) {
+    if (!hadAnyToken || !hadRefresh) {
       return Promise.reject(error);
     }
 
@@ -180,7 +177,7 @@ api.interceptors.response.use(
       });
     }
 
-    isRefreshing = true;
+    // isRefreshing = true;
     try {
       const refresh = localStorage.getItem("refresh");
       if (!refresh) throw new Error("No refresh token");
@@ -220,7 +217,8 @@ api.interceptors.response.use(
 
       return Promise.reject(error);
     } finally {
-      isRefreshing = false;
+      // nothing to do
     }
   }
 );
+*/
