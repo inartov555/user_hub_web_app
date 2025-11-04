@@ -2,6 +2,9 @@
 Unit tests
 """
 
+# This test intentionally uses a wildcard import to load all Django settings.
+# pylint: disable=wildcard-import,unused-wildcard-import,unused-import
+
 from core.settings import *
 
 # Testing if Settings object can be initialized
