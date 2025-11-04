@@ -13,9 +13,10 @@ class ProfileUpdateSerializer(serializers.ModelSerializer):
     DRF serializer used to update a user’s Profile together with a couple of fields
     on the related User in one request.
     """
-    first_name = serializers.CharField(source="user.first_name", required=False)
-    last_name = serializers.CharField(source="user.last_name", required=False)
-    locale = serializers.CharField(required=False, allow_blank=True)
+    first_name = serializers.CharField(source="user.first_name", required=False, max_length=40)
+    last_name = serializers.CharField(source="user.last_name", required=False, max_length=40)
+    locale = serializers.CharField(required=False, allow_blank=True, max_length=15)
+    bio = serializers.CharField(required=False, allow_blank=True, max_length=500)
 
     class Meta:
         """

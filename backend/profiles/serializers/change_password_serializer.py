@@ -9,7 +9,10 @@ class ChangePasswordSerializer(serializers.Serializer):
     """
     Django REST Framework (DRF) serializer that changes the password.
     """
-    password = serializers.CharField(write_only=True, trim_whitespace=False, allow_blank=False)
+    password = serializers.CharField(
+        min_length=8, max_length=40, write_only=True, required=True, trim_whitespace=False,
+        allow_blank=False
+    )
 
     def create(self, validated_data):
         """
