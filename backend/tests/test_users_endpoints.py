@@ -34,7 +34,6 @@ class UsersEndpointsTests(APITestCase):
         """
         Test users require authentication
         """
-        raise AssertionError("Intentional error")
         anon = APIClient()
         resp = anon.get("/api/v1/users/")
         self.assertEqual(resp.status_code, status.HTTP_401_UNAUTHORIZED)
@@ -43,7 +42,6 @@ class UsersEndpointsTests(APITestCase):
         """
         Test listing and searching users
         """
-        raise AssertionError("Intentional error")
         resp = self.client.get("/api/v1/users/")
         self.assertEqual(resp.status_code, status.HTTP_200_OK)
         data = resp.json()
