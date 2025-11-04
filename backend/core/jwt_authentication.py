@@ -68,8 +68,9 @@ class JWTAuthentication(BaseAuthentication):
             # Flag near-expiry (no auto-renew)
             seconds_left = self._seconds_to_expiry(access_token)
             request.jwt.seconds_to_expiry = seconds_left
-            if self._should_renew(access_token):
-                request.jwt.near_expiry = True
+            # Token renew logic
+            # if self._should_renew(access_token):
+            #    request.jwt.near_expiry = True
 
             # On success, DRF expects (user, auth)
             return (user, str(access_token))
@@ -83,4 +84,57 @@ class JWTAuthentication(BaseAuthentication):
 
     def authenticate_header(self, request) -> str:
         # Controls the WWW-Authenticate header on 401s
-        return f'Bearer  realm="{self.www_authenticate_realm}"'
+        return f'Bearer realm="{self.www_authenticate_realm}"'
+
+    def _get_access_from_request(self, request) -> Optional[str]:
+        """
+        Read `Authorization: Bearer <access>` from headers. No cookies.
+        Accepts any case for "Bearer"; ignores malformed headers.
+        """
+        auth = get_authorization_header(request)
+        if not auth:
+            return None
+
+        parts = auth.split()
+        if len(parts) != 2:
+            return None
+
+        scheme, token = parts[0].lower(), parts[1]
+        if scheme != self.keyword:
+            return None
+
+        try:
+            return token.decode("utf-8")
+        except UnicodeDecodeError:
+            return token if isinstance(token, str) else None
+
+    def _user_from_token(self, token: AccessToken):
+        user_id = token.get("user_id") or token.get("sub")
+        if not user_id:
+            raise ValidationError(
+                {"non_field_errors": ["user_id claim missing"]}
+            )
+        return self.user_model.objects.get(pk=user_id)
+
+    def _seconds_to_expiry(self, token: AccessToken) -> Optional[int]:
+        try:
+            exp_ts = int(token["exp"])
+        except (KeyError, TypeError, ValueError):
+            return None
+        now_ts = int(timezone.now().timestamp())
+        return max(0, exp_ts - now_ts)
+
+    def _should_renew(self, token: AccessToken) -> bool:
+        eff = get_effective_auth_settings()  # pulls DB overrides live
+        seconds_left = self._seconds_to_expiry(token)
+        if seconds_left is None:
+            return False
+
+        threshold = eff.get("JWT_RENEW_AT_SECONDS", 0)
+        should_rotate = eff.get("ROTATE_REFRESH_TOKENS", False)
+        try:
+            threshold_int = int(threshold)
+        except (TypeError, ValueError):
+            threshold_int = 0
+
+        return should_rotate and seconds_left <= max(0, threshold_int)
