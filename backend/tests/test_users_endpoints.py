@@ -18,12 +18,16 @@ class UsersEndpointsTests(APITestCase):
         user_model = get_user_model()
         self.password = "Passw0rd!123"
         # Create two users
-        self.user = user_model.objects.create_user(email="user1@example.com", password=self.password)
-        self.other = user_model.objects.create_user(email="user2@example.com", password=self.password)
+        self.user = user_model.objects.create_user(username="user1",
+                                                   email="user1@example.com",
+                                                   password=self.password)
+        self.other = user_model.objects.create_user(username="user2",
+                                                    email="user2@example.com",
+                                                    password=self.password)
         self.client = APIClient()
         # Auth as user1
         tokens = self.client.post("/api/v1/auth/jwt/create/",
-                                  {"email": self.user.email, "password": self.password}, format="json").json()
+                                  {"username": self.user.username, "password": self.password}, format="json").json()
         self.client.credentials(HTTP_AUTHORIZATION=f"Bearer {tokens['access']}")
 
     def test_list_users_requires_auth(self):
@@ -45,7 +49,7 @@ class UsersEndpointsTests(APITestCase):
         data = resp.json()
         self.assertIn("results", data)
         # Search
-        q = self.client.get("/api/v1/users/", {"search": "user2"})
-        self.assertEqual(q.status_code, status.HTTP_200_OK)
-        emails = [u["email"] for u in q.json()["results"]]
+        search = self.client.get("/api/v1/users/", {"search": "user2"})
+        self.assertEqual(search.status_code, status.HTTP_200_OK)
+        emails = [usr["email"] for usr in search.json()["results"]]
         self.assertIn(self.other.email, emails)

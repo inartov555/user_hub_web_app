@@ -17,7 +17,9 @@ class AuthAndProfileTests(APITestCase):
         """
         self.user_model = get_user_model()
         self.password = "Passw0rd!123"
-        self.user = self.user_model.objects.create_user(email="user@example.com", password=self.password)
+        self.user = self.user_model.objects.create_user(username="user",
+                                                        email="user@example.com",
+                                                        password=self.password)
         self.client = APIClient()
 
     def test_jwt_create_and_refresh(self):
@@ -26,7 +28,7 @@ class AuthAndProfileTests(APITestCase):
         """
         # Obtain access/refresh via Djoser
         resp = self.client.post("/api/v1/auth/jwt/create/",
-                                {"email": self.user.email, "password": self.password}, format="json")
+                                {"username": self.user.username, "password": self.password}, format="json")
         self.assertEqual(resp.status_code, status.HTTP_200_OK, resp.content)
         tokens = resp.json()
         self.assertIn("access", tokens)
@@ -48,7 +50,7 @@ class AuthAndProfileTests(APITestCase):
         """
         # Authenticate
         resp = self.client.post("/api/v1/auth/jwt/create/",
-                                {"email": self.user.email, "password": self.password}, format="json")
+                                {"username": self.user.username, "password": self.password}, format="json")
         access = resp.json()["access"]
         self.client.credentials(HTTP_AUTHORIZATION=f"Bearer {access}")
 
