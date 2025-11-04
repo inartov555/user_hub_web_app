@@ -18,6 +18,19 @@ jobs:
       matrix:
         python-version: ["3.12"]
 
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_DB: usersdb
+          POSTGRES_USER: users
+          POSTGRES_PASSWORD: users
+        ports:
+          - "5432:5432"
+        options: >-
+          --health-cmd="pg_isready -U users -d usersdb"
+          --health-interval=10s --health-timeout=5s --health-retries=5
+
     steps:
     - uses: actions/checkout@v4
 
@@ -36,5 +49,20 @@ jobs:
     - name: Run Tests
       env:
         DJANGO_SETTINGS_MODULE: core.settings
+        POSTGRES_DB: usersdb
+        POSTGRES_USER: users
+        POSTGRES_PASSWORD: users
+        POSTGRES_HOST: 127.0.0.1   # <-- override default "db"
+        POSTGRES_PORT: "5432"
       run: |
-        python manage.py test --noinput -v 2
+          # wait for service health in case it’s still warming up
+          python - <<'PY'
+            import time, socket
+            for _ in range(60):
+              try:
+                with socket.create_connection(("127.0.0.1", 5432), timeout=1): break
+              except OSError: time.sleep(1)
+            else:
+              raise SystemExit("Postgres never became reachable on 127.0.0.1:5432")
+          PY
+          python manage.py test --noinput -v 2
