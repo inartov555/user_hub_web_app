@@ -17,7 +17,7 @@ def test_users_list_visible(logged_in_user_page):
 
 
 @pytest.mark.regression
-def test_profile_view_and_edit(logged_in_user_page, base_url):
+def test_profile_view_and_edit(logged_in_user_page):
     """
     Docstring placeholder
     """

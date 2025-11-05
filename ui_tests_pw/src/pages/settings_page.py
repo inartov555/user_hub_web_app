@@ -14,7 +14,8 @@ class SettingsPage(BasePage):
     Settings page
     """
     def __init__(self, page: Page, base_url: str):
-        super().__init__(page, base_url)
+        # super().__init__(page, base_url)
+        pass
 
     def open(self) -> None:
         """

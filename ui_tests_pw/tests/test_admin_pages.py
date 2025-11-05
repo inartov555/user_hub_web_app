@@ -2,15 +2,17 @@
 Tests related to admin pages
 """
 
-import os
-import time
+# import os
+# import time
 
 import pytest
 from playwright.sync_api import expect
 
 
 def open_additional(page):
-    # Admin's "Additional" toggle reveals row 2 nav items
+    """
+    Admin's "Additional" toggle reveals row 2 nav items
+    """
     page.get_by_role("button", name="Additional").click()
 
 
@@ -33,7 +35,7 @@ def test_admin_settings_update(logged_in_admin_page):
 
 
 @pytest.mark.regression
-def test_excel_import(logged_in_admin_page, base_url):
+def test_excel_import(logged_in_admin_page):
     """
     Docstring placeholder
     """

@@ -3,9 +3,9 @@ Tests related to the theme
 """
 
 import pytest
-from playwright.sync_api import expect
+# from playwright.sync_api import expect
 
-from ui_tests.src.pages.base_page import BasePage
+from src.pages.base_page import BasePage
 
 
 @pytest.mark.theme

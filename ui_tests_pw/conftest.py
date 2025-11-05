@@ -3,14 +3,15 @@ conftest.py
 """
 
 import os
-import time
-import json
-import requests
-from typing import Generator
+# import time
+# import json
+# from typing import Generator
 from urllib.parse import urljoin
 
 import pytest
-from playwright.sync_api import Browser, BrowserContext, Page, expect
+# from playwright.sync_api import Browser, expect
+from playwright.sync_api import BrowserContext, Page
+import requests
 
 
 BASE_URL = os.getenv("BASE_URL", "http://localhost:5173").rstrip("/")
@@ -20,16 +21,16 @@ ADMIN = (os.getenv("ADMIN_USERNAME", "admin"), os.getenv("ADMIN_PASSWORD", "chan
 USER = (os.getenv("USER_USERNAME", "test1"), os.getenv("USER_PASSWORD", "megaboss19"))
 
 
-@pytest.fixture(scope="session")
-def base_url() -> str:
+@pytest.fixture(name="base_url", scope="session")
+def base_url_new() -> str:
     """
     Base URL
     """
     return BASE_URL
 
 
-@pytest.fixture(scope="session")
-def api_url() -> str:
+@pytest.fixture(name="api_url", scope="session")
+def api_url_new() -> str:
     """
     API URL
     """
@@ -43,12 +44,12 @@ def ensure_runtime(api_url: str):
     """
     try:
         requests.get(urljoin(api_url + "/", "system/runtime-auth/"), timeout=10)
-    except Exception:
+    except RequestException:
         pass
 
 
-@pytest.fixture(scope="session")
-def admin_tokens(api_url: str):
+@pytest.fixture(name="admin_tokens", scope="session")
+def admin_tokens_new(api_url: str):
     """
     Admin user's token
     """
@@ -59,8 +60,8 @@ def admin_tokens(api_url: str):
     return tokens
 
 
-@pytest.fixture(scope="session")
-def user_tokens(api_url: str):
+@pytest.fixture(name="user_tokens", scope="session")
+def user_tokens_new(api_url: str):
     """
     Regular user's token
     """
@@ -70,8 +71,10 @@ def user_tokens(api_url: str):
     return r.json()
 
 
+# @pytest.fixture()
+# def fresh_page(context: BrowserContext, base_url: str, page: Page) -> Page:
 @pytest.fixture()
-def fresh_page(context: BrowserContext, base_url: str, page: Page) -> Page:
+def fresh_page(base_url: str, page: Page) -> Page:
     """
     Reset storage for each test to avoid cross-test leakage
     """

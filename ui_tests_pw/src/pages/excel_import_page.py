@@ -3,7 +3,7 @@ Excel import
 """
 
 from __future__ import annotations
-import os
+# import os
 
 from playwright.sync_api import Page, expect
 
@@ -15,7 +15,8 @@ class ExcelImportPage(BasePage):
     Excel import
     """
     def __init__(self, page: Page, base_url: str):
-        super().__init__(page, base_url)
+        # super().__init__(page, base_url)
+        pass
 
     def open(self) -> None:
         """

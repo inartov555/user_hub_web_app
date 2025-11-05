@@ -5,11 +5,11 @@ Tests related to the refresh token rotation
 import time
 
 import pytest
-from playwright.sync_api import expect
+# from playwright.sync_api import expect
 
 
 @pytest.mark.auth
-def test_refresh_token_rotation(logged_in_user_page, base_url, short_lived_tokens):
+def test_refresh_token_rotation(logged_in_user_page):
     """
     Docstring placeholder
     """
@@ -31,7 +31,7 @@ def test_refresh_token_rotation(logged_in_user_page, base_url, short_lived_token
 
 
 @pytest.mark.auth
-def test_access_expiration_redirect_to_login(logged_in_user_page, base_url, short_lived_tokens):
+def test_access_expiration_redirect_to_login(logged_in_user_page):
     """
     Docstring placeholder
     """
