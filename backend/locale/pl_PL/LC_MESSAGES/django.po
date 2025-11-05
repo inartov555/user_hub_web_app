@@ -150,6 +150,12 @@ msgstr "O mnie"
 msgid "locale"
 msgstr "Ustawienia regionalne"
 
+msgid "first_name"
+msgstr "Imię"
+
+msgid "last_name"
+msgstr "Nazwisko"
+
 msgid "Ensure this field has no more than 40 characters."
 msgstr "Upewnij się, że to pole nie ma więcej niż 40 znaków."
 

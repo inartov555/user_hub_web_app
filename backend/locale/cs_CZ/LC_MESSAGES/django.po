@@ -150,6 +150,12 @@ msgstr "O mně"
 msgid "locale"
 msgstr "Lokalizace"
 
+msgid "first_name"
+msgstr "Jméno"
+
+msgid "last_name"
+msgstr "Příjmení"
+
 msgid "Ensure this field has no more than 40 characters."
 msgstr "Ujistěte se, že toto pole nemá více než 40 znaků."
 

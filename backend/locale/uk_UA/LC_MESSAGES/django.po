@@ -150,6 +150,12 @@ msgstr "Біографія"
 msgid "locale"
 msgstr "Регіональні налаштування"
 
+msgid "first_name"
+msgstr "Ім'я"
+
+msgid "last_name"
+msgstr "Прізвище"
+
 msgid "Ensure this field has no more than 40 characters."
 msgstr "Переконайтеся, що це поле містить не більше 40 символів."
 

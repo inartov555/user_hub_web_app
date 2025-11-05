@@ -150,6 +150,12 @@ msgstr "Lühitutvustus"
 msgid "locale"
 msgstr "Lokaat"
 
+msgid "first_name"
+msgstr "Eesnimi"
+
+msgid "last_name"
+msgstr "Perekonnanimi"
+
 msgid "Ensure this field has no more than 40 characters."
 msgstr "Veendu, et selles väljas poleks rohkem kui 40 märki."
 

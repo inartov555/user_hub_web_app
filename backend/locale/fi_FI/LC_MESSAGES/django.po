@@ -150,6 +150,12 @@ msgstr "Esittely"
 msgid "locale"
 msgstr "Alueasetukset"
 
+msgid "first_name"
+msgstr "Etunimi"
+
+msgid "last_name"
+msgstr "Sukunimi"
+
 msgid "Ensure this field has no more than 40 characters."
 msgstr "Varmista, että tässä kentässä ei ole enempää kuin 40 merkkiä."
 

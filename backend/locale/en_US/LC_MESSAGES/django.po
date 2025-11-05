@@ -150,6 +150,12 @@ msgstr "Bio"
 msgid "locale"
 msgstr "Locale"
 
+msgid "first_name"
+msgstr "First Name"
+
+msgid "last_name"
+msgstr "Last Name"
+
 msgid "Ensure this field has no more than 40 characters."
 msgstr "Ensure this field has no more than 40 characters."
 
