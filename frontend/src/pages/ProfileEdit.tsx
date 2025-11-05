@@ -5,6 +5,7 @@ import { api } from "../lib/axios";
 import { useAuthStore } from "../auth/store";
 import FormInput from "../components/FormInput";
 import Button from "../components/button";
+import { extractApiError } from "../lib/httpErrors";
 
 type ProfileUser = {
   id: number;
@@ -68,8 +69,9 @@ export default function ProfileEdit() {
       });
       setData(resp.data);
       navigate("/profile-view");
-    } catch (e: any) {
-      setError(e?.response?.data?.detail || e?.message || t("profileEdit.saveFailed"));
+    } catch (err: any) {
+      const parsed = extractApiError(err as unknown);
+      setError(parsed.message || t("profileEdit.saveFailed"));
     }
   }
 
@@ -167,6 +169,7 @@ export default function ProfileEdit() {
           />
         </div>
 
+        {error && <p className="text-red-600 text-sm whitespace-pre-line">{error}</p>}
         <div className="pt-2">
           <Button id="save" variant="secondary" className="gap-2" onClick={onSave}>{t("profileEdit.save")}</Button>
           <Button id="cancel" variant="secondary" className="gap-2">
