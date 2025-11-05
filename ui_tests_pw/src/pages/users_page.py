@@ -19,13 +19,13 @@ class UsersPage(BasePage):
         self.table = page.locator("table")
         self.delete_selected = page.locator("#deleteSelected, button:has-text('Delete selected')")
 
-    def open(self):
+    def open(self) -> None:
         """
         Opening Users table page
         """
         self.goto("/users")
 
-    def open_profile(self):
+    def open_profile(self) -> None:
         """
         Select the Profile tab
         """

@@ -16,13 +16,13 @@ class SettingsPage(BasePage):
     def __init__(self, page: Page, base_url: str):
         super().__init__(page, base_url)
 
-    def open(self):
+    def open(self) -> None:
         """
         Open Settings page
         """
         self.goto("/settings")
 
-    def set_auth_numbers(self, renew_sec: int, idle_sec: int, access_life: int, rotate: bool = True):
+    def set_auth_numbers(self, renew_sec: int, idle_sec: int, access_life: int, rotate: bool = True) -> None:
         """
         Inputs are labeled by translation values (keys match visible text)
         """
@@ -37,7 +37,7 @@ class SettingsPage(BasePage):
             if chk.is_checked():
                 chk.uncheck()
 
-    def save(self):
+    def save(self) -> None:
         """
         Saving the changes
         """

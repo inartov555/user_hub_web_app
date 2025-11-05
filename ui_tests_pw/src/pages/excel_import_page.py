@@ -17,13 +17,13 @@ class ExcelImportPage(BasePage):
     def __init__(self, page: Page, base_url: str):
         super().__init__(page, base_url)
 
-    def open(self):
+    def open(self) -> None:
         """
         Open Excel import page
         """
         self.goto("/import-excel")
 
-    def upload_template(self, path: str):
+    def upload_template(self, path: str) -> None:
         """
         Upload an Excel tempate file with users to import
         """

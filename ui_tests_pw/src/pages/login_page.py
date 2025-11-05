@@ -19,13 +19,13 @@ class LoginPage(BasePage):
         self.password = page.get_by_label("Password")
         self.submit = page.get_by_role("button", name="Sign in")
 
-    def open(self):
+    def open(self) -> None:
         """
         Open Login page
         """
         self.goto("/login")
 
-    def login(self, username: str, password: str):
+    def login(self, username: str, password: str) -> None:
         """
         Fill in the user credentials and submit the login form
         """
@@ -33,7 +33,7 @@ class LoginPage(BasePage):
         self.password.fill(password)
         self.submit.click()
 
-    def expect_error(self):
+    def expect_error(self) -> None:
         """
         Check if login error is shown
         """

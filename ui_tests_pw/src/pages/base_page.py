@@ -16,14 +16,14 @@ class BasePage:
         self.page = page
         self.base_url = base_url.rstrip('/')
 
-    def goto(self, path: str = "/"):
+    def goto(self, path: str = "/") -> None:
         """
         Open URL
         """
         self.page.goto(self.base_url + path)
 
     # Navbar helpers common to many pages
-    def open_additional_if_needed(self):
+    def open_additional_if_needed(self) -> None:
         """
         Open the "Additional" row if present and hidden
         """
@@ -31,20 +31,20 @@ class BasePage:
         if additional.is_visible():
             additional.click()
 
-    def set_locale(self, locale_code: str):
+    def set_locale(self, locale_code: str) -> None:
         """
         i18next reads from localStorage key 'i18nextLng'
         """
         self.page.evaluate("""(code) => { localStorage.setItem('i18nextLng', code); }""", locale_code)
         self.page.reload()
 
-    def toggle_dark_mode(self):
+    def toggle_dark_mode(self) -> None:
         """
         Toggling light/dark button to change the theme
         """
         self.page.locator("#lightDarkMode").click()
 
-    def expect_dark_mode(self, is_dark: bool):
+    def expect_dark_mode(self, is_dark: bool) -> None:
         """
         Check if dark mode is on
         """

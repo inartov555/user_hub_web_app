@@ -16,13 +16,13 @@ class StatsPage(BasePage):
     def __init__(self, page: Page, base_url: str):
         super().__init__(page, base_url)
 
-    def open(self):
+    def open(self) -> None:
         """
         Opening User stats page
         """
         self.goto("/stats")
 
-    def expect_cards(self):
+    def expect_cards(self) -> None:
         """
         Checking if there are online users (at least one being currently watching the page)
         """

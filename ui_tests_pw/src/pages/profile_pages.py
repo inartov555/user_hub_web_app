@@ -16,7 +16,7 @@ class ProfileViewPage(BasePage):
     def __init__(self, page: Page, base_url: str):
         super().__init__(page, base_url)
 
-    def open(self):
+    def open(self) -> None:
         """
         Open Profile View page
         """
@@ -30,20 +30,20 @@ class ProfileEditPage(BasePage):
     def __init__(self, page: Page, base_url: str):
         super().__init__(page, base_url)
 
-    def open(self):
+    def open(self) -> None:
         """
         Open Profile Edit page
         """
         self.goto("/profile-edit")
 
-    def set_first_last(self, first: str, last: str):
+    def set_first_last(self, first: str, last: str) -> None:
         """
         Set first and last names
         """
         self.page.get_by_label("First name").fill(first)
         self.page.get_by_label("Last name").fill(last)
 
-    def save(self):
+    def save(self) -> None:
         """
         Save the profile changes
         """
