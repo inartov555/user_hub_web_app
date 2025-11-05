@@ -8,8 +8,8 @@ import time
 import pytest
 from playwright.sync_api import expect
 
-from ui_tests.pages.base_page import BasePage
-from ui_tests.pages.login_page import LoginPage
+from ui_tests.src.pages.base_page import BasePage
+from ui_tests.src.pages.login_page import LoginPage
 
 
 @pytest.mark.auth
