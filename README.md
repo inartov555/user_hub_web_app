@@ -1,6 +1,9 @@
 <p align="center">
-  <img src="frontend/public/logo.svg" alt="Users App logo" width="160">
+  <img src="frontend/public/logo.svg" alt="Users App logo" width="80">
 </p>
+
+-----
+
 # Users App
 
 A production‑grade example app with a **Django REST Framework (DRF)** backend and a **React + Vite + TypeScript** SPA frontend.
