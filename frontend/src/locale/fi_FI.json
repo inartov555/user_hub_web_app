@@ -131,6 +131,7 @@
     "idleTimeoutHelp": "Suurin joutoaika (s) ilman API-käyttöä ennen kuin istunto/refresh vanhenee; sen jälkeen kirjaudu uudelleen. Tyypillinen: 900–3600.",
     "accessLifetime": "ACCESS_TOKEN_LIFETIME",
     "accessLifetimeHelp": "Access-tunnisteen elinikä (s). Vanhentumisen jälkeen tarvitaan refresh. Lyhyempi = turvallisempi, mutta useammat päivitykset. Tyypillinen: 300–1800; pidä < joutoaikaraja.",
+    "noteNewSessions": "Tallennetut asetukset otetaan käyttöön seuraavassa kirjautumisessa",
     "saved": "Sovelluksen asetukset on tallennettu",
     "saving": "Tallennetaan sovelluksen asetuksia..."
   },

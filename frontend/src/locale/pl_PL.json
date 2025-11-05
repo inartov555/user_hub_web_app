@@ -131,6 +131,7 @@
     "idleTimeoutHelp": "Maks. bezczynność (s) bez użycia API, po której sesja/refresh wygasa; potem trzeba zalogować się ponownie. Typowo: 900–3600.",
     "accessLifetime": "ACCESS_TOKEN_LIFETIME",
     "accessLifetimeHelp": "Czas życia tokenu dostępu (s). Po wygaśnięciu wymagany jest refresh. Krótszy = bezpieczniej, ale częściej. Typowo: 300–1800; trzymaj < limitu bezczynności.",
+    "noteNewSessions": "Zapisane ustawienia zostaną zastosowane przy następnym logowaniu",
     "saved": "Ustawienia aplikacji zostały zapisane",
     "saving": "Zapisywanie ustawień aplikacji..."
   },
