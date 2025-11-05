@@ -1,0 +1,34 @@
+# Docker image to run Playwright Python tests
+FROM mcr.microsoft.com/playwright/python:v1.47.0-jammy
+
+WORKDIR /tests
+
+# Install system deps that may be useful (e.g., curl for wait script)
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    curl jq bash tzdata \
+    && rm -rf /var/lib/apt/lists/*
+
+# Copy test project
+COPY ui_tests/ /tests/
+# Install Python deps
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Default envs (can be overridden)
+ENV BASE_URL=http://localhost:5173
+ENV API_URL=http://localhost:8000/api/v1
+ENV ADMIN_USERNAME=admin
+ENV ADMIN_PASSWORD=changeme123
+ENV USER_USERNAME=test1
+ENV USER_PASSWORD=megaboss19
+ENV PYTHONUNBUFFERED=1
+ENV TZ=Europe/Tallinn
+
+# Install browsers (already present in Playwright base image, but ensure ok)
+RUN playwright install --with-deps
+
+# Add wait script
+COPY ui_tests/wait-for-http.sh /usr/local/bin/wait-for-http.sh
+RUN chmod +x /usr/local/bin/wait-for-http.sh
+
+# Run tests by default
+CMD bash -lc "wait-for-http.sh $BASE_URL 180 && pytest -c pytest.ini -vv"
