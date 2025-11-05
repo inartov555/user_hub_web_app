@@ -111,6 +111,7 @@ export default function ProfileEdit() {
             id="firstName"
             placeholder={t("users.firstName")}
             value={first_name}
+            maxLength={40}
             onChange={(e) => setFirstName(e.target.value)}
             className="
               w-full rounded-xl px-3 py-2
@@ -125,6 +126,7 @@ export default function ProfileEdit() {
             id="lastName"
             placeholder={t("users.lastName")}
             value={last_name}
+            maxLength={40}
             onChange={(e) => setLastName(e.target.value)}
             className="
               w-full rounded-xl px-3 py-2
@@ -152,6 +154,7 @@ export default function ProfileEdit() {
           "
             placeholder={t("excelImport.bio")}
             value={bio}
+            maxLength={500}
             onChange={(e) => setBio(e.target.value)}
           />
         </label>
