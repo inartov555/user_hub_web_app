@@ -85,12 +85,7 @@ def _serialize_validation_errors(detail: Any) -> Any:
     DRF ValidationError.detail can be a dict/list/str. Keep structure but translate strings.
     """
     if isinstance(detail, dict):
-        localized_dict = {}
-        for key, value in detail.items():
-            key_localized = _serialize_validation_errors(key)
-            value_localized = _serialize_validation_errors(value)
-            localized_dict[key_localized] = value_localized
-        return localized_dict
+        return {key: _serialize_validation_errors(value) for key, value in detail.items()}
     if isinstance(detail, list):
         return [_serialize_validation_errors(item) for item in detail]
     if isinstance(detail, str):
