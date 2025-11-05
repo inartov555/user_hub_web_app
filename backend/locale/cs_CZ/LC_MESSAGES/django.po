@@ -131,3 +131,27 @@ msgstr "Uživatel s touto e-mailovou adresou již existuje."
 
 msgid "Not permitted."
 msgstr "Není povoleno."
+
+msgid "non_field_errors"
+msgstr "Chyby mimo pole"
+
+msgid "username"
+msgstr "Uživatelské jméno"
+
+msgid "password"
+msgstr "Heslo"
+
+msgid "email"
+msgstr "E-mail"
+
+msgid "bio"
+msgstr "O mně"
+
+msgid "locale"
+msgstr "Lokalizace"
+
+msgid "Ensure this field has no more than 40 characters."
+msgstr "Ujistěte se, že toto pole nemá více než 40 znaků."
+
+msgid "Ensure this field has at least 5 characters."
+msgstr "Ujistěte se, že toto pole má alespoň 5 znaků."

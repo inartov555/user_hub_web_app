@@ -131,3 +131,27 @@ msgstr "Użytkownik z tym adresem e-mail już istnieje."
 
 msgid "Not permitted."
 msgstr "Niedozwolone."
+
+msgid "non_field_errors"
+msgstr "Błędy niezwiązane z polami"
+
+msgid "username"
+msgstr "Nazwa użytkownika"
+
+msgid "password"
+msgstr "Hasło"
+
+msgid "email"
+msgstr "E-mail"
+
+msgid "bio"
+msgstr "O mnie"
+
+msgid "locale"
+msgstr "Ustawienia regionalne"
+
+msgid "Ensure this field has no more than 40 characters."
+msgstr "Upewnij się, że to pole nie ma więcej niż 40 znaków."
+
+msgid "Ensure this field has at least 5 characters."
+msgstr "Upewnij się, że to pole ma co najmniej 5 znaków."

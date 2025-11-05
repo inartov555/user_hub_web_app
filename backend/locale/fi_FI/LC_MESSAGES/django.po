@@ -131,3 +131,27 @@ msgstr "Tällä sähköpostiosoitteella on jo käyttäjä."
 
 msgid "Not permitted."
 msgstr "Ei sallittu."
+
+msgid "non_field_errors"
+msgstr "Kenttään liittymättömät virheet"
+
+msgid "username"
+msgstr "Käyttäjänimi"
+
+msgid "password"
+msgstr "Salasana"
+
+msgid "email"
+msgstr "Sähköposti"
+
+msgid "bio"
+msgstr "Esittely"
+
+msgid "locale"
+msgstr "Alueasetukset"
+
+msgid "Ensure this field has no more than 40 characters."
+msgstr "Varmista, että tässä kentässä ei ole enempää kuin 40 merkkiä."
+
+msgid "Ensure this field has at least 5 characters."
+msgstr "Varmista, että tässä kentässä on vähintään 5 merkkiä."

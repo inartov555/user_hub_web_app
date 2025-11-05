@@ -131,3 +131,27 @@ msgstr "Користувач із цією електронною адресою
 
 msgid "Not permitted."
 msgstr "Не дозволено."
+
+msgid "non_field_errors"
+msgstr "Помилки, не пов'язані з полями"
+
+msgid "username"
+msgstr "Ім'я користувача"
+
+msgid "password"
+msgstr "Пароль"
+
+msgid "email"
+msgstr "Електронна пошта"
+
+msgid "bio"
+msgstr "Біографія"
+
+msgid "locale"
+msgstr "Регіональні налаштування"
+
+msgid "Ensure this field has no more than 40 characters."
+msgstr "Переконайтеся, що це поле містить не більше 40 символів."
+
+msgid "Ensure this field has at least 5 characters."
+msgstr "Переконайтеся, що це поле містить принаймні 5 символів."

@@ -131,3 +131,27 @@ msgstr "Selle e-posti aadressiga kasutaja on juba olemas."
 
 msgid "Not permitted."
 msgstr "Pole lubatud."
+
+msgid "non_field_errors"
+msgstr "Väljaga mitteseotud vead"
+
+msgid "username"
+msgstr "Kasutajanimi"
+
+msgid "password"
+msgstr "Parool"
+
+msgid "email"
+msgstr "E-post"
+
+msgid "bio"
+msgstr "Lühitutvustus"
+
+msgid "locale"
+msgstr "Lokaat"
+
+msgid "Ensure this field has no more than 40 characters."
+msgstr "Veendu, et selles väljas poleks rohkem kui 40 märki."
+
+msgid "Ensure this field has at least 5 characters."
+msgstr "Veendu, et selles väljas oleks vähemalt 5 märki."
