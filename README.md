@@ -1,7 +1,7 @@
 # 👥 Users App
 
-A production‑grade example web application with a **Django REST Framework (DRF)** backend and a **React + Vite + TypeScript** SPA frontend.  
-It demonstrates modern JWT auth, profile management, Excel import, online‑users stats, runtime‑tunable auth timing, i18n, and a polished UI built with Tailwind.
+A production‑grade example app with a **Django REST Framework (DRF)** backend and a **React + Vite + TypeScript** SPA frontend.
+It demonstrates modern JWT auth with runtime tuning, profile management, Excel import, online-user stats, i18n, and a clean Tailwind UI.
 
 ---
 
@@ -114,25 +114,62 @@ Use the example file at `test_data/import_template_EXAMPLE.xlsx` as a template.
 
 ---
 
-## ⚙️ Environment variables (common)
+## ⚙️ Configuration
 
-**Backend (see `backend/.env.example` for full list):**
-- `SECRET_KEY`
-- `DEBUG` (default `True` for dev)
-- `ALLOWED_HOSTS`
-- `CORS_ALLOWED_ORIGINS`
-- `DATABASE_URL` or `POSTGRES_*` via docker‑compose
-- `ACCESS_TOKEN_LIFETIME` (seconds), `IDLE_TIMEOUT_SECONDS`, `JWT_RENEW_AT_SECONDS` (defaults in settings)
+### Backend environment (most relevant)
+- `ALLOWED_HOSTS` — comma‑separated list
+- `CORS_ALLOWED_ORIGINS` — comma‑separated list
+- `DATABASE_URL` — Postgres DSN (`postgres://...`)
+- `DJANGO_DEBUG` — `true|false`
+- **JWT & idle timing**
+  - `ACCESS_TOKEN_LIFETIME` — seconds (e.g. `1800`)
+  - `IDLE_TIMEOUT_SECONDS` — seconds (e.g. `900`)
+  - `JWT_RENEW_AT_SECONDS` — seconds before expiry to silently refresh (e.g. `1200`)
+  - `ROTATE_REFRESH_TOKENS` — `true|false`
+- `SPECTACULAR_SETTINGS` — OpenAPI metadata (see `core/settings.py`)
 
-**Frontend:**
-- `VITE_API_URL` (default `/api/v1`)
+### Frontend environment
+- `VITE_API_URL` — base API path; defaults to `/api/v1`
 
 ---
 
-## 🔒 Security notes
+## 🔌 API surface (high‑level)
 
-- Strong password validation via Django validators
-- HTTP‑only cookies are **not** used for JWT; tokens live in memory to reduce XSS persistence risk
-- CORS restricted via `django‑cors‑headers`
-- On backend boot/redeploy, **boot‑id enforcement** invalidates stale JWTs to force refresh
-- Input validation on Excel import & DRF serializers
+| Method | Path                                   | Purpose |
+|-------:|----------------------------------------|---------|
+| GET    | `/api/v1/users/`                       | List/search users (DRF router) |
+| POST   | `/api/v1/users/`                       | Create user |
+| GET    | `/api/v1/users/:id/`                   | Retrieve user |
+| PUT    | `/api/v1/users/:id/`                   | Update user |
+| DELETE | `/api/v1/users/:id/`                   | Delete user |
+| GET    | `/api/v1/me/profile/`                  | Current user profile |
+| POST   | `/api/v1/import-excel/`                | Excel import (xlsx based on template) |
+| GET    | `/api/v1/stats/online-users/`          | Users active in the last 5 minutes |
+| GET/PUT| `/api/v1/system/settings/`             | Read/update effective auth timings |
+| GET    | `/api/v1/system/runtime-auth/`         | Read runtime‑computed auth config |
+| POST   | `/api/v1/auth/jwt/create`              | Obtain access/refresh (Djoser) |
+| POST   | `/api/v1/auth/jwt/refresh/`            | Refresh access (runtime‑aware) |
+| GET    | `/api/v1/schema/`                      | OpenAPI schema |
+| GET    | `/api/v1/docs/`                        | Swagger UI |
+
+---
+
+## 🧪 Testing
+
+```bash
+# backend
+cd backend && pytest -q
+
+# frontend
+cd frontend && npm run test
+```
+
+---
+
+## 🛡️ Security & auth behaviour
+
+- Strong password validation with Django validators
+- JWTs are stored in memory on the client to reduce XSS persistence risk (no http‑only cookies)
+- CORS locked down with `django-cors-headers`
+- **Boot‑ID enforcement**: when the backend restarts, stale JWTs are invalidated; the frontend silently re‑auths/refreshes when possible
+- Excel import and serializers include strict validation & error reporting
