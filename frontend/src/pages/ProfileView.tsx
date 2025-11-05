@@ -4,6 +4,8 @@ import { useTranslation } from "react-i18next";
 import { api } from "../lib/axios";
 import { useAuthStore } from "../auth/store";
 import Button from "../components/button";
+import { extractApiError } from "../lib/httpErrors";
+import ErrorAlert from "../components/ErrorAlert";
 
 type ProfileUser = {
   id: number;
@@ -29,6 +31,7 @@ export default function ProfileView() {
   const { user, logout, accessToken } = useAuthStore();
   const navigate = useNavigate();
   const location = useLocation();
+  const [errorLines, setErrorLines] = useState<string[]>([]);
 
   useEffect(() => {
     let alive = true;
@@ -40,9 +43,19 @@ export default function ProfileView() {
         setProfile(p);
         setError(null);
         setLoading(false);
-      } catch (e: any) {
+      } catch (err: any) {
+        const parsed = extractApiError(err as unknown);
+        let error_text = t("profileEdit.saveFailed") + "\n" + parsed.message
+        {<ErrorAlert title={t("profileEdit.profileLoadError")} message={error_text} />}
+        // setError(t("profileEdit.profileLoadError") + "\n" + parsed.message);
+        // let errLines = `${t("profileEdit.profileLoadError")}\n${parsed?.message ?? ""}`.split(/\r?\n/).map(s => s.trim()).filter(Boolean)
+        /*
+        setErrorLines(`${t("profileEdit.profileLoadError")}\n${String(parsed?.message ?? "")}`
+          .split(/->|\r?\n/)
+          .map(s => s.replace(/^[\s:>\-]+/, "").trim())
+          .filter(Boolean));
+        */
         if (!alive) return;
-        setError(e?.response?.data?.detail || e?.message || t("profileEdit.profileLoadError"));
       }
     })();
     return () => {

@@ -39,7 +39,7 @@ export default function ChangePassword() {
       navigate("/users", { replace: true });
     } catch (err) {
       const parsed = extractApiError(err as unknown);
-      setError(parsed.message || t("changePassword.setPasswordFailed"));
+      setError(t("changePassword.setPasswordFailed") + "\n" + parsed.message);
     } finally {
       setSaving(false);
     }

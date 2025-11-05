@@ -6,6 +6,7 @@ import { useAuthStore } from "../auth/store";
 import FormInput from "../components/FormInput";
 import Button from "../components/button";
 import { extractApiError } from "../lib/httpErrors";
+import ErrorAlert from "../components/ErrorAlert";
 
 type ProfileUser = {
   id: number;
@@ -47,8 +48,19 @@ export default function ProfileEdit() {
         setFirstName(p.user.first_name ?? "");
         setLastName(p.user.last_name ?? "");
         setBio(p.bio ?? "");
-      } catch (e: any) {
-        setError(e?.response?.data?.detail || e?.message || "Failed to load profile");
+      } catch (err: any) {
+        const parsed = extractApiError(err as unknown);
+        let error_text = t("profileEdit.saveFailed") + "\n" + parsed.message
+        {<ErrorAlert title={t("profileEdit.profileLoadError")} message={error_text} />}
+        // setError(t("profileEdit.profileLoadError") + "\n" + parsed.message);
+        // let errLines = `${t("profileEdit.profileLoadError")}\n${parsed?.message ?? ""}`.split(/\r?\n/).map(s => s.trim()).filter(Boolean)
+        /*
+        setErrorLines(`${t("profileEdit.profileLoadError")}\n${String(parsed?.message ?? "")}`
+          .split(/->|\r?\n/)
+          .map(s => s.replace(/^[\s:>\-]+/, "").trim())
+          .filter(Boolean));
+        */
+        if (!alive) return;
       }
     })();
     return () => {
@@ -70,9 +82,17 @@ export default function ProfileEdit() {
       setData(resp.data as Profile);
       navigate("/profile-view");
     } catch (err: any) {
-      console.log("Finalee???")
       const parsed = extractApiError(err as unknown);
-      setError(parsed.message || t("profileEdit.saveFailed"));
+      // setError(t("profileEdit.saveFailed") + "\n" + parsed.message);
+      let error_text = t("profileEdit.saveFailed") + "\n" + parsed.message
+      {<ErrorAlert title={t("profileEdit.saveFailed")} message={error_text} />}
+      // setErrorLines(t("profileEdit.saveFailed") + "\n" + parsed.message);
+      /*
+      setErrorLines(`${t("profileEdit.saveFailed")}\n${String(parsed?.message ?? "")}`
+          .split(/->|\r?\n/)
+          .map(s => s.replace(/^[\s:>\-]+/, "").trim())
+          .filter(Boolean));
+      */
     }
   }
 
@@ -170,7 +190,6 @@ export default function ProfileEdit() {
           />
         </div>
 
-        {error && <p className="text-red-600 text-sm whitespace-pre-line">{error}</p>}
         <div className="pt-2">
           <Button id="save" variant="secondary" className="gap-2" onClick={onSave}>{t("profileEdit.save")}</Button>
           <Button id="cancel" variant="secondary" className="gap-2">
