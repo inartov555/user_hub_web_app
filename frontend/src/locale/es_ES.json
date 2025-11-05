@@ -73,7 +73,8 @@
     "editProfile": "Editar perfil",
     "profileLoadError": "No se pudo cargar el perfil.",
     "save": "Guardar",
-    "profileAvatar": "Foto de perfil"
+    "profileAvatar": "Foto de perfil",
+    "saveFailed": "No se pudo guardar."
   },
   "profileView": {
     "pViewError": "Error: {{message}}",

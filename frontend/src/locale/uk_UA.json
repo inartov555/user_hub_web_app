@@ -73,7 +73,8 @@
     "editProfile": "Редагувати профіль",
     "profileLoadError": "Не вдалося завантажити профіль.",
     "save": "Зберегти",
-    "profileAvatar": "Фото профілю"
+    "profileAvatar": "Фото профілю",
+    "saveFailed": "Не вдалося зберегти."
   },
   "profileView": {
     "pViewError": "Помилка: {{message}}",

@@ -73,7 +73,8 @@
     "editProfile": "Upravit profil",
     "profileLoadError": "Načtení profilu se nezdařilo.",
     "save": "Uložit",
-    "profileAvatar": "Profilová fotka"
+    "profileAvatar": "Profilová fotka",
+    "saveFailed": "Uložení se nezdařilo."
   },
   "profileView": {
     "pViewError": "Chyba: {{message}}",

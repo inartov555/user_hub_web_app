@@ -64,12 +64,13 @@ export default function ProfileEdit() {
       form.append("bio", bio);
       if (avatarFile) form.append("avatar", avatarFile);
 
-      const resp = await api.patch<Profile>("/me/profile/", form, {
+      const resp = await api.patch("/me/profile/", form, {
         headers: { "Content-Type": "multipart/form-data" },
       });
-      setData(resp.data);
+      setData(resp.data as Profile);
       navigate("/profile-view");
     } catch (err: any) {
+      console.log("Finalee???")
       const parsed = extractApiError(err as unknown);
       setError(parsed.message || t("profileEdit.saveFailed"));
     }

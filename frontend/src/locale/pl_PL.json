@@ -73,7 +73,8 @@
     "editProfile": "Edytuj profil",
     "profileLoadError": "Nie udało się wczytać profilu.",
     "save": "Zapisz",
-    "profileAvatar": "Zdjęcie profilowe"
+    "profileAvatar": "Zdjęcie profilowe",
+    "saveFailed": "Nie udało się zapisać."
   },
   "profileView": {
     "pViewError": "Błąd: {{message}}",

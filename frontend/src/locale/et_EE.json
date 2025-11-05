@@ -73,7 +73,8 @@
     "editProfile": "Muuda profiili",
     "profileLoadError": "Profiili laadimine ebaõnnestus.",
     "save": "Salvesta",
-    "profileAvatar": "Profiilipilt"
+    "profileAvatar": "Profiilipilt",
+    "saveFailed": "Salvestamine ebaõnnestus."
   },
   "profileView": {
     "pViewError": "Viga: {{message}}",

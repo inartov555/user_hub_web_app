@@ -73,7 +73,8 @@
     "editProfile": "Muokkaa profiilia",
     "profileLoadError": "Profiilin lataaminen epäonnistui.",
     "save": "Tallenna",
-    "profileAvatar": "Profiilikuva"
+    "profileAvatar": "Profiilikuva",
+    "saveFailed": "Tallennus epäonnistui."
   },
   "profileView": {
     "pViewError": "Virhe: {{message}}",

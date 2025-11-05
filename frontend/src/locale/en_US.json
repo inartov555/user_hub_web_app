@@ -73,7 +73,8 @@
     "editProfile": "Edit profile",
     "profileLoadError": "Failed to load profile.",
     "save": "Save",
-    "profileAvatar": "Profile avatar"
+    "profileAvatar": "Profile avatar",
+    "saveFailed": "Failed to save"
   },
   "profileView": {
     "pViewError": "Error: {{message}}",
