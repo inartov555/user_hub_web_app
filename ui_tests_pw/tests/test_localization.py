@@ -1,7 +1,12 @@
+"""
+Tests related to localization
+"""
 
 import pytest
 from playwright.sync_api import expect
+
 from ui_tests.pages.base_page import BasePage
+
 
 @pytest.mark.i18n
 @pytest.mark.parametrize("locale,expected_login_label", [
@@ -12,13 +17,20 @@ from ui_tests.pages.base_page import BasePage
     ("et-EE", "Logi sisse"),
 ])
 def test_login_page_localization(fresh_page, base_url, locale, expected_login_label):
+    """
+    Docstring placeholder
+    """
     base = BasePage(fresh_page, base_url)
     base.set_locale(locale)
     base.goto("/login")
     expect(fresh_page.get_by_role("button", name=expected_login_label)).to_be_visible()
 
+
 @pytest.mark.i18n
 def test_nav_localization_logged_in(logged_in_user_page, base_url):
+    """
+    Docstring placeholder
+    """
     # Switch locale via localStorage and reload
     logged_in_user_page.evaluate("""() => localStorage.setItem('i18nextLng','es-ES')""")
     logged_in_user_page.reload()

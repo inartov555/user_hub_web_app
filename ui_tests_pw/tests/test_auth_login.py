@@ -1,10 +1,16 @@
+"""
+Tests related to login
+"""
 
 import os
 import time
+
 import pytest
 from playwright.sync_api import expect
+
 from ui_tests.pages.base_page import BasePage
 from ui_tests.pages.login_page import LoginPage
+
 
 @pytest.mark.auth
 @pytest.mark.parametrize("username,password,ok", [
@@ -14,6 +20,9 @@ from ui_tests.pages.login_page import LoginPage
     ("", "", False),
 ])
 def test_login_flow(fresh_page, base_url, username, password, ok):
+    """
+    Docstring placeholder
+    """
     login = LoginPage(fresh_page, base_url)
     login.open()
     login.login(username, password)
@@ -26,7 +35,11 @@ def test_login_flow(fresh_page, base_url, username, password, ok):
         expect(fresh_page).to_have_url(lambda url: url.path.startswith("/login"))
         expect(fresh_page.get_by_role("alert")).to_be_visible()
 
+
 def test_protected_redirect_requires_login(fresh_page, base_url):
+    """
+    Docstring placeholder
+    """
     # Directly visit a protected page — should redirect to login
     fresh_page.goto(base_url + "/users")
     expect(fresh_page).to_have_url(lambda u: u.path.startswith("/login"))

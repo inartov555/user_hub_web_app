@@ -1,15 +1,23 @@
+"""
+Tests related to admin pages
+"""
 
 import os
 import time
 import pytest
 from playwright.sync_api import expect
 
+
 def open_additional(page):
     # Admin's "Additional" toggle reveals row 2 nav items
     page.get_by_role("button", name="Additional").click()
 
+
 @pytest.mark.regression
 def test_admin_settings_update(logged_in_admin_page):
+    """
+    Docstring placeholder
+    """
     open_additional(logged_in_admin_page)
     logged_in_admin_page.get_by_role("link", name="Settings").click()
     expect(logged_in_admin_page).to_have_url(lambda u: u.path.startswith("/settings"))
@@ -22,8 +30,12 @@ def test_admin_settings_update(logged_in_admin_page):
     # Confirmation
     expect(logged_in_admin_page.get_by_text("App settings")).to_be_visible()
 
+
 @pytest.mark.regression
 def test_excel_import(logged_in_admin_page, base_url):
+    """
+    Docstring placeholder
+    """
     open_additional(logged_in_admin_page)
     logged_in_admin_page.get_by_role("link", name="Import from Excel").click()
     expect(logged_in_admin_page).to_have_url(lambda u: u.path.startswith("/import-excel"))
@@ -32,8 +44,12 @@ def test_excel_import(logged_in_admin_page, base_url):
     logged_in_admin_page.get_by_role("button", name="Upload").click()
     expect(logged_in_admin_page.get_by_role("alert")).to_be_visible()
 
+
 @pytest.mark.regression
 def test_stats_page(logged_in_admin_page):
+    """
+    Docstring placeholder
+    """
     open_additional(logged_in_admin_page)
     logged_in_admin_page.get_by_role("link", name="Stats").click()
     expect(logged_in_admin_page).to_have_url(lambda u: u.path.startswith("/stats"))
