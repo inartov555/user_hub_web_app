@@ -9,8 +9,8 @@ import os
 from urllib.parse import urljoin
 
 import pytest
-# from playwright.sync_api import Browser, expect
-from playwright.sync_api import BrowserContext, Page
+# from playwright.sync_api import Browser, BrowserContext, expect
+from playwright.sync_api import Page
 import requests
 
 
@@ -44,7 +44,7 @@ def ensure_runtime(api_url: str):
     """
     try:
         requests.get(urljoin(api_url + "/", "system/runtime-auth/"), timeout=10)
-    except RequestException:
+    except Timeout:
         pass
 
 

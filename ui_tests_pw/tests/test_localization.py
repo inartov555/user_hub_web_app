@@ -16,11 +16,11 @@ from src.pages.base_page import BasePage
     ("uk-UA", "Увійти"),
     ("et-EE", "Logi sisse"),
 ])
-def test_login_page_localization(fresh_page, locale, expected_login_label):
+def test_login_page_localization(fresh_page, locale, base_url, expected_login_label):
     """
     Docstring placeholder
     """
-    base = BasePage(fresh_page)
+    base = BasePage(fresh_page, base_url)
     base.set_locale(locale)
     base.goto("/login")
     expect(fresh_page.get_by_role("button", name=expected_login_label)).to_be_visible()

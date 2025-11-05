@@ -15,8 +15,7 @@ class ExcelImportPage(BasePage):
     Excel import
     """
     def __init__(self, page: Page, base_url: str):
-        # super().__init__(page, base_url)
-        pass
+        super().__init__(page, base_url)
 
     def open(self) -> None:
         """
