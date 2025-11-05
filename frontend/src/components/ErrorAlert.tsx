@@ -6,7 +6,7 @@ type Props = {
 };
 
 function splitLines(raw: unknown): string[] {
-  // Split by '\n', preserving spaces
+  // Split by '\n', preserving spaces, tabs
   const normalized = String(raw ?? "")
     .replace(/\u00A0/g, " ")  // NBSP -> space
     .replace(/\\n/g, "\n");   // literal "\n" -> real newline
