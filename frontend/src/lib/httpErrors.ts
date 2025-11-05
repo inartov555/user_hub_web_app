@@ -51,7 +51,7 @@ export function extractApiError(err: unknown, t?: TFunction): { message: string;
   const NBSP = "\u00A0";
   const indent = (n = 4) => NBSP.repeat(n);
   const indent_4 = indent(4) + "-> "
-  const indent_8 = indent(8) + "-> "
+  const indent_8 = indent(8) + "⤷ "
   if (axios.isAxiosError<DRFError>(err)) {
     const ax = err as AxiosError<DRFError>;
     status = ax.response?.status;

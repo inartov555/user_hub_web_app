@@ -45,16 +45,7 @@ export default function ProfileView() {
         setLoading(false);
       } catch (err: any) {
         const parsed = extractApiError(err as unknown);
-        let error_text = t("profileEdit.saveFailed") + "\n" + parsed.message
-        {<ErrorAlert title={t("profileEdit.profileLoadError")} message={error_text} />}
-        // setError(t("profileEdit.profileLoadError") + "\n" + parsed.message);
-        // let errLines = `${t("profileEdit.profileLoadError")}\n${parsed?.message ?? ""}`.split(/\r?\n/).map(s => s.trim()).filter(Boolean)
-        /*
-        setErrorLines(`${t("profileEdit.profileLoadError")}\n${String(parsed?.message ?? "")}`
-          .split(/->|\r?\n/)
-          .map(s => s.replace(/^[\s:>\-]+/, "").trim())
-          .filter(Boolean));
-        */
+        setError(t("profileEdit.profileLoadError") + "\n" + parsed.message);
         if (!alive) return;
       }
     })();
@@ -64,7 +55,8 @@ export default function ProfileView() {
   }, []);
 
   if (loading) return <div className="card p-4">{t("users.loading")}</div>;
-  if (error) return <div className="card p-4 text-red-600">{t("profileView.pViewError", { message: error })}</div>;
+  // if (error) return <div className="card p-4 text-red-600">{t("profileView.pViewError", { message: error })}</div>; / not pretty error displaying
+  if (error) return <ErrorAlert message={error} />;
 
   if (!profile)
     return (
@@ -120,6 +112,7 @@ export default function ProfileView() {
           <Field id="bio" label={t("excelImport.bio")} value={String(profile?.bio ?? "—")} />
         </div>
 
+        {error && <ErrorAlert message={error} />}
         <div className="pt-2">
           <Button id="editProfile" variant="secondary" className="gap-2">
             <Link to="/profile-edit" className="btn inline-flex">

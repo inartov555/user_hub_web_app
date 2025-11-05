@@ -6,12 +6,13 @@ type Props = {
 };
 
 function splitLines(raw: unknown): string[] {
-  const s = String(raw ?? "")
-    .replace(/\u00A0/g, " ")        // replace &nbsp;
-    .replace(/\s+/g, " ");          // collapse spaces
-  return s
-    .split(/->|\r?\n/)              // split by "->" or newline
-    .map(x => x.replace(/^[\s:>\-]+/, "").trim())
+  // Split by '\n'
+  const normalized = String(raw ?? "")
+    .replace(/\u00A0/g, " ")
+    .replace(/\\n/g, "\n");   // handle literal "\n"
+  return normalized
+    .split(/\r?\n/)           // works for \n and Windows \r\n
+    .map(s => s.replace(/[ \t]+/g, " ").trim())
     .filter(Boolean);
 }
 
@@ -29,7 +30,7 @@ export default function ErrorAlert({ message, title }: Props) {
       <ul className="space-y-1">
         {lines.map((line, i) => (
           <li key={i} className="flex items-start gap-2">
-            <span className="select-none mt-[2px]">→</span>
+            <span className="select-none mt-[2px]"></span>
             <span>{line}</span>
           </li>
         ))}

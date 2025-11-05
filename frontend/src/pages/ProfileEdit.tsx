@@ -29,7 +29,7 @@ export default function ProfileEdit() {
   const navigate = useNavigate();
   const location = useLocation();
   const { user } = useAuthStore();
-
+  const [loading, setLoading] = useState(true);
   const [data, setData] = useState<Profile | null>(null);
   const [first_name, setFirstName] = useState("");
   const [last_name, setLastName] = useState("");
@@ -48,18 +48,11 @@ export default function ProfileEdit() {
         setFirstName(p.user.first_name ?? "");
         setLastName(p.user.last_name ?? "");
         setBio(p.bio ?? "");
+        setError(null);
+        setLoading(false);
       } catch (err: any) {
         const parsed = extractApiError(err as unknown);
-        let error_text = t("profileEdit.saveFailed") + "\n" + parsed.message
-        {<ErrorAlert title={t("profileEdit.profileLoadError")} message={error_text} />}
-        // setError(t("profileEdit.profileLoadError") + "\n" + parsed.message);
-        // let errLines = `${t("profileEdit.profileLoadError")}\n${parsed?.message ?? ""}`.split(/\r?\n/).map(s => s.trim()).filter(Boolean)
-        /*
-        setErrorLines(`${t("profileEdit.profileLoadError")}\n${String(parsed?.message ?? "")}`
-          .split(/->|\r?\n/)
-          .map(s => s.replace(/^[\s:>\-]+/, "").trim())
-          .filter(Boolean));
-        */
+        setError(t("profileEdit.profileLoadError") + "\n" + parsed.message);
         if (!alive) return;
       }
     })();
@@ -83,20 +76,13 @@ export default function ProfileEdit() {
       navigate("/profile-view");
     } catch (err: any) {
       const parsed = extractApiError(err as unknown);
-      // setError(t("profileEdit.saveFailed") + "\n" + parsed.message);
-      let error_text = t("profileEdit.saveFailed") + "\n" + parsed.message
-      {<ErrorAlert title={t("profileEdit.saveFailed")} message={error_text} />}
-      // setErrorLines(t("profileEdit.saveFailed") + "\n" + parsed.message);
-      /*
-      setErrorLines(`${t("profileEdit.saveFailed")}\n${String(parsed?.message ?? "")}`
-          .split(/->|\r?\n/)
-          .map(s => s.replace(/^[\s:>\-]+/, "").trim())
-          .filter(Boolean));
-      */
+      setError(t("profileEdit.saveFailed") + "\n" + parsed.message);
     }
   }
 
-  if (error) return <div className="card p-4 text-red-600">{error}</div>;
+  // if (error) return <div className="card p-4 text-red-600">{error}</div>; // not pretty error displaying
+  if (loading) return <div className="card p-4">{t("users.loading")}</div>;
+  if (error) return <ErrorAlert message={error} />;
   if (!data) return <div className="card p-4">{t("users.loading")}</div>;
 
   const mediaBase = (import.meta.env.VITE_API_URL ?? "http://localhost:8000/api/v1").replace(/\/api\/v1$/, "");
