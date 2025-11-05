@@ -14,7 +14,7 @@ It demonstrates modern JWT auth with runtime tuning, profile management, Excel i
 ## ℹ️ Info
 
 - **Stable version V1**: https://github.com/inartov555/user_hub_web_app/tree/version_1_nov_05_2025
-- UI & API tests for this test website are currently under development (so no ready stable version yet for automation tests in this repo)
+- UI & API tests (non-unit tests) for this test website are currently under development (so no ready stable version yet for automation tests in this repo)
 
 ---
 
