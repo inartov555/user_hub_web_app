@@ -67,7 +67,8 @@
     "updated": "Päivitetty:",
     "result": "Tulos",
     "importSuccessful": "Tuonti valmistui onnistuneesti",
-    "selectedFile": "Valittu:"
+    "selectedFile": "Valittu:",
+    "excelImportFailure": "Excel-tiedoston lähetysvirhe:"
   },
   "profileEdit": {
     "editProfile": "Muokkaa profiilia",

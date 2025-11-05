@@ -67,7 +67,8 @@
     "updated": "Оновлено:",
     "result": "Результат",
     "importSuccessful": "Імпорт успішно завершено",
-    "selectedFile": "Вибрано:"
+    "selectedFile": "Вибрано:",
+    "excelImportFailure": "Помилка завантаження файлу Excel:"
   },
   "profileEdit": {
     "editProfile": "Редагувати профіль",

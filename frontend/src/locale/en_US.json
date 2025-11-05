@@ -67,7 +67,8 @@
     "updated": "Updated:",
     "result": "Result",
     "importSuccessful": "Import completed successfully.",
-    "selectedFile": "Selected:"
+    "selectedFile": "Selected:",
+    "excelImportFailure": "Excel upload failure:"
   },
   "profileEdit": {
     "editProfile": "Edit profile",

@@ -67,7 +67,8 @@
     "updated": "Uuendatud:",
     "result": "Tulemus",
     "importSuccessful": "Import lõpetati edukalt",
-    "selectedFile": "Valitud:"
+    "selectedFile": "Valitud:",
+    "excelImportFailure": "Exceli faili üleslaadimise viga:"
   },
   "profileEdit": {
     "editProfile": "Muuda profiili",

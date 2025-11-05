@@ -67,7 +67,8 @@
     "updated": "Aktualizováno:",
     "result": "Výsledek",
     "importSuccessful": "Import byl úspěšně dokončen",
-    "selectedFile": "Vybráno:"
+    "selectedFile": "Vybráno:",
+    "excelImportFailure": "Chyba nahrávání souboru Excel:"
   },
   "profileEdit": {
     "editProfile": "Upravit profil",

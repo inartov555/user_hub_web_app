@@ -67,7 +67,8 @@
     "updated": "Actualizado:",
     "result": "Resultado",
     "importSuccessful": "La importación finalizó correctamente",
-    "selectedFile": "Seleccionado:"
+    "selectedFile": "Seleccionado:",
+    "excelImportFailure": "Error al cargar el archivo de Excel:"
   },
   "profileEdit": {
     "editProfile": "Editar perfil",
