@@ -134,5 +134,9 @@
   "lightDarkThemeToggle": {
     "light": "Light",
     "dark": "Dark"
+  },
+  "passwordComponent": {
+    "hide": "Hide",
+    "show": "Show"
   }
 }

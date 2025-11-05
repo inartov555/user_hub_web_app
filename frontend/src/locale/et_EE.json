@@ -134,5 +134,9 @@
   "lightDarkThemeToggle": {
     "light": "Hele",
     "dark": "Tume"
+  },
+  "passwordComponent": {
+    "hide": "Peida",
+    "show": "Kuva"
   }
 }

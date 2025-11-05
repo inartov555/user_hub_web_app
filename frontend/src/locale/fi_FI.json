@@ -134,5 +134,9 @@
   "lightDarkThemeToggle": {
     "light": "Vaalea",
     "dark": "Tumma"
+  },
+  "passwordComponent": {
+    "hide": "Piilota",
+    "show": "Näytä"
   }
 }
