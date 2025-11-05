@@ -6,14 +6,14 @@ type Props = {
 };
 
 function splitLines(raw: unknown): string[] {
-  // Split by '\n'
+  // Split by '\n', preserving spaces
   const normalized = String(raw ?? "")
-    .replace(/\u00A0/g, " ")
-    .replace(/\\n/g, "\n");   // handle literal "\n"
+    .replace(/\u00A0/g, " ")  // NBSP -> space
+    .replace(/\\n/g, "\n");   // literal "\n" -> real newline
   return normalized
-    .split(/\r?\n/)           // works for \n and Windows \r\n
-    .map(s => s.replace(/[ \t]+/g, " ").trim())
-    .filter(Boolean);
+    .split(/\r?\n/)           // split by newline
+    .map(s => s.replace(/\t/g, "    ").trimEnd()) // keep spaces; expand tabs if you want
+    .filter(line => line.length > 0);
 }
 
 export default function ErrorAlert({ message, title }: Props) {

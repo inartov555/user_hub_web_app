@@ -68,7 +68,8 @@
     "result": "Tulos",
     "importSuccessful": "Tuonti valmistui onnistuneesti",
     "selectedFile": "Valittu:",
-    "excelImportFailure": "Excel-tiedoston lähetysvirhe:"
+    "excelImportFailure": "Excel-tiedoston lähetysvirhe:",
+    "templateDownloadFailed": "Mallin lataus epäonnistui:"
   },
   "profileEdit": {
     "editProfile": "Muokkaa profiilia",

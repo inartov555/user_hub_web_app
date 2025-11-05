@@ -68,7 +68,8 @@
     "result": "Výsledek",
     "importSuccessful": "Import byl úspěšně dokončen",
     "selectedFile": "Vybráno:",
-    "excelImportFailure": "Chyba nahrávání souboru Excel:"
+    "excelImportFailure": "Chyba nahrávání souboru Excel:",
+    "templateDownloadFailed": "Nepodařilo se stáhnout šablonu:"
   },
   "profileEdit": {
     "editProfile": "Upravit profil",

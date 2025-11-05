@@ -39,7 +39,7 @@ export default function ExcelImportPanel() {
 
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
-    if (!file || submitting) return;
+    // if (!file || submitting) return;
     setSubmitting(true);
     setMessage(null);
     setSummary(null);
@@ -61,9 +61,8 @@ export default function ExcelImportPanel() {
       setFile(null);
       setInputKey((k) => k + 1);
     } catch (err: any) {
-      setMessage(err.message || "Import failed");
       const parsed = extractApiError(err as unknown);
-      setError(`Excel upload failure: ${parsed.message}`);
+      setError(`${t("excelImport.excelImportFailure")} ${parsed.message}`);
     } finally {
       setSubmitting(false);
     }
@@ -72,7 +71,7 @@ export default function ExcelImportPanel() {
   async function downloadTemplate(e: React.MouseEvent<HTMLButtonElement>) {
     e.preventDefault();
     try {
-      const resp = await api.get(`/import-excel/`, {
+      const resp = await api.get(`/import-excel1/`, {
         headers: accessToken ? { Authorization: `Bearer ${accessToken}`, "Content-Type": `multipart/form-data` } : undefined,
         responseType: "blob",
       });
@@ -86,9 +85,8 @@ export default function ExcelImportPanel() {
       a.remove();
       window.URL.revokeObjectURL(url);
     } catch (err) {
-      setMessage((err as Error).message || "Failed to download template");
       const parsed = extractApiError(err as unknown);
-      setError(`Excel template download failure: ${parsed.message}`);
+      setError(`${t("excelImport.templateDownloadFailed")} ${parsed.message}`);
     }
   }
 
@@ -111,6 +109,7 @@ export default function ExcelImportPanel() {
           <div className="text-sm text-gray-600 dark:text-slate-300 mt-1">{t("excelImport.selectedFile")} {file.name}</div>
         )}
 
+        {error && <p className="text-red-600 text-sm whitespace-pre-line">{error}</p>}
         <div className="flex gap-2">
           <button id="importTemplate" className="px-4 py-2 rounded-xl bg-brand-600 text-white hover:bg-brand-700
               focus:outline-none focus:ring-2 focus:ring-brand-500

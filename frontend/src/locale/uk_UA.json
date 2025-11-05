@@ -68,7 +68,8 @@
     "result": "Результат",
     "importSuccessful": "Імпорт успішно завершено",
     "selectedFile": "Вибрано:",
-    "excelImportFailure": "Помилка завантаження файлу Excel:"
+    "excelImportFailure": "Помилка завантаження файлу Excel:",
+    "templateDownloadFailed": "Не вдалося завантажити шаблон:"
   },
   "profileEdit": {
     "editProfile": "Редагувати профіль",
