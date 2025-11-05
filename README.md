@@ -167,7 +167,7 @@ Use the example file at `test_data/import_template_EXAMPLE.xlsx` as a template.
 
 ---
 
-## 🧪 Testing
+## 🧪 Unit Tests
 
 ```bash
 # backend
