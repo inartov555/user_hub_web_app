@@ -42,8 +42,9 @@ export default function UserDeleteConfirm() {
     setError(null);
     try {
       // Try bulk endpoint first
-      const bulk = await api.post("/users/bulk-delete/", { ids }, { validateStatus: () => true });
+      const bulk = await api.post("/users/bulk-delete/", { ids }, { validateStatus: () => false });
 
+      // Fallback retry user deletion, set validateStatus to true when you need it
       if (bulk.status > 204) {
         const parsed = extractApiError(bulk);
         setError(prev => (prev ? `${prev}` : "") + `${t("userDeleteConfirm.failedToDeleteSelectedUsers")}\n\n`);

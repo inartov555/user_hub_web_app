@@ -39,7 +39,6 @@ export default function ExcelImportPanel() {
 
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
-    // if (!file || submitting) return;
     setSubmitting(true);
     setMessage(null);
     setSummary(null);
