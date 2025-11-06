@@ -44,7 +44,7 @@ def ensure_runtime(api_url: str):
     """
     try:
         requests.get(urljoin(api_url + "/", "system/runtime-auth/"), timeout=10)
-    except Timeout:
+    except requests.exceptions.Timeout:
         pass
 
 
