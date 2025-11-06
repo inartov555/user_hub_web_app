@@ -27,7 +27,7 @@ class ProfileEditPage(BasePage):
     """
     Profile Edit page
     """
-    def __init__(self, page: Page, base_url: str):
+    def __init__(self, page: Page, base_url: str):  # pylint: disable=useless-parent-delegation
         super().__init__(page, base_url)
 
     def open(self) -> None:
