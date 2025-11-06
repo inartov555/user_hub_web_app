@@ -7,7 +7,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: backend
+        working-directory: users_app/backend
     strategy:
       matrix:
         python-version: ["3.12"]
@@ -21,7 +21,7 @@ jobs:
         python-version: ${{ matrix.python-version }}
         cache: 'pip'
         cache-dependency-path: |
-            backend/requirements.txt
+            users_app/backend/requirements.txt
 
     - name: Install dependencies
       run: |
