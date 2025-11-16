@@ -1,29 +1,27 @@
-FROM mcr.microsoft.com/playwright/python:v1.55.0-jammy
+"""Dockerfile for Playwright-based UI tests."""
+FROM mcr.microsoft.com/playwright/python:v1.55.0-noble
 
-# Saner Python & pip defaults
-ENV PYTHONDONTWRITEBYTECODE=1 \
-    PYTHONUNBUFFERED=1 \
-    PIP_NO_CACHE_DIR=1
+WORKDIR /app
 
-# Copy the app
-COPY . /tests
+# Copy backend requirements first (Django + DRF) and install them.
+COPY backend/requirements.txt backend/requirements.txt
+RUN pip install --no-cache-dir -r backend/requirements.txt
 
-WORKDIR /tests
+# Copy UI test requirements and install them.
+COPY ui_tests/requirements.txt ui_tests/requirements.txt
+RUN pip install --no-cache-dir -r ui_tests/requirements.txt
 
-RUN --mount=type=cache,target=.cache/pip \
-    python -m pip install -U pip && \
-    pip install -r requirements.txt
+# Install Playwright browsers explicitly (the base image contains browser deps).
+RUN python -m playwright install --with-deps
 
+# Copy the full repository (backend, frontend, ui_tests, etc.).
+COPY . .
 
-# Ensure Xvfb is available for headed runs under a virtual display
-USER root
-RUN apt-get update && apt-get install -y --no-install-recommends xvfb && \
-    rm -rf /var/lib/apt/lists/*
+ENV UI_BASE_URL=http://frontend
+ENV UI_BASE_PORT=80
+ENV BACKEND_API_BASE=http://backend:8000/api/v1
+ENV DJANGO_SETTINGS_MODULE=core.settings
+ENV PYTHONUNBUFFERED=1
 
-# Ensure non-root user (provided by the Playwright base image) owns the workspace
-RUN chown -R pwuser:pwuser /tests
-USER pwuser
-
-# Default behavior: run the tests suite (with a virtual display)
-CMD ["bash", "-lc", "xvfb-run -a -s '-screen 0 1920x1080x24' pytest -q tests"]  # headless = 0
-# CMD ["bash", "-lc", "pytest -q"]  # headless = 1
+# Wait for the frontend to be up, then run pytest.
+CMD ["bash", "ui_tests/run_ui_tests.sh"]
