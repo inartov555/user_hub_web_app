@@ -24,6 +24,9 @@ from pages.login_page import LoginPage
 from pages.users_table_page import UsersTablePage
 
 
+log = Logger(__name__)
+
+
 @pytest.fixture(autouse=True, scope="session")
 def add_loggers():
     """
