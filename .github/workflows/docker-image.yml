@@ -3,18 +3,8 @@ name: Docker CI
 on:
   push:
     branches: [ "main" ]
-    paths:
-      - "users_app/backend/**"
-      - "users_app/frontend/**"
-      - "ui_tests_pw/**"
-      - ".github/workflows/docker-image.yml"
   pull_request:
     branches: [ "main" ]
-    paths:
-      - "users_app/backend/**"
-      - "users_app/frontend/**"
-      - "ui_tests_pw/**"
-      - ".github/workflows/docker-image.yml"
   workflow_dispatch:
 
 jobs:
