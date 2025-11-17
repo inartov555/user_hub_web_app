@@ -7,3 +7,4 @@ allure-pytest>=2.13.5
 python-dotenv>=1.0.1
 requests>=2.32.3
 Django>=5.0,<6
+pytest-html
