@@ -20,6 +20,7 @@ from utils.theme import Theme, set_theme
 from utils.localization import set_locale
 from utils.auth import ensure_regular_user
 from utils.file_utils import FileUtils
+from utils.app_config import AppConfig
 from utils.logger.logger import Logger
 from pages.login_page import LoginPage
 from pages.users_table_page import UsersTablePage
@@ -83,7 +84,8 @@ def app_config(pytestconfig) -> AppConfig:
     result_dict["username"] = cfg.get("pytest", "username")
     result_dict["password"] = cfg.get("pytest", "password")
     validate_app_config_params(**result_dict)
-    result_dict["password"] = decrypt(result_dict.get("password"))
+    # result_dict["password"] = decrypt(result_dict.get("password"))
+    result_dict["password"] = result_dict.get("password")
     return AppConfig(**result_dict)
 
 
