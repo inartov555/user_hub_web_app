@@ -23,7 +23,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends xvfb && \
 # Ensure non-root user (provided by the Playwright base image) owns the workspace
 RUN chown -R pwuser:pwuser /tests
 USER pwuser
-INTENTIONAL_ERROR_TO_CHECK_GITHUB_DOCKER_ACTION
 
 # Default behavior: run the tests suite (with a virtual display)
 CMD ["bash", "-lc", "xvfb-run -a -s '-screen 0 1920x1080x24' pytest -q tests"]  # headless = 0
