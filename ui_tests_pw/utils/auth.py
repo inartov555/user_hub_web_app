@@ -1,8 +1,8 @@
-"""Helpers for logging in and preparing test users."""
+"""
+Helpers for logging in and preparing test users.
+"""
 
 from __future__ import annotations
-
-import os
 from typing import Dict, Tuple
 
 import requests
@@ -10,10 +10,8 @@ from playwright.sync_api import Page
 
 from .theme import set_theme
 from .localization import set_locale
-from ..config import (
+from config import (
     BACKEND_API_BASE,
-    DEFAULT_ADMIN_USERNAME,
-    DEFAULT_ADMIN_PASSWORD,
     DEFAULT_REGULAR_USERNAME,
     DEFAULT_REGULAR_PASSWORD,
     frontend_url,
@@ -21,7 +19,8 @@ from ..config import (
 
 
 def api_login(username: str, password: str) -> Tuple[str, str]:
-    """Perform a backend JWT login via the Djoser endpoint.
+    """
+    Perform a backend JWT login via the Djoser endpoint.
 
     Args:
         username: Username to authenticate with.
@@ -41,7 +40,8 @@ def api_login(username: str, password: str) -> Tuple[str, str]:
 
 
 def ensure_regular_user() -> None:
-    """Ensure that the default regular user exists.
+    """
+    Ensure that the default regular user exists.
 
     The assignment mentions that ``test1`` is created *after* deploying
     the website. To make tests robust, this helper:
@@ -77,7 +77,8 @@ def login_via_ui(
     theme: str | None = None,
     locale_code: str | None = None,
 ) -> None:
-    """Log in via the UI login page, optionally setting theme and locale.
+    """
+    Log in via the UI login page, optionally setting theme and locale.
 
     Args:
         page: Playwright page instance.

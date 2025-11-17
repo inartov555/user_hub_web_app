@@ -1,14 +1,16 @@
-"""Utility helpers for handling localization in UI tests."""
+"""
+Utility helpers for handling localization in UI tests.
+"""
 
 from __future__ import annotations
-
 from typing import Iterable, List
 
 from playwright.sync_api import Page
 
 
 def set_locale(page: Page, locale_code: str) -> None:
-    """Set the current UI locale via the navbar dropdown.
+    """
+    Set the current UI locale via the navbar dropdown.
 
     Args:
         page: Playwright page instance.
@@ -18,7 +20,9 @@ def set_locale(page: Page, locale_code: str) -> None:
 
 
 def get_visible_locales(page: Page) -> List[str]:
-    """Return the list of locale codes that are visible in the navbar dropdown."""
+    """
+    Return the list of locale codes that are visible in the navbar dropdown.
+    """
     options = page.locator("#locale option")
     values: List[str] = []
     for i in range(options.count()):
@@ -27,7 +31,8 @@ def get_visible_locales(page: Page) -> List[str]:
 
 
 def assert_locale_visible(page: Page, expected: Iterable[str]) -> None:
-    """Assert that the provided locale codes exist in the dropdown options.
+    """
+    Assert that the provided locale codes exist in the dropdown options.
 
     Args:
         page: Playwright page instance.
