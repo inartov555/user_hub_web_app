@@ -18,6 +18,7 @@ from config import (
 from utils.theme import Theme, set_theme
 from utils.localization import set_locale
 from utils.auth import ensure_regular_user
+from utils.file_utils import FileUtils
 from utils.logger.logger import Logger
 from pages.login_page import LoginPage
 from pages.users_table_page import UsersTablePage
