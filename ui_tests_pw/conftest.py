@@ -18,6 +18,7 @@ from utils.theme import Theme, set_theme
 from utils.localization import set_locale
 from utils.auth import ensure_regular_user
 from pages.login_page import LoginPage
+from pages.users_table_page import UsersTablePage
 
 
 @pytest.fixture(scope="session")
@@ -44,8 +45,8 @@ def ui_locale_fixture(request: pytest.FixtureRequest) -> str:
     return request.param  # type: ignore[return-value]
 
 
-@pytest.fixture(scope="function")
-def logged_in_admin(page: Page, ui_theme: Theme, ui_locale: str) -> Page:
+@pytest.fixture(name="logged_in_admin", scope="function")
+def logged_in_admin_fixture(page: Page, ui_theme: Theme, ui_locale: str) -> Page:
     """
     Return a Playwright page already logged in as the admin user.
     """

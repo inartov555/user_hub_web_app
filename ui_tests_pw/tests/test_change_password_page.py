@@ -9,8 +9,7 @@ from playwright.sync_api import Page, expect
 
 from pages.change_password_page import ChangePasswordPage
 from pages.users_table_page import UsersTablePage
-from utils.theme import Theme, set_theme
-from utils.localization import set_locale
+from utils.theme import Theme
 from config import DEFAULT_REGULAR_USERNAME
 
 
@@ -19,10 +18,12 @@ from config import DEFAULT_REGULAR_USERNAME
 @pytest.mark.localization
 @pytest.mark.parametrize("theme", ["light", "dark"])
 @pytest.mark.parametrize("locale_code", ["en-US", "uk-UA"])
-def test_admin_can_open_change_password_for_user(logged_in_admin: Page,
-                                                 theme: Theme,
+def test_admin_can_open_change_password_for_user(logged_in_admin: Page,  # pylint: disable=unused-argument
+                                                 theme: Theme,  # pylint: disable=unused-argument
+                                                 page: Page,
                                                  admin_users_page: UsersTablePage,
-                                                 locale_code: str) -> None:
+                                                 locale_code: str  # pylint: disable=unused-argument
+                                                ) -> None:
     """
     Admin should be able to navigate to the change-password page for a user.
     """

@@ -9,8 +9,7 @@ from playwright.sync_api import Page, expect
 
 from pages.user_delete_confirm_page import UserDeleteConfirmPage
 from pages.users_table_page import UsersTablePage
-from utils.theme import Theme, set_theme
-from utils.localization import set_locale
+from utils.theme import Theme
 
 
 @pytest.mark.admin
@@ -18,10 +17,12 @@ from utils.localization import set_locale
 @pytest.mark.localization
 @pytest.mark.parametrize("theme", ["light", "dark"])
 @pytest.mark.parametrize("locale_code", ["en-US", "uk-UA"])
-def test_admin_can_navigate_to_delete_confirm(logged_in_admin: Page,
-                                              theme: Theme,
+def test_admin_can_navigate_to_delete_confirm(logged_in_admin: Page,  # pylint: disable=unused-argument
+                                              theme: Theme,  # pylint: disable=unused-argument
+                                              page: Page,
                                               admin_users_page: UsersTablePage,  # pylint: disable=unused-argument
-                                              locale_code: str) -> None:
+                                              locale_code: str  # pylint: disable=unused-argument
+                                             ) -> None:
     """
     Admin should be able to select users and reach the delete-confirm page.
     """
