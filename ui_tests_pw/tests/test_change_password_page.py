@@ -1,15 +1,17 @@
-"""Tests for the Change Password page."""
+"""
+Tests for the Change Password page.
+"""
 
 from __future__ import annotations
 
 import pytest
 from playwright.sync_api import Page, expect
 
-from ..pages.change_password_page import ChangePasswordPage
-from ..pages.users_table_page import UsersTablePage
-from ..utils.theme import Theme, set_theme
-from ..utils.localization import set_locale
-from ..config import DEFAULT_REGULAR_USERNAME
+from pages.change_password_page import ChangePasswordPage
+from pages.users_table_page import UsersTablePage
+from utils.theme import Theme, set_theme
+from utils.localization import set_locale
+from config import DEFAULT_REGULAR_USERNAME
 
 
 @pytest.mark.admin
@@ -18,7 +20,9 @@ from ..config import DEFAULT_REGULAR_USERNAME
 @pytest.mark.parametrize("theme", ["light", "dark"])
 @pytest.mark.parametrize("locale_code", ["en-US", "uk-UA"])
 def test_admin_can_open_change_password_for_user(logged_in_admin: Page, theme: Theme, locale_code: str) -> None:
-    """Admin should be able to navigate to the change-password page for a user."""
+    """
+    Admin should be able to navigate to the change-password page for a user.
+    """
     page = logged_in_admin
     set_theme(page, theme)
     set_locale(page, locale_code)
@@ -34,7 +38,9 @@ def test_admin_can_open_change_password_for_user(logged_in_admin: Page, theme: T
 
 @pytest.mark.regular_user
 def test_regular_user_cannot_change_other_users_password(logged_in_regular: Page) -> None:
-    """Regular user should not be able to access another user's change-password page."""
+    """
+    Regular user should not be able to access another user's change-password page.
+    """
     page = logged_in_regular
     cp = ChangePasswordPage(page)
     # Attempt to access a low, probably non-self id.

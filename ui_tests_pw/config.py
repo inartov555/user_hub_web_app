@@ -1,4 +1,5 @@
-"""Global configuration for the UI automation framework.
+"""
+Global configuration for the UI automation framework.
 
 This module centralizes configuration values so that tests and page objects
 can rely on a single source of truth for URLs, credentials and timeouts.
@@ -22,7 +23,8 @@ DEFAULT_REGULAR_PASSWORD: Final[str] = os.environ.get("REGULAR_PASSWORD", "chang
 
 
 def frontend_url(path: str = "/") -> str:
-    """Build a full frontend URL for the given path.
+    """
+    Build a full frontend URL for the given path.
 
     Args:
         path: Relative path, e.g. "/login" or "users".

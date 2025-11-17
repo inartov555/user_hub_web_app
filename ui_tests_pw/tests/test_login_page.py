@@ -5,10 +5,10 @@ from __future__ import annotations
 import pytest
 from playwright.sync_api import Page, expect
 
-from ..pages.login_page import LoginPage
-from ..utils.theme import Theme
-from ..utils.localization import set_locale
-from ..config import (
+from pages.login_page import LoginPage
+from utils.theme import Theme
+from utils.localization import set_locale
+from config import (
     DEFAULT_ADMIN_USERNAME,
     DEFAULT_ADMIN_PASSWORD,
     DEFAULT_REGULAR_USERNAME,
