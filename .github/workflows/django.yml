@@ -3,12 +3,19 @@ name: Django CI
 on:
   push:
     branches: [ "main" ]
+    paths:
+      - "users_app/backend/**"
+      - "ui_tests_pw/**"
   pull_request:
     branches: [ "main" ]
+    paths:
+      - "users_app/backend/**"
+      - "ui_tests_pw/**"
 
 jobs:
-  build:
 
+  backend:
+    name: Build backend
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -65,4 +72,35 @@ jobs:
           else:
             raise SystemExit("Postgres never became reachable on 127.0.0.1:5432")
           PY
+          python manage.py test --noinput -v 2
+
+  ui_tests_pw:
+    name: Build ui_tests_pw
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ui_tests_pw
+    strategy:
+      max-parallel: 4
+      matrix:
+        python-version: ["3.12"]
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set Up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v5
+      with:
+        python-version: ${{ matrix.python-version }}
+        cache: pip
+        cache-dependency-path: ui_tests_pw/requirements.txt
+
+    - name: Install Dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+
+    - name: Run Unit Tests
+      run: |
+          # wait for service health in case it’s still warming up
           python manage.py test --noinput -v 2
