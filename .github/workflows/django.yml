@@ -3,14 +3,8 @@ name: Django CI
 on:
   push:
     branches: [ "main" ]
-    paths:
-      - "users_app/backend/**"
-      - "ui_tests_pw/**"
   pull_request:
     branches: [ "main" ]
-    paths:
-      - "users_app/backend/**"
-      - "ui_tests_pw/**"
 
 jobs:
 
