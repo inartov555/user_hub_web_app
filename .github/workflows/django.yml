@@ -8,7 +8,7 @@ on:
 
 jobs:
 
-  backend:
+  backend_users_app:
     runs-on: ubuntu-latest
     defaults:
       run:
