@@ -1,16 +1,9 @@
-"""Python dependencies for UI automation framework."""
-
-# Core test stack
-pytest>=8.0
-pytest-playwright>=0.5
-pytest-xdist>=3.6
-
-# Browser automation
-playwright>=1.55
-
-# Optional – Django is part of the stack and can be used
-# from the backend project for localization cross-checks.
+pytest>=8.0.0
+pytest-playwright>=0.5.0
+playwright>=1.47.0
+pytest-xdist>=3.6.1
+pytest-rerunfailures>=14.0
+allure-pytest>=2.13.5
+python-dotenv>=1.0.1
+requests>=2.32.3
 Django>=5.0,<6
-
-# Utility
-python-dotenv>=1.0
