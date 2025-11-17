@@ -4,6 +4,7 @@ conftest.py
 
 from __future__ import annotations
 import os
+from configparser import ConfigParser, ExtendedInterpolation
 
 import pytest
 from playwright.sync_api import Page
