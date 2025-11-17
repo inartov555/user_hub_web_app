@@ -149,6 +149,13 @@ def browser_setup(playwright, request):
     browser.close()
 
 
+def pytest_addoption(parser):
+    """
+    Supported options
+    """
+    parser.addoption("--ini-config", action="store", default="pytest.ini", help="The path to the *.ini config file")
+
+
 @pytest.fixture(scope="session")
 def base_url() -> str:
     """
