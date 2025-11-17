@@ -1,13 +1,15 @@
-"""Tests for the admin Settings page."""
+"""
+Tests for the admin Settings page.
+"""
 
 from __future__ import annotations
 
 import pytest
 from playwright.sync_api import Page, expect
 
-from ..pages.settings_page import SettingsPage
-from ..utils.theme import Theme, set_theme
-from ..utils.localization import set_locale
+from pages.settings_page import SettingsPage
+from utils.theme import Theme, set_theme
+from utils.localization import set_locale
 
 
 @pytest.mark.admin
@@ -16,7 +18,9 @@ from ..utils.localization import set_locale
 @pytest.mark.parametrize("theme", ["light", "dark"])
 @pytest.mark.parametrize("locale_code", ["en-US", "uk-UA"])
 def test_settings_page_renders_for_admin(logged_in_admin: Page, theme: Theme, locale_code: str) -> None:
-    """Admin user can open the settings page under multiple themes/locales."""
+    """
+    Admin user can open the settings page under multiple themes/locales.
+    """
     page = logged_in_admin
     set_theme(page, theme)
     set_locale(page, locale_code)
@@ -27,7 +31,9 @@ def test_settings_page_renders_for_admin(logged_in_admin: Page, theme: Theme, lo
 
 @pytest.mark.regular_user
 def test_settings_page_not_accessible_for_regular_user(logged_in_regular: Page) -> None:
-    """Regular user should not be able to access the settings page."""
+    """
+    Regular user should not be able to access the settings page.
+    """
     page = logged_in_regular
     settings = SettingsPage(page)
     settings.open()

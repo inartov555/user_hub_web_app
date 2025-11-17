@@ -1,13 +1,15 @@
-"""Tests for the Profile edit page."""
+"""
+Tests for the Profile edit page.
+"""
 
 from __future__ import annotations
 
 import pytest
 from playwright.sync_api import Page
 
-from ..pages.profile_edit_page import ProfileEditPage
-from ..utils.theme import Theme, set_theme
-from ..utils.localization import set_locale
+from pages.profile_edit_page import ProfileEditPage
+from utils.theme import Theme, set_theme
+from utils.localization import set_locale
 
 
 @pytest.mark.regular_user
@@ -16,7 +18,9 @@ from ..utils.localization import set_locale
 @pytest.mark.parametrize("theme", ["light", "dark"])
 @pytest.mark.parametrize("locale_code", ["en-US", "uk-UA"])
 def test_profile_edit_renders_and_can_save(logged_in_regular: Page, theme: Theme, locale_code: str) -> None:
-    """Regular user should be able to edit and save their profile."""
+    """
+    Regular user should be able to edit and save their profile.
+    """
     page = logged_in_regular
     set_theme(page, theme)
     set_locale(page, locale_code)
@@ -31,7 +35,9 @@ def test_profile_edit_renders_and_can_save(logged_in_regular: Page, theme: Theme
 
 @pytest.mark.regular_user
 def test_profile_edit_cancel_returns_to_profile_view(logged_in_regular: Page) -> None:
-    """Cancel button should navigate back to profile view."""
+    """
+    Cancel button should navigate back to profile view.
+    """
     edit = ProfileEditPage(logged_in_regular)
     edit.open()
     edit.cancel()

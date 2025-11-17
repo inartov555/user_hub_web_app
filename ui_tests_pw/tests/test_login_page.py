@@ -1,4 +1,6 @@
-"""Tests for the Login page."""
+"""
+Tests for the Login page.
+"""
 
 from __future__ import annotations
 
@@ -21,7 +23,9 @@ from config import (
 @pytest.mark.parametrize("theme", ["light", "dark"])
 @pytest.mark.parametrize("locale_code", ["en-US", "uk-UA"])
 def test_login_page_renders_in_theme_and_locale(page: Page, theme: Theme, locale_code: str) -> None:
-    """Verify that the login page renders correctly for each theme and locale combination."""
+    """
+    Verify that the login page renders correctly for each theme and locale combination.
+    """
     login = LoginPage(page)
     login.open()
     from ..utils.theme import set_theme as _set_theme
@@ -40,7 +44,9 @@ def test_login_page_renders_in_theme_and_locale(page: Page, theme: Theme, locale
     ],
 )
 def test_login_invalid_credentials_show_error(page: Page, username: str, password: str) -> None:
-    """Invalid credentials should keep the user on the login page and show an error."""
+    """
+    Invalid credentials should keep the user on the login page and show an error.
+    """
     login = LoginPage(page)
     login.open()
     login.fill_credentials(username, password)
@@ -51,7 +57,9 @@ def test_login_invalid_credentials_show_error(page: Page, username: str, passwor
 
 @pytest.mark.regular_user
 def test_regular_user_can_login_and_redirects_to_users(page: Page) -> None:
-    """Regular test user should be able to log in and land on /users."""
+    """
+    Regular test user should be able to log in and land on /users.
+    """
     login = LoginPage(page)
     login.open()
     login.fill_credentials(DEFAULT_REGULAR_USERNAME, DEFAULT_REGULAR_PASSWORD)
@@ -62,7 +70,9 @@ def test_regular_user_can_login_and_redirects_to_users(page: Page) -> None:
 
 @pytest.mark.admin
 def test_admin_can_login_and_see_users_nav(page: Page) -> None:
-    """Admin user should log in successfully and see the Users nav item."""
+    """
+    Admin user should log in successfully and see the Users nav item.
+    """
     login = LoginPage(page)
     login.open()
     login.fill_credentials(DEFAULT_ADMIN_USERNAME, DEFAULT_ADMIN_PASSWORD)
@@ -73,7 +83,9 @@ def test_admin_can_login_and_see_users_nav(page: Page) -> None:
 
 @pytest.mark.localization
 def test_login_links_to_signup_and_reset_password(page: Page) -> None:
-    """Login page should expose links to signup and reset-password pages."""
+    """
+    Login page should expose links to signup and reset-password pages.
+    """
     login = LoginPage(page)
     login.open()
     page.get_by_role("link", name="Create account").click()
