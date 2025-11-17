@@ -18,7 +18,7 @@ defaults:
     working-directory: users_app/frontend
 
 jobs:
-  frontend_users_app:
+  frontend:
     runs-on: ubuntu-latest
 
     strategy:
