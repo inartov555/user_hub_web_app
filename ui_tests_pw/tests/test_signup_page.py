@@ -3,7 +3,6 @@ Tests for the Signup page.
 """
 
 from __future__ import annotations
-
 import uuid
 
 import pytest

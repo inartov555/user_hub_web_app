@@ -3,7 +3,6 @@ Page object for the Users table page.
 """
 
 from __future__ import annotations
-
 from typing import List
 
 from playwright.sync_api import Locator, expect

@@ -3,7 +3,6 @@ Cross-check UI locale dropdown with Django backend configuration.
 """
 
 from __future__ import annotations
-
 from typing import Set
 
 from playwright.sync_api import Page
