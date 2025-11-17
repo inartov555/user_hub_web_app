@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  backend_users_app:
+  backend:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -26,7 +26,7 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
-  frontend_users_app:
+  frontend:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
