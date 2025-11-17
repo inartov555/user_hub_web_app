@@ -8,14 +8,14 @@ from typing import Dict, Tuple
 import requests
 from playwright.sync_api import Page
 
-from .theme import set_theme
-from .localization import set_locale
 from config import (
     BACKEND_API_BASE,
     DEFAULT_REGULAR_USERNAME,
     DEFAULT_REGULAR_PASSWORD,
     frontend_url,
 )
+from .theme import set_theme
+from .localization import set_locale
 
 
 def api_login(username: str, password: str) -> Tuple[str, str]:

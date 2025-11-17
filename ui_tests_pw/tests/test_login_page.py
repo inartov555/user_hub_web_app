@@ -8,7 +8,7 @@ import pytest
 from playwright.sync_api import Page, expect
 
 from pages.login_page import LoginPage
-from utils.theme import Theme
+from utils.theme import Theme, set_theme
 from utils.localization import set_locale
 from config import (
     DEFAULT_ADMIN_USERNAME,
@@ -28,8 +28,7 @@ def test_login_page_renders_in_theme_and_locale(page: Page, theme: Theme, locale
     """
     login = LoginPage(page)
     login.open()
-    from ..utils.theme import set_theme as _set_theme
-    _set_theme(page, theme)
+    set_theme(page, theme)
     set_locale(page, locale_code)
 
     expect(page.locator("#username")).to_be_visible()

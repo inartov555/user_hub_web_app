@@ -7,6 +7,7 @@ from typing import Literal
 
 from playwright.sync_api import Page
 
+
 Theme = Literal["light", "dark"]
 
 

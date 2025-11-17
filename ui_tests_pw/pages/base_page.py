@@ -4,12 +4,10 @@ Base page object with shared helpers.
 
 from __future__ import annotations
 
-from typing import Literal
-
 from playwright.sync_api import Page
 
 from config import frontend_url
-from utils.theme import Theme, get_current_theme, set_theme
+from utils.theme import Theme, set_theme
 from utils.localization import set_locale, get_visible_locales
 
 
