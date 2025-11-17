@@ -50,7 +50,7 @@ else
 fi
 
 # python3 -m pytest -v --tb=short -s --reruns 2 --reruns-delay 2 --ini-config "$INI_CONFIG_FILE" --html=$HOST_ARTIFACTS/test_report_$(date +%Y-%m-%d_%H-%M-%S).html
-python3 -m pytest -v --tb=short -k test_login_success_admin -s -c "$INI_CONFIG_FILE" --html=$HOST_ARTIFACTS/test_report_$(date +%Y-%m-%d_%H-%M-%S).html
+python3 -m pytest -v --tb=short -k test_admin_can_open_change_password_for_user -s -c "$INI_CONFIG_FILE" --html=$HOST_ARTIFACTS/test_report_$(date +%Y-%m-%d_%H-%M-%S).html
 
 #
 #
