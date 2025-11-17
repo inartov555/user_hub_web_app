@@ -74,3 +74,16 @@ def logged_in_regular(page: Page, ui_theme: Theme, ui_locale: str) -> Page:
     login_page.submit()
     page.wait_for_url("**/users")
     return page
+
+
+@pytest.fixture
+def admin_users_page(logged_in_admin: Page, ui_theme: Theme, ui_locale: str) -> UsersTablePage:
+    """
+    Get Users table page
+    """
+    page = logged_in_admin
+    set_theme(page, ui_theme)
+    set_locale(page, ui_locale)
+    users = UsersTablePage(page)
+    users.open()
+    return users

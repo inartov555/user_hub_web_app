@@ -41,7 +41,9 @@ def test_excel_import_page_not_visible_in_nav_for_regular_user(logged_in_regular
 
 
 @pytest.mark.admin
-def test_excel_download_template_does_not_require_file(logged_in_admin: Page) -> None:
+def test_excel_download_template_does_not_require_file(logged_in_admin: Page,
+                                                       tmp_path: os.PathLike[str]  # pylint: disable=unused-argument
+                                                      ) -> None:
     """
     Admin should be able to download the Excel template.
     """

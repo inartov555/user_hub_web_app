@@ -18,15 +18,13 @@ from utils.localization import set_locale
 @pytest.mark.localization
 @pytest.mark.parametrize("theme", ["light", "dark"])
 @pytest.mark.parametrize("locale_code", ["en-US", "uk-UA"])
-def test_admin_can_navigate_to_delete_confirm(logged_in_admin: Page, theme: Theme, locale_code: str) -> None:
+def test_admin_can_navigate_to_delete_confirm(logged_in_admin: Page,
+                                              theme: Theme,
+                                              admin_users_page: UsersTablePage,  # pylint: disable=unused-argument
+                                              locale_code: str) -> None:
     """
     Admin should be able to select users and reach the delete-confirm page.
     """
-    page = logged_in_admin
-    set_theme(page, theme)
-    set_locale(page, locale_code)
-    users = UsersTablePage(page)
-    users.open()
     # Select first row.
     page.locator("tbody tr input[type='checkbox']").first.check()
     page.locator("#deleteUsers").click()

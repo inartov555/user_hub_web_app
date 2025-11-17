@@ -19,17 +19,14 @@ from config import DEFAULT_REGULAR_USERNAME
 @pytest.mark.localization
 @pytest.mark.parametrize("theme", ["light", "dark"])
 @pytest.mark.parametrize("locale_code", ["en-US", "uk-UA"])
-def test_admin_can_open_change_password_for_user(logged_in_admin: Page, theme: Theme, locale_code: str) -> None:
+def test_admin_can_open_change_password_for_user(logged_in_admin: Page,
+                                                 theme: Theme,
+                                                 admin_users_page: UsersTablePage,
+                                                 locale_code: str) -> None:
     """
     Admin should be able to navigate to the change-password page for a user.
     """
-    page = logged_in_admin
-    set_theme(page, theme)
-    set_locale(page, locale_code)
-
-    users = UsersTablePage(page)
-    users.open()
-    users.search_input.fill(DEFAULT_REGULAR_USERNAME)
+    admin_users_page.search_input.fill(DEFAULT_REGULAR_USERNAME)
     page.wait_for_timeout(500)
     # Click first change-password button if visible.
     page.locator("text=Change password").first.click()
