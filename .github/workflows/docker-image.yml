@@ -6,12 +6,14 @@ on:
     paths:
       - "users_app/backend/**"
       - "users_app/frontend/**"
+      - "ui_tests_pw/**"
       - ".github/workflows/docker-image.yml"
   pull_request:
     branches: [ "main" ]
     paths:
       - "users_app/backend/**"
       - "users_app/frontend/**"
+      - "ui_tests_pw/**"
       - ".github/workflows/docker-image.yml"
   workflow_dispatch:
 
@@ -66,7 +68,7 @@ jobs:
       - name: Build ui_tests_pw (no push)
         uses: docker/build-push-action@v6
         with:
-          context: users_app
+          context: ui_tests_pw
           file: users_app/ui_tests_pw/Dockerfile
           push: false
           tags: ${{ github.repository }}-frontend:ci,${{ github.repository }}-frontend:sha-${{ github.sha }}
