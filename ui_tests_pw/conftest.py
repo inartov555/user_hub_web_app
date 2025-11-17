@@ -7,18 +7,18 @@ from typing import Generator
 import pytest
 from playwright.sync_api import Page
 
-from .config import (
-    FRONTEND_API as _UNUSED,  # backward-compat placeholder
+from config import (
+    FRONTEND_API as _UNUSED,
     frontend_url,
     DEFAULT_ADMIN_USERNAME,
     DEFAULT_ADMIN_PASSWORD,
     DEFAULT_REGULAR_USERNAME,
     DEFAULT_REGULAR_PASSWORD,
 )
-from .utils.theme import Theme, set_theme
-from .utils.localization import set_locale
-from .utils.auth import ensure_regular_user, login_via_ui
-from .pages.login_page import LoginPage
+from utils.theme import Theme, set_theme
+from utils.localization import set_locale
+from utils.auth import ensure_regular_user, login_via_ui
+from pages.login_page import LoginPage
 
 
 @pytest.fixture(scope="session")
