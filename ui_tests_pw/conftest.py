@@ -7,7 +7,7 @@ import os
 from configparser import ConfigParser, ExtendedInterpolation
 
 import pytest
-from playwright.sync_api import Page
+from playwright.sync_api import Page, Browser, expect
 
 from config import (
     frontend_url,
