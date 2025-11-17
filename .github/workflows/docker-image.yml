@@ -9,7 +9,6 @@ on:
 
 jobs:
   backend:
-    name: Build backend image
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -28,7 +27,6 @@ jobs:
           cache-to: type=gha,mode=max
 
   frontend:
-    name: Build frontend image
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -47,7 +45,6 @@ jobs:
           cache-to: type=gha,mode=max
 
   ui_tests_pw:
-    name: Build ui_tests_pw image
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
