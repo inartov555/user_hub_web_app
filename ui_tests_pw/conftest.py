@@ -77,7 +77,7 @@ def app_config(pytestconfig) -> AppConfig:
     result_dict["navigation_timeout"] = cfg.getfloat("pytest", "navigation_timeout", fallback=15000.0)
     result_dict["assert_timeout"] = cfg.getfloat("pytest", "assert_timeout", fallback=15000.0)
     result_dict["browser"] = cfg.get("pytest", "browser", fallback="chrome")
-    result_dict["base_url"] = cfg.get("pytest", "base_url", fallback="https://www.instagram.com")
+    result_dict["base_url"] = cfg.get("pytest", "base_url", fallback="http://localhost:5173")
     result_dict["is_headless"] = cfg.getboolean("pytest", "is_headless", fallback=False)
     result_dict["width"] = cfg.getint("pytest", "width", fallback=1920)
     result_dict["height"] = cfg.getint("pytest", "height", fallback=1080)
@@ -142,7 +142,7 @@ def get_browser(playwright, request) -> Browser:
     return browser
 
 
-@pytest.fixture(autouse=True, scope="function")
+@pytest.fixture(autouse=True, name="browser", scope="function")
 def browser_setup(playwright, request):
     """
     Set the browser driver
