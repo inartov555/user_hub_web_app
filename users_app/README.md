@@ -191,10 +191,10 @@ cd frontend && npm run test
 ## ▶️ DEMOs
 
 ### ▶️ Light Theme. Main pages
-![Light Theme. Main pages](https://github.com/inartov555/user_hub_web_app/blob/main/DEMO/Light%20Theme.%20Main%20pages.gif)
+![Light Theme. Main pages](https://github.com/inartov555/user_hub_web_app/blob/main/users_app/DEMO/Light%20Theme.%20Main%20pages.gif)
 
 ### ▶️ Dark Theme. Main pages
-![Dark Theme. Main pages](https://github.com/inartov555/user_hub_web_app/blob/main/DEMO/Dark%20Theme.%20Main%20pages.gif)
+![Dark Theme. Main pages](https://github.com/inartov555/user_hub_web_app/blob/main/users_app/DEMO/Dark%20Theme.%20Main%20pages.gif)
 
 ### ▶️ Localization
-![Localization](https://github.com/inartov555/user_hub_web_app/blob/main/DEMO/Localization.gif)
+![Localization](https://github.com/inartov555/user_hub_web_app/blob/main/users_app/DEMO/Localization.gif)
