@@ -6,8 +6,9 @@
 
 # 💡 Users App
 
-A production‑grade example app with a **Django REST Framework (DRF)** backend and a **React + Vite + TypeScript** SPA frontend.
-It demonstrates modern JWT auth with runtime tuning, profile management, Excel import, online-user stats, i18n, and a clean Tailwind UI.
+- A production‑grade example app with a **Django REST Framework (DRF)** backend and a **React + Vite + TypeScript** SPA frontend.
+- It demonstrates modern JWT auth with runtime tuning, profile management, Excel import, online-user stats, i18n, and a clean Tailwind UI.
+- Created on Oct-10-2025
 
 ---
 
