@@ -1,6 +1,7 @@
 # Users App UI Automation (Pytest + Playwright + Django + Docker)
 
-This folder contains a **UI automation framework** for the attached Users App.
+- This folder contains a **UI automation framework** for the attached Users App.
+- Created on Nov-05-2025
 
 ## Stack
 
