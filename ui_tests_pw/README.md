@@ -22,35 +22,25 @@ From the `users_app` project root (this directory lives inside that repo):
 
 ## How to run
 
-1. Build and start the stack **including tests**:
+1. Start tests
 
-   ```bash
-   docker compose -f docker-compose.yml -f ui_tests/docker-compose.ui-tests.yml up --build --abort-on-container-exit
    ```
+   #     Clearing cache before starting service
+   #   - $1 - true - starting service WITHOUT cached data (allows to start the service faster);
+   #          false - starting the service WITH cache (cache is cleared)
+   #          default = false
+   #
+   #     pytest.ini config file
+   #   - $2 - the path to the *.ini config file, defaults to pytest.ini
 
-   This starts:
-   - Postgres
-   - Django backend (with logging & i18n)
-   - React frontend (served via nginx)
-   - A one-shot **Playwright test container** that waits for the app to be ready and then runs `pytest`.
+   # (1) Defaults to (2)
+   ./run_tests.sh
 
-2. To re-run tests only, after the stack is built:
+   # (2) Run tests using Docker compose (reusing build cache)
+   ./run_tests.sh false pytest.ini
 
-   ```bash
-   docker compose -f docker-compose.yml -f ui_tests/docker-compose.ui-tests.yml run --rm ui-tests
-   ```
-
-3. To run tests locally without Docker (e.g., for IDE debugging):
-
-   ```bash
-   cd ui_tests
-   python -m venv .venv
-   source .venv/bin/activate  # Windows: .venv\Scripts\activate
-   pip install -r requirements.txt
-   playwright install --with-deps
-
-   # Make sure the app is already running at http://localhost:5173
-   pytest --browser chromium
+   # (3) Run tests with a clean image build (no cache)
+   ./run_tests.sh true pytest.ini
    ```
 
 ## Parallel & multi-browser execution
