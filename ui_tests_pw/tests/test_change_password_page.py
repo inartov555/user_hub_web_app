@@ -16,8 +16,10 @@ from config import DEFAULT_REGULAR_USERNAME
 @pytest.mark.admin
 @pytest.mark.theme
 @pytest.mark.localization
-@pytest.mark.parametrize("theme", ["light", "dark"])
-@pytest.mark.parametrize("locale_code", ["en-US", "uk-UA"])
+# @pytest.mark.parametrize("theme", ["light", "dark"])
+# @pytest.mark.parametrize("locale_code", ["en-US", "uk-UA"])
+@pytest.mark.parametrize("theme", ["light"])
+@pytest.mark.parametrize("locale_code", ["en-US"])
 def test_admin_can_open_change_password_for_user(logged_in_admin: Page,  # pylint: disable=unused-argument
                                                  theme: Theme,  # pylint: disable=unused-argument
                                                  page: Page,

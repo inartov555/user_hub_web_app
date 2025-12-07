@@ -12,13 +12,15 @@
 #
 # Exported variables in the setup.sh file: HOST_ARTIFACTS, ROOT_VENV, TEST_VENV, COPIED_PROJECT_PATH
 
-INI_CONFIG_FILE="${1:-pytest.ini}"
-clear_cache="${2:-false}"
+clear_cache="${1:-false}"
+INI_CONFIG_FILE="${2:-pytest.ini}"
 
 set -Eeuo pipefail
 trap cleanup EXIT ERR SIGINT SIGTERM
 
 cleanup() {
+  echo "Cleaning docker setup..."
+  docker compose down -v --remove-orphans
   if [ -n "${VIRTUAL_ENV-}" ] && [ "$(type -t deactivate 2>/dev/null)" = "function" ]; then
     echo "Deactivating venv..."
     deactivate
