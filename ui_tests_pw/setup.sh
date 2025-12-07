@@ -6,7 +6,6 @@
 
 # Consider that this folder is used in the project
 ARTIFACTS_ROOT_FOLDER="TEST1"
-
 REPO="$(pwd)"
 echo "REPO = '$REPO'"
 
@@ -18,7 +17,9 @@ PROJECT_FOLDER_NAME="${REPO##*/}"
 HOST_WORKSPACE="$HOME/$ARTIFACTS_ROOT_FOLDER/workspace"
 # path where artifacts will be stored
 HOST_ARTIFACTS="$HOST_WORKSPACE/artifacts"
-export HOST_ARTIFACTS="$HOST_ARTIFACTS"
+TIMESTAMP_RESULTS="run-$(date +%Y%m%d-%H%M%S)"
+
+export HOST_ARTIFACTS="$HOST_ARTIFACTS/$TIMESTAMP_RESULTS"
 export COPIED_PROJECT_PATH="$HOST_WORKSPACE/$PROJECT_FOLDER_NAME"
 
 echo "Host workspace directory (copied project + logs, screenshots, etc.):"
@@ -42,6 +43,12 @@ export ROOT_VENV="$COPIED_PROJECT_PATH"
 echo "Entering the '$COPIED_PROJECT_PATH' module"
 cd "$COPIED_PROJECT_PATH"
 
+echo "Copying .env file..."
+cp .env.example .env
+echo "Appending HOST_ARTIFACTS and COPIED_PROJECT_PATH path properties"
+printf '\nHOST_ARTIFACTS=%s\n' "$HOST_ARTIFACTS" >> .env
+printf '\nCOPIED_PROJECT_PATH=%s\n' "$COPIED_PROJECT_PATH" >> .env
+
 # Activating venv
 
 MODULE_PATH="$ROOT_VENV"
@@ -63,4 +70,4 @@ python3 -m pip install -r "$BASE_REQ_FILE"
 playwright install
 
 echo "Virtual env set up to: $(pwd)"
-export TEST_VENV=$(pwd)
+export TEST_VENV="$(pwd)"

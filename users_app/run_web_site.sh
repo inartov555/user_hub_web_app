@@ -1,19 +1,27 @@
 #!/bin/bash
 
 # Input parameters:
+#
+#     Data clearing when exiting
 #   - $1 - true - delete the DB data after stopping the service;
 #          false - preserve the DB data after stopping the service;
 #          default = false
+#
+#     Clearing cache before starting service
 #   - $2 - true - starting service WITHOUT cached data (allows to start the service faster);
 #          false - starting the service WITH cache (cache is cleared)
 #          default = false
+#
+#     Clearing Docker data and restarting the Docker service
 #   - $3 - true - clearing all docker data (network, images, etc.)
 #          false - docker starts with new data
 #          default = false
+#
+# Exported variables in the setup.sh file: HOST_ARTIFACTS, ROOT_VENV, TEST_VENV, COPIED_PROJECT_PATH
 
-clean_data_at_exit=${1:-false}
-clear_cache=${2:-false}
-clear_docker_data_and_restart=${3:-false}
+clean_data_at_exit="${1:-false}"
+clear_cache="${2:-false}"
+clear_docker_data_and_restart="${3:-false}"
 
 SUPERUSER_USERNAME="${DJANGO_SUPERUSER_USERNAME:-admin}"
 SUPERUSER_EMAIL="${DJANGO_SUPERUSER_EMAIL:-admin@example.com}"

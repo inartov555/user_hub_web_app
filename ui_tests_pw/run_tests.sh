@@ -1,12 +1,19 @@
 #!/bin/bash
 
 # Input parameters:
+#
+#     Clearing cache before starting service
 #   - $1 - true - starting service WITHOUT cached data (allows to start the service faster);
 #          false - starting the service WITH cache (cache is cleared)
 #          default = false
+#
+#     pytest.ini config file
+#   - $2 - the path to the *.ini config file, defaults to pytest.ini
+#
+# Exported variables in the setup.sh file: HOST_ARTIFACTS, ROOT_VENV, TEST_VENV, COPIED_PROJECT_PATH
 
 INI_CONFIG_FILE="${1:-pytest.ini}"
-clear_cache=${2:-false}
+clear_cache="${2:-false}"
 
 set -Eeuo pipefail
 trap cleanup EXIT ERR SIGINT SIGTERM
