@@ -33,6 +33,9 @@
 #              default = false
 ```
 
+Copied project folder, run results like logs, etc., are located in: `/home/$user_name/TEST1/workspace`.
+Artifacts (run results, logs, etc.) are located in: `/home/$user_name/TEST1/workspace/artifacts`.
+
 Open:
 - **API Swagger:** http://localhost:8000/api/v1/docs/
 - **OpenAPI JSON:** http://localhost:8000/api/v1/schema/

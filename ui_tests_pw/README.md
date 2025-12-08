@@ -43,6 +43,9 @@ From the `users_app` project root (this directory lives inside that repo):
    ./run_tests.sh true pytest.ini
    ```
 
+2. Copied project folder, run results like logs, etc., are located in: `/home/$user_name/TEST1/workspace`.
+   Artifacts (run results, logs, etc.) are located in: `/home/$user_name/TEST1/workspace/artifacts`.
+
 ## Parallel & multi-browser execution
 
 - Parallel tests (via `pytest-xdist`):
