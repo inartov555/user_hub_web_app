@@ -1,58 +1,14 @@
 services:
 
-  db:
-    image: postgres:16
-    environment:
-      POSTGRES_DB: usersdb
-      POSTGRES_USER: users
-      POSTGRES_PASSWORD: users
-    ports: ["5432:5432"]
-    volumes:
-      - pgdata:/var/lib/postgresql/data
-    stop_signal: SIGINT
-    stop_grace_period: 60s
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
-      interval: 2s
-      timeout: 3s
-      retries: 20
-
-  backend:
-    build: { context: ., dockerfile: backend/Dockerfile }
-    # working_dir: /app/backend
-    env_file: backend/.env
-    depends_on: 
-      db:
-        condition: service_healthy
+  ui_tests_pw:
+    build: { context: ., dockerfile: ./Dockerfile }
     dns: [8.8.8.8, 1.1.1.1]
     environment:
-      DJANGO_SETTINGS_MODULE: core.settings
-      DJANGO_SUPERUSER_USERNAME: admin
-      DJANGO_SUPERUSER_EMAIL: admin@example.com
-      DJANGO_SUPERUSER_PASSWORD: changeme123
-      HOST_ARTIFACTS: $HOST_ARTIFACTS
+      HOST_ARTIFACTS: /tests/artifacts
     ports: ["8000:8000"]
     volumes:
-      # - ./:/app
       - media_data:/app/media
-      - $HOST_ARTIFACTS:$HOST_ARTIFACTS
-    stop_signal: SIGINT
-    stop_grace_period: 5s
-
-  frontend:
-    build:
-      context: .
-      dockerfile: frontend/Dockerfile
-      # Pass Vite env at build time if needed:
-      args:
-        - VITE_API_URL=/api/v1
-    environment:
-      # Optional; only used by your nginx if you read it at runtime (usually not needed)
-      - VITE_API_URL=/api/v1
-    ports:
-      - "5173:80"  # open nginx port 80 on host 5173
-    depends_on:
-      - backend
+      - ${HOST_ARTIFACTS}:/tests/artifacts
     stop_signal: SIGINT
     stop_grace_period: 5s
 

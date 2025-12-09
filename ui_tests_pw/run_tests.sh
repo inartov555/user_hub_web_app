@@ -41,15 +41,19 @@ echo "Building images..."
 case "$clear_cache" in
   true)
     echo "Cache will be cleared when starting the service"
-    # docker compose build tests --no-cache
+    docker compose build ui_tests_pw --no-cache
     ;;
   *)
     echo "Cache will be preserved when starting the service"
-    # docker compose build tests
+    docker compose build ui_tests_pw
 esac
 
-# echo "Starting the tests..."
-# docker compose run --rm tests
+echo "Starting the tests..."
+TEST_GREP=''
+# If you need to run particular test(s), then set it as shown in the line below (TEST_GREP);
+# to run all tests, just set TEST_GREP=''
+TEST_GREP="-k test_admin_can_open_change_password_for_user"
+docker compose run -e TEST_GREP="$TEST_GREP" --rm ui_tests_pw
 
 if [[ ! -f "$INI_CONFIG_FILE" ]]; then
   echo "ERROR: Provided path '$INI_CONFIG_FILE' for the repo does not exist"
@@ -57,9 +61,6 @@ if [[ ! -f "$INI_CONFIG_FILE" ]]; then
 else
   echo "Using $INI_CONFIG_FILE ini config file"
 fi
-
-# python3 -m pytest -v --tb=short -s --reruns 2 --reruns-delay 2 --ini-config "$INI_CONFIG_FILE" --html=$HOST_ARTIFACTS/test_report_$(date +%Y-%m-%d_%H-%M-%S).html
-python3 -m pytest -v --tb=short -k test_admin_can_open_change_password_for_user -s -c "$INI_CONFIG_FILE" --html=$HOST_ARTIFACTS/test_report_$(date +%Y-%m-%d_%H-%M-%S).html
 
 #
 #

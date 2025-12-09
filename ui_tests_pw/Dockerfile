@@ -25,5 +25,6 @@ RUN chown -R pwuser:pwuser /tests
 USER pwuser
 
 # Default behavior: run the tests suite (with a virtual display)
-CMD ["bash", "-lc", "xvfb-run -a -s '-screen 0 1920x1080x24' pytest -q tests"]  # headless = 0
+# CMD ["bash", "-lc", "xvfb-run -a -s '-screen 0 1920x1080x24' pytest -q tests"]  # headless = 0
+CMD bash -lc "python3 -m pytest -v --tb=short  -s -c '$INI_CONFIG_FILE' --html='$HOST_ARTIFACTS/test_report_$(date +%Y-%m-%d_%H-%M-%S).html' --headed $TEST_GREP"
 # CMD ["bash", "-lc", "pytest -q"]  # headless = 1
