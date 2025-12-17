@@ -33,7 +33,7 @@ def test_users_table_admin_theme_and_locale(logged_in_admin: Page,
 
 
 @pytest.mark.regular_user
-def test_users_table_regular_user_has_restricted_controls(logged_in_regular: Page,
+def test_users_table_regular_user_has_restricted_controls(logged_in_regular: Page, # pylint: disable=unused-argument
                                                           regular_users_page: UsersTablePage) -> None:
     """
     Regular user should not see admin-only controls on the users table.
@@ -42,7 +42,7 @@ def test_users_table_regular_user_has_restricted_controls(logged_in_regular: Pag
 
 
 @pytest.mark.sorting
-def test_users_table_multi_column_sort_admin(logged_in_admin: Page,
+def test_users_table_multi_column_sort_admin(logged_in_admin: Page, # pylint: disable=unused-argument
                                              admin_users_page: UsersTablePage) -> None:
     """
     Admin can apply a multi-column sort (username then email) and see sort indices.
@@ -53,29 +53,23 @@ def test_users_table_multi_column_sort_admin(logged_in_admin: Page,
 
 
 @pytest.mark.sorting
-def test_users_table_clear_sort_resets_order(logged_in_admin: Page) -> None:
+def test_users_table_clear_sort_resets_order(logged_in_admin: Page, # pylint: disable=unused-argument
+                                             admin_users_page: UsersTablePage) -> None:
     """
     Clear sort button should remove explicit multi-column sort labels.
     """
-    page = logged_in_admin
-    users = UsersTablePage(page)
-    users.open()
-    users.sort_by_username_then_email()
-    users.clear_sort_btn.click()
-    labels = users.get_sort_order_labels()
+    admin_users_page.sort_by_username_then_email()
+    admin_users_page.clear_sort_btn.click()
+    labels = admin_users_page.get_sort_order_labels()
     assert labels == []
 
 
 @pytest.mark.regular_user
-def test_users_table_search_filters_results(logged_in_regular: Page) -> None:
+def test_users_table_search_filters_results(logged_in_regular: Page, # pylint: disable=unused-argument
+                                            regular_users_page: UsersTablePage) -> None:
     """
     Typing into the search box should filter table results.
     """
-    users = UsersTablePage(logged_in_regular)
-    users.open()
-    users.search_input.fill(DEFAULT_REGULAR_USERNAME)
-    # After a debounce & fetch round-trip, at least one row should remain.
-    page = logged_in_regular
-    page.wait_for_timeout(500)
-    rows = page.locator("tbody tr")
-    assert rows.count() >= 1
+    regular_users_page.search_and_wait_for_results(DEFAULT_REGULAR_USERNAME)
+    result_rows = regular_users_page.table_rows
+    assert result_rows.count() >= 1

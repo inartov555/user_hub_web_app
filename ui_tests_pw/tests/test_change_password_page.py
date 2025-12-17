@@ -28,8 +28,7 @@ def test_admin_can_open_change_password_for_user(logged_in_admin: Page,  # pylin
     Admin should be able to navigate to the change-password page for a user.
     """
     # Type username and wait the table is refreshed
-    admin_users_page.search_input.fill(DEFAULT_REGULAR_USERNAME)
-    admin_users_page.wait_till_users_table_update_finished()
+    admin_users_page.search_and_wait_for_results(DEFAULT_REGULAR_USERNAME)
     # Click first change-password button
     admin_users_page.change_password_btn.first.click()
     # Verify that the change-password URI is opened

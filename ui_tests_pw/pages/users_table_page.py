@@ -33,12 +33,20 @@ class UsersTablePage(BasePage):
 
         self.sort_labels = self.page.locator("thead th span.text-xs")
         self.is_updating = self.page.locator('span[data-tag="isUpdating"]')
+        self.table_rows = self.page.locator('tbody tr')
 
     def open(self) -> None:
         """
         Open the users table page.
         """
         self.goto("/users")
+
+    def search_and_wait_for_results(self, text: str) -> None:
+        """
+        Typing text to search and waiting while Users Table finishes refreshing data
+        """
+        self.search_input.fill(text)
+        self.wait_till_users_table_update_finished()
 
     def wait_till_users_table_update_finished(self) -> None:
         """
