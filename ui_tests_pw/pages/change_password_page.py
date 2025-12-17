@@ -35,12 +35,6 @@ class ChangePasswordPage(BasePage):
         self.password.fill(password)
         self.confirm_password.fill(confirm)
 
-    def submit(self) -> None:
-        """
-        Submit the change-password form.
-        """
-        self.submit.click()
-
     def assert_error_visible(self) -> None:
         """
         Assert that an error is shown (e.g. when not allowed).

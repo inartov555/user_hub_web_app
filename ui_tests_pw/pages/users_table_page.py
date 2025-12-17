@@ -10,7 +10,7 @@ from playwright.sync_api import expect, Page
 from .base_page import BasePage
 
 
-class UsersTablePage(BasePage):
+class UsersTablePage(BasePage):  # pylint: disable=too-many-instance-attributes
     """
     Encapsulates the Users table view and its sorting / filtering actions.
     """
