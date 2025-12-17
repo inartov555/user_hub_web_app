@@ -63,7 +63,7 @@ def test_users_table_clear_sort_resets_order(logged_in_admin: Page) -> None:
     users = UsersTablePage(page)
     users.open()
     users.sort_by_username_then_email()
-    users.clear_sort_button.click()
+    users.clear_sort_btn.click()
     labels = users.get_sort_order_labels()
     assert labels == []
 
