@@ -2,6 +2,9 @@
 FROM node:20-alpine AS build
 WORKDIR /app
 
+RUN addgroup --system pwuser \
+ && adduser  --system --ingroup pwuser --disabled-password --home /home/pwuser pwuser
+
 COPY frontend/package.json frontend/package-lock.json* ./
 
 COPY frontend/ /app/
