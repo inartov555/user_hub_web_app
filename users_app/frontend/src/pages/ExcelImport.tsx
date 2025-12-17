@@ -63,7 +63,7 @@ export default function ExcelImportPanel() {
   async function downloadTemplate(e: React.MouseEvent<HTMLButtonElement>) {
     e.preventDefault();
     try {
-      const resp = await api.get(`/import-excel1/`, {
+      const resp = await api.get(`/import-excel/`, {
         headers: accessToken ? { Authorization: `Bearer ${accessToken}`, "Content-Type": `multipart/form-data` } : undefined,
         responseType: "blob",
       });

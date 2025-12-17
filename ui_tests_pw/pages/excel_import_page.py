@@ -5,7 +5,7 @@ Page object for the Excel import page (admin-only).
 from __future__ import annotations
 import re
 
-from playwright.sync_api import expect, Page
+from playwright.sync_api import expect, Page, Download
 
 from .base_page import BasePage
 
@@ -31,18 +31,19 @@ class ExcelImportPage(BasePage):
         """
         self.goto("/import-excel")
 
-    def download_template(self) -> None:
+    def download_template(self) -> Download:
         """
         Click the 'Download template' button.
         """
         with self.page.expect_download() as _download:
             self.download_template_btn.click()
+        return _download
 
     def upload_template(self, path: str) -> None:
         """
         Upload an Excel template file from the given path.
         """
-        expected(self.input_file).to_be_visible()
+        expect(self.input_file).to_be_visible()
         self.page.set_input_files(self.input_file, path)
         self.import_template_btn.click()
 

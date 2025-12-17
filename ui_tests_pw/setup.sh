@@ -38,7 +38,7 @@ if [ $? -ne 0 ]; then
   ls $HOST_WORKSPACE
   return 1
 fi
-echo "$REPO is copied to '$COPIED_PROJECT_PATH'"
+echo "'$REPO' is copied to '$COPIED_PROJECT_PATH'"
 
 echo "Root env set up to: '$COPIED_PROJECT_PATH'"
 export ROOT_VENV="$COPIED_PROJECT_PATH"

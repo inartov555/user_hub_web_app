@@ -52,8 +52,5 @@ def test_excel_download_template_does_not_require_file(logged_in_admin: Page,  #
     Admin should be able to download the Excel template.
     """
     download_info = admin_excel_import_page.download_template()
-    download = download_info.value
-    download_path = download.path()
+    download_path = download_info.value.path()
     assert download_path is not None
-    import time
-    time.sleep(10)

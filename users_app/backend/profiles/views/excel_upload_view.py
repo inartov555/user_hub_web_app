@@ -90,7 +90,7 @@ class ExcelUploadView(APIView):
 
         resp = HttpResponse(
             buf.read(),
-            content_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+            content_type="multipart/form-data",
             headers={"Content-Disposition": f'attachment; filename="{filename}"'},
         )
         resp["Content-Disposition"] = f'attachment; filename="{filename}"'
