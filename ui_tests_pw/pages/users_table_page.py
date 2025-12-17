@@ -33,7 +33,7 @@ class UsersTablePage(BasePage):
         """
         Return the clear-sort button locator.
         """
-        return self.page.locator("button:has-text('Clear sort')").or_(self.page.locator("#clearSort"))
+        return self.page.locator("#clearSort")
 
     @property
     def delete_users_button(self) -> Locator:
@@ -58,8 +58,8 @@ class UsersTablePage(BasePage):
         """
         Apply a multi-column sort: first by username, then by email.
         """
-        self.header_by_text("Username").locator("button").click()
-        self.header_by_text("Email").locator("button").click()
+        self.locator('button[data-tag="sort-by-username"]').click()
+        self.locator('button[data-tag="sort-by-email"]').click()
 
     def get_sort_order_labels(self) -> List[str]:
         """
@@ -82,4 +82,4 @@ class UsersTablePage(BasePage):
         """
         expect(self.delete_users_button).not_to_be_visible()
         # No header-level checkbox for regular user.
-        expect(self.page.locator("thead input[type='checkbox']")).to_have_count(0)
+        expect(self.page.locator('thead input[data-tag="check-all-rows"]')).to_have_count(0)
