@@ -227,3 +227,15 @@ def admin_users_page(logged_in_admin: Page, ui_theme: Theme, ui_locale: str) -> 
     users = UsersTablePage(page)
     users.open()
     return users
+
+@pytest.fixture
+def regular_users_page(logged_in_regular: Page, ui_theme: Theme, ui_locale: str) -> UsersTablePage:
+    """
+    Get Users table page
+    """
+    page = logged_in_regular
+    set_theme(page, ui_theme)
+    set_locale(page, ui_locale)
+    users = UsersTablePage(page)
+    users.open()
+    return users

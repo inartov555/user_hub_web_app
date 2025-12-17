@@ -5,7 +5,7 @@ Page object for the Users table page.
 from __future__ import annotations
 from typing import List
 
-from playwright.sync_api import Locator, expect, Page
+from playwright.sync_api import expect, Page
 
 from .base_page import BasePage
 
@@ -17,6 +17,7 @@ class UsersTablePage(BasePage):
 
     def __init__(self, page: Page):
         super().__init__(page)
+
         self.search_input = self.page.locator("#search")
         self.clear_sort_btn = self.page.locator("#clearSort")
         self.delete_users_btn = self.page.locator("#deleteUsers")

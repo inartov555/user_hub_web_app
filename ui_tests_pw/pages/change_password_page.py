@@ -14,6 +14,14 @@ class ChangePasswordPage(BasePage):
     Encapsulates the change-password form for a user.
     """
 
+    def __init__(self, page: Page):
+        super().__init__(page)
+
+        self.password = self.page.locator("#password")
+        self.confirm_password = self.page.locator("#confirmPassword")
+        self.submit = self.page.locator("form button[type='submit']")
+        self.error = self.page.locator("p.text-red-600")
+
     def open_for_user(self, user_id: int) -> None:
         """
         Open the change-password page for a given user id.
@@ -24,17 +32,17 @@ class ChangePasswordPage(BasePage):
         """
         Fill the new password and confirmation fields.
         """
-        self.page.fill("#password", password)
-        self.page.fill("#confirmPassword", confirm)
+        self.password.fill(password)
+        self.confirm_password.fill(confirm)
 
     def submit(self) -> None:
         """
         Submit the change-password form.
         """
-        self.page.locator("form button[type='submit']").click()
+        self.submit.click()
 
     def assert_error_visible(self) -> None:
         """
         Assert that an error is shown (e.g. when not allowed).
         """
-        expect(self.page.locator("p.text-red-600")).to_be_visible()
+        expect(self.error).to_be_visible()

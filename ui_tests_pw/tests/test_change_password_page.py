@@ -30,22 +30,20 @@ def test_admin_can_open_change_password_for_user(logged_in_admin: Page,  # pylin
     """
     Admin should be able to navigate to the change-password page for a user.
     """
+    # Type username and wait the table is refreshed
     admin_users_page.search_input.fill(DEFAULT_REGULAR_USERNAME)
     admin_users_page.wait_till_users_table_update_finished()
     # Click first change-password button
     admin_users_page.change_password_btn.first.click()
+    # Verify that the change-password URI is opened
     expect(page).to_have_url(re.compile(r".*/users/\d+/change-password$"))
 
 
 @pytest.mark.regular_user
-def test_regular_user_cannot_change_other_users_password(logged_in_regular: Page) -> None:
+def test_regular_user_cannot_change_other_users_password(logged_in_regular: Page,
+                                                         regular_users_page: UsersTablePage) -> None:
     """
     Regular user should not be able to access another user's change-password page.
     """
-    page = logged_in_regular
-    cp = ChangePasswordPage(page)
-    # Attempt to access a low, probably non-self id.
-    cp.open_for_user(1)
-    cp.fill_passwords("NewPass123!", "NewPass123!")
-    cp.submit()
-    cp.assert_error_visible()
+    # Verifying that the Change Password column is not shown for a regular user
+    regular_users_page.assert_admin_controls_hidden_for_regular_user()

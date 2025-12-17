@@ -10,7 +10,8 @@ services:
       DISPLAY: $DISPLAY
       UI_BASE_URL: "http://host.docker.internal"
       UI_BASE_PORT: "5173"
-    ports: ["8000:8000"]
+      API_BASE_PORT: "8000"
+    ports: ["8001:8001"]
     volumes:
       - media_data:/app/media
       - ${HOST_ARTIFACTS}:/tests/artifacts
