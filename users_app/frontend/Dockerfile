@@ -1,17 +1,17 @@
 # --- Deps & build
 
+FROM node:20-alpine AS build
+
 WORKDIR /app
-
-COPY frontend/package.json frontend/package-lock.json* ./
-
-COPY frontend/ /app/
 
 RUN addgroup --system pwuser \
  && adduser  --system --ingroup pwuser --disabled-password --home /home/pwuser pwuser
 RUN chown -R pwuser:pwuser /app
 USER pwuser
 
-FROM node:20-alpine AS build
+COPY frontend/package.json frontend/package-lock.json* ./
+
+COPY frontend/ /app/
 
 # Network-resilient npm settings
 # - fewer network calls (no audit/fund)
