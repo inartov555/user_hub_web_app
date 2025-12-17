@@ -1,35 +1,32 @@
 # --- Builder: install deps into a venv (layer-cached by requirements hash)
 
-# Now copy the app code (doesn't bust dependency layer unless reqs changed)
-COPY backend/ /app/
-
-WORKDIR /app
-
 FROM python:3.12-slim AS builder
-ENV VIRTUAL_ENV=/opt/venv \
+ENV VIRTUAL_ENV=/home/pwuser/venv \
     PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
     PIP_NO_CACHE_DIR=1
 
-RUN addgroup --system pwuser \
- && adduser  --system --ingroup pwuser --disabled-password --home /home/pwuser pwuser
-RUN chown -R pwuser:pwuser /app
-USER pwuser
-
 RUN python -m venv $VIRTUAL_ENV
 ENV PATH="$VIRTUAL_ENV/bin:$PATH"
-
-# Create a compatibility symlink so compilemessages can find the catalogs
-# RUN if [ -d /app/locale ] && [ ! -d /app/locale ]; then ln -s /app/locale /app/locale; fi
-
-RUN pip install --upgrade pip && \
-    if [ -f requirements.txt ]; then pip install -r requirements.txt; fi && \
-    if [ -f requirements-dev.txt ]; then pip install -r requirements-dev.txt; fi
 
 # Install GNU gettext (provides msgfmt) in the runtime image
 RUN apt-get update \
  && apt-get install -y --no-install-recommends gettext \
  && rm -rf /var/lib/apt/lists/*
+
+RUN addgroup --system pwuser \
+ && adduser  --system --ingroup pwuser --disabled-password --home /home/pwuser pwuser
+
+# Now copy the app code (doesn't bust dependency layer unless reqs changed)
+COPY backend/ /app/
+WORKDIR /app
+
+RUN chown -R pwuser:pwuser /app
+USER pwuser
+
+RUN pip install --upgrade pip && \
+    if [ -f requirements.txt ]; then pip install -r requirements.txt; fi && \
+    if [ -f requirements-dev.txt ]; then pip install -r requirements-dev.txt; fi
 
 # Validate .po syntax (correct paths: /app/locale/**)
 RUN sh -c 'set -eu; \
