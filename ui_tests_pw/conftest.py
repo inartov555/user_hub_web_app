@@ -217,7 +217,7 @@ def logged_in_regular_fixture(page: Page, ui_theme: Theme, ui_locale: str) -> Pa
     return page
 
 
-@pytest.fixture
+@pytest.fixture(scope="function")
 def admin_users_page(logged_in_admin: Page, ui_theme: Theme, ui_locale: str) -> UsersTablePage:
     """
     Get Users table page
@@ -230,7 +230,7 @@ def admin_users_page(logged_in_admin: Page, ui_theme: Theme, ui_locale: str) -> 
     return users
 
 
-@pytest.fixture
+@pytest.fixture(scope="function")
 def regular_users_page(logged_in_regular: Page, ui_theme: Theme, ui_locale: str) -> UsersTablePage:
     """
     Get Users table page
@@ -243,7 +243,7 @@ def regular_users_page(logged_in_regular: Page, ui_theme: Theme, ui_locale: str)
     return users
 
 
-@pytest.fixture
+@pytest.fixture(scope="function")
 def admin_excel_import_page(logged_in_admin: Page, ui_theme: Theme, ui_locale: str) -> ExcelImportPage:
     """
     Get Excel import page
@@ -256,8 +256,8 @@ def admin_excel_import_page(logged_in_admin: Page, ui_theme: Theme, ui_locale: s
     return excel_import
 
 
-@pytest.fixture
-def login_page(page: Page, ui_theme: Theme, ui_locale: str) -> LoginPage:
+@pytest.fixture(name="login_page", scope="function")
+def login_page_fixture(page: Page, ui_theme: Theme, ui_locale: str) -> LoginPage:
     """
     Get Login page
     """

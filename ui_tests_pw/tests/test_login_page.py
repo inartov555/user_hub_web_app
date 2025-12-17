@@ -22,7 +22,9 @@ from config import (
 @pytest.mark.localization
 @pytest.mark.parametrize("theme", ["light", "dark"])
 @pytest.mark.parametrize("locale_code", ["en-US", "uk-UA"])
-def test_login_page_renders_in_theme_and_locale(page: Page, theme: Theme, locale_code: str) -> None:
+def test_login_page_renders_in_theme_and_locale(login_page: LoginPage,
+                                                page: Page,
+                                                theme: Theme, locale_code: str) -> None:
     """
     Verify that the login page renders correctly for each theme and locale combination.
     """
