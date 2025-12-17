@@ -51,6 +51,8 @@ RUN sh -c 'set -eu; \
     ls -l "$MO"; \
   done'
 
+USER pwuser
+
 EXPOSE 8000
 # don't run pip install at container start!
 CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
