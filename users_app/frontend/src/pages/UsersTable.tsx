@@ -137,6 +137,7 @@ export default function UsersTable(props: Props) {
         return (
           <div className="px-2">
             <Checkbox
+              data-tag="check-all-rows"
               checked={all}
               indeterminate={!all && some}
               onChange={(e) => table.toggleAllRowsSelected(e.currentTarget.checked)}
@@ -148,6 +149,7 @@ export default function UsersTable(props: Props) {
       cell: ({ row }) => (
         <div className="px-2">
           <Checkbox
+            data-tag="check-a-row"
             checked={row.getIsSelected()}
             indeterminate={row.getIsSomeSelected()}
             onChange={(e) => row.toggleSelected(e.currentTarget.checked)}
@@ -165,6 +167,7 @@ export default function UsersTable(props: Props) {
       header: ({ column }) => (
         <button
           type="button"
+          data-tag="sort-by-username"
           className="inline-flex items-center gap-1"
           onClick={column.getToggleSortingHandler()}
           title={
@@ -186,6 +189,7 @@ export default function UsersTable(props: Props) {
       header: ({ column }) => (
         <button
           type="button"
+          data-tag="sort-by-email"
           className="inline-flex items-center gap-1"
           onClick={column.getToggleSortingHandler()}
           title={
@@ -207,6 +211,7 @@ export default function UsersTable(props: Props) {
       header: ({ column }) => (
         <button
           type="button"
+          data-tag="sort-by-firstname"
           className="inline-flex items-center gap-1"
           onClick={column.getToggleSortingHandler()}
           title={
@@ -228,6 +233,7 @@ export default function UsersTable(props: Props) {
       header: ({ column }) => (
         <button
           type="button"
+          data-tag="sort-by-lastname"
           className="inline-flex items-center gap-1"
           onClick={column.getToggleSortingHandler()}
           title={
@@ -253,6 +259,7 @@ export default function UsersTable(props: Props) {
       cell: ({ row }) => (
         <div className="flex flex-wrap gap-2">
           <Button
+            data-tag="change-password"
             variant="secondary"
             onClick={() => navigate(`/users/${row.original.id}/change-password`)}
             title={t("users.changePassword")}
@@ -457,10 +464,11 @@ export default function UsersTable(props: Props) {
                 </tr>
               ) : (
                 table.getRowModel().rows.map((row) => (
-                  <tr key={row.id} className="border-b hover:bg-muted/40">
-                    {row.getVisibleCells().map((cell) => (
+                  <tr data-tag={"row-" + row.id} key={row.id} className="border-b hover:bg-muted/40">
+                    {row.getVisibleCells().map((cell, cellIndex) => (
                       <td
                         key={cell.id}
+                        data-tag={"cell-" + cellIndex}
                         style={{ width: cell.column.getSize() }}
                         className="px-3 py-2 align-middle whitespace-normal break-words"
                       >

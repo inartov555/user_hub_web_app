@@ -35,12 +35,7 @@ class BasePage:
         Args:
             path: Relative path such as "/login" or "/users".
         """
-        try:
-            self.page.goto(frontend_url(path), wait_until="load")
-        except Exception:
-            pass
-        import time
-        time.sleep(10)
+        self.page.goto(frontend_url(path), wait_until="load")
 
     def ensure_theme(self, theme: Theme) -> None:
         """
