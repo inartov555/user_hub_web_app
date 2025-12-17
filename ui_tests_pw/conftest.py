@@ -196,7 +196,7 @@ def logged_in_admin_fixture(page: Page, ui_theme: Theme, ui_locale: str) -> Page
     set_theme(page, ui_theme)
     set_locale(page, ui_locale)
     login_page.fill_credentials(DEFAULT_ADMIN_USERNAME, DEFAULT_ADMIN_PASSWORD)
-    login_page.submit()
+    login_page.submit.click()
     page.wait_for_url("**/users")
     return page
 
@@ -212,7 +212,7 @@ def logged_in_regular_fixture(page: Page, ui_theme: Theme, ui_locale: str) -> Pa
     set_theme(page, ui_theme)
     set_locale(page, ui_locale)
     login_page.fill_credentials(DEFAULT_REGULAR_USERNAME, DEFAULT_REGULAR_PASSWORD)
-    login_page.submit()
+    login_page.submit.click()
     page.wait_for_url("**/users")
     return page
 
@@ -246,7 +246,7 @@ def regular_users_page(logged_in_regular: Page, ui_theme: Theme, ui_locale: str)
 @pytest.fixture
 def admin_excel_import_page(logged_in_admin: Page, ui_theme: Theme, ui_locale: str) -> ExcelImportPage:
     """
-    Get Users table page
+    Get Excel import page
     """
     page = logged_in_admin
     set_theme(page, ui_theme)
@@ -254,3 +254,15 @@ def admin_excel_import_page(logged_in_admin: Page, ui_theme: Theme, ui_locale: s
     excel_import = ExcelImportPage(page)
     excel_import.open()
     return excel_import
+
+
+@pytest.fixture
+def login_page(page: Page, ui_theme: Theme, ui_locale: str) -> LoginPage:
+    """
+    Get Login page
+    """
+    login_page = LoginPage(page)
+    login_page.open()
+    set_theme(page, ui_theme)
+    set_locale(page, ui_locale)
+    return login_page

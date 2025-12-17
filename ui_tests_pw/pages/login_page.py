@@ -14,6 +14,14 @@ class LoginPage(BasePage):
     Encapsulates interactions with the login page.
     """
 
+    def __init__(self, page: Page):
+        super().__init__(page)
+
+        self.username = self.page.locator("#username")
+        self.password = self.page.locator("#password")
+        self.submit = self.page.locator("form button[type='submit']")
+        self.error = self.page.locator("p.text-red-600")
+
     def open(self) -> None:
         """
         Navigate to the login page.
@@ -28,24 +36,18 @@ class LoginPage(BasePage):
             username: Username to type into the form.
             password: Password to type into the form.
         """
-        self.page.fill("#username", username)
-        self.page.fill("#password", password)
-
-    def submit(self) -> None:
-        """
-        Submit the login form.
-        """
-        self.page.locator("form button[type='submit']").click()
+        self.username.fill(username)
+        self.password.fill(password)
 
     def assert_error_visible(self) -> None:
         """
         Assert that an error message is visible after a failed login attempt.
         """
-        expect(self.page.locator("p.text-red-600")).to_be_visible()
+        expect(self.error).to_be_visible()
 
     def assert_on_login_page(self) -> None:
         """
         Assert that the current page is still the login page.
         """
-        expect(self.page.locator("#username")).to_be_visible()
-        expect(self.page).to_have_url("**/login")
+        expect(self.username).to_be_visible()
+        expect(self.page).to_have_url(re.compile(r".*/login$"))
