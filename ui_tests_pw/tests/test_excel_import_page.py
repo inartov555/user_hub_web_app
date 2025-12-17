@@ -16,19 +16,21 @@ from utils.localization import set_locale
 @pytest.mark.admin
 @pytest.mark.theme
 @pytest.mark.localization
-@pytest.mark.parametrize("theme", ["light", "dark"])
-@pytest.mark.parametrize("locale_code", ["en-US", "uk-UA"])
-def test_excel_import_page_renders_for_admin(logged_in_admin: Page, theme: Theme, locale_code: str) -> None:
+@pytest.mark.parametrize("ui_theme", ["light", "dark"])
+@pytest.mark.parametrize("ui_locale", ["en-US", "uk-UA"])
+def test_excel_import_page_renders_for_admin(logged_in_admin: Page,
+                                             ui_theme: Theme,
+                                             ui_locale: str,
+                                             admin_excel_import_page: ExcelImportPage) -> None:
     """
     Admin user can open the Excel import page.
     """
     page = logged_in_admin
-    set_theme(page, theme)
-    set_locale(page, locale_code)
-    import_page = ExcelImportPage(page)
-    import_page.open()
-    expect(page.locator("#downloadTemplate")).to_be_visible()
-    expect(page.locator("#importTemplate")).to_be_visible()
+    set_theme(page, ui_theme)
+    set_locale(page, ui_locale)
+    # Verifying if Import & Download buttons are visible
+    expect(admin_excel_import_page.import_template_btn).to_be_visible()
+    expect(admin_excel_import_page.download_template_btn).to_be_visible()
 
 
 @pytest.mark.regular_user

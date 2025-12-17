@@ -24,6 +24,7 @@ from utils.app_config import AppConfig
 from utils.logger.logger import Logger
 from pages.login_page import LoginPage
 from pages.users_table_page import UsersTablePage
+from pages.excel_import_page import ExcelImportPage
 
 
 log = Logger(__name__)
@@ -228,6 +229,7 @@ def admin_users_page(logged_in_admin: Page, ui_theme: Theme, ui_locale: str) -> 
     users.open()
     return users
 
+
 @pytest.fixture
 def regular_users_page(logged_in_regular: Page, ui_theme: Theme, ui_locale: str) -> UsersTablePage:
     """
@@ -239,3 +241,16 @@ def regular_users_page(logged_in_regular: Page, ui_theme: Theme, ui_locale: str)
     users = UsersTablePage(page)
     users.open()
     return users
+
+
+@pytest.fixture
+def admin_excel_import_page(logged_in_admin: Page, ui_theme: Theme, ui_locale: str) -> ExcelImportPage:
+    """
+    Get Users table page
+    """
+    page = logged_in_admin
+    set_theme(page, ui_theme)
+    set_locale(page, ui_locale)
+    excel_import = ExcelImportPage(page)
+    excel_import.open()
+    return excel_import

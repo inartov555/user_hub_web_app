@@ -32,7 +32,10 @@ def set_theme(page: Page, desired: Theme) -> None:
     If the current theme does not match `desired`, the dark-mode toggle button
     (with id ``lightDarkMode``) is clicked once.
     """
+    desir = desired.lower()
     current = get_current_theme(page)
-    if current == desired:
+    if current == desir:
         return
-    page.locator("#lightDarkMode").click()
+    value = page.locator("#lightDarkMode").get_attribute("data-tag")
+    if value != desir:
+        page.locator("#lightDarkMode").click()
