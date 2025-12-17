@@ -18,11 +18,12 @@ INI_CONFIG_FILE="${2:-pytest.ini}"
 set -Eeuo pipefail
 trap cleanup EXIT ERR SIGINT SIGTERM
 
-dockerCleanup=""
+dockerCleanedUp=""
 cleanup() {
-  if [ -n "$dockerCleanup" ]; then
+  if [ -z "$dockerCleanedUp" ]; then
     echo "Cleaning docker setup..."
     docker compose down -v --remove-orphans
+    dockerCleanedUp="clean"
   fi
 # Uncomment lines from below when running tests without Docker
 #  if [ -n "${VIRTUAL_ENV-}" ] && [ "$(type -t deactivate 2>/dev/null)" = "function" ]; then

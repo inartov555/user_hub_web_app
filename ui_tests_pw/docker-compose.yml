@@ -2,14 +2,17 @@ services:
 
   ui_tests_pw:
     build: { context: ., dockerfile: ./Dockerfile }
-    dns: [8.8.8.8, 1.1.1.1]
+    # dns: [8.8.8.8, 1.1.1.1]
     environment:
       HOST_ARTIFACTS: /tests/artifacts
       DISPLAY: $DISPLAY
+      # UI_BASE_URL: "http://localhost"
+      # UI_BASE_PORT: "5173"
     ports: ["8000:8000"]
     volumes:
       - media_data:/app/media
       - ${HOST_ARTIFACTS}:/tests/artifacts
+      - /tmp/.X11-unix:/tmp/.X11-unix
     stop_signal: SIGINT
     stop_grace_period: 5s
 
