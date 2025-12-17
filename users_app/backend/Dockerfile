@@ -1,4 +1,10 @@
 # --- Builder: install deps into a venv (layer-cached by requirements hash)
+
+RUN addgroup --system pwuser \
+ && adduser  --system --ingroup pwuser --disabled-password --home /home/pwuser pwuser
+RUN chown -R pwuser:pwuser /app
+USER pwuser
+
 FROM python:3.12-slim AS builder
 ENV VIRTUAL_ENV=/opt/venv \
     PYTHONDONTWRITEBYTECODE=1 \
@@ -15,11 +21,6 @@ ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 COPY backend/ /app/
 
 WORKDIR /app
-
-RUN addgroup --system pwuser \
- && adduser  --system --ingroup pwuser --disabled-password --home /home/pwuser pwuser
-RUN chown -R pwuser:pwuser /app
-USER pwuser
 
 RUN pip install --upgrade pip && \
     if [ -f requirements.txt ]; then pip install -r requirements.txt; fi && \
@@ -57,5 +58,5 @@ RUN sh -c 'set -eu; \
   done'
 
 EXPOSE 8000
+
 CMD python manage.py runserver 0.0.0.0:8000
-# In production: CMD ["gunicorn", "core.wsgi:application", "-b", "0.0.0.0:8000"]

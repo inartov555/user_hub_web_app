@@ -1,3 +1,8 @@
+RUN addgroup --system pwuser \
+ && adduser  --system --ingroup pwuser --disabled-password --home /home/pwuser pwuser
+RUN chown -R pwuser:pwuser /app
+USER pwuser
+
 FROM mcr.microsoft.com/playwright:v1.57.0-jammy
 
 # Saner Python & pip defaults
@@ -20,13 +25,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 RUN --mount=type=cache,target=.cache/pip \
     python -m pip install -U pip && \
     pip install -r requirements.txt
-
-# Ensure Xvfb is available for headed runs under a virtual display
-USER root
-
-# Ensure non-root user (provided by the Playwright base image) owns the workspace
-RUN chown -R pwuser:pwuser /tests
-USER pwuser
 
 # Default behavior: run the tests suite (with a virtual display)
 # CMD ["bash", "-lc", "xvfb-run -a -s '-screen 0 1920x1080x24' pytest -q tests"]  # headless = 0

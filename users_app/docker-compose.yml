@@ -47,7 +47,7 @@ services:
       args:
         - VITE_API_URL=/api/v1
     environment:
-      # Only used by your nginx if you read it at runtime (usually not needed)
+      # Only used by your nginx if you read it at runtime
       - VITE_API_URL=/api/v1
     ports:
       - "5173:80"  # open nginx port 80 on host 5173
