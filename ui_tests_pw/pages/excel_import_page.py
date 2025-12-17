@@ -3,6 +3,7 @@ Page object for the Excel import page (admin-only).
 """
 
 from __future__ import annotations
+import re
 
 from playwright.sync_api import expect, Page
 
@@ -21,7 +22,8 @@ class ExcelImportPage(BasePage):
         self.download_template_btn = self.page.locator("#downloadTemplate")
         self.input_file = self.page.locator("input[type='file']")
         self.error = self.page.locator("p.text-red-600")
-        self.success_title = page.locator("div.mt-4.text-sm.p-2.rounded-xl.border")
+        self.success_title = page.locator('div[data-tag="resultSuccessTitle"]')
+        self.success_body = page.locator('div[data-tag="resultSuccessBody"]')
 
     def open(self) -> None:
         """
@@ -48,4 +50,7 @@ class ExcelImportPage(BasePage):
         """
         Assert that the result summary area is visible after import.
         """
-        expect(self.page.locator("text=processed")).to_be_visible()
+        expect(self.success_title).to_be_visible()
+        expect(self.success_title).to_have_text(re.compile(r".+"))
+        expect(self.success_body).to_be_visible()
+        expect(self.success_body).to_have_text(re.compile(r".+"))

@@ -18,6 +18,8 @@ class UsersTablePage(BasePage):
     def __init__(self, page: Page):
         super().__init__(page)
 
+        self.addtional_tab = self.page.locator('#additional')
+
         self.search_input = self.page.locator("#search")
         self.clear_sort_btn = self.page.locator("#clearSort")
         self.delete_users_btn = self.page.locator("#deleteUsers")

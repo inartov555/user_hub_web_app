@@ -9,6 +9,7 @@ import pytest
 from playwright.sync_api import Page, expect
 
 from pages.excel_import_page import ExcelImportPage
+from pages.users_table_page import UsersTablePage
 from utils.theme import Theme, set_theme
 from utils.localization import set_locale
 
@@ -34,27 +35,25 @@ def test_excel_import_page_renders_for_admin(logged_in_admin: Page,
 
 
 @pytest.mark.regular_user
-def test_excel_import_page_not_visible_in_nav_for_regular_user(logged_in_regular: Page) -> None:
+def test_excel_import_page_not_visible_in_nav_for_regular_user(logged_in_regular: Page,  # pylint: disable=unused-argument
+                                                               regular_users_page: UsersTablePage) -> None:
     """
-    Regular user should not see the Additional / Import from Excel nav items.
+    Regular user should not see the Additional/Import from Excel nav items.
     """
-    page = logged_in_regular
-    # Navbar 'Additional' tab is staff-only.
-    expect(page.locator("#additional")).to_have_count(0)
+    # Navbar Additional tab is staff-only.
+    expect(regular_users_page.addtional_tab).to_have_count(0)
 
 
 @pytest.mark.admin
-def test_excel_download_template_does_not_require_file(logged_in_admin: Page,
-                                                       tmp_path: os.PathLike[str]  # pylint: disable=unused-argument
-                                                      ) -> None:
+def test_excel_download_template_does_not_require_file(logged_in_admin: Page,  # pylint: disable=unused-argument
+                                                       tmp_path: os.PathLike[str],  # pylint: disable=unused-argument
+                                                       admin_excel_import_page: ExcelImportPage) -> None:
     """
     Admin should be able to download the Excel template.
     """
-    page = logged_in_admin
-    import_page = ExcelImportPage(page)
-    import_page.open()
-    with page.expect_download() as download_info:
-        page.locator("#downloadTemplate").click()
+    download_info = admin_excel_import_page.download_template()
     download = download_info.value
     download_path = download.path()
     assert download_path is not None
+    import time
+    time.sleep(10)

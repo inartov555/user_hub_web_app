@@ -132,8 +132,8 @@ export default function ExcelImportPanel() {
       {summary && (
         <div className="mt-4 p-3 rounded-2xl border bg-white
                 dark:bg-slate-800 dark:border-slate-700">
-          <div className="font-medium mb-2">{t("excelImport.result")}</div>
-          <ul className="text-sm space-y-1">
+          <div data-tag="resultSuccessTitle" className="font-medium mb-2">{t("excelImport.result")}</div>
+          <ul data-tag="resultSuccessBody" className="text-sm space-y-1">
             <li>{t("excelImport.processed")} <span className="font-semibold">{summary.processed}</span></li>
             <li>{t("excelImport.created")} <span className="font-semibold">{summary.created}</span></li>
             <li>{t("excelImport.updated")} <span className="font-semibold">{summary.updated}</span></li>
