@@ -2,7 +2,7 @@ services:
 
   ui_tests_pw:
     build: { context: ., dockerfile: ./Dockerfile }
-    # dns: [8.8.8.8, 1.1.1.1]
+    dns: [8.8.8.8, 1.1.1.1]
     environment:
       HOST_ARTIFACTS: /tests/artifacts
       DISPLAY: $DISPLAY
