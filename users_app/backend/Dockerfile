@@ -6,9 +6,6 @@ ENV VIRTUAL_ENV=/home/pwuser/venv \
     PYTHONUNBUFFERED=1 \
     PIP_NO_CACHE_DIR=1
 
-RUN python -m venv $VIRTUAL_ENV
-ENV PATH="$VIRTUAL_ENV/bin:$PATH"
-
 # Install GNU gettext (provides msgfmt) in the runtime image
 RUN apt-get update \
  && apt-get install -y --no-install-recommends gettext \
@@ -23,6 +20,10 @@ WORKDIR /app
 
 RUN chown -R pwuser:pwuser /app
 USER pwuser
+
+RUN python -m venv "$VIRTUAL_ENV" \
+ && chown -R pwuser:pwuser /app /home/pwuser
+ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 
 RUN pip install --upgrade pip && \
     if [ -f requirements.txt ]; then pip install -r requirements.txt; fi && \
