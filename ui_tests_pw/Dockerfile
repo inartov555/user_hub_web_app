@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/playwright/python:v1.55.0-jammy
+FROM mcr.microsoft.com/playwright:v1.57.0-jammy
 
 # Saner Python & pip defaults
 ENV PYTHONDONTWRITEBYTECODE=1 \
@@ -10,15 +10,19 @@ COPY . /tests
 
 WORKDIR /tests
 
+RUN apt-get update && apt-get install -y --no-install-recommends xvfb \
+  && rm -rf /var/lib/apt/lists/*
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    python3 python3-pip python-is-python3 \
+    && rm -rf /var/lib/apt/lists/*
+
 RUN --mount=type=cache,target=.cache/pip \
     python -m pip install -U pip && \
     pip install -r requirements.txt
 
-
 # Ensure Xvfb is available for headed runs under a virtual display
 USER root
-RUN apt-get update && apt-get install -y --no-install-recommends xvfb && \
-    rm -rf /var/lib/apt/lists/*
 
 # Ensure non-root user (provided by the Playwright base image) owns the workspace
 RUN chown -R pwuser:pwuser /tests
@@ -26,5 +30,6 @@ USER pwuser
 
 # Default behavior: run the tests suite (with a virtual display)
 # CMD ["bash", "-lc", "xvfb-run -a -s '-screen 0 1920x1080x24' pytest -q tests"]  # headless = 0
-CMD bash -lc "python3 -m pytest -v --tb=short  -s -c '$INI_CONFIG_FILE' --html='$HOST_ARTIFACTS/test_report_$(date +%Y-%m-%d_%H-%M-%S).html' --headed $TEST_GREP"
+# CMD bash -lc "python3 -m pytest -v --tb=short  -s --html='$HOST_ARTIFACTS/test_report_$(date +%Y-%m-%d_%H-%M-%S).html' $TEST_GREP"
+CMD bash -lc "xvfb-run -a -s '-screen 0 1920x1080x24' python3 -m pytest -v --tb=short -s --html='$HOST_ARTIFACTS/test_report_$(date +%Y-%m-%d_%H-%M-%S).html' $TEST_GREP"
 # CMD ["bash", "-lc", "pytest -q"]  # headless = 1

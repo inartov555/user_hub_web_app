@@ -50,20 +50,23 @@ cd "$COPIED_PROJECT_PATH"
 MODULE_PATH="$ROOT_VENV"
 cd "$MODULE_PATH"
 
-if python3 -m venv --help > /dev/null 2>&1; then
-    echo "venv module is available"
-else
-    python3 -m pip install --user virtualenv
-fi
-python3 -m venv venv
-. venv/bin/activate
+# Uncomment lines below when running the tests without Docker
 
-BASE_REQ_FILE="$MODULE_PATH/requirements.txt"
-echo "Installing module requirements..."
-echo ""
-python3 -m pip install --upgrade pip
-python3 -m pip install -r "$BASE_REQ_FILE"
-playwright install
+# if python3 -m venv --help > /dev/null 2>&1; then
+#  echo "venv module is available"
+# else
+#  python3 -m pip install --user virtualenv
+# fi
+
+# python3 -m venv venv
+# . venv/bin/activate
+
+# BASE_REQ_FILE="$MODULE_PATH/requirements.txt"
+# echo "Installing module requirements..."
+# echo ""
+# python3 -m pip install --upgrade pip
+# python3 -m pip install -r "$BASE_REQ_FILE"
+# playwright install
 
 echo "Virtual env set up to: $(pwd)"
 export TEST_VENV="$(pwd)"

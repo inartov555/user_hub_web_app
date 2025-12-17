@@ -18,13 +18,17 @@ INI_CONFIG_FILE="${2:-pytest.ini}"
 set -Eeuo pipefail
 trap cleanup EXIT ERR SIGINT SIGTERM
 
+dockerCleanup=""
 cleanup() {
-  echo "Cleaning docker setup..."
-  docker compose down -v --remove-orphans
-  if [ -n "${VIRTUAL_ENV-}" ] && [ "$(type -t deactivate 2>/dev/null)" = "function" ]; then
-    echo "Deactivating venv..."
-    deactivate
+  if [ -n "$dockerCleanup" ]; then
+    echo "Cleaning docker setup..."
+    docker compose down -v --remove-orphans
   fi
+# Uncomment lines from below when running tests without Docker
+#  if [ -n "${VIRTUAL_ENV-}" ] && [ "$(type -t deactivate 2>/dev/null)" = "function" ]; then
+#    echo "Deactivating venv..."
+#    deactivate
+#  fi
   if ! [[ "$ORIGINAL_PROJECT_PATH" -ef "$(pwd)" ]]; then
     echo "Returning to the original project path to be able to run the test again with new changes, if there are any"
     cd "$ORIGINAL_PROJECT_PATH"
@@ -49,10 +53,10 @@ case "$clear_cache" in
 esac
 
 echo "Starting the tests..."
-TEST_GREP=''
+TEST_GREP="--ini-config $INI_CONFIG_FILE"
 # If you need to run particular test(s), then set it as shown in the line below (TEST_GREP);
-# to run all tests, just set TEST_GREP=''
-TEST_GREP="-k test_admin_can_open_change_password_for_user"
+# to run all tests, just set TEST_GREP="$TEST_GREP" (to preserve base settings)
+TEST_GREP="$TEST_GREP -k test_admin_can_open_change_password_for_user"
 docker compose run -e TEST_GREP="$TEST_GREP" --rm ui_tests_pw
 
 if [[ ! -f "$INI_CONFIG_FILE" ]]; then
