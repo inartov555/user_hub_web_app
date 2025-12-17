@@ -76,7 +76,7 @@ def app_config(pytestconfig) -> AppConfig:
     result_dict["navigation_timeout"] = cfg.getfloat("pytest", "navigation_timeout", fallback=15000.0)
     result_dict["assert_timeout"] = cfg.getfloat("pytest", "assert_timeout", fallback=15000.0)
     result_dict["browser"] = cfg.get("pytest", "browser", fallback="chrome")
-    result_dict["base_url"] = cfg.get("pytest", "base_url", fallback="http://localhost:5173")
+    result_dict["base_url"] = cfg.get("pytest", "base_url", fallback="http://host.docker.internal:5173")
     result_dict["is_headless"] = cfg.getboolean("pytest", "is_headless", fallback=False)
     result_dict["width"] = cfg.getint("pytest", "width", fallback=1920)
     result_dict["height"] = cfg.getint("pytest", "height", fallback=1080)
@@ -200,8 +200,8 @@ def logged_in_admin_fixture(page: Page, ui_theme: Theme, ui_locale: str) -> Page
     return page
 
 
-@pytest.fixture(scope="function")
-def logged_in_regular(page: Page, ui_theme: Theme, ui_locale: str) -> Page:
+@pytest.fixture(name="logged_in_regular", scope="function")
+def logged_in_regular_fixture(page: Page, ui_theme: Theme, ui_locale: str) -> Page:
     """
     Return a Playwright page already logged in as the regular test user.
     """
