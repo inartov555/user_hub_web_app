@@ -16,41 +16,39 @@ from config import DEFAULT_REGULAR_USERNAME
 @pytest.mark.admin
 @pytest.mark.theme
 @pytest.mark.localization
-@pytest.mark.parametrize("theme", ["light", "dark"])
-@pytest.mark.parametrize("locale_code", ["en-US", "uk-UA"])
-def test_users_table_admin_theme_and_locale(logged_in_admin: Page, theme: Theme, locale_code: str) -> None:
+@pytest.mark.parametrize("ui_theme", ["light", "dark"])
+@pytest.mark.parametrize("ui_locale", ["en-US", "uk-UA"])
+def test_users_table_admin_theme_and_locale(logged_in_admin: Page,
+                                            ui_theme: Theme,
+                                            ui_locale: str,
+                                            admin_users_page: UsersTablePage) -> None:
     """
     Admin should see the users table in all tested themes/locales.
     """
     page = logged_in_admin
-    set_theme(page, theme)
-    set_locale(page, locale_code)
-    users = UsersTablePage(page)
-    users.open()
-    expect(users.search_input).to_be_visible()
-    users.assert_admin_controls_visible()
+    set_theme(page, ui_theme)
+    set_locale(page, ui_locale)
+    expect(admin_users_page.search_input).to_be_visible()
+    admin_users_page.assert_admin_controls_visible()
 
 
 @pytest.mark.regular_user
-def test_users_table_regular_user_has_restricted_controls(logged_in_regular: Page) -> None:
+def test_users_table_regular_user_has_restricted_controls(logged_in_regular: Page,
+                                                          regular_users_page: UsersTablePage) -> None:
     """
     Regular user should not see admin-only controls on the users table.
     """
-    users = UsersTablePage(logged_in_regular)
-    users.open()
-    users.assert_admin_controls_hidden_for_regular_user()
+    regular_users_page.assert_admin_controls_hidden_for_regular_user()
 
 
 @pytest.mark.sorting
-def test_users_table_multi_column_sort_admin(logged_in_admin: Page) -> None:
+def test_users_table_multi_column_sort_admin(logged_in_admin: Page,
+                                             admin_users_page: UsersTablePage) -> None:
     """
     Admin can apply a multi-column sort (username then email) and see sort indices.
     """
-    page = logged_in_admin
-    users = UsersTablePage(page)
-    users.open()
-    users.sort_by_username_then_email()
-    labels = users.get_sort_order_labels()
+    admin_users_page.sort_by_username_then_email()
+    labels = admin_users_page.get_sort_order_labels()
     assert "#1" in labels and "#2" in labels
 
 
