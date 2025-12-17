@@ -253,7 +253,7 @@ export default function UsersTable(props: Props) {
       accessorKey: "change_password_action",
       meta: { i18nKey: "users.changePassword" },
       enableHiding: false,
-      header: () => t("users.changePassword"),
+      header: () => (<div data-tag="changePasswordHeader">{t("users.changePassword")}</div>),
       enableSorting: false,
       size: 180,
       cell: ({ row }) => (
@@ -520,7 +520,7 @@ export default function UsersTable(props: Props) {
           </div>
 
           <div className="flex items-center gap-3 text-sm text-muted-foreground">
-            {isFetching && <span>{t("users.updating")}</span>}
+            {isFetching && <span data-tag="isUpdating">{t("users.updating")}</span>}
             <span>
               {t("users.page")} <strong>{table.getState().pagination.pageIndex + 1}</strong> {t("users.of")} {table.getPageCount() || 1}
             </span>

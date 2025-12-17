@@ -3,6 +3,7 @@ Tests for the Change Password page.
 """
 
 from __future__ import annotations
+import re
 
 import pytest
 from playwright.sync_api import Page, expect
@@ -29,11 +30,11 @@ def test_admin_can_open_change_password_for_user(logged_in_admin: Page,  # pylin
     """
     Admin should be able to navigate to the change-password page for a user.
     """
-    admin_users_page.search_input.fill(DEFAULT_REGULAR_USERNAME)
-    page.wait_for_timeout(500)
-    # Click first change-password button if visible.
-    page.locator("text=Change password").first.click()
-    expect(page).to_have_url("**/change-password")
+    admin_users_page.SEARCH_INPUT.fill(DEFAULT_REGULAR_USERNAME)
+    admin_users_page.wait_isupdating_disappeared()
+    # Click first change-password button
+    admin_users_page.CHANGE_PASSWROD_BTN.first.click()
+    expect(page).to_have_url(re.compile(r".*/users/\d+/change-password$"))
 
 
 @pytest.mark.regular_user

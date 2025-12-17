@@ -47,7 +47,6 @@ def add_loggers():
     log.setup_cli_handler(level=log_level)
     log.setup_filehandler(level=log_file_level, file_name=log_file)
     log.info(f"General loglevel: '{log_level}', File: '{log_file_level}'")
-    log.info(f"Test logs will be stored: '{log_file}'")
 
 
 def validate_app_config_params(**kwargs) -> None:
