@@ -3,6 +3,7 @@ Tests for the Login page.
 """
 
 from __future__ import annotations
+import re
 
 import pytest
 from playwright.sync_api import Page, expect
@@ -55,29 +56,29 @@ def test_login_invalid_credentials_show_error(login_page: LoginPage,
 
 
 @pytest.mark.regular_user
-def test_regular_user_can_login_and_redirects_to_users(page: Page) -> None:
+def test_regular_user_can_login_and_redirects_to_users(login_page: LoginPage,
+                                                       page: Page) -> None:
     """
     Regular test user should be able to log in and land on /users.
     """
-    login = LoginPage(page)
-    login.open()
-    login.fill_credentials(DEFAULT_REGULAR_USERNAME, DEFAULT_REGULAR_PASSWORD)
-    login.submit()
-    page.wait_for_url("**/users")
-    expect(page).to_have_url("**/users")
+    login_page.fill_credentials(DEFAULT_REGULAR_USERNAME, DEFAULT_REGULAR_PASSWORD)
+    login_page.submit.click()
+    page.wait_for_url(re.compile(r".*/users$"))
+    expect(page).to_have_url(re.compile(r".*/users$"))
+    expect(login_page.users_tab).to_be_visible()
 
 
 @pytest.mark.admin
-def test_admin_can_login_and_see_users_nav(page: Page) -> None:
+def test_admin_can_login_and_see_users_nav(login_page: LoginPage,
+                                           page: Page) -> None:
     """
     Admin user should log in successfully and see the Users nav item.
     """
-    login = LoginPage(page)
-    login.open()
-    login.fill_credentials(DEFAULT_ADMIN_USERNAME, DEFAULT_ADMIN_PASSWORD)
-    login.submit()
-    page.wait_for_url("**/users")
-    expect(page.locator("#users")).to_be_visible()
+    login_page.fill_credentials(DEFAULT_ADMIN_USERNAME, DEFAULT_ADMIN_PASSWORD)
+    login_page.submit.click()
+    page.wait_for_url(re.compile(r".*/users$"))
+    expect(page).to_have_url(re.compile(r".*/users$"))
+    expect(login_page.users_tab).to_be_visible()
 
 
 @pytest.mark.localization

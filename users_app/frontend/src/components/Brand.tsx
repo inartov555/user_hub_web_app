@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 export default function Brand({ title }: { title: string }) {
   return (
     <Link
+      data-tag="brandInfo"
       to="/"
       className="mr-[30px] inline-flex items-center gap-2 rounded-2xl
                  px-3 py-1.5 text-sm sm:text-base font-semibold tracking-wide

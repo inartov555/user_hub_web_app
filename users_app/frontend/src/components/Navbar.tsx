@@ -23,7 +23,7 @@ export default function Navbar() {
   }`;
   // Helper: treat multiple routes as active for one tab
   const isProfileActive = pathname.startsWith("/profile-view") || pathname.startsWith("/profile-edit");
-    // "Additional" tab logic
+  // "Additional" tab logic
   const secondRowRoutes = ["/stats", "/settings", "/import-excel"];
   const routeIsSecondRow = secondRowRoutes.some((p) => pathname.startsWith(p));
   // Show row 2 if user clicked Additional *or* a second-row route is active
