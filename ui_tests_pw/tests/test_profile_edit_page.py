@@ -4,10 +4,12 @@ Tests for the Profile edit page.
 
 from __future__ import annotations
 import random
+import re
 
 import pytest
 from playwright.sync_api import Page, expect
 
+from pages.profile_view_page import ProfileViewPage
 from utils.theme import Theme, set_theme
 from utils.localization import set_locale
 
@@ -15,10 +17,8 @@ from utils.localization import set_locale
 @pytest.mark.regular_user
 @pytest.mark.theme
 @pytest.mark.localization
-# @pytest.mark.parametrize("ui_theme_param", ["light", "dark"])
-# @pytest.mark.parametrize("ui_locale_param", ["en-US", "uk-UA"])
-@pytest.mark.parametrize("ui_theme_param", ["light"])
-@pytest.mark.parametrize("ui_locale_param", ["en-US"])
+@pytest.mark.parametrize("ui_theme_param", ["light", "dark"])
+@pytest.mark.parametrize("ui_locale_param", ["en-US", "uk-UA"])
 def test_profile_edit_renders_and_can_save(profile_edit_page_regular: Page,
                                            page: Page,
                                            ui_theme_param: Theme,
@@ -35,24 +35,22 @@ def test_profile_edit_renders_and_can_save(profile_edit_page_regular: Page,
     set_locale(page, ui_locale_param)
     profile_edit_page_regular.assert_loaded()
     profile_edit_page_regular.fill_basic_fields(edit_data.get("firstName"), edit_data.get("lastName"), edit_data.get("bio"))
-    import time
-    time.sleep(4)
     profile_edit_page_regular.save.click()
-    profile_view_page = profile_edit_page_regular.get_actual_profile_view_page()
+    page.wait_for_url(re.compile(r".*/profile-view$"))
+    profile_view_page = ProfileViewPage(page)
     # Verifying if changed values have been applied and are displayed in the Preview Profile page
     full_name = "{} {}".format(edit_data.get("firstName"), edit_data.get("lastName"))
-    expect(profile_view_page.full_name).to_have_value(full_name)
-    expect(profile_view_page.bio).to_have_value(edit_data.get("bio"))
-    import time
-    time.sleep(4)
+    expect(profile_view_page.full_name).to_have_text(full_name)
+    expect(profile_view_page.bio).to_have_text(edit_data.get("bio"))
 
 
 @pytest.mark.regular_user
-def test_profile_edit_cancel_returns_to_profile_view(logged_in_regular: Page) -> None:
+def test_profile_edit_cancel_returns_to_profile_view(logged_in_regular: Page,
+                                                     page: Page,
+                                                     profile_edit_page_regular: Page) -> None:
     """
     Cancel button should navigate back to profile view.
     """
-    edit = ProfileEditPage(logged_in_regular)
-    edit.open()
-    edit.cancel()
-    assert "profile-view" in logged_in_regular.url
+    profile_edit_page_regular.cancel.click()
+    page.wait_for_url(re.compile(r".*/profile-view$"))
+    expect(page).to_have_url(re.compile(r".*/profile-view$"))
