@@ -254,14 +254,14 @@ class UsersAppApi(ApiJsonRequest):
                                      payload=payload)
         return response
 
-    def get_users(self, access: str, page_num: int = 1, page_size: int = 100, ordering: str = "id"):
+    def get_users(self, access: str, search: str = "", page_num: int = 1, page_size: int = 100, ordering: str = "id"):
         """
         /api/v1/users
 
         Returns:
             dict
         """
-        params = {"page": page_num, "page_size": page_size, "ordering": ordering}
+        params = {"search": search, "page": page_num, "page_size": page_size, "ordering": ordering}
         response = self.make_request("get",
                                      "/api/v1/users",
                                      query_params=params,

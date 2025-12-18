@@ -3,7 +3,7 @@ Tests for the Signup page.
 """
 
 from __future__ import annotations
-import uuid
+import re
 
 import pytest
 from playwright.sync_api import Page, expect
@@ -31,8 +31,7 @@ def test_signup_page_renders(page: Page,
     expect(signup_page.password).to_be_visible()
 
 
-# @pytest.mark.parametrize("suffix", ["one", "two", "three"])
-@pytest.mark.parametrize("suffix", ["one"])
+@pytest.mark.parametrize("suffix", ["one", "two", "three"])
 def test_signup_with_random_username(page: Page,
                                      signup_page: Page,
                                      cleanup_delete_users_by_suffix,
@@ -40,20 +39,20 @@ def test_signup_with_random_username(page: Page,
     """
     Attempt signup with a random username; backend may accept or reject duplicates.
     """
-    uname = f"ui-test-{suffix}-{uuid.uuid4().hex[:6]}"
-    email = f"{uname}@example.com"
-    signup.fill_form(uname, email, "changeme123")
-    signup.save.click()
+    username = f"ui-test-{suffix}"
+    email = f"{username}@test.com"
+    signup_page.fill_form(username, email, "changeme123")
+    signup_page.save.click()
     # The user is redirected to the Login page after successful user creation
     page.wait_for_url(re.compile(r".*/login$"))
     expect(page).to_have_url(re.compile(r".*/login$"))
 
 
-def test_signup_link_back_to_login(page: Page) -> None:
+def test_signup_link_back_to_login(page: Page,
+                                   signup_page: Page) -> None:
     """
     Signup page should link back to the login page.
     """
-    signup = SignupPage(page)
-    signup.open()
-    page.get_by_role("link", name="Sign in").click()
-    expect(page).to_have_url("**/login")
+    signup_page.login.click()
+    page.wait_for_url(re.compile(r".*/login$"))
+    expect(page).to_have_url(re.compile(r".*/login$"))

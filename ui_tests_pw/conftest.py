@@ -5,7 +5,6 @@ conftest.py
 from __future__ import annotations
 import os
 from configparser import ConfigParser, ExtendedInterpolation
-import uuid
 
 import pytest
 from playwright.sync_api import Page, Browser, expect
@@ -381,22 +380,23 @@ def cleanup_delete_users_by_suffix(suffix: str) -> None:
     Delete users by passed suffix.
 
     Username & email are created with this logic:
-        uname = f"ui-test-{suffix}-{uuid.uuid4().hex[:6]}"
-        email = f"{uname}@example.com"
+        username = f"ui-test-{suffix}"
+        email = f"{username}@test.com"
     """
     yield
     log.info("Cleanup. Deleting users created while running a test")
     api_utils = get_api_utils()
-    uname = f"ui-test-{suffix}-{uuid.uuid4().hex[:6]}"
-    email = f"{uname}@example.com"
+    username = f"ui-test-{suffix}"
+    email = f"{username}@test.com"
     login_info = api_utils.get_access_token(DEFAULT_ADMIN_USERNAME, DEFAULT_ADMIN_PASSWORD)
-    users = api_utils.get_users(login_info.get("access"))
+    access_token = login_info.get("access")
+    users = api_utils.get_users(access=access_token, search=username)
     user_id_list = []
     for user in users.get("results"):
         resp_email = user.get("email")
         resp_username = user.get("username")
-        if uname == resp_username and email == resp_email:
+        if username == resp_username and email == resp_email:
             user_id_list.append(user.get("id"))
     if user_id_list:
-        api_utils.bulk_user_delete(user_id_list)
+        api_utils.bulk_user_delete(access_token, user_id_list)
     

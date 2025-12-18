@@ -57,7 +57,7 @@ echo "Starting the tests..."
 TEST_GREP="--ini-config $INI_CONFIG_FILE"
 # If you need to run particular test(s), then set it as shown in the line below (TEST_GREP);
 # to run all tests, just set TEST_GREP="$TEST_GREP" (to preserve base settings)
-TEST_GREP="$TEST_GREP -k test_signup_with_random_username"
+TEST_GREP="$TEST_GREP -k test_signup_link_back_to_login"
 
 docker compose run -e TEST_GREP="$TEST_GREP" --rm ui_tests_pw
 

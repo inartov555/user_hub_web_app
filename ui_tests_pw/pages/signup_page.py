@@ -21,6 +21,7 @@ class SignupPage(BasePage):
         self.username = self.page.locator("#username")
         self.password = self.page.locator("#password")
         self.save = self.page.locator("#create")
+        self.login = self.page.locator("a[href='/login']")
 
     def open(self) -> None:
         """
