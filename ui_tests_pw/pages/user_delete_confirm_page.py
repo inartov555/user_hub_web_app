@@ -3,6 +3,7 @@ Page object for the User Delete Confirm page.
 """
 
 from __future__ import annotations
+import re
 
 from playwright.sync_api import expect, Page
 
@@ -30,5 +31,5 @@ class UserDeleteConfirmPage(BasePage):
         """
         Assert that the confirmation UI is visible.
         """
-        expect(page).to_have_url(re.compile(r".*/users/confirm-delete$"))
+        expect(self.page).to_have_url(re.compile(r".*/users/confirm-delete$"))
         expect(self.confirm_delete).to_be_visible()

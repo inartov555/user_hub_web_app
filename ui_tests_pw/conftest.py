@@ -18,7 +18,7 @@ from config import (
     DEFAULT_REGULAR_USERNAME,
     DEFAULT_REGULAR_PASSWORD,
 )
-from api.api_utils import UsersAppApi
+from utils.api_utils import UsersAppApi
 from utils.theme import Theme, set_theme
 from utils.localization import set_locale
 from utils.auth import ensure_regular_user
@@ -412,4 +412,23 @@ def cleanup_delete_users_by_suffix(suffix: str) -> None:
             user_id_list.append(user.get("id"))
     if user_id_list:
         api_utils.bulk_user_delete(access_token, user_id_list)
+
+
+@pytest.fixture(name="setup_create_users_by_suffix", scope="function")
+def setup_create_users_by_suffix(suffix: str) -> None:
+    """
+    Delete users by passed suffix.
+
+    Username & email are created with this logic:
+        username = f"ui-test-{suffix}"
+        email = f"{username}@test.com"
+    """
+    log.info("Setup. Creating users before running a test")
+    api_utils = get_api_utils()
+    username = f"ui-test-{suffix}"
+    email = f"{username}@test.com"
+    password = f"Ch@ngeme123"
+    login_info = api_utils.get_access_token(DEFAULT_ADMIN_USERNAME, DEFAULT_ADMIN_PASSWORD)
+    access_token = login_info.get("access")
+    api_utils.create_user(access_token, username, email, password)
     

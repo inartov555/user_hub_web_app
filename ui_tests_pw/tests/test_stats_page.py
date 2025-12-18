@@ -5,7 +5,7 @@ Tests for the Stats page.
 from __future__ import annotations
 
 import pytest
-from playwright.sync_api import Page
+from playwright.sync_api import Page, expect
 
 from pages.stats_page import StatsPage
 from utils.theme import Theme, set_theme

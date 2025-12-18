@@ -26,6 +26,8 @@ class UsersTablePage(BasePage):
         self.delete_users_btn = self.page.locator("#deleteUsers")
 
         self.check_all_header = self.page.locator('input[data-tag="check-all-rows"]')
+        # This locator returs all checkboxes (NON-header ones) for the current page
+        self.check_rows = self.page.locator('input[data-tag="check-a-row"]')
         self.username_header = self.page.locator('button[data-tag="sort-by-username"]')
         self.email_header = self.page.locator('button[data-tag="sort-by-email"]')
         self.first_name_header = self.page.locator('button[data-tag="sort-by-email"]')

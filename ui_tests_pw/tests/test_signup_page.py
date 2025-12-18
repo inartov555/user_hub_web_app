@@ -38,6 +38,10 @@ def test_signup_with_random_username(page: Page,
                                      suffix: str) -> None:
     """
     Attempt signup with a random username; backend may accept or reject duplicates.
+
+    Username & email are created with this logic:
+        username = f"ui-test-{suffix}"
+        email = f"{username}@test.com"
     """
     username = f"ui-test-{suffix}"
     email = f"{username}@test.com"

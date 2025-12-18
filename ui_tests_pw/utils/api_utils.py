@@ -273,12 +273,27 @@ class UsersAppApi(ApiJsonRequest):
         /api/v1/users/bulk-delete/
 
         Returns:
-            dict
+            dict, {"deleted": $number}
         """
         payload = {"ids": user_id_list}
         headers = {"Authorization": "Bearer {}".format(access)}
         response = self.make_request("post",
                                      "/api/v1/users/bulk-delete/",
+                                     payload=payload,
+                                     headers=self.get_authorization_token_dict(access))
+        return response
+
+    def create_user(self, access: str, username: str, email: str, password: str):
+        """
+        /api/v1/auth/users/
+
+        Returns:
+            dict
+        """
+        payload = {"username": username, "email": email, "password": password}
+        headers = {"Authorization": "Bearer {}".format(access)}
+        response = self.make_request("post",
+                                     "/api/v1/auth/users/",
                                      payload=payload,
                                      headers=self.get_authorization_token_dict(access))
         return response
