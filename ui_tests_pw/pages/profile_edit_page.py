@@ -7,6 +7,7 @@ from __future__ import annotations
 from playwright.sync_api import expect
 
 from .base_page import BasePage
+from .profile_view_page import ProfileViewPage
 
 
 class ProfileEditPage(BasePage):
@@ -44,3 +45,11 @@ class ProfileEditPage(BasePage):
         expect(self.first_name).to_be_visible()
         expect(self.last_name).to_be_visible()
         expect(self.bio).to_be_visible()
+
+    def get_actual_profile_view_page(self) -> ProfileViewPage:
+        """
+        Get actual Profile View page
+        """
+        profile_view = ProfileViewPage(self.page)
+        profile_view.open()
+        return profile_view

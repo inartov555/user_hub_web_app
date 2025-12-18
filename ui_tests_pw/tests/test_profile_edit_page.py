@@ -20,10 +20,10 @@ from utils.localization import set_locale
 @pytest.mark.parametrize("ui_theme_param", ["light"])
 @pytest.mark.parametrize("ui_locale_param", ["en-US"])
 def test_profile_edit_renders_and_can_save(profile_edit_page_regular: Page,
-                                           profile_view_page_regular: Page,
                                            page: Page,
                                            ui_theme_param: Theme,
-                                           ui_locale_param: str) -> None:
+                                           ui_locale_param: str,
+                                           request) -> None:
     """
     Regular user should be able to edit and save their profile.
     """
@@ -33,17 +33,16 @@ def test_profile_edit_renders_and_can_save(profile_edit_page_regular: Page,
                  "bio": "Bio from automated test._{}".format(rand_num)}
     set_theme(page, ui_theme_param)
     set_locale(page, ui_locale_param)
-    import time
-    time.sleep(4)
-    # profile_edit_page_regular.assert_loaded()
+    profile_edit_page_regular.assert_loaded()
     profile_edit_page_regular.fill_basic_fields(edit_data.get("firstName"), edit_data.get("lastName"), edit_data.get("bio"))
     import time
     time.sleep(4)
-    # profile_edit_page_regular.save.click()
+    profile_edit_page_regular.save.click()
+    profile_view_page = profile_edit_page_regular.get_actual_profile_view_page()
     # Verifying if changed values have been applied and are displayed in the Preview Profile page
     full_name = "{} {}".format(edit_data.get("firstName"), edit_data.get("lastName"))
-    expect(profile_view_page_regular.full_name).to_have_value(full_name)
-    expect(profile_view_page_regular.bio).to_have_value(edit_data.get("bio"))
+    expect(profile_view_page.full_name).to_have_value(full_name)
+    expect(profile_view_page.bio).to_have_value(edit_data.get("bio"))
     import time
     time.sleep(4)
 
