@@ -8,7 +8,6 @@ import re
 import pytest
 from playwright.sync_api import Page, expect
 
-from pages.signup_page import SignupPage
 from utils.theme import Theme, set_theme
 from utils.localization import set_locale
 
@@ -34,7 +33,7 @@ def test_signup_page_renders(page: Page,
 @pytest.mark.parametrize("suffix", ["one", "two", "three"])
 def test_signup_with_random_username(page: Page,
                                      signup_page: Page,
-                                     cleanup_delete_users_by_suffix,
+                                     cleanup_delete_users_by_suffix,  # pylint: disable=unused-argument
                                      suffix: str) -> None:
     """
     Attempt signup with a random username; backend may accept or reject duplicates.

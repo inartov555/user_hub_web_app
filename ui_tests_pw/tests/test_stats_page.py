@@ -7,7 +7,6 @@ from __future__ import annotations
 import pytest
 from playwright.sync_api import Page, expect
 
-from pages.stats_page import StatsPage
 from utils.theme import Theme, set_theme
 from utils.localization import set_locale
 
@@ -30,7 +29,7 @@ def test_stats_page_renders_for_admin(page: Page,
 
 
 @pytest.mark.regular_user
-def test_stats_page_renders_for_regular_user(page: Page,
+def test_stats_page_renders_for_regular_user(page: Page,  # pylint: disable=unused-argument
                                              regular_users_page: Page) -> None:
     """
     Regular user can NOT access the stats page.

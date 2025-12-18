@@ -4,7 +4,7 @@ Page object for the Signup page.
 
 from __future__ import annotations
 
-from playwright.sync_api import expect, Page
+from playwright.sync_api import Page
 
 from .base_page import BasePage
 

@@ -229,16 +229,16 @@ class UsersAppApi(ApiJsonRequest):
             host (str): e.g. google.com
             port (str): e.g. "443"
         """
-        super().__init__(protocol, host, port)
+        super().__init__(protocol, host, port)  # pylint: disable=useless-parent-delegation
 
-    def get_authorization_token_dict(self, access: str) -> dict:
+    def get_authorization_token_dict(self, access: str) -> dict:  # pylint: disable=unused-argument
         """
         Args:
             access (str): access token
             headers (dict): the headers to be used in the request, adding only Athorization
                             header item even when empty
         """
-        auth = {"Authorization": "Bearer {}".format(access)}
+        auth = {"Authorization": f"Bearer {access}"}
         return auth
 
     def get_access_token(self, username, password):
@@ -276,7 +276,6 @@ class UsersAppApi(ApiJsonRequest):
             dict, {"deleted": $number}
         """
         payload = {"ids": user_id_list}
-        headers = {"Authorization": "Bearer {}".format(access)}
         response = self.make_request("post",
                                      "/api/v1/users/bulk-delete/",
                                      payload=payload,
@@ -291,7 +290,6 @@ class UsersAppApi(ApiJsonRequest):
             dict
         """
         payload = {"username": username, "email": email, "password": password}
-        headers = {"Authorization": "Bearer {}".format(access)}
         response = self.make_request("post",
                                      "/api/v1/auth/users/",
                                      payload=payload,

@@ -40,6 +40,9 @@ log = Logger(__name__)
 
 
 def get_api_utils() -> UsersAppApi:
+    """
+    Get API Utils
+    """
     ind = UI_BASE_URL.find("://")
     protocol = "http"
     host = None
@@ -427,8 +430,7 @@ def setup_create_users_by_suffix(suffix: str) -> None:
     api_utils = get_api_utils()
     username = f"ui-test-{suffix}"
     email = f"{username}@test.com"
-    password = f"Ch@ngeme123"
+    password = "Ch@ngeme123"
     login_info = api_utils.get_access_token(DEFAULT_ADMIN_USERNAME, DEFAULT_ADMIN_PASSWORD)
     access_token = login_info.get("access")
     api_utils.create_user(access_token, username, email, password)
-    

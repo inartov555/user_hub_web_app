@@ -20,11 +20,10 @@ from utils.localization import set_locale
 @pytest.mark.parametrize("ui_theme_param", ["light", "dark"])
 @pytest.mark.parametrize("ui_locale_param", ["en-US", "uk-UA"])
 @pytest.mark.parametrize("suffix", ["one"])
-def test_admin_can_navigate_to_delete_confirm(logged_in_admin: Page,  # pylint: disable=unused-argument
-                                              page: Page,
+@pytest.mark.usefixtures('setup_create_users_by_suffix')
+@pytest.mark.usefixtures('cleanup_delete_users_by_suffix')
+def test_admin_can_navigate_to_delete_confirm(page: Page,
                                               admin_users_page: UsersTablePage,  # pylint: disable=unused-argument
-                                              setup_create_users_by_suffix,  # pylint: disable=unused-argument
-                                              cleanup_delete_users_by_suffix,  # pylint: disable=unused-argument
                                               ui_locale_param: str,  # pylint: disable=unused-argument
                                               ui_theme_param: Theme,  # pylint: disable=unused-argument
                                               suffix,

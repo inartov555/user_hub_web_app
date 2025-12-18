@@ -7,7 +7,6 @@ from __future__ import annotations
 import pytest
 from playwright.sync_api import Page, expect
 
-from pages.settings_page import SettingsPage
 from utils.theme import Theme, set_theme
 from utils.localization import set_locale
 
