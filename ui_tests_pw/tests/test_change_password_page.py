@@ -18,10 +18,10 @@ from config import DEFAULT_REGULAR_USERNAME
 @pytest.mark.theme
 @pytest.mark.localization
 @pytest.mark.parametrize("ui_theme_param", ["light", "dark"])
-@pytest.mark.parametrize("ui_locale_locale", ["en-US", "uk-UA"])
+@pytest.mark.parametrize("ui_locale_param", ["en-US", "uk-UA"])
 def test_admin_can_open_change_password_for_user(logged_in_admin: Page,  # pylint: disable=unused-argument
                                                  ui_theme_param: Theme,  # pylint: disable=unused-argument
-                                                 ui_locale_locale: str,  # pylint: disable=unused-argument
+                                                 ui_locale_param: str,  # pylint: disable=unused-argument
                                                  page: Page,
                                                  admin_users_page: UsersTablePage
                                                 ) -> None:
@@ -29,7 +29,7 @@ def test_admin_can_open_change_password_for_user(logged_in_admin: Page,  # pylin
     Admin should be able to navigate to the change-password page for a user.
     """
     set_theme(page, ui_theme_param)
-    set_locale(page, ui_locale_locale)
+    set_locale(page, ui_locale_param)
     # Type username and wait the table is refreshed
     admin_users_page.search_and_wait_for_results(DEFAULT_REGULAR_USERNAME)
     # Click first change-password button

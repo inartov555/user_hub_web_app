@@ -34,23 +34,13 @@ class ProfileEditPage(BasePage):
         Fill first name, last name, and bio fields.
         """
         self.first_name.fill(first_name)
-        self.first_name.fill(last_name)
-        self.first_name.fill(bio)
-
-    def save(self) -> None:
-        """
-        Click the Save button.
-        """
-        self.save.click()
-
-    def cancel(self) -> None:
-        """
-        Click the Cancel button.
-        """
-        self.cancel.click()
+        self.last_name.fill(last_name)
+        self.bio.fill(bio)
 
     def assert_loaded(self) -> None:
         """
         Assert that the profile edit form is loaded.
         """
         expect(self.first_name).to_be_visible()
+        expect(self.last_name).to_be_visible()
+        expect(self.bio).to_be_visible()

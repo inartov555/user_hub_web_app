@@ -25,6 +25,8 @@ from utils.logger.logger import Logger
 from pages.login_page import LoginPage
 from pages.users_table_page import UsersTablePage
 from pages.excel_import_page import ExcelImportPage
+from pages.profile_edit_page import ProfileEditPage
+from pages.profile_view_page import ProfileViewPage
 
 
 log = Logger(__name__)
@@ -222,10 +224,9 @@ def admin_users_page(logged_in_admin: Page, ui_theme: Theme, ui_locale: str) -> 
     """
     Get Users table page
     """
-    page = logged_in_admin
-    set_theme(page, ui_theme)
-    set_locale(page, ui_locale)
-    users = UsersTablePage(page)
+    set_theme(logged_in_admin, ui_theme)
+    set_locale(logged_in_admin, ui_locale)
+    users = UsersTablePage(logged_in_admin)
     users.open()
     return users
 
@@ -235,10 +236,9 @@ def regular_users_page(logged_in_regular: Page, ui_theme: Theme, ui_locale: str)
     """
     Get Users table page
     """
-    page = logged_in_regular
-    set_theme(page, ui_theme)
-    set_locale(page, ui_locale)
-    users = UsersTablePage(page)
+    set_theme(logged_in_regular, ui_theme)
+    set_locale(logged_in_regular, ui_locale)
+    users = UsersTablePage(logged_in_regular)
     users.open()
     return users
 
@@ -248,10 +248,9 @@ def admin_excel_import_page(logged_in_admin: Page, ui_theme: Theme, ui_locale: s
     """
     Get Excel import page
     """
-    page = logged_in_admin
-    set_theme(page, ui_theme)
-    set_locale(page, ui_locale)
-    excel_import = ExcelImportPage(page)
+    set_theme(logged_in_admin, ui_theme)
+    set_locale(logged_in_admin, ui_locale)
+    excel_import = ExcelImportPage(logged_in_admin)
     excel_import.open()
     return excel_import
 
@@ -266,3 +265,51 @@ def login_page_fixture(page: Page, ui_theme: Theme, ui_locale: str) -> LoginPage
     set_theme(page, ui_theme)
     set_locale(page, ui_locale)
     return login_page
+
+
+@pytest.fixture(name="profile_edit_page_regular", scope="function")
+def profile_edit_page_regular_fixture(logged_in_regular: Page, ui_theme: Theme, ui_locale: str) -> ProfileEditPage:
+    """
+    Get Profile Edit page
+    """
+    set_theme(logged_in_regular, ui_theme)
+    set_locale(logged_in_regular, ui_locale)
+    profile_edit = ProfileEditPage(logged_in_regular)
+    profile_edit.open()
+    return profile_edit
+
+
+@pytest.fixture(name="profile_edit_page_admin", scope="function")
+def profile_edit_page_admin_fixture(logged_in_admin: Page, ui_theme: Theme, ui_locale: str) -> ProfileEditPage:
+    """
+    Get Profile Edit page
+    """
+    set_theme(logged_in_admin, ui_theme)
+    set_locale(logged_in_admin, ui_locale)
+    profile_edit = ProfileEditPage(logged_in_admin)
+    profile_edit.open()
+    return profile_edit
+
+
+@pytest.fixture(name="profile_view_page_regular", scope="function")
+def profile_view_page_regular_fixture(logged_in_regular: Page, ui_theme: Theme, ui_locale: str) -> ProfileViewPage:
+    """
+    Get Profile View page
+    """
+    set_theme(logged_in_regular, ui_theme)
+    set_locale(logged_in_regular, ui_locale)
+    profile_view = ProfileViewPage(logged_in_regular)
+    profile_view.open()
+    return profile_view
+
+
+@pytest.fixture(name="profile_view_page_admin", scope="function")
+def profile_view_page_admin_fixture(logged_in_admin: Page, ui_theme: Theme, ui_locale: str) -> ProfileViewPage:
+    """
+    Get Profile View page
+    """
+    set_theme(logged_in_admin, ui_theme)
+    set_locale(logged_in_admin, ui_locale)
+    profile_view = ProfileViewPage(logged_in_admin)
+    profile_view.open()
+    return profile_view

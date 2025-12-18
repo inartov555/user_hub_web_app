@@ -120,7 +120,7 @@ export default function ProfileView() {
             </Link>
           </Button>
           {profile?.user?.id != null && (
-            <Button id="cancel" variant="secondary" className="gap-2">
+            <Button id="changePassword" variant="secondary" className="gap-2">
               <Link
                 to={`/users/${profile.user.id}/change-password`}
                 className="btn inline-flex"

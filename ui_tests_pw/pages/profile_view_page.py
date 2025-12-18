@@ -14,6 +14,17 @@ class ProfileViewPage(BasePage):
     Encapsulates the profile view UI.
     """
 
+    def __init__(self, page: Page):
+        super().__init__(page)
+
+        self.full_name = self.page.locator("#fullName")
+        self.username = self.page.locator("#username")
+        self.user_id = self.page.locator("#userid")
+        self.email = self.page.locator("#email")
+        self.bio = self.page.locator("#bio")
+        self.edit_profile = self.page.locator("#editProfile")
+        self.change_password = self.page.locator("#changePassword")
+
     def open(self) -> None:
         """
         Open the profile view page.
@@ -24,12 +35,12 @@ class ProfileViewPage(BasePage):
         """
         Assert that basic profile fields are visible.
         """
-        expect(self.page.locator("#username")).to_be_visible()
-        expect(self.page.locator("#email")).to_be_visible()
-        expect(self.page.locator("#fullName")).to_be_visible()
+        expect(self.username).to_be_visible()
+        expect(self.email).to_be_visible()
+        expect(self.full_name).to_be_visible()
 
     def click_edit_profile(self) -> None:
         """
         Click the 'Edit profile' button.
         """
-        self.page.locator("#editProfile").click()
+        self.edit_profile.click()

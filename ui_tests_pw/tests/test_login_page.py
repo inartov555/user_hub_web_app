@@ -21,17 +21,17 @@ from config import (
 
 @pytest.mark.theme
 @pytest.mark.localization
-@pytest.mark.parametrize("ui_theme", ["light", "dark"])
-@pytest.mark.parametrize("ui_locale", ["en-US", "uk-UA"])
+@pytest.mark.parametrize("ui_theme_param", ["light", "dark"])
+@pytest.mark.parametrize("ui_locale_param", ["en-US", "uk-UA"])
 def test_login_page_renders_in_theme_and_locale(login_page: LoginPage,  # pylint: disable=unused-argument
                                                 page: Page,
-                                                ui_theme: Theme,
-                                                ui_locale: str) -> None:
+                                                ui_theme_param: Theme,
+                                                ui_locale_param: str) -> None:
     """
     Verify that the login page renders correctly for each theme and locale combination.
     """
-    set_theme(page, ui_theme)
-    set_locale(page, ui_locale)
+    set_theme(page, ui_theme_param)
+    set_locale(page, ui_locale_param)
     login_page.assert_on_login_page()
 
 
