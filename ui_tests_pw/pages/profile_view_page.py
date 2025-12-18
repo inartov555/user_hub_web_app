@@ -4,7 +4,7 @@ Page object for the Profile view page.
 
 from __future__ import annotations
 
-from playwright.sync_api import expect
+from playwright.sync_api import expect, Page
 
 from .base_page import BasePage
 

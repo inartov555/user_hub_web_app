@@ -31,7 +31,7 @@ export default function ResetPassword() {
   return (
     <div className="max-w-xl mx-auto p-4 rounded-2xl shadow bg-white border dark:bg-slate-800 dark:text-slate-100 dark:border-slate-700">
       <h1 className="text-2xl font-semibold mb-4">{t("resetPassword.resetPassword")}</h1>
-      {sent ? <p>{t("resetPassword.checkEmailForResetLink")}</p> : (
+      {sent ? <p data-tag="resetPassInfoMsg">{t("resetPassword.checkEmailForResetLink")}</p> : (
         <form onSubmit={onSubmit} className="space-y-3">
           <FormInput placeholder="Email" id="email" type="email" className="
             w-full rounded-xl px-3 py-2

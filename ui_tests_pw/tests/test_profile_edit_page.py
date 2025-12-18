@@ -22,15 +22,14 @@ from utils.localization import set_locale
 def test_profile_edit_renders_and_can_save(profile_edit_page_regular: Page,
                                            page: Page,
                                            ui_theme_param: Theme,
-                                           ui_locale_param: str,
-                                           request) -> None:
+                                           ui_locale_param: str) -> None:
     """
     Regular user should be able to edit and save their profile.
     """
     rand_num = random.randint(0, 1000)
-    edit_data = {"firstName": "UI_{}".format(rand_num),
-                 "lastName": "Tester_{}".format(rand_num),
-                 "bio": "Bio from automated test._{}".format(rand_num)}
+    edit_data = {"firstName": "UI_{}".format(rand_num),  # pylint: disable=consider-using-f-string
+                 "lastName": "Tester_{}".format(rand_num),  # pylint: disable=consider-using-f-string
+                 "bio": "Bio from automated test._{}".format(rand_num)}  # pylint: disable=consider-using-f-string
     set_theme(page, ui_theme_param)
     set_locale(page, ui_locale_param)
     profile_edit_page_regular.assert_loaded()
@@ -39,13 +38,13 @@ def test_profile_edit_renders_and_can_save(profile_edit_page_regular: Page,
     page.wait_for_url(re.compile(r".*/profile-view$"))
     profile_view_page = ProfileViewPage(page)
     # Verifying if changed values have been applied and are displayed in the Preview Profile page
-    full_name = "{} {}".format(edit_data.get("firstName"), edit_data.get("lastName"))
+    full_name = "{} {}".format(edit_data.get("firstName"), edit_data.get("lastName"))  # pylint: disable=consider-using-f-string
     expect(profile_view_page.full_name).to_have_text(full_name)
     expect(profile_view_page.bio).to_have_text(edit_data.get("bio"))
 
 
 @pytest.mark.regular_user
-def test_profile_edit_cancel_returns_to_profile_view(logged_in_regular: Page,
+def test_profile_edit_cancel_returns_to_profile_view(logged_in_regular: Page,  # pylint: disable=unused-argument
                                                      page: Page,
                                                      profile_edit_page_regular: Page) -> None:
     """

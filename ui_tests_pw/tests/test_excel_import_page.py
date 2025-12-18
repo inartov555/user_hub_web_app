@@ -19,7 +19,7 @@ from utils.localization import set_locale
 @pytest.mark.localization
 @pytest.mark.parametrize("ui_theme_param", ["light", "dark"])
 @pytest.mark.parametrize("ui_locale_param", ["en-US", "uk-UA"])
-def test_excel_import_page_renders_for_admin(logged_in_admin: Page,
+def test_excel_import_page_renders_for_admin(logged_in_admin: Page,  # pylint: disable=unused-argument
                                              page: Page,
                                              ui_theme_param: Theme,
                                              ui_locale_param: str,

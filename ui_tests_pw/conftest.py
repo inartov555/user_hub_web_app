@@ -27,6 +27,7 @@ from pages.users_table_page import UsersTablePage
 from pages.excel_import_page import ExcelImportPage
 from pages.profile_edit_page import ProfileEditPage
 from pages.profile_view_page import ProfileViewPage
+from pages.reset_password_page import ResetPasswordPage
 
 
 log = Logger(__name__)
@@ -265,6 +266,18 @@ def login_page_fixture(page: Page, ui_theme: Theme, ui_locale: str) -> LoginPage
     set_theme(page, ui_theme)
     set_locale(page, ui_locale)
     return login_page
+
+
+@pytest.fixture(name="reset_password_page", scope="function")
+def reset_password_page_fixture(page: Page, login_page: Page, ui_theme: Theme, ui_locale: str) -> ResetPasswordPage:
+    """
+    Get Reset Password page
+    """
+    reset_password_page = ResetPasswordPage(page)
+    reset_password_page.open()
+    set_theme(page, ui_theme)
+    set_locale(page, ui_locale)
+    return reset_password_page
 
 
 @pytest.fixture(name="profile_edit_page_regular", scope="function")

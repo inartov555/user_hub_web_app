@@ -38,10 +38,9 @@ def set_theme(page: Page, desired: Theme) -> None:
     current = get_current_theme(page)
     if current == desir:
         return
-    else:
-        theme_toggler.click()
-        expect(theme_toggler).to_have_attribute(
-            "data-tag",
-            re.compile(r"^(?!{}$).+".format(re.escape(current))),
-            timeout=10000,
-        )
+    theme_toggler.click()
+    expect(theme_toggler).to_have_attribute(
+        "data-tag",
+        re.compile(r"^(?!{}$).+".format(re.escape(current))),  # pylint: disable=consider-using-f-string
+        timeout=10000,
+    )
