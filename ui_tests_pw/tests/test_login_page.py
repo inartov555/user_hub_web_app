@@ -20,21 +20,18 @@ from config import (
 
 @pytest.mark.theme
 @pytest.mark.localization
-@pytest.mark.parametrize("theme", ["light", "dark"])
-@pytest.mark.parametrize("locale_code", ["en-US", "uk-UA"])
-def test_login_page_renders_in_theme_and_locale(login_page: LoginPage,
+@pytest.mark.parametrize("ui_theme", ["light", "dark"])
+@pytest.mark.parametrize("ui_locale", ["en-US", "uk-UA"])
+def test_login_page_renders_in_theme_and_locale(login_page: LoginPage,  # pylint: disable=unused-argument
                                                 page: Page,
-                                                theme: Theme, locale_code: str) -> None:
+                                                ui_theme: Theme,
+                                                ui_locale: str) -> None:
     """
     Verify that the login page renders correctly for each theme and locale combination.
     """
-    login = LoginPage(page)
-    login.open()
-    set_theme(page, theme)
-    set_locale(page, locale_code)
-
-    expect(page.locator("#username")).to_be_visible()
-    expect(page.locator("#password")).to_be_visible()
+    set_theme(page, ui_theme)
+    set_locale(page, ui_locale)
+    login_page.assert_on_login_page()
 
 
 @pytest.mark.parametrize(
@@ -44,16 +41,17 @@ def test_login_page_renders_in_theme_and_locale(login_page: LoginPage,
         (DEFAULT_ADMIN_USERNAME, "wrongpw"),
     ],
 )
-def test_login_invalid_credentials_show_error(page: Page, username: str, password: str) -> None:
+def test_login_invalid_credentials_show_error(login_page: LoginPage,
+                                              page: Page,  # pylint: disable=unused-argument
+                                              username: str,
+                                              password: str) -> None:
     """
     Invalid credentials should keep the user on the login page and show an error.
     """
-    login = LoginPage(page)
-    login.open()
-    login.fill_credentials(username, password)
-    login.submit()
-    login.assert_on_login_page()
-    login.assert_error_visible()
+    login_page.fill_credentials(username, password)
+    login_page.submit.click()
+    login_page.assert_on_login_page()
+    login_page.assert_error_visible()
 
 
 @pytest.mark.regular_user

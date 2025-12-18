@@ -16,18 +16,17 @@ from config import DEFAULT_REGULAR_USERNAME
 @pytest.mark.admin
 @pytest.mark.theme
 @pytest.mark.localization
-@pytest.mark.parametrize("ui_theme", ["light", "dark"])
-@pytest.mark.parametrize("ui_locale", ["en-US", "uk-UA"])
+@pytest.mark.parametrize("ui_theme_param", ["light", "dark"])
+@pytest.mark.parametrize("ui_locale_locale", ["en-US", "uk-UA"])
 def test_users_table_admin_theme_and_locale(logged_in_admin: Page,
-                                            ui_theme: Theme,
-                                            ui_locale: str,
+                                            ui_theme_param: Theme,
+                                            ui_locale_locale: str,
                                             admin_users_page: UsersTablePage) -> None:
     """
     Admin should see the users table in all tested themes/locales.
     """
-    page = logged_in_admin
-    set_theme(page, ui_theme)
-    set_locale(page, ui_locale)
+    set_theme(logged_in_admin, ui_theme_param)
+    set_locale(logged_in_admin, ui_locale_locale)
     expect(admin_users_page.search_input).to_be_visible()
     admin_users_page.assert_admin_controls_visible()
 

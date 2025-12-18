@@ -6,7 +6,7 @@ from dataclasses import dataclass
 
 
 @dataclass(slots=True)
-class AppConfig:  # pylint: disable=too-many-instance-attributes
+class AppConfig:
     """
     App config from ini config file
     """

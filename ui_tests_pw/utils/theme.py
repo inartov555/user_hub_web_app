@@ -4,8 +4,9 @@ Utility helpers for dealing with light / dark theme from tests.
 
 from __future__ import annotations
 from typing import Literal
+import re
 
-from playwright.sync_api import Page
+from playwright.sync_api import Page, expect
 
 
 Theme = Literal["light", "dark"]
@@ -13,29 +14,34 @@ Theme = Literal["light", "dark"]
 
 def get_current_theme(page: Page) -> Theme:
     """
-    Return the current theme according to the HTML root `dark` class.
+    Return the current theme according to the HTML root dark class.
 
     Args:
         page: Playwright page instance.
 
     Returns:
-        "dark" if the `<html>` element has the `dark` class, otherwise "light".
+        Theme, one of (light, dark)
     """
-    has_dark = page.evaluate("() => document.documentElement.classList.contains('dark')")
-    return "dark" if has_dark else "light"
+    theme_toggler = page.locator("#lightDarkMode")
+    value = theme_toggler.get_attribute("data-tag")
+    return value.lower()
 
 
 def set_theme(page: Page, desired: Theme) -> None:
     """
     Ensure that the UI uses the desired theme.
 
-    If the current theme does not match `desired`, the dark-mode toggle button
-    (with id ``lightDarkMode``) is clicked once.
+    If the current theme does not match desired, the dark-mode toggle button is clicked once.
     """
+    theme_toggler = page.locator("#lightDarkMode")
     desir = desired.lower()
     current = get_current_theme(page)
     if current == desir:
         return
-    value = page.locator("#lightDarkMode").get_attribute("data-tag")
-    if value != desir:
-        page.locator("#lightDarkMode").click()
+    else:
+        theme_toggler.click()
+        expect(theme_toggler).to_have_attribute(
+            "data-tag",
+            re.compile(r"^(?!{}$).+".format(re.escape(current))),
+            timeout=10000,
+        )

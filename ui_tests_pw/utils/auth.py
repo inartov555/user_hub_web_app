@@ -43,9 +43,9 @@ def ensure_regular_user() -> None:
     """
     Ensure that the default regular user exists.
 
-    The assignment mentions that ``test1`` is created *after* deploying
+    The assignment mentions that test1 is created after deploying
     the website. To make tests robust, this helper:
-    1. Tries to log in as ``test1``.
+    1. Tries to log in as test1.
     2. If login fails (e.g. user not yet created), it creates the user via
        the Djoser registration endpoint.
     """
@@ -84,17 +84,16 @@ def login_via_ui(
         page: Playwright page instance.
         username: Username.
         password: Password.
-        theme: Optional theme ("light" or "dark").
-        locale_code: Optional locale code such as "en-US".
+        theme: Optional theme (light or dark).
+        locale_code: Optional locale code such as en-US.
     """
     page.goto(frontend_url("/login"))
     if theme is not None:
-        set_theme(page, theme)  # type: ignore[arg-type]
+        set_theme(page, theme)
     if locale_code is not None:
         set_locale(page, locale_code)
 
     page.fill("#username", username)
     page.fill("#password", password)
     page.locator("form button[type='submit']").click()
-    # Wait for navigation to complete — /users is the default redirect.
     page.wait_for_url("**/users")
