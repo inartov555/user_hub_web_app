@@ -7,7 +7,6 @@ from __future__ import annotations
 import pytest
 from playwright.sync_api import Page, expect
 
-from pages.reset_password_page import ResetPasswordPage
 from utils.theme import Theme, set_theme
 from utils.localization import set_locale
 
@@ -29,7 +28,7 @@ def test_reset_password_page_renders(page: Page,
 
 
 @pytest.mark.parametrize("email", ["user@example.com"])
-def test_reset_password_request_shows_feedback(page: Page,
+def test_reset_password_request_shows_feedback(page: Page,  # pylint: disable=unused-argument
                                                reset_password_page: Page,
                                                email: str) -> None:
     """

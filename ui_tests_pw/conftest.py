@@ -269,7 +269,10 @@ def login_page_fixture(page: Page, ui_theme: Theme, ui_locale: str) -> LoginPage
 
 
 @pytest.fixture(name="reset_password_page", scope="function")
-def reset_password_page_fixture(page: Page, login_page: Page, ui_theme: Theme, ui_locale: str) -> ResetPasswordPage:
+def reset_password_page_fixture(page: Page,
+                                login_page: Page,  # pylint: disable=unused-argument
+                                ui_theme: Theme,
+                                ui_locale: str) -> ResetPasswordPage:
     """
     Get Reset Password page
     """

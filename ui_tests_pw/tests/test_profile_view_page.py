@@ -8,7 +8,6 @@ import re
 import pytest
 from playwright.sync_api import Page, expect
 
-from pages.profile_view_page import ProfileViewPage
 from utils.theme import Theme, set_theme
 from utils.localization import set_locale
 
