@@ -231,6 +231,16 @@ class UsersAppApi(ApiJsonRequest):
         """
         super().__init__(protocol, host, port)
 
+    def get_authorization_token_dict(self, access: str) -> dict:
+        """
+        Args:
+            access (str): access token
+            headers (dict): the headers to be used in the request, adding only Athorization
+                            header item even when empty
+        """
+        auth = {"Authorization": "Bearer {}".format(access)}
+        return auth
+
     def get_access_token(self, username, password):
         """
         /api/v1/auth/jwt/create
@@ -239,7 +249,9 @@ class UsersAppApi(ApiJsonRequest):
             dict
         """
         payload = {"username": username, "password": password}
-        response = self.make_request("post", "/api/v1/auth/jwt/create", payload=payload)
+        response = self.make_request("post",
+                                     "/api/v1/auth/jwt/create",
+                                     payload=payload)
         return response
 
     def get_users(self, access: str, page_num: int = 1, page_size: int = 100, ordering: str = "id"):
@@ -250,18 +262,23 @@ class UsersAppApi(ApiJsonRequest):
             dict
         """
         params = {"page": page_num, "page_size": page_size, "ordering": ordering}
-        headers = {"Authorization": "Bearer {}".format(access)}
-        response = self.make_request("get", "/api/v1/users", query_params=params, headers=headers)
+        response = self.make_request("get",
+                                     "/api/v1/users",
+                                     query_params=params,
+                                     headers=self.get_authorization_token_dict(access))
         return response
 
     def bulk_user_delete(self, access: str, user_id_list: list):
         """
-        /api/v1/users/bulk-delete
+        /api/v1/users/bulk-delete/
 
         Returns:
             dict
         """
         payload = {"ids": user_id_list}
         headers = {"Authorization": "Bearer {}".format(access)}
-        response = self.make_request("post", "/api/v1/users/bulk-delete", payload=payload, headers=headers)
+        response = self.make_request("post",
+                                     "/api/v1/users/bulk-delete/",
+                                     payload=payload,
+                                     headers=self.get_authorization_token_dict(access))
         return response

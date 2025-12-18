@@ -40,7 +40,6 @@ def test_signup_with_random_username(page: Page,
     """
     Attempt signup with a random username; backend may accept or reject duplicates.
     """
-    return
     uname = f"ui-test-{suffix}-{uuid.uuid4().hex[:6]}"
     email = f"{uname}@example.com"
     signup.fill_form(uname, email, "changeme123")

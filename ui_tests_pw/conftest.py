@@ -397,7 +397,6 @@ def cleanup_delete_users_by_suffix(suffix: str) -> None:
         resp_username = user.get("username")
         if uname == resp_username and email == resp_email:
             user_id_list.append(user.get("id"))
-    api_utils.bulk_user_delete(login_info.get("access"), user_id_list)
-    # if user_id_list:
-    #    api_utils.bulk_user_delete(user_id_list)
+    if user_id_list:
+        api_utils.bulk_user_delete(user_id_list)
     
