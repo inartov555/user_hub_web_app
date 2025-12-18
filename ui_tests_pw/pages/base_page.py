@@ -24,7 +24,7 @@ class BasePage:
         Initialize the base page.
 
         Args:
-            page: Playwright :class: Page instance.
+            page (Page): Playwright :class: Page instance.
         """
         self.page: Page = page
 
@@ -33,7 +33,7 @@ class BasePage:
         Open a relative path on the frontend.
 
         Args:
-            path: Relative path such as "/login" or "/users".
+            path (str): Relative path such as /login or /users.
         """
         self.page.goto(frontend_url(path), wait_until="load")
 

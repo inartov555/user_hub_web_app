@@ -28,6 +28,8 @@ from pages.excel_import_page import ExcelImportPage
 from pages.profile_edit_page import ProfileEditPage
 from pages.profile_view_page import ProfileViewPage
 from pages.reset_password_page import ResetPasswordPage
+from pages.settings_page import SettingsPage
+from pages.signup_page import SignupPage
 
 
 log = Logger(__name__)
@@ -283,6 +285,21 @@ def reset_password_page_fixture(page: Page,
     return reset_password_page
 
 
+@pytest.fixture(name="signup_page", scope="function")
+def signup_page_fixture(page: Page,
+                                login_page: Page,  # pylint: disable=unused-argument
+                                ui_theme: Theme,
+                                ui_locale: str) -> SignupPage:
+    """
+    Get Reset Password page
+    """
+    signup = SignupPage(page)
+    signup.open()
+    set_theme(page, ui_theme)
+    set_locale(page, ui_locale)
+    return signup
+
+
 @pytest.fixture(name="profile_edit_page_regular", scope="function")
 def profile_edit_page_regular_fixture(logged_in_regular: Page, ui_theme: Theme, ui_locale: str) -> ProfileEditPage:
     """
@@ -329,3 +346,15 @@ def profile_view_page_admin_fixture(logged_in_admin: Page, ui_theme: Theme, ui_l
     profile_view = ProfileViewPage(logged_in_admin)
     profile_view.open()
     return profile_view
+
+
+@pytest.fixture(name="settings_page", scope="function")
+def settings_page_fixture(logged_in_admin: Page, ui_theme: Theme, ui_locale: str) -> SettingsPage:
+    """
+    Get Profile View page
+    """
+    set_theme(logged_in_admin, ui_theme)
+    set_locale(logged_in_admin, ui_locale)
+    settings_page = SettingsPage(logged_in_admin)
+    settings_page.open()
+    return settings_page

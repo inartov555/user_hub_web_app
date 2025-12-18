@@ -15,27 +15,25 @@ from utils.localization import set_locale
 @pytest.mark.admin
 @pytest.mark.theme
 @pytest.mark.localization
-@pytest.mark.parametrize("theme", ["light", "dark"])
-@pytest.mark.parametrize("locale_code", ["en-US", "uk-UA"])
-def test_settings_page_renders_for_admin(logged_in_admin: Page, theme: Theme, locale_code: str) -> None:
+@pytest.mark.parametrize("ui_theme_param", ["light", "dark"])
+@pytest.mark.parametrize("ui_locale_param", ["en-US", "uk-UA"])
+def test_settings_page_renders_for_admin(settings_page: Page,
+                                         page: Page,
+                                         ui_theme_param: Theme,
+                                         ui_locale_param: str) -> None:
     """
     Admin user can open the settings page under multiple themes/locales.
     """
-    page = logged_in_admin
-    set_theme(page, theme)
-    set_locale(page, locale_code)
-    settings = SettingsPage(page)
-    settings.open()
-    settings.assert_loaded()
+    set_theme(page, ui_theme_param)
+    set_locale(page, ui_locale_param)
+    settings_page.assert_loaded()
 
 
 @pytest.mark.regular_user
-def test_settings_page_not_accessible_for_regular_user(logged_in_regular: Page) -> None:
+def test_settings_page_not_accessible_for_regular_user(logged_in_regular: Page,  # pylint: disable=unused-argument
+                                                       regular_users_page: Page) -> None:
     """
     Regular user should not be able to access the settings page.
     """
-    page = logged_in_regular
-    settings = SettingsPage(page)
-    settings.open()
-    # Either redirected away or an error status is shown; we assert that the idle timeout field is not visible.
-    expect(page.locator("#idleTimeoutSeconds")).not_to_be_visible()
+    # Navbar Additional tab is staff-only.
+    expect(regular_users_page.addtional_tab).to_have_count(0)

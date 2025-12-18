@@ -15,23 +15,26 @@ from utils.localization import set_locale
 
 @pytest.mark.theme
 @pytest.mark.localization
-@pytest.mark.parametrize("theme", ["light", "dark"])
-@pytest.mark.parametrize("locale_code", ["en-US", "uk-UA"])
-def test_signup_page_renders(page: Page, theme: Theme, locale_code: str) -> None:
+@pytest.mark.parametrize("ui_theme_param", ["light", "dark"])
+@pytest.mark.parametrize("ui_locale_param", ["en-US", "uk-UA"])
+def test_signup_page_renders(page: Page,
+                             signup_page: Page,
+                             ui_theme_param: Theme,
+                             ui_locale_param: str) -> None:
     """
     Signup page should render in all supported test themes/locales.
     """
-    signup = SignupPage(page)
-    signup.open()
-    set_theme(page, theme)
-    set_locale(page, locale_code)
-    expect(page.locator("#username")).to_be_visible()
-    expect(page.locator("#email")).to_be_visible()
-    expect(page.locator("#password")).to_be_visible()
+    set_theme(page, ui_theme_param)
+    set_locale(page, ui_locale_param)
+    expect(signup_page.username).to_be_visible()
+    expect(signup_page.email).to_be_visible()
+    expect(signup_page.password).to_be_visible()
 
 
 @pytest.mark.parametrize("suffix", ["one", "two", "three"])
-def test_signup_with_random_username(page: Page, suffix: str) -> None:
+def test_signup_with_random_username(page: Page,
+                                     signup_page: Page,
+                                     suffix: str) -> None:
     """
     Attempt signup with a random username; backend may accept or reject duplicates.
     """
@@ -41,9 +44,9 @@ def test_signup_with_random_username(page: Page, suffix: str) -> None:
     email = f"{uname}@example.com"
     signup.fill_form(uname, email, "changeme123")
     signup.submit()
-    # Either success or validation error should be visible; both are acceptable.
-    # The POM assertion is intentionally loose.
-    signup.assert_error_or_success()
+    # The user is redirected to the Login page after successful user creation
+    page.wait_for_url(re.compile(r".*/login$"))
+    expect(page).to_have_url(re.compile(r".*/login$"))
 
 
 def test_signup_link_back_to_login(page: Page) -> None:
