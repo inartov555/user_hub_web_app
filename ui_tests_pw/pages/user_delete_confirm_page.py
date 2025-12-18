@@ -26,18 +26,6 @@ class UserDeleteConfirmPage(BasePage):
         """
         self.goto("/users/confirm-delete")
 
-    def confirm(self) -> None:
-        """
-        Click the confirm-delete button.
-        """
-        self.page.locator("#confirmDelete").click()
-
-    def cancel(self) -> None:
-        """
-        Click the cancel button.
-        """
-        self.page.locator("#cancel").click()
-
     def assert_confirm_delete_loaded(self) -> None:
         """
         Assert that the confirmation UI is visible.

@@ -35,15 +35,3 @@ class SignupPage(BasePage):
         self.username.fill(username)
         self.email.fill(email)
         self.password.fill(password)
-
-    def submit(self) -> None:
-        """
-        Submit the signup form.
-        """
-        self.save.click()
-
-    def assert_error_or_success(self) -> None:
-        """
-        Assert that either a success alert or an error is visible.
-        """
-        expect(self.page.locator("div[role='alert']")).to_be_visible()

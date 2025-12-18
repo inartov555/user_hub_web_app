@@ -5,17 +5,21 @@ conftest.py
 from __future__ import annotations
 import os
 from configparser import ConfigParser, ExtendedInterpolation
+import uuid
 
 import pytest
 from playwright.sync_api import Page, Browser, expect
 
 from config import (
     frontend_url,
+    UI_BASE_URL,
+    UI_BASE_PORT,
     DEFAULT_ADMIN_USERNAME,
     DEFAULT_ADMIN_PASSWORD,
     DEFAULT_REGULAR_USERNAME,
     DEFAULT_REGULAR_PASSWORD,
 )
+from api.api_utils import UsersAppApi
 from utils.theme import Theme, set_theme
 from utils.localization import set_locale
 from utils.auth import ensure_regular_user
@@ -33,6 +37,17 @@ from pages.signup_page import SignupPage
 
 
 log = Logger(__name__)
+
+
+def get_api_utils() -> UsersAppApi:
+    ind = UI_BASE_URL.find("://")
+    protocol = "http"
+    host = None
+    if ind > 0:
+        protocol = UI_BASE_URL[0:ind]
+        host = UI_BASE_URL[ind + 3:]
+    api_utils = UsersAppApi(protocol, host, UI_BASE_PORT)
+    return api_utils
 
 
 @pytest.fixture(autouse=True, scope="session")
@@ -358,3 +373,31 @@ def settings_page_fixture(logged_in_admin: Page, ui_theme: Theme, ui_locale: str
     settings_page = SettingsPage(logged_in_admin)
     settings_page.open()
     return settings_page
+
+
+@pytest.fixture(name="cleanup_delete_users_by_suffix", scope="function")
+def cleanup_delete_users_by_suffix(suffix: str) -> None:
+    """
+    Delete users by passed suffix.
+
+    Username & email are created with this logic:
+        uname = f"ui-test-{suffix}-{uuid.uuid4().hex[:6]}"
+        email = f"{uname}@example.com"
+    """
+    yield
+    log.info("Cleanup. Deleting users created while running a test")
+    api_utils = get_api_utils()
+    uname = f"ui-test-{suffix}-{uuid.uuid4().hex[:6]}"
+    email = f"{uname}@example.com"
+    login_info = api_utils.get_access_token(DEFAULT_ADMIN_USERNAME, DEFAULT_ADMIN_PASSWORD)
+    users = api_utils.get_users(login_info.get("access"))
+    user_id_list = []
+    for user in users.get("results"):
+        resp_email = user.get("email")
+        resp_username = user.get("username")
+        if uname == resp_username and email == resp_email:
+            user_id_list.append(user.get("id"))
+    api_utils.bulk_user_delete(login_info.get("access"), user_id_list)
+    # if user_id_list:
+    #    api_utils.bulk_user_delete(user_id_list)
+    
