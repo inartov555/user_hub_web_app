@@ -82,14 +82,17 @@ def test_admin_can_login_and_see_users_nav(login_page: LoginPage,
 
 
 @pytest.mark.localization
-def test_login_links_to_signup_and_reset_password(page: Page) -> None:
+def test_login_links_to_signup_and_reset_password(login_page: LoginPage,
+                                                  page: Page) -> None:
     """
     Login page should expose links to signup and reset-password pages.
     """
-    login = LoginPage(page)
-    login.open()
-    page.get_by_role("link", name="Create account").click()
-    expect(page).to_have_url("**/signup")
+    # Case: /signup page is opened after clicking Sign Up
+    login_page.signup.click()
+    page.wait_for_url(re.compile(r".*/signup$"))
+    expect(page).to_have_url(re.compile(r".*/signup$"))
+    # Case: /reset-password page is opened after clicking Forgot Password
     page.go_back()
-    page.get_by_role("link", name="Forgot password?").click()
-    expect(page).to_have_url("**/reset-password")
+    login_page.forgot_password.click()
+    page.wait_for_url(re.compile(r".*/reset-password$"))
+    expect(page).to_have_url(re.compile(r".*/reset-password$"))

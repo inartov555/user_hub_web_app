@@ -26,6 +26,9 @@ class LoginPage(BasePage):
         self.submit = self.page.locator("form button[type='submit']")
         self.error = self.page.locator("p.text-red-600")
 
+        self.signup = self.page.locator("a[href='/signup']")
+        self.forgot_password = self.page.locator("a[href='/reset-password']")
+
     def open(self) -> None:
         """
         Navigate to the login page.
