@@ -33,6 +33,7 @@ from pages.profile_view_page import ProfileViewPage
 from pages.reset_password_page import ResetPasswordPage
 from pages.settings_page import SettingsPage
 from pages.signup_page import SignupPage
+from pages.stats_page import StatsPage
 
 
 log = Logger(__name__)
@@ -372,6 +373,18 @@ def settings_page_fixture(logged_in_admin: Page, ui_theme: Theme, ui_locale: str
     settings_page = SettingsPage(logged_in_admin)
     settings_page.open()
     return settings_page
+
+
+@pytest.fixture(name="user_stats_page", scope="function")
+def user_stats_page_fixture(logged_in_admin: Page, ui_theme: Theme, ui_locale: str) -> StatsPage:
+    """
+    Get User Stats page
+    """
+    set_theme(logged_in_admin, ui_theme)
+    set_locale(logged_in_admin, ui_locale)
+    user_stats_page = StatsPage(logged_in_admin)
+    user_stats_page.open()
+    return user_stats_page
 
 
 @pytest.fixture(name="cleanup_delete_users_by_suffix", scope="function")

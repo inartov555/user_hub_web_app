@@ -34,6 +34,7 @@ def test_settings_page_not_accessible_for_regular_user(logged_in_regular: Page, 
                                                        regular_users_page: Page) -> None:
     """
     Regular user should not be able to access the settings page.
+    Settings tab is located under Additional tab.
     """
     # Navbar Additional tab is staff-only.
     expect(regular_users_page.addtional_tab).to_have_count(0)

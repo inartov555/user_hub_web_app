@@ -39,6 +39,7 @@ def test_excel_import_page_not_visible_in_nav_for_regular_user(logged_in_regular
                                                                regular_users_page: UsersTablePage) -> None:
     """
     Regular user should not see the Additional/Import from Excel nav items.
+    Excel Import tab is located under Additional tab.
     """
     # Navbar Additional tab is staff-only.
     expect(regular_users_page.addtional_tab).to_have_count(0)

@@ -15,25 +15,26 @@ from utils.localization import set_locale
 @pytest.mark.admin
 @pytest.mark.theme
 @pytest.mark.localization
-@pytest.mark.parametrize("theme", ["light", "dark"])
-@pytest.mark.parametrize("locale_code", ["en-US", "uk-UA"])
-def test_stats_page_renders_for_admin(logged_in_admin: Page, theme: Theme, locale_code: str) -> None:
+@pytest.mark.parametrize("ui_theme_param", ["light", "dark"])
+@pytest.mark.parametrize("ui_locale_param", ["en-US", "uk-UA"])
+def test_stats_page_renders_for_admin(page: Page,
+                                      user_stats_page: Page,
+                                      ui_theme_param: Theme,
+                                      ui_locale_param: str) -> None:
     """
     Admin user can open the online-users stats page.
     """
-    page = logged_in_admin
-    set_theme(page, theme)
-    set_locale(page, locale_code)
-    stats = StatsPage(page)
-    stats.open()
-    stats.assert_loaded()
+    set_theme(page, ui_theme_param)
+    set_locale(page, ui_locale_param)
+    user_stats_page.assert_loaded()
 
 
 @pytest.mark.regular_user
-def test_stats_page_renders_for_regular_user(logged_in_regular: Page) -> None:
+def test_stats_page_renders_for_regular_user(page: Page,
+                                             regular_users_page: Page) -> None:
     """
-    Regular user can also access the stats page (endpoint is authenticated-only).
+    Regular user can NOT access the stats page.
+    User Stats tab is located under Additional tab.
     """
-    stats = StatsPage(logged_in_regular)
-    stats.open()
-    stats.assert_loaded()
+    # Navbar Additional tab is staff-only.
+    expect(regular_users_page.addtional_tab).to_have_count(0)
