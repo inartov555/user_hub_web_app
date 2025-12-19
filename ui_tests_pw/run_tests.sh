@@ -25,11 +25,6 @@ cleanup() {
     docker compose down -v --remove-orphans
     dockerCleanedUp="clean"
   fi
-# Uncomment lines from below when running tests without Docker
-#  if [ -n "${VIRTUAL_ENV-}" ] && [ "$(type -t deactivate 2>/dev/null)" = "function" ]; then
-#    echo "Deactivating venv..."
-#    deactivate
-#  fi
   if ! [[ "$ORIGINAL_PROJECT_PATH" -ef "$(pwd)" ]]; then
     echo "Returning to the original project path to be able to run the test again with new changes, if there are any"
     cd "$ORIGINAL_PROJECT_PATH"
@@ -39,6 +34,20 @@ cleanup() {
 ORIGINAL_PROJECT_PATH="$(pwd)"
 source ./setup.sh || { echo "setup.sh failed"; exit 1; }
 if [[ $? -ne 0 ]]; then
+  exit 1
+fi
+
+if [[ ! -f "$INI_CONFIG_FILE" ]]; then
+  echo "ERROR: Provided ini file '$INI_CONFIG_FILE' does not exist"
+  exit 1
+else
+  echo "Using $INI_CONFIG_FILE ini config file"
+fi
+
+# Copying the pytest.ini file to the project when it's outside one
+rsync -aq --progress "$INI_CONFIG_FILE" "$COPIED_PROJECT_PATH/pytest.ini"
+if [ $? -ne 0 ]; then
+  echo "Can't copy '$INI_CONFIG_FILE'"
   exit 1
 fi
 
@@ -54,7 +63,7 @@ case "$clear_cache" in
 esac
 
 echo "Starting the tests..."
-TEST_GREP="--ini-config $INI_CONFIG_FILE"
+TEST_GREP=""
 # Uncomment if you need tests to be run in parallel
 # TEST_GREP="$TEST_GREP -n auto"
 
@@ -64,13 +73,6 @@ TEST_GREP="--ini-config $INI_CONFIG_FILE"
 # TEST_GREP="$TEST_GREP -k test_signup_with_random_username"
 
 docker compose run -e TEST_GREP="$TEST_GREP" --rm ui_tests_pw
-
-if [[ ! -f "$INI_CONFIG_FILE" ]]; then
-  echo "ERROR: Provided path '$INI_CONFIG_FILE' for the repo does not exist"
-  exit 1
-else
-  echo "Using $INI_CONFIG_FILE ini config file"
-fi
 
 #
 #
