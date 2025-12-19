@@ -12,12 +12,6 @@
 
 ---
 
-## ℹ️ Info
-
-- **Users App: Stable version #1**: https://github.com/inartov555/user_hub_web_app/tree/stable_v1_nov_05_2025
-
----
-
 ## 🚀 Quick start (Docker)
 
 **Prereqs:** Docker & docker‑compose.
