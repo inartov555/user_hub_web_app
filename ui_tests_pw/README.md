@@ -1,9 +1,9 @@
-# Users App UI Automation (Pytest + Playwright + Django + Docker)
+# 💡 Users App UI Automation (Pytest + Playwright + Django + Docker)
 
 - This folder contains a **UI automation framework** for the attached Users App (`users_app` folder in the root project directory).
 - Created on Nov-05-2025
 
-## Stack
+## 🧰 Stack
 
 - **Python** + **Pytest**
 - **Playwright** (Chromium, Firefox, WebKit)
@@ -11,9 +11,7 @@
 - **Docker / docker-compose** – one stack for Django + Postgres + frontend + Playwright tests
 - **Page Object Model (POM)** – one page-object class per UI page
 
-All Python modules, classes and functions include docstrings and return-type hints.
-
-## Prerequisites
+## 🔑 Prerequisites
 
 - Start the Users App web site (`users_app` folder in the root project directory)
 - Create 1 user before running tests:
@@ -23,7 +21,7 @@ All Python modules, classes and functions include docstrings and return-type hin
 - Docker & docker-compose installed
 - Python is only required inside the Docker image; host Python is optional
 
-## How to run
+## 🚀 How to run
 
 1. Start tests
 
@@ -48,7 +46,7 @@ All Python modules, classes and functions include docstrings and return-type hin
 
 2. Copied project folder, run results like logs, etc., are located in: `/home/$user_name/TEST1/workspace`. Artifacts (run results, logs, etc.) are located in: `/home/$user_name/TEST1/workspace/artifacts`.
 
-## High-level test strategy
+## 🗂️ High-level test strategy
 
 - UI-centric tests that exercise the real **Django REST backend** and **React SPA**.
 - One POM per logical page:
@@ -71,7 +69,7 @@ All Python modules, classes and functions include docstrings and return-type hin
   - Admin-only controls (`Delete users`, `Change password` column)
   - Non-admin restrictions
 
-## Where Django is used from tests
+## ✨ Where Django is used from tests
 
 - The backend runs as part of the Docker stack and provides:
   - Configured localization (`LocaleMiddleware`, compiled translations)
