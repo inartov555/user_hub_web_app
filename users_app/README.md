@@ -45,9 +45,9 @@
 Copied project folder, run results like logs, etc., are located in: `/home/$user_name/TEST1/workspace`. Artifacts (run results, logs, etc.) are located in: `/home/$user_name/TEST1/workspace/artifacts`.
 
 Open:
-- **API Swagger:** (http://localhost:8000/api/v1/docs/)[http://localhost:8000/api/v1/docs/]
-- **OpenAPI JSON:** (http://localhost:8000/api/v1/schema/)[http://localhost:8000/api/v1/schema/]
-- **Frontend:** (http://localhost:5173/)[http://localhost:5173/]
+- **API Swagger:** [http://localhost:8000/api/v1/docs/](http://localhost:8000/api/v1/docs/)
+- **OpenAPI JSON:** [http://localhost:8000/api/v1/schema/](http://localhost:8000/api/v1/schema/)
+- **Frontend:** [http://localhost:5173/](http://localhost:5173/)
 
 ---
 
@@ -120,7 +120,7 @@ user_hub_web_app/
 
 ## 🔌 API surface (high‑level)
 
-**API documentation:** (http://localhost:5173/api/v1/docs/)[http://localhost:5173/api/v1/docs/]
+**API documentation:** [http://localhost:5173/api/v1/docs/](http://localhost:5173/api/v1/docs/)
 
 ---
 
