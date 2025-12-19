@@ -12,6 +12,9 @@
 
 ---
 
+## 🔑 Admin credentials (dev)
+- `admin / changeme123`
+
 ## 🚀 Quick start (Docker)
 
 **Prereqs:** Docker & docker‑compose.
@@ -42,13 +45,9 @@
 Copied project folder, run results like logs, etc., are located in: `/home/$user_name/TEST1/workspace`. Artifacts (run results, logs, etc.) are located in: `/home/$user_name/TEST1/workspace/artifacts`.
 
 Open:
-- **API Swagger:** http://localhost:8000/api/v1/docs/
-- **OpenAPI JSON:** http://localhost:8000/api/v1/schema/
-- **Frontend:** http://localhost:5173/
----
-
-## 🔑 Admin credentials (dev)
-- admin / changeme123
+- **API Swagger:** (http://localhost:8000/api/v1/docs/)[http://localhost:8000/api/v1/docs/]
+- **OpenAPI JSON:** (http://localhost:8000/api/v1/schema/)[http://localhost:8000/api/v1/schema/]
+- **Frontend:** (http://localhost:5173/)[http://localhost:5173/]
 
 ---
 
@@ -75,7 +74,7 @@ Open:
 - **Frontend:** React, Vite, TypeScript, TanStack Query, Zustand, Tailwind, Lucide Icons
 - **DB:** PostgreSQL 16
 - **Container orchestration:** docker‑compose
-- **Docs/Dev tooling:** Swagger UI at `(http://localhost:5173/api/v1/docs/)[http://localhost:5173/api/v1/docs/]`, OpenAPI at (http://localhost:5173/api/v1/schema/)[http://localhost:5173/api/v1/schema/]
+- **Docs/Dev tooling:** Swagger UI at `/api/v1/docs/`, OpenAPI at `/api/v1/schema/`
 
 ---
 
