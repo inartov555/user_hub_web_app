@@ -74,8 +74,15 @@ export default function UsersTable(props: Props) {
   const [pageSize, setPageSize] = useState<number>(() => Number(localStorage.getItem("pageSize")) || 20);
   const [globalFilter, setGlobalFilter] = useState("");
 
-  // TanStack state we control
-  const [sorting, setSorting] = useState<SortingState>([]);
+  const [sorting, setSorting] = useState<SortingState>(() => {
+    try {
+      const raw = localStorage.getItem("usersTable.sorting");
+      return raw ? (JSON.parse(raw) as SortingState) : [];
+    } catch {
+      return [];
+    }
+  });
+
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>(() =>
     isAdmin ? {} : { select: false, change_password_action: false }
   );
@@ -120,6 +127,18 @@ export default function UsersTable(props: Props) {
       return data as { results: User[]; count: number };
     },
   });
+
+  const onSortHeaderClick =
+  (column: any) => (e: React.MouseEvent<HTMLButtonElement>) => {
+    // run TanStack default behavior
+    column.getToggleSortingHandler()?.(e);
+
+    // persist the next state (after React processes the update)
+    setTimeout(() => {
+      const next = table.getState().sorting;
+      localStorage.setItem("usersTable.sorting", JSON.stringify(next));
+    }, 0);
+  };
 
   const rows = useMemo(() => data?.results ?? [], [data]);
   const totalCount = data?.count ?? 0;
@@ -169,7 +188,7 @@ export default function UsersTable(props: Props) {
           type="button"
           data-tag="sort-by-username"
           className="inline-flex items-center gap-1"
-          onClick={column.getToggleSortingHandler()}
+          onClick={onSortHeaderClick(column)}
           title={
             column.getIsSorted()
             ? `${t("users.sorted")} ${sortLabel(column)} (#${column.getSortIndex() + 1})`
@@ -191,7 +210,7 @@ export default function UsersTable(props: Props) {
           type="button"
           data-tag="sort-by-email"
           className="inline-flex items-center gap-1"
-          onClick={column.getToggleSortingHandler()}
+          onClick={onSortHeaderClick(column)}
           title={
             column.getIsSorted()
             ? `${t("users.sorted")} ${sortLabel(column)} (#${column.getSortIndex() + 1})`
@@ -213,7 +232,7 @@ export default function UsersTable(props: Props) {
           type="button"
           data-tag="sort-by-firstname"
           className="inline-flex items-center gap-1"
-          onClick={column.getToggleSortingHandler()}
+          onClick={onSortHeaderClick(column)}
           title={
             column.getIsSorted()
             ? `${t("users.sorted")} ${sortLabel(column)} (#${column.getSortIndex() + 1})`
@@ -235,7 +254,7 @@ export default function UsersTable(props: Props) {
           type="button"
           data-tag="sort-by-lastname"
           className="inline-flex items-center gap-1"
-          onClick={column.getToggleSortingHandler()}
+          onClick={onSortHeaderClick(column)}
           title={
             column.getIsSorted()
             ? `${t("users.sorted")} ${sortLabel(column)} (#${column.getSortIndex() + 1})`
@@ -394,6 +413,7 @@ export default function UsersTable(props: Props) {
               setSorting([]);
               setPage(1);
               table.resetSorting();
+              localStorage.setItem("usersTable.sorting", undefined);
             }}
           >
             {t("users.clearSort")}
