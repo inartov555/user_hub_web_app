@@ -18,13 +18,23 @@
 
 ```
 ./run_web_site.sh param1 param2
+
+# Input parameters:
 #
-#   - param1 - true - delete the DB data after stopping the service;
-#              false - preserve the DB data after stopping the service;
-#              default = false
-#   - param2 - true - starting service WITHOUT cached data (cache is cleared);
-#              false - starting the service WITH cache (allows to start the service faster);
-#              default = false
+#     Data clearing when exiting
+#   - $1 - true - delete the DB data after stopping the service;
+#          false - preserve the DB data after stopping the service;
+#          default = false
+#
+#     Clearing cache before starting service
+#   - $2 - true - starting service WITHOUT cached data (allows to start the service faster);
+#          false - starting the service WITH cache (cache is cleared)
+#          default = false
+#
+#     Clearing Docker data and restarting the Docker service
+#   - $3 - true - clearing all docker data (network, images, etc.)
+#          false - docker starts with new data
+#          default = false
 ```
 
 Copied project folder, run results like logs, etc., are located in: `/home/$user_name/TEST1/workspace`. Artifacts (run results, logs, etc.) are located in: `/home/$user_name/TEST1/workspace/artifacts`.
