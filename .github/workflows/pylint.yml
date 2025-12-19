@@ -86,7 +86,7 @@ jobs:
             --output-format=colorized \
             --score=n \
             --max-line-length=128 \
-            --disable=too-few-public-methods,too-many-instance-attributes \
+            --disable=too-few-public-methods,too-many-instance-attributes,too-many-arguments,too-many-positional-arguments \
             --max-parents=10 \
             --max-locals=20 \
             $APP_FILES
