@@ -19,8 +19,7 @@ from utils.localization import set_locale
 @pytest.mark.localization
 @pytest.mark.parametrize("ui_theme_param", ["light", "dark"])
 @pytest.mark.parametrize("ui_locale_param", ["en-US", "uk-UA"])
-def test_excel_import_page_renders_for_admin(logged_in_admin: Page,  # pylint: disable=unused-argument
-                                             page: Page,
+def test_excel_import_page_renders_for_admin(page: Page,
                                              ui_theme_param: Theme,
                                              ui_locale_param: str,
                                              admin_excel_import_page: ExcelImportPage) -> None:
@@ -35,8 +34,7 @@ def test_excel_import_page_renders_for_admin(logged_in_admin: Page,  # pylint: d
 
 
 @pytest.mark.regular_user
-def test_excel_import_page_not_visible_in_nav_for_regular_user(logged_in_regular: Page,  # pylint: disable=unused-argument
-                                                               regular_users_page: UsersTablePage) -> None:
+def test_excel_import_page_not_visible_in_nav_for_regular_user(regular_users_page: UsersTablePage) -> None:
     """
     Regular user should not see the Additional/Import from Excel nav items.
     Excel Import tab is located under Additional tab.
@@ -46,9 +44,7 @@ def test_excel_import_page_not_visible_in_nav_for_regular_user(logged_in_regular
 
 
 @pytest.mark.admin
-def test_excel_download_template_does_not_require_file(logged_in_admin: Page,  # pylint: disable=unused-argument
-                                                       tmp_path: os.PathLike[str],  # pylint: disable=unused-argument
-                                                       admin_excel_import_page: ExcelImportPage) -> None:
+def test_excel_download_template_does_not_require_file(admin_excel_import_page: ExcelImportPage) -> None:
     """
     Admin should be able to download the Excel template.
     """

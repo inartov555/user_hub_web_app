@@ -5,6 +5,7 @@ conftest.py
 from __future__ import annotations
 import os
 from configparser import ConfigParser, ExtendedInterpolation
+import re
 
 import pytest
 from playwright.sync_api import Page, Browser, expect
@@ -213,14 +214,15 @@ def logged_in_admin_fixture(page: Page, ui_theme: Theme, ui_locale: str) -> Page
     """
     Return a Playwright page already logged in as the admin user.
     """
-
     login_page = LoginPage(page)
     login_page.open()
     set_theme(page, ui_theme)
     set_locale(page, ui_locale)
     login_page.fill_credentials(DEFAULT_ADMIN_USERNAME, DEFAULT_ADMIN_PASSWORD)
     login_page.submit.click()
-    page.wait_for_url("**/users")
+    page.wait_for_url(re.compile(r".*/users$"))
+    users_tab_loc = page.locator('#users')
+    users_tab_loc.wait_for(state="visible")
     return page
 
 
@@ -236,7 +238,9 @@ def logged_in_regular_fixture(page: Page, ui_theme: Theme, ui_locale: str) -> Pa
     set_locale(page, ui_locale)
     login_page.fill_credentials(DEFAULT_REGULAR_USERNAME, DEFAULT_REGULAR_PASSWORD)
     login_page.submit.click()
-    page.wait_for_url("**/users")
+    page.wait_for_url(re.compile(r".*/users$"))
+    users_tab_loc = page.locator('#users')
+    users_tab_loc.wait_for(state="visible")
     return page
 
 
@@ -248,6 +252,7 @@ def admin_users_page(logged_in_admin: Page, ui_theme: Theme, ui_locale: str) -> 
     set_theme(logged_in_admin, ui_theme)
     set_locale(logged_in_admin, ui_locale)
     users = UsersTablePage(logged_in_admin)
+    users.open()
     return users
 
 
@@ -259,6 +264,7 @@ def regular_users_page(logged_in_regular: Page, ui_theme: Theme, ui_locale: str)
     set_theme(logged_in_regular, ui_theme)
     set_locale(logged_in_regular, ui_locale)
     users = UsersTablePage(logged_in_regular)
+    users.open()
     return users
 
 
