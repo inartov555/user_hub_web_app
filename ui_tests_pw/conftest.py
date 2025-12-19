@@ -63,11 +63,11 @@ def get_api_utils(request) -> UsersAppApi:
                 try:
                     cur_num = int(cur_symb)
                     temp_port += str(cur_num)
-                except Exception:
+                except Exception:  # pylint: disable=broad-exception-caught
                     break
             if temp_port:
                 port = temp_port
-    api_utils = UsersAppApi(protocol, host, UI_BASE_PORT)
+    api_utils = UsersAppApi(protocol, host, port)
     return api_utils
 
 
@@ -199,8 +199,8 @@ def pytest_addoption(parser):
     parser.addoption("--ini-config", action="store", default="pytest.ini", help="The path to the *.ini config file")
 
 
-@pytest.fixture(scope="session")
-def base_url() -> str:
+@pytest.fixture(name="base_url", scope="session")
+def base_url_fixture() -> str:
     """
     Return the base URL of the frontend as configured by environment variables.
     """
