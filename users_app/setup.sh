@@ -51,4 +51,5 @@ echo "Appending HOST_ARTIFACTS and COPIED_PROJECT_PATH path properties"
 printf '\nHOST_ARTIFACTS=%s\n' "$HOST_ARTIFACTS" >> backend/.env
 printf '\nCOPIED_PROJECT_PATH=%s\n' "$COPIED_PROJECT_PATH" >> backend/.env
 
+echo "Virtual env set up to: '$(pwd)'"
 export TEST_VENV="$(pwd)"

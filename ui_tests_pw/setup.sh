@@ -68,5 +68,5 @@ cd "$MODULE_PATH"
 # python3 -m pip install -r "$BASE_REQ_FILE"
 # playwright install
 
-echo "Virtual env set up to: $(pwd)"
+echo "Virtual env set up to: '$(pwd)'"
 export TEST_VENV="$(pwd)"
