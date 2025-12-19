@@ -17,7 +17,9 @@
 **Prereqs:** Docker & docker‑compose.
 
 ```
-./run_web_site.sh param1 param2
+# You can just run ./run_web_site.sh
+
+./run_web_site.sh param1 param2 param3
 
 # Input parameters:
 #
