@@ -8,7 +8,7 @@ ENV VIRTUAL_ENV=/home/pwuser/venv \
 
 # Install GNU gettext (provides msgfmt) in the runtime image
 RUN apt-get update \
- && apt-get install -y --no-install-recommends gettext \
+ && apt-get install -y --no-install-recommends gettext gosu \
  && rm -rf /var/lib/apt/lists/*
 
 RUN addgroup --system pwuser \
@@ -54,6 +54,10 @@ RUN sh -c 'set -eu; \
     echo "Found compiled catalog: $MO"; \
     ls -l "$MO"; \
   done'
+
+RUN mkdir -p /app/media
+RUN chown -R pwuser:pwuser /app/media
+# RUN exec gosu pwuser "$@"
 
 EXPOSE 8000
 
