@@ -48,7 +48,7 @@ def get_api_utils(request) -> UsersAppApi:
     base_url = _app_config.base_url
     ind_protocol = base_url.find("://")
     protocol = "http"
-    host = None
+    host = base_url
     port = UI_BASE_PORT
     if ind_protocol > 0:
         protocol = base_url[0:ind_protocol]
