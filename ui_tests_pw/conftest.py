@@ -46,12 +46,27 @@ def get_api_utils(request) -> UsersAppApi:
     """
     _app_config = request.getfixturevalue("app_config")
     base_url = _app_config.base_url
-    ind = base_url.find("://")
+    ind_protocol = base_url.find("://")
     protocol = "http"
     host = None
-    if ind > 0:
-        protocol = base_url[0:ind]
-        host = base_url[ind + 3:]
+    port = UI_BASE_PORT
+    if ind_protocol > 0:
+        protocol = base_url[0:ind_protocol]
+        host = base_url[ind_protocol + 3:]
+    ind_port = host.find(":")
+    if ind_port > 0:
+        host = host[0:ind_port]
+        next_symb = base_url[ind_port + 1:ind_port + 2]
+        if next_symb != "/":
+            temp_port = ""
+            for cur_symb in base_url[ind_port + 1:]:
+                try:
+                    cur_num = int(cur_symb)
+                    temp_port += str(cur_num)
+                except Exception:
+                    break
+            if temp_port:
+                port = temp_port
     api_utils = UsersAppApi(protocol, host, UI_BASE_PORT)
     return api_utils
 
@@ -395,7 +410,7 @@ def user_stats_page_fixture(logged_in_admin: Page, ui_theme: Theme, ui_locale: s
     return user_stats_page
 
 
-@pytest.fixture(name="cleanup_delete_users_by_suffix", scope="function")
+@pytest.fixture(scope="function")
 def cleanup_delete_users_by_suffix(suffix: str, request) -> None:
     """
     Delete users by passed suffix.
@@ -422,7 +437,7 @@ def cleanup_delete_users_by_suffix(suffix: str, request) -> None:
         api_utils.bulk_user_delete(access_token, user_id_list)
 
 
-@pytest.fixture(name="setup_create_users_by_suffix", scope="function")
+@pytest.fixture(scope="function")
 def setup_create_users_by_suffix(suffix: str, request) -> None:
     """
     Delete users by passed suffix.
