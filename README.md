@@ -1,12 +1,12 @@
 ## ℹ️ Info
 
-- `users_app` created on Oct-10-2025
-- `ui_tests_pw` created on Nov-05-2025
-
 - ✅ **Users App - Stable version #1.1:** [user_hub_web_app/tree/stable_v1.1_dec_19_2025/users_app](https://github.com/inartov555/user_hub_web_app/tree/stable_v1.1_dec_19_2025/users_app)
 - ℹ️ More info related to the Users App: [user_hub_web_app/tree/stable_v1.1_dec_19_2025/users_app/README.md](https://github.com/inartov555/user_hub_web_app/tree/stable_v1.1_dec_19_2025/users_app/README.md)
 - ✅ **UI tests - Stable version #1.1:** [user_hub_web_app/tree/stable_v1.1_dec_19_2025/ui_tests_pw](https://github.com/inartov555/user_hub_web_app/tree/stable_v1.1_dec_19_2025/ui_tests_pw)
 - ℹ️ More info related to the UI tests: [user_hub_web_app/tree/stable_v1.1_dec_19_2025/ui_tests_pw/README.md](https://github.com/inartov555/user_hub_web_app/tree/stable_v1.1_dec_19_2025/ui_tests_pw/README.md)
+
+- `users_app` created on Oct-10-2025
+- `ui_tests_pw` created on Nov-05-2025
 
 ## 📌 Changelog v1.1 vs. v1
 - 🛠️ **Fixed in `users_app`:** /import-excel (Additional -> Import from Excel tab), Download Template button threw HTTP 404
