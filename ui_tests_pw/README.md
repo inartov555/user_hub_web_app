@@ -22,6 +22,11 @@ From the `users_app` project root (this directory lives inside that repo):
 
 ## How to run
 
+0. Create 2 users before running tests
+
+- Regular user: `test1 / changeme123`
+- Admin: `admin / changeme123`
+
 1. Start tests
 
    ```
@@ -44,22 +49,6 @@ From the `users_app` project root (this directory lives inside that repo):
    ```
 
 2. Copied project folder, run results like logs, etc., are located in: `/home/$user_name/TEST1/workspace`. Artifacts (run results, logs, etc.) are located in: `/home/$user_name/TEST1/workspace/artifacts`.
-
-## Parallel & multi-browser execution
-
-- Parallel tests (via `pytest-xdist`):
-
-  ```bash
-  pytest -n auto
-  ```
-
-- Run on **all Playwright browsers**:
-
-  ```bash
-  pytest --browser chromium --browser firefox --browser webkit
-  ```
-
-Playwright’s pytest plugin wires these arguments to the built-in `browser`, `context` and `page` fixtures.
 
 ## High-level test strategy
 

@@ -54,7 +54,7 @@ case "$clear_cache" in
 esac
 
 echo "Starting the tests..."
-TEST_GREP="--ini-config $INI_CONFIG_FILE"
+TEST_GREP="--ini-config $INI_CONFIG_FILE -n auto"
 # If you need to run particular test(s), then set it as shown in the line below (TEST_GREP);
 # to run all tests, just set TEST_GREP="$TEST_GREP" (to preserve base settings)
 
