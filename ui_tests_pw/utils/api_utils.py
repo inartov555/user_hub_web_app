@@ -222,16 +222,7 @@ class UsersAppApi(ApiJsonRequest):
     API methods
     """
 
-    def __init__(self, protocol: str, host: str, port: str):
-        """
-        Args:
-            protocol (str): http or https
-            host (str): e.g. google.com
-            port (str): e.g. "443"
-        """
-        super().__init__(protocol, host, port)  # pylint: disable=useless-parent-delegation
-
-    def get_authorization_token_dict(self, access: str) -> dict:  # pylint: disable=unused-argument
+    def get_authorization_token_dict(self, access: str) -> dict:
         """
         Args:
             access (str): access token
