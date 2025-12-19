@@ -1,5 +1,8 @@
 ## ℹ️ Info
 
+- `users_app` created on Oct-10-2025
+- `ui_tests_pw` created on Nov-05-2025
+
 - ✅ **Users App - Stable version #1.1:** [user_hub_web_app/tree/stable_v1.1_dec_19_2025/users_app](https://github.com/inartov555/user_hub_web_app/tree/stable_v1.1_dec_19_2025/users_app)
 - ℹ️ More info related to the Users App: [user_hub_web_app/tree/stable_v1.1_dec_19_2025/users_app/README.md](https://github.com/inartov555/user_hub_web_app/tree/stable_v1.1_dec_19_2025/users_app/README.md)
 - ✅ **UI tests - Stable version #1.1:** [user_hub_web_app/tree/stable_v1.1_dec_19_2025/ui_tests_pw](https://github.com/inartov555/user_hub_web_app/tree/stable_v1.1_dec_19_2025/ui_tests_pw)
