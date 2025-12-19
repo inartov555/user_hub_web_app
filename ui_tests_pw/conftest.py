@@ -248,7 +248,6 @@ def admin_users_page(logged_in_admin: Page, ui_theme: Theme, ui_locale: str) -> 
     set_theme(logged_in_admin, ui_theme)
     set_locale(logged_in_admin, ui_locale)
     users = UsersTablePage(logged_in_admin)
-    users.open()
     return users
 
 
@@ -260,7 +259,6 @@ def regular_users_page(logged_in_regular: Page, ui_theme: Theme, ui_locale: str)
     set_theme(logged_in_regular, ui_theme)
     set_locale(logged_in_regular, ui_locale)
     users = UsersTablePage(logged_in_regular)
-    users.open()
     return users
 
 

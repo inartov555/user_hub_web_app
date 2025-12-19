@@ -19,9 +19,8 @@ from config import DEFAULT_REGULAR_USERNAME
 @pytest.mark.localization
 @pytest.mark.parametrize("ui_theme_param", ["light", "dark"])
 @pytest.mark.parametrize("ui_locale_param", ["en-US", "uk-UA"])
-def test_admin_can_open_change_password_for_user(logged_in_admin: Page,  # pylint: disable=unused-argument
-                                                 ui_theme_param: Theme,  # pylint: disable=unused-argument
-                                                 ui_locale_param: str,  # pylint: disable=unused-argument
+def test_admin_can_open_change_password_for_user(ui_theme_param: Theme,
+                                                 ui_locale_param: str,
                                                  page: Page,
                                                  admin_users_page: UsersTablePage
                                                 ) -> None:
