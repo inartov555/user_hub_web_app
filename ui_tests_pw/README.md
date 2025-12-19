@@ -16,9 +16,11 @@ All Python modules, classes and functions include docstrings and return-type hin
 ## Prerequisites
 
 - Start the Users App web site (`users_app` folder in the root project directory)
-- Create 2 users before running tests
+- Create 2 users before running tests:
+```
      a) Regular user: `test1 / changeme123`
      b) Admin: `admin / changeme123`
+```
 - Docker & docker-compose installed
 - Python is only required inside the Docker image; host Python is optional
 
