@@ -75,7 +75,7 @@ Open:
 - **Frontend:** React, Vite, TypeScript, TanStack Query, Zustand, Tailwind, Lucide Icons
 - **DB:** PostgreSQL 16
 - **Container orchestration:** docker‑compose
-- **Docs/Dev tooling:** Swagger UI at `/api/v1/docs/`, OpenAPI at `/api/v1/schema/`
+- **Docs/Dev tooling:** Swagger UI at `(http://localhost:5173/api/v1/docs/)[http://localhost:5173/api/v1/docs/]`, OpenAPI at (http://localhost:5173/api/v1/schema/)[http://localhost:5173/api/v1/schema/]
 
 ---
 
@@ -100,41 +100,6 @@ user_hub_web_app/
 
 ---
 
-## 🔐 Authentication
-
-- Login via `POST /api/v1/auth/jwt/create/` with either **email** or **username** + password.
-- Access token is attached to `Authorization: Bearer <token>`. The refresh token is stored in the SPA's local storage.
-- Axios interceptor performs **token refresh** at 401/near‑expiry and retries the original request.
-- **Idle timeout & renew‑at** thresholds are enforced by custom middleware; see **Architecture** for details.
-
----
-
-## 🌍 Internationalization
-
-- Frontend locales under `frontend/src/locale/*.json`
-- Backend localized messages under `backend/locale/<lang>/`
-- Browser language is normalized by `normalize_language_middleware`.
-
----
-
-## 📦 Excel import
-
-Endpoint: `POST /api/v1/import-excel/` with a file named `file` (multipart).  
-Use the example file at `test_data/import_template_EXAMPLE.xlsx` as a template.
-
----
-
-## 🧪 Testing ideas (not exhaustive)
-
-- Serializer validation for password change & user creation
-- Excel import happy/edge paths
-- Middleware: idle timeout, boot ID enforcement, and auth header handling
-- Permissions on all endpoints (admin vs regular user)
-- i18n correctness for top locales
-- Frontend: auth store transitions, interceptor logic, protected routes
-
----
-
 ## ⚙️ Configuration
 
 ### Backend environment (most relevant)
@@ -156,22 +121,7 @@ Use the example file at `test_data/import_template_EXAMPLE.xlsx` as a template.
 
 ## 🔌 API surface (high‑level)
 
-| Method | Path                                   | Purpose |
-|-------:|----------------------------------------|---------|
-| GET    | `/api/v1/users/`                       | List/search users (DRF router) |
-| POST   | `/api/v1/users/`                       | Create user |
-| GET    | `/api/v1/users/:id/`                   | Retrieve user |
-| PUT    | `/api/v1/users/:id/`                   | Update user |
-| DELETE | `/api/v1/users/:id/`                   | Delete user |
-| GET    | `/api/v1/me/profile/`                  | Current user profile |
-| POST   | `/api/v1/import-excel/`                | Excel import (xlsx based on template) |
-| GET    | `/api/v1/stats/online-users/`          | Users active in the last 5 minutes |
-| GET/PUT| `/api/v1/system/settings/`             | Read/update effective auth timings |
-| GET    | `/api/v1/system/runtime-auth/`         | Read runtime‑computed auth config |
-| POST   | `/api/v1/auth/jwt/create`              | Obtain access/refresh (Djoser) |
-| POST   | `/api/v1/auth/jwt/refresh/`            | Refresh access (runtime‑aware) |
-| GET    | `/api/v1/schema/`                      | OpenAPI schema |
-| GET    | `/api/v1/docs/`                        | Swagger UI |
+**API documentation:** (http://localhost:5173/api/v1/docs/)[http://localhost:5173/api/v1/docs/]
 
 ---
 
