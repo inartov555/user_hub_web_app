@@ -20,7 +20,7 @@
 **Prereqs:** Docker & docker‑compose.
 
 ```
-# You can just run ./run_web_site.sh
+# You can just run ./run_web_site.sh, it defaults to ./run_web_site.sh false false false
 
 ./run_web_site.sh param1 param2 param3
 
