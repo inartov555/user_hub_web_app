@@ -40,16 +40,18 @@ from pages.stats_page import StatsPage
 log = Logger(__name__)
 
 
-def get_api_utils() -> UsersAppApi:
+def get_api_utils(request) -> UsersAppApi:
     """
     Get API Utils
     """
-    ind = UI_BASE_URL.find("://")
+    _app_config = request.getfixturevalue("app_config")
+    base_url = _app_config.base_url
+    ind = base_url.find("://")
     protocol = "http"
     host = None
     if ind > 0:
-        protocol = UI_BASE_URL[0:ind]
-        host = UI_BASE_URL[ind + 3:]
+        protocol = base_url[0:ind]
+        host = base_url[ind + 3:]
     api_utils = UsersAppApi(protocol, host, UI_BASE_PORT)
     return api_utils
 
@@ -101,14 +103,13 @@ def app_config(pytestconfig) -> AppConfig:
     result_dict["navigation_timeout"] = cfg.getfloat("pytest", "navigation_timeout", fallback=15000.0)
     result_dict["assert_timeout"] = cfg.getfloat("pytest", "assert_timeout", fallback=15000.0)
     result_dict["browser"] = cfg.get("pytest", "browser", fallback="chrome")
-    result_dict["base_url"] = cfg.get("pytest", "base_url", fallback="http://host.docker.internal:5173")
+    result_dict["base_url"] = cfg.get("pytest", "base_url", fallback=UI_BASE_URL)
     result_dict["is_headless"] = cfg.getboolean("pytest", "is_headless", fallback=False)
     result_dict["width"] = cfg.getint("pytest", "width", fallback=1920)
     result_dict["height"] = cfg.getint("pytest", "height", fallback=1080)
     result_dict["username"] = cfg.get("pytest", "username")
     result_dict["password"] = cfg.get("pytest", "password")
     validate_app_config_params(**result_dict)
-    # result_dict["password"] = decrypt(result_dict.get("password"))
     result_dict["password"] = result_dict.get("password")
     return AppConfig(**result_dict)
 
@@ -395,7 +396,7 @@ def user_stats_page_fixture(logged_in_admin: Page, ui_theme: Theme, ui_locale: s
 
 
 @pytest.fixture(name="cleanup_delete_users_by_suffix", scope="function")
-def cleanup_delete_users_by_suffix(suffix: str) -> None:
+def cleanup_delete_users_by_suffix(suffix: str, request) -> None:
     """
     Delete users by passed suffix.
 
@@ -405,7 +406,7 @@ def cleanup_delete_users_by_suffix(suffix: str) -> None:
     """
     yield
     log.info("Cleanup. Deleting users created while running a test")
-    api_utils = get_api_utils()
+    api_utils = get_api_utils(request)
     username = f"ui-test-{suffix}"
     email = f"{username}@test.com"
     login_info = api_utils.get_access_token(DEFAULT_ADMIN_USERNAME, DEFAULT_ADMIN_PASSWORD)
@@ -422,7 +423,7 @@ def cleanup_delete_users_by_suffix(suffix: str) -> None:
 
 
 @pytest.fixture(name="setup_create_users_by_suffix", scope="function")
-def setup_create_users_by_suffix(suffix: str) -> None:
+def setup_create_users_by_suffix(suffix: str, request) -> None:
     """
     Delete users by passed suffix.
 
@@ -431,7 +432,7 @@ def setup_create_users_by_suffix(suffix: str) -> None:
         email = f"{username}@test.com"
     """
     log.info("Setup. Creating users before running a test")
-    api_utils = get_api_utils()
+    api_utils = get_api_utils(request)
     username = f"ui-test-{suffix}"
     email = f"{username}@test.com"
     password = "Ch@ngeme123"

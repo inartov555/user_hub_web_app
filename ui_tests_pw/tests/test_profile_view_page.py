@@ -30,8 +30,7 @@ def test_profile_view_renders_for_regular_user(page: Page,  # pylint: disable=un
 
 
 @pytest.mark.admin
-def test_profile_view_renders_for_admin(page: Page,  # pylint: disable=unused-argument
-                                        profile_view_page_admin: Page) -> None:
+def test_profile_view_renders_for_admin(profile_view_page_admin: Page) -> None:
     """
     Admin user should also have a profile view.
     """

@@ -18,8 +18,7 @@ from config import DEFAULT_REGULAR_USERNAME
 @pytest.mark.localization
 @pytest.mark.parametrize("ui_theme_param", ["light", "dark"])
 @pytest.mark.parametrize("ui_locale_param", ["en-US", "uk-UA"])
-def test_users_table_admin_theme_and_locale(logged_in_admin: Page,  # pylint: disable=unused-argument
-                                            page: Page,
+def test_users_table_admin_theme_and_locale(page: Page,
                                             ui_theme_param: Theme,
                                             ui_locale_param: str,
                                             admin_users_page: UsersTablePage) -> None:
@@ -33,8 +32,7 @@ def test_users_table_admin_theme_and_locale(logged_in_admin: Page,  # pylint: di
 
 
 @pytest.mark.regular_user
-def test_users_table_regular_user_has_restricted_controls(logged_in_regular: Page,  # pylint: disable=unused-argument
-                                                          regular_users_page: UsersTablePage) -> None:
+def test_users_table_regular_user_has_restricted_controls(regular_users_page: UsersTablePage) -> None:
     """
     Regular user should not see admin-only controls on the users table.
     """
@@ -42,8 +40,7 @@ def test_users_table_regular_user_has_restricted_controls(logged_in_regular: Pag
 
 
 @pytest.mark.sorting
-def test_users_table_multi_column_sort_admin(logged_in_admin: Page,  # pylint: disable=unused-argument
-                                             admin_users_page: UsersTablePage) -> None:
+def test_users_table_multi_column_sort_admin(admin_users_page: UsersTablePage) -> None:
     """
     Admin can apply a multi-column sort (username then email) and see sort indices.
     """
@@ -53,8 +50,7 @@ def test_users_table_multi_column_sort_admin(logged_in_admin: Page,  # pylint: d
 
 
 @pytest.mark.sorting
-def test_users_table_clear_sort_resets_order(logged_in_admin: Page,  # pylint: disable=unused-argument
-                                             admin_users_page: UsersTablePage) -> None:
+def test_users_table_clear_sort_resets_order(admin_users_page: UsersTablePage) -> None:
     """
     Clear sort button should remove explicit multi-column sort labels.
     """
@@ -65,8 +61,7 @@ def test_users_table_clear_sort_resets_order(logged_in_admin: Page,  # pylint: d
 
 
 @pytest.mark.regular_user
-def test_users_table_search_filters_results(logged_in_regular: Page,  # pylint: disable=unused-argument
-                                            regular_users_page: UsersTablePage) -> None:
+def test_users_table_search_filters_results(regular_users_page: UsersTablePage) -> None:
     """
     Typing into the search box should filter table results.
     """

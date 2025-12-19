@@ -28,8 +28,7 @@ def test_reset_password_page_renders(page: Page,
 
 
 @pytest.mark.parametrize("email", ["user@example.com"])
-def test_reset_password_request_shows_feedback(page: Page,  # pylint: disable=unused-argument
-                                               reset_password_page: Page,
+def test_reset_password_request_shows_feedback(reset_password_page: Page,
                                                email: str) -> None:
     """
     Submitting a reset-password request should show user feedback.

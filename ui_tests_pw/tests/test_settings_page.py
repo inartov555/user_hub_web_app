@@ -29,8 +29,7 @@ def test_settings_page_renders_for_admin(settings_page: Page,
 
 
 @pytest.mark.regular_user
-def test_settings_page_not_accessible_for_regular_user(logged_in_regular: Page,  # pylint: disable=unused-argument
-                                                       regular_users_page: Page) -> None:
+def test_settings_page_not_accessible_for_regular_user(regular_users_page: Page) -> None:
     """
     Regular user should not be able to access the settings page.
     Settings tab is located under Additional tab.
