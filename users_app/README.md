@@ -175,18 +175,6 @@ Use the example file at `test_data/import_template_EXAMPLE.xlsx` as a template.
 
 ---
 
-## 🧪 Unit Tests
-
-```bash
-# backend
-cd backend && pytest -q
-
-# frontend
-cd frontend && npm run test
-```
-
----
-
 ## 🛡️ Security & auth behaviour
 
 - Strong password validation with Django validators
