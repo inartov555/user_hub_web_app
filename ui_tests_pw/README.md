@@ -1,6 +1,6 @@
 # Users App UI Automation (Pytest + Playwright + Django + Docker)
 
-- This folder contains a **UI automation framework** for the attached Users App.
+- This folder contains a **UI automation framework** for the attached Users App (`users_app` folder in the root project directory).
 - Created on Nov-05-2025
 
 ## Stack
@@ -22,10 +22,12 @@ From the `users_app` project root (this directory lives inside that repo):
 
 ## How to run
 
-0. Create 2 users before running tests
+0.1. Create 2 users before running tests
 
 - Regular user: `test1 / changeme123`
 - Admin: `admin / changeme123`
+
+0.2. Start the Users App web site (`users_app` folder in the root project directory)
 
 1. Start tests
 
