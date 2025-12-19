@@ -6,7 +6,7 @@ ENV VIRTUAL_ENV=/home/pwuser/venv \
     PYTHONUNBUFFERED=1 \
     PIP_NO_CACHE_DIR=1
 
-# Install GNU gettext (provides msgfmt) in the runtime image
+# Install GNU gettext (provides msgfmt) in the runtime
 RUN apt-get update \
  && apt-get install -y --no-install-recommends gettext gosu \
  && rm -rf /var/lib/apt/lists/*
@@ -57,7 +57,6 @@ RUN sh -c 'set -eu; \
 
 RUN mkdir -p /app/media
 RUN chown -R pwuser:pwuser /app/media
-# RUN exec gosu pwuser "$@"
 
 EXPOSE 8000
 
