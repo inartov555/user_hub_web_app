@@ -14,8 +14,3 @@
 - ✨ **Improved in `users_app`:** run_web_site.sh & setup.sh
 - 🆕 **Added in `users_app`:** data-tag, id, etc. to key elements used in UI automation for convenience
 - 🆕 **Added `ui_tests_pw`:** UI test framework
-
-### DEPRECATED (TO BE REMOVED)
-- ✅ **Users App - Stable version #1:** https://github.com/inartov555/user_hub_web_app/tree/stable_v1_nov_05_2025
-- ℹ️ More info related to the Users App: https://github.com/inartov555/user_hub_web_app/tree/stable_v1_nov_05_2025/README.md
-- ⚠️ **UI and API tests (non-unit)** for this demo site are still under development; there’s no stable automation test suite in this repo yet.
