@@ -10,6 +10,7 @@
 - 🛠️ **Fixed in `users_app`:** /users/confirm-delete (when confirming user deletion), error thrown and web site was not redirected to the /users page
 - 🛠️ **Fixed in `users_app`:** /users page, sorting got cleared after page refresh
 - ✨ **Improved in `users_app` & `ui_tests_pw`:** GitHub actions logic
+- ✨ **Improved in `users_app`:** Docker configuration
 - 🆕 **Added in `users_app`:** data-tag, id, etc. to key elements used in UI automation for convenience
 - 🆕 **Added `ui_tests_pw`:** UI test framework
 
