@@ -4,13 +4,8 @@
 - ℹ️ More info related to the Users App: [tree/stable_v1.1_dec_19_2025/users_app/README.md](https://github.com/inartov555/user_hub_web_app/tree/stable_v1.1_dec_19_2025/users_app/README.md)
 - ✅ **UI tests - Stable version #1.1:** [stable_v1.1_dec_19_2025/ui_tests_pw](https://github.com/inartov555/user_hub_web_app/tree/stable_v1.1_dec_19_2025/ui_tests_pw)
 - ℹ️ More info related to the UI tests: [stable_v1.1_dec_19_2025/ui_tests_pw/README.md](https://github.com/inartov555/user_hub_web_app/tree/stable_v1.1_dec_19_2025/ui_tests_pw/README.md)
-
----
-
-## 🗓️ Created
-
-- `users_app` module created on Oct-10-2025
-- `ui_tests_pw` module created on Nov-05-2025
+- ℹ️ `users_app` module created on Oct-10-2025
+- ℹ️ `ui_tests_pw` module created on Nov-05-2025
 
 ---
 
