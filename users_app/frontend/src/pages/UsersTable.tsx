@@ -161,6 +161,7 @@ export default function UsersTable(props: Props) {
               indeterminate={!all && some}
               onChange={(e) => table.toggleAllRowsSelected(e.currentTarget.checked)}
               aria-label="Select all"
+              className={headerButtonClassName(undefined)}
             />
           </div>
         );
@@ -173,6 +174,7 @@ export default function UsersTable(props: Props) {
             indeterminate={row.getIsSomeSelected()}
             onChange={(e) => row.toggleSelected(e.currentTarget.checked)}
             aria-label="Select row"
+            className={headerButtonClassName(undefined)}
           />
         </div>
       ),
@@ -187,7 +189,7 @@ export default function UsersTable(props: Props) {
         <button
           type="button"
           data-tag="sort-by-username"
-          className="inline-flex items-center gap-1"
+          className={headerButtonClassName(Boolean(column.getIsSorted()))}
           onClick={onSortHeaderClick(column)}
           title={
             column.getIsSorted()
@@ -209,7 +211,7 @@ export default function UsersTable(props: Props) {
         <button
           type="button"
           data-tag="sort-by-email"
-          className="inline-flex items-center gap-1"
+          className={headerButtonClassName(Boolean(column.getIsSorted()))}
           onClick={onSortHeaderClick(column)}
           title={
             column.getIsSorted()
@@ -231,7 +233,7 @@ export default function UsersTable(props: Props) {
         <button
           type="button"
           data-tag="sort-by-firstname"
-          className="inline-flex items-center gap-1"
+          className={headerButtonClassName(Boolean(column.getIsSorted()))}
           onClick={onSortHeaderClick(column)}
           title={
             column.getIsSorted()
@@ -253,7 +255,7 @@ export default function UsersTable(props: Props) {
         <button
           type="button"
           data-tag="sort-by-lastname"
-          className="inline-flex items-center gap-1"
+          className={headerButtonClassName(Boolean(column.getIsSorted()))}
           onClick={onSortHeaderClick(column)}
           title={
             column.getIsSorted()
@@ -276,7 +278,7 @@ export default function UsersTable(props: Props) {
       enableSorting: false,
       size: 180,
       cell: ({ row }) => (
-        <div className="flex flex-wrap gap-2">
+        <div className={headerButtonClassName(undefined)}>
           <Button
             data-tag="change-password"
             className="border-red-600 text-red-700 hover:bg-red-50"
@@ -289,6 +291,25 @@ export default function UsersTable(props: Props) {
       ),
     }] : []),
   ], [navigate, isAdmin, i18n.resolvedLanguage]);
+
+  const headerButtonClassName = (sorted: boolean) =>
+    [
+      "inline-flex items-center gap-1 rounded-md px-2 py-1 -ml-2",
+      "transition-colors select-none",
+      "hover:bg-slate-100 dark:hover:bg-slate-800",
+      "active:bg-slate-200 dark:active:bg-slate-700", // mouse down/up feedback
+      "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-400/60",
+      sorted ? "text-slate-900 dark:text-slate-100" : "text-slate-700 dark:text-slate-200",
+    ].join(" ");
+
+  const headerCellClassName = (sorted: boolean) =>
+    [
+      "relative select-none px-3 py-2 text-left font-semibold align-middle group",
+      "whitespace-normal break-words",
+      "transition-colors",
+      sorted ? "bg-slate-50/80 dark:bg-slate-900/50" : "",
+      "hover:bg-slate-50 dark:hover:bg-slate-900/40",
+    ].join(" ");
 
   // Sync TanStack sorting - server ordering
   const handleSortingChange = (updater: React.SetStateAction<SortingState>) => {
@@ -439,7 +460,7 @@ export default function UsersTable(props: Props) {
       <CardBody>
         <div className="overflow-auto rounded-xl border">
           <table className="w-full text-sm table-auto border-collapse">
-            <thead className="bg-muted/50">
+            <thead className="sticky top-0 z-10 bg-slate-50/90 backdrop-blur dark:bg-slate-900/70">
               {table.getHeaderGroups().map((headerGroup) => (
                 <tr key={headerGroup.id} className="border-b">
                   {headerGroup.headers.map((header) => {
