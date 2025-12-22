@@ -8,9 +8,9 @@
   "app": {
     "title": "Aplikace uživatelů",
     "hiUser": "Ahoj, {{username}}",
-    "cookieConsent.accept": "Přijmout",
-    "cookieConsent.title": "Web používá soubory cookie",
-    "cookieConsent.body": "Abychom zlepšili vaše zkušenosti a porozuměli tomu, jak se aplikace používá, web používá soubory cookie. Kliknutím na 'Přijmout' souhlasíte s používáním souborů cookie na webu."
+    "cookieConsentAccept": "Přijmout",
+    "cookieConsentTitle": "Web používá soubory cookie",
+    "cookieConsentBody": "Abychom zlepšili vaše zkušenosti a porozuměli tomu, jak se aplikace používá, web používá soubory cookie. Kliknutím na 'Přijmout' souhlasíte s používáním souborů cookie na webu."
   },
   "nav": {
     "users": "Uživatelé",

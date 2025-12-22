@@ -1,5 +1,7 @@
 ## ℹ️ Info
 
+This is a test website + automation framework
+
 - ✅ **Users App - Stable version #1.1:** [stable_v1.1_dec_19_2025/users_app](https://github.com/inartov555/user_hub_web_app/tree/stable_v1.1_dec_19_2025/users_app)
 - ℹ️ More info related to the Users App: [tree/stable_v1.1_dec_19_2025/users_app/README.md](https://github.com/inartov555/user_hub_web_app/tree/stable_v1.1_dec_19_2025/users_app/README.md)
 - ✅ **UI tests - Stable version #1.1:** [stable_v1.1_dec_19_2025/ui_tests_pw](https://github.com/inartov555/user_hub_web_app/tree/stable_v1.1_dec_19_2025/ui_tests_pw)
@@ -18,7 +20,7 @@
 ---
 
 ## 📌 Changelog v1.2 vs. v1.1
-- NONE
+- 🆕 **Added in `users_app`:** Cookie consent overlay
 
 ---
 

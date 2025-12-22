@@ -30,6 +30,7 @@ function setConsent() {
 }
 
 export default function CookieConsent() {
+  const { t, i18n } = useTranslation();
   const [accepted, setAcceptedState] = useState<boolean>(() => getStoredConsent());
 
   // Keep multiple tabs in sync.
@@ -64,15 +65,15 @@ export default function CookieConsent() {
       >
         <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
           <div className="text-sm">
-            <div className="font-semibold text-slate-900 dark:text-slate-100">The website uses cookies</div>
+            <div className="font-semibold text-slate-900 dark:text-slate-100">{t("app.cookieConsentTitle")}</div>
             <p className="mt-1 text-slate-700 dark:text-slate-200">
-              To improve your experience and to understand how the app is used, the website uses cookies. By clicking “Accept”, you agree to website's use of cookies.
+              {t("app.cookieConsentBody")}
             </p>
           </div>
 
           <div className="flex items-center justify-end gap-2">
             <Button id="cookieAccept" onClick={onAccept}>
-              {t("users.loading")}
+              {t("app.cookieConsentAccept")}
             </Button>
           </div>
         </div>

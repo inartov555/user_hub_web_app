@@ -6,7 +6,7 @@ export default function DarkModeToggle() {
   const { t } = useTranslation();
   const [dark, setDark] = useState(
     localStorage.theme === "dark" ||
-    (!("theme" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches)
+    (!("theme" in localStorage) && window.matchMedia("(prefers-color-scheme: light)").matches)
   );
 
   useEffect(() => {

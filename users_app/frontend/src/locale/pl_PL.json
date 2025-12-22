@@ -8,9 +8,9 @@
   "app": {
     "title": "Aplikacja użytkowników",
     "hiUser": "Cześć, {{username}}",
-    "cookieConsent.accept": "Akceptuj",
-    "cookieConsent.title": "Strona internetowa używa plików cookie",
-    "cookieConsent.body": "Aby poprawić Twoje doświadczenia i zrozumieć, jak aplikacja jest używana, strona internetowa używa plików cookie. Klikając 'Akceptuj', zgadzasz się na używanie plików cookie przez stronę."
+    "cookieConsentAccept": "Akceptuj",
+    "cookieConsentTitle": "Strona internetowa używa plików cookie",
+    "cookieConsentBody": "Aby poprawić Twoje doświadczenia i zrozumieć, jak aplikacja jest używana, strona internetowa używa plików cookie. Klikając 'Akceptuj', zgadzasz się na używanie plików cookie przez stronę."
   },
   "nav": {
     "users": "Użytkownicy",

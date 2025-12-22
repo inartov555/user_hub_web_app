@@ -5,7 +5,7 @@ import { api } from "./lib/axios";
 import { useAuthStore } from "./auth/store";
 import { bootstrapAuth } from "./auth/bootstrap";
 import Navbar from "./components/Navbar";
-// import CookieConsent from "./components/CookieConsent";
+import CookieConsent from "./components/CookieConsent";
 
 export function AppShellHeartbeat() {
   useEffect(() => {
@@ -73,7 +73,7 @@ export default function App() {
       <main className="max-w-6xl mx-auto p-4">
         <Outlet />
       </main>
-      // <CookieConsent />
+      <CookieConsent />
     </div>
   );
 }

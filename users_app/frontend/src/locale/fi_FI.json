@@ -8,9 +8,9 @@
   "app": {
     "title": "Käyttäjäsovellus",
     "hiUser": "Hei, {{username}}",
-    "cookieConsent.accept": "Hyväksy",
-    "cookieConsent.title": "Verkkosivusto käyttää evästeitä",
-    "cookieConsent.body": "Parantaaksemme käyttökokemustasi ja ymmärtääksemme, miten sovellusta käytetään, verkkosivusto käyttää evästeitä. Napsauttamalla 'Hyväksy' hyväksyt verkkosivuston evästeiden käytön."
+    "cookieConsentAccept": "Hyväksy",
+    "cookieConsentTitle": "Verkkosivusto käyttää evästeitä",
+    "cookieConsentBody": "Parantaaksemme käyttökokemustasi ja ymmärtääksemme, miten sovellusta käytetään, verkkosivusto käyttää evästeitä. Napsauttamalla 'Hyväksy' hyväksyt verkkosivuston evästeiden käytön."
   },
   "nav": {
     "users": "Käyttäjät",

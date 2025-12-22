@@ -8,9 +8,9 @@
   "app": {
     "title": "Users App",
     "hiUser": "Hi, {{username}}",
-    "cookieConsent.accept": "Accept",
-    "cookieConsent.title": "The website uses cookies",
-    "cookieConsent.body": "To improve your experience and to understand how the app is used, the website uses cookies. By clicking “Accept”, you agree to website's use of cookies."
+    "cookieConsentAccept": "Accept",
+    "cookieConsentTitle": "The website uses cookies",
+    "cookieConsentBody": "To improve your experience and to understand how the app is used, the website uses cookies. By clicking “Accept”, you agree to website's use of cookies."
   },
   "nav": {
     "users": "Users",
