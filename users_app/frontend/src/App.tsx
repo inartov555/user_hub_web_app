@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import { Outlet, Link, Navigate, useLocation, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { api } from "./lib/axios";
 import { useAuthStore } from "./auth/store";
 import { bootstrapAuth } from "./auth/bootstrap";
 import Navbar from "./components/Navbar";
-import { api } from "./lib/axios";
+import CookieConsent from "./components/CookieConsent";
 
 export function AppShellHeartbeat() {
   useEffect(() => {
@@ -72,10 +73,7 @@ export default function App() {
       <main className="max-w-6xl mx-auto p-4">
         <Outlet />
       </main>
-      {!user && (
-        // Add a new component, if needed
-        <div></div>
-      )}
+      <CookieConsent />
     </div>
   );
 }
