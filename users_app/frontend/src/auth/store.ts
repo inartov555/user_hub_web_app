@@ -13,6 +13,7 @@ const decodeAccessExp = (jwt: string | null): number | null => {
   }
 };
 
+
 type RuntimeAuth = {
   JWT_RENEW_AT_SECONDS: number;
   IDLE_TIMEOUT_SECONDS: number;
