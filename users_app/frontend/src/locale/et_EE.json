@@ -57,7 +57,8 @@
     "of": " / ",
     "rowsPerPage": "Ridu lehe kohta",
     "updating": "Uuendamine…",
-    "noVisibleColumns": "Kuvamiseks pole ühtegi valitud veergu"
+    "noVisibleColumns": "Kuvamiseks pole ühtegi valitud veergu",
+    "noSearchResults": "Tulemusi ei leitud"
   },
   "excelImport": {
     "title": "Exceli import",

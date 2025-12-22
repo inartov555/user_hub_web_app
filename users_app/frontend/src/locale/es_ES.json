@@ -57,7 +57,8 @@
     "of": "de",
     "rowsPerPage": "Filas por página",
     "updating": "Actualizando…",
-    "noVisibleColumns": "No hay columnas seleccionadas para mostrar"
+    "noVisibleColumns": "No hay columnas seleccionadas para mostrar",
+    "noSearchResults": "Sin resultados"
   },
   "excelImport": {
     "title": "Importación desde Excel",

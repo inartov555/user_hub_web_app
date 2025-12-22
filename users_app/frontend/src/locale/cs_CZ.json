@@ -57,7 +57,8 @@
     "of": " z ",
     "rowsPerPage": "Řádků na stránku",
     "updating": "Aktualizace…",
-    "noVisibleColumns": "Nejsou vybrané žádné sloupce k zobrazení"
+    "noVisibleColumns": "Nejsou vybrané žádné sloupce k zobrazení",
+    "noSearchResults": "Žádné výsledky"
   },
   "excelImport": {
     "title": "Import z Excelu",

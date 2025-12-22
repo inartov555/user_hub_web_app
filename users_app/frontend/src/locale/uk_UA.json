@@ -57,7 +57,8 @@
     "of": " з ",
     "rowsPerPage": "Рядків на сторінку",
     "updating": "Оновлення…",
-    "noVisibleColumns": "Не вибрано жодного стовпця для відображення"
+    "noVisibleColumns": "Не вибрано жодного стовпця для відображення",
+    "noSearchResults": "Немає результатів"
   },
   "excelImport": {
     "title": "Імпорт з Excel",

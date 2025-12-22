@@ -587,7 +587,7 @@ export default function UsersTable(props: Props) {
                   {table.getRowModel().rows.length === 0 ? (
                     <tr>
                       <td className="px-3 py-6 text-center text-muted-foreground" colSpan={columns.length}>
-                        No results
+                        {t("users.noSearchResults")}
                       </td>
                     </tr>
                   ) : (
