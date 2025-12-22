@@ -232,6 +232,7 @@ def logged_in_admin_fixture(page: Page, ui_theme: Theme, ui_locale: str) -> Page
     """
     login_page = LoginPage(page)
     login_page.open()
+    login_page.accept_cookie_consent_if_present()
     set_theme(page, ui_theme)
     set_locale(page, ui_locale)
     login_page.fill_credentials(DEFAULT_ADMIN_USERNAME, DEFAULT_ADMIN_PASSWORD)
@@ -250,6 +251,7 @@ def logged_in_regular_fixture(page: Page, ui_theme: Theme, ui_locale: str) -> Pa
     ensure_regular_user()
     login_page = LoginPage(page)
     login_page.open()
+    login_page.accept_cookie_consent_if_present()
     set_theme(page, ui_theme)
     set_locale(page, ui_locale)
     login_page.fill_credentials(DEFAULT_REGULAR_USERNAME, DEFAULT_REGULAR_PASSWORD)
@@ -303,6 +305,7 @@ def login_page_fixture(page: Page, ui_theme: Theme, ui_locale: str) -> LoginPage
     """
     login_page = LoginPage(page)
     login_page.open()
+    login_page.accept_cookie_consent_if_present()
     set_theme(page, ui_theme)
     set_locale(page, ui_locale)
     return login_page

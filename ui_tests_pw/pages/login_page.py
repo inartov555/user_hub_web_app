@@ -26,6 +26,10 @@ class LoginPage(BasePage):
         self.submit = self.page.locator("form button[type='submit']")
         self.error = self.page.locator("p.text-red-600")
 
+        self.cookie_consent_title = self.page.locator("div[data-tag='cookieConsentTitle']")
+        self.cookie_consent_body = self.page.locator("p[data-tag='cookieConsentBody']")
+        self.cookie_consent_accept = self.page.locator("#cookieAccept")
+
         self.signup = self.page.locator("a[href='/signup']")
         self.forgot_password = self.page.locator("a[href='/reset-password']")
 
@@ -58,3 +62,14 @@ class LoginPage(BasePage):
         """
         expect(self.username).to_be_visible()
         expect(self.page).to_have_url(re.compile(r".*/login$"))
+
+    def accept_cookie_consent_if_present(self):
+        """
+        Handling cookie consent overlay, if present
+        """
+        try:
+            self.cookie_consent_accept.wait_for(state="visible")
+        except PlaywrightTimeoutError:
+            return False
+        self.cookie_consent_accept.click()
+        expect(self.cookie_consent_accept).to_be_hidden()
