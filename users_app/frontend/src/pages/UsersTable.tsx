@@ -419,7 +419,7 @@ export default function UsersTable(props: Props) {
           />
 
           {/* Columns menu */}
-          <div className="relative">
+          <div className="relative" ref={columnsMenuContainerRef}>
             <Button id="columnVisibility" className="border-red-600 text-red-700 hover:bg-red-50" onClick={() => setShowColumns((v) => !v)}>
               <Columns className="h-4 w-4" /> {t("users.columns")}
             </Button>
