@@ -26,7 +26,7 @@ This is a test website + automation framework
 - 🛠️ **Fixed in `users_app`:** Users table -> Column visibility popup was not dismissed when clicked outside the overlay
 - 🛠️ **Fixed in `users_app`:** Users table -> Column visibility popup settings were not preserved after page reload
 - 🛠️ **Fixed in `users_app`:** Empty space was displayed after deselecting all columns while being logged in as a regular user
-- 🛠️ **Fixed in `users_app`:** Profile Edit -> save an avatar > 1 MB -> 413 Request Entity Too Large
+- 🛠️ **Fixed in `users_app`:** Profile Edit -> save an avatar > 1 MB -> 413 Request Entity Too Large (increased size to 10 MB)
 - ✨ **Improved in `users_app`:** Unifying button style accross the website
 - ✨ **Improved in `users_app`:** Prettifying table headers (mouse over/up/down styles)
 - ✨ **Improved in `users_app`:** Localization for some error cases
