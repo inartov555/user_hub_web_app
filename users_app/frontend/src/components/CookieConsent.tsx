@@ -63,9 +63,9 @@ export default function CookieConsent() {
       >
         <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
           <div className="text-sm">
-            <div className="font-semibold text-slate-900 dark:text-slate-100">We use cookies</div>
+            <div className="font-semibold text-slate-900 dark:text-slate-100">The website uses cookies</div>
             <p className="mt-1 text-slate-700 dark:text-slate-200">
-              The website uses cookies to improve your experience and to understand how the app is used. By
+              To improve your experience and to understand how the app is used, the website uses cookies. By
               clicking “Accept”, you agree to website's use of cookies.
             </p>
           </div>
