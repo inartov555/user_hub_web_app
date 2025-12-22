@@ -40,8 +40,8 @@ type AdminFlags = {
 };
 
 /**
- * Convert TanStack SortingState -> DRF `ordering` (primary,secondary,...)
- * TanStack keeps highest-priority sort FIRST in `sorting`.
+ * Convert TanStack SortingState -> DRF ordering (primary,secondary,...)
+ * TanStack keeps highest-priority sort FIRST in sorting.
  */
 const toOrdering = (s: SortingState) => s.map(({ id, desc }) => (desc ? `-${id}` : id));
 
@@ -88,7 +88,35 @@ export default function UsersTable(props: Props) {
   );
   const [showColumns, setShowColumns] = useState(false);
   const [rowSelection, setRowSelection] = React.useState<RowSelectionState>({});
-  // put inside UsersTable, above `columns`
+
+  const columnsMenuContainerRef = React.useRef<HTMLDivElement | null>(null);
+  useEffect(() => {
+    if (!showColumns) return;
+
+    const onPointerDown = (e: MouseEvent | TouchEvent) => {
+      const el = columnsMenuContainerRef.current;
+      const target = e.target as Node | null;
+      if (!el || !target) return;
+
+      if (!el.contains(target)) setShowColumns(false);
+    };
+
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setShowColumns(false);
+    };
+
+    document.addEventListener("mousedown", onPointerDown, true);
+    document.addEventListener("touchstart", onPointerDown, true);
+    document.addEventListener("keydown", onKeyDown, true);
+
+    return () => {
+      document.removeEventListener("mousedown", onPointerDown, true);
+      document.removeEventListener("touchstart", onPointerDown, true);
+      document.removeEventListener("keydown", onKeyDown, true);
+    };
+  }, [showColumns]);
+
+  // put inside UsersTable, above columns
   const sortLabel = (column: any): string | undefined => {
     const dir = column.getIsSorted() as 'asc' | 'desc' | false;
     if (!dir) return undefined;
