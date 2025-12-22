@@ -55,7 +55,7 @@ export default function Signup() {
           " id="password" type="password" value={password} onChange={e=>setPassword(e.target.value)} maxLength={40} required />
         {error && <p className="text-red-600 text-sm whitespace-pre-line">{t("signup.signupFailed", { message: error })}</p>}
         <div id="create" className="mt-2 flex justify-center">
-          <Button variant="secondary" className="gap-2" type="submit">{t("auth.createAccount")}</Button>
+          <Button className="border-red-600 text-red-700 hover:bg-red-50" type="submit">{t("auth.createAccount")}</Button>
         </div>
       </form>
       <div className="mt-4 text-sm flex justify-between">

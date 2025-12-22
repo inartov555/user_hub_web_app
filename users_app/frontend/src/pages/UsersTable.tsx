@@ -279,7 +279,7 @@ export default function UsersTable(props: Props) {
         <div className="flex flex-wrap gap-2">
           <Button
             data-tag="change-password"
-            variant="secondary"
+            className="border-red-600 text-red-700 hover:bg-red-50"
             onClick={() => navigate(`/users/${row.original.id}/change-password`)}
             title={t("users.changePassword")}
           >
@@ -369,7 +369,7 @@ export default function UsersTable(props: Props) {
 
           {/* Columns menu */}
           <div className="relative">
-            <Button id="columnVisibility" variant="secondary" className="gap-2" onClick={() => setShowColumns((v) => !v)}>
+            <Button id="columnVisibility" className="border-red-600 text-red-700 hover:bg-red-50" onClick={() => setShowColumns((v) => !v)}>
               <Columns className="h-4 w-4" /> {t("users.columns")}
             </Button>
             {showColumns && (
@@ -408,7 +408,7 @@ export default function UsersTable(props: Props) {
           {/* Clear sort */}
           <Button
             id="clearSort"
-            variant="secondary"
+            className="border-red-600 text-red-700 hover:bg-red-50"
             onClick={() => {
               setSorting([]);
               setPage(1);
@@ -423,10 +423,9 @@ export default function UsersTable(props: Props) {
           {isAdmin && (
             <Button
               id="deleteUsers"
-              variant="secondary"
+              className="border-red-600 text-red-700 hover:bg-red-50"
               onClick={handleGoToDeleteConfirm}
               disabled={table.getSelectedRowModel().rows.length === 0}
-              className="gap-2 border-red-600 text-red-700 hover:bg-red-50"
               title={t("users.deleteSelectedTitle")}
             >
               <Trash2 className="h-4 w-4" />
@@ -506,28 +505,28 @@ export default function UsersTable(props: Props) {
         <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
           <div className="flex items-center gap-2">
             <Button
-              variant="secondary"
+              className="border-red-600 text-red-700 hover:bg-red-50"
               onClick={() => (table.setPageIndex(0), setPage(1))}
               disabled={!table.getCanPreviousPage()}
             >
               <ChevronsLeft className="h-4 w-4" />
             </Button>
             <Button
-              variant="secondary"
+              className="border-red-600 text-red-700 hover:bg-red-50"
               onClick={() => (table.previousPage(), setPage((p) => Math.max(1, p - 1)))}
               disabled={!table.getCanPreviousPage()}
             >
               <ChevronLeft className="h-4 w-4" />
             </Button>
             <Button
-              variant="secondary"
+              className="border-red-600 text-red-700 hover:bg-red-50"
               onClick={() => (table.nextPage(), setPage((p) => p + 1))}
               disabled={!table.getCanNextPage()}
             >
               <ChevronRight className="h-4 w-4" />
             </Button>
             <Button
-              variant="secondary"
+              className="border-red-600 text-red-700 hover:bg-red-50"
               onClick={() => {
                 const last = Math.max(0, table.getPageCount() - 1);
                 table.setPageIndex(last);

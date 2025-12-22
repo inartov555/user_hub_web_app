@@ -125,14 +125,13 @@ export default function UserDeleteConfirm() {
           <Button
             id="confirmDelete"
             className="border-red-600 text-red-700 hover:bg-red-50"
-            variant="secondary"
             onClick={handleConfirm}
             disabled={loading}
             title={t("userDeleteConfirm.deleteUsers")}
           >
             {loading ? t("userDeleteConfirm.deleting") : `${t("users.deleteSelected")} ${users.length}`}
           </Button>
-          <Button id="cancel" variant="secondary" className="border-red-600 text-red-700 hover:bg-red-50" onClick={handleCancel} disabled={loading}>
+          <Button id="cancel" className="border-red-600 text-red-700 hover:bg-red-50" onClick={handleCancel} disabled={loading}>
             {t("userDeleteConfirm.cancel")}
           </Button>
         </div>

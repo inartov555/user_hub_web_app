@@ -4,6 +4,7 @@ import { api } from "../lib/axios";
 import { extractApiError } from "../lib/httpErrors";
 import { useAuthStore } from "../auth/store";
 import { Input } from "../components/input";
+import Button from "../components/button";
 
 export default function ExcelImportPanel() {
   const { t } = useTranslation();
@@ -52,6 +53,8 @@ export default function ExcelImportPanel() {
       // Reset the input for the *next* upload (without interfering with current display)
       setFile(null);
       setInputKey((k) => k + 1);
+      // Clearing the error message in case of successful import
+      setError("");
     } catch (err: any) {
       const parsed = extractApiError(err as unknown);
       setError(`${t("excelImport.excelImportFailure")} ${parsed.message}`);
@@ -103,20 +106,15 @@ export default function ExcelImportPanel() {
 
         {error && <p className="text-red-600 text-sm whitespace-pre-line">{error}</p>}
         <div className="flex gap-2">
-          <button id="importTemplate" className="px-4 py-2 rounded-xl bg-brand-600 text-white hover:bg-brand-700
-              focus:outline-none focus:ring-2 focus:ring-brand-500
-              disabled:opacity-50 disabled:cursor-not-allowed" type="submit" disabled={!file || submitting}>
+          <Button id="importTemplate" className="border-red-600 text-red-700 hover:bg-red-50" type="submit">
             {submitting ? t("excelImport.uploading") : t("excelImport.startImport")}
-          </button>
+          </Button>
 
           {/* If you rely on cookie auth, a plain anchor works: href={`${api.defaults.baseURL}/import-excel/`} */}
           {accessToken ? (
-            <button id="downloadTemplate" className="px-4 py-2 rounded-xl border text-slate-700 bg-white
-              hover:bg-slate-50
-              dark:text-slate-100 dark:bg-slate-800 dark:border-slate-600
-              dark:hover:bg-slate-700" onClick={downloadTemplate}>
+            <Button id="downloadTemplate" className="border-red-600 text-red-700 hover:bg-red-50" onClick={downloadTemplate}>
               {t("excelImport.downloadTemplate")}
-            </button>
+            </Button>
           ) : (
             <a className="btn btn-ghost px-4 py-2 rounded-xl border" href={`${api.defaults.baseURL}/import-excel/`} download>
               {t("excelImport.downloadTemplate")}

@@ -85,10 +85,10 @@ export default function ChangePassword() {
           "
         />
         {error && <p className="text-red-600 text-sm whitespace-pre-line">{error}</p>}
-        <Button variant="secondary" className="gap-2" type="submit" disabled={saving}>
+        <Button className="border-red-600 text-red-700 hover:bg-red-50" type="submit" disabled={saving}>
           {saving ? t("changePassword.saving") : t("profileEdit.save")}
         </Button>
-        <Button variant="secondary" className="gap-2">
+        <Button className="border-red-600 text-red-700 hover:bg-red-50">
           <Link to="/users">{t("userDeleteConfirm.cancel")}</Link>
         </Button>
       </form>

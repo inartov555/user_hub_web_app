@@ -133,7 +133,7 @@ export default function Settings() {
             min={1}
           />
           <div className="flex gap-3 items-center">
-            <Button variant="secondary" className="border-red-600 text-red-700 hover:bg-red-50" disabled={saving} type="submit">
+            <Button className="border-red-600 text-red-700 hover:bg-red-50" disabled={saving} type="submit">
               {saving ? t("appSettings.saving") : t("profileEdit.save")}
             </Button>
             {saved && <span className="text-green-600 text-sm">{t("appSettings.saved")}</span>}

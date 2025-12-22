@@ -177,8 +177,8 @@ export default function ProfileEdit() {
         </div>
 
         <div className="pt-2">
-          <Button id="save" variant="secondary" className="gap-2" onClick={onSave}>{t("profileEdit.save")}</Button>
-          <Button id="cancel" variant="secondary" className="gap-2">
+          <Button id="save" className="border-red-600 text-red-700 hover:bg-red-50" onClick={onSave}>{t("profileEdit.save")}</Button>
+          <Button id="cancel" className="border-red-600 text-red-700 hover:bg-red-50">
             <Link to="/profile-view">{t("userDeleteConfirm.cancel")}</Link>
           </Button>
         </div>

@@ -63,13 +63,13 @@ class LoginPage(BasePage):
         expect(self.username).to_be_visible()
         expect(self.page).to_have_url(re.compile(r".*/login$"))
 
-    def accept_cookie_consent_if_present(self):
+    def accept_cookie_consent_if_present(self) -> None:
         """
         Handling cookie consent overlay, if present
         """
         try:
             self.cookie_consent_accept.wait_for(state="visible")
-        except PlaywrightTimeoutError:
+        except TimeoutError:
             return False
         self.cookie_consent_accept.click()
         expect(self.cookie_consent_accept).to_be_hidden()

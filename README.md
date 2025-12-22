@@ -20,6 +20,8 @@ This is a test website + automation framework
 ---
 
 ## 📌 Changelog v1.2 vs. v1.1
+
+- ✨ **Improved in `users_app`:** Unifying button style accross the website
 - 🆕 **Added in `users_app`:** Cookie consent overlay
 - 🆕 **Added in `ui_tests_pw`:** Handling the cookie consent overlay in automation tests
 

@@ -114,13 +114,13 @@ export default function ProfileView() {
 
         {error && <ErrorAlert message={error} />}
         <div className="pt-2">
-          <Button id="editProfile" variant="secondary" className="gap-2">
+          <Button id="editProfile" className="border-red-600 text-red-700 hover:bg-red-50">
             <Link to="/profile-edit" className="btn inline-flex">
               {t("profileView.editProfile")}
             </Link>
           </Button>
           {profile?.user?.id != null && (
-            <Button id="changePassword" variant="secondary" className="gap-2">
+            <Button id="changePassword" className="border-red-600 text-red-700 hover:bg-red-50">
               <Link
                 to={`/users/${profile.user.id}/change-password`}
                 className="btn inline-flex"
