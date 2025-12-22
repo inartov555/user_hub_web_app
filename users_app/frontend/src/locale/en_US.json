@@ -56,7 +56,8 @@
     "page": "Page",
     "of": "of",
     "rowsPerPage": "Rows per page",
-    "updating": "Updating…"
+    "updating": "Updating…",
+    "noVisibleColumns": "There are no selected columns to display"
   },
   "excelImport": {
     "title": "Excel Import",

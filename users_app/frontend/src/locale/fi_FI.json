@@ -56,7 +56,8 @@
     "page": "Sivu",
     "of": " / ",
     "rowsPerPage": "Rivejä sivulla",
-    "updating": "Päivitetään…"
+    "updating": "Päivitetään…",
+    "noVisibleColumns": "Näytettäviä sarakkeita ei ole valittu"
   },
   "excelImport": {
     "title": "Tuonti Excelistä",

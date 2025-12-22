@@ -56,7 +56,8 @@
     "page": "Strona",
     "of": " z ",
     "rowsPerPage": "Wierszy na stronę",
-    "updating": "Aktualizowanie…"
+    "updating": "Aktualizowanie…",
+    "noVisibleColumns": "Nie wybrano żadnych kolumn do wyświetlenia"
   },
   "excelImport": {
     "title": "Import z Excela",

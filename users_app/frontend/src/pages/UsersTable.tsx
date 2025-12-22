@@ -542,17 +542,6 @@ export default function UsersTable(props: Props) {
             >
               {t("users.noVisibleColumns")}
             </p>
-
-            <div className="mt-4 flex justify-center">
-              <Button
-                id="openColumnVisibility"
-                variant="secondary"
-                className="gap-2"
-                onClick={() => setShowColumns(true)}
-              >
-                <Columns className="h-4 w-4" /> {t("users.columns")}
-              </Button>
-            </div>
           </div>
         ) : (
           <>
