@@ -17,8 +17,8 @@
 ## 📦 Releases
 
 - 🟨 **v1.2** is in progress, it is not released yet
-- 🟩 **v1.1** released on Dec-19-2025
-- 🟩 **v1**   released on Nov-05-2025
+- 🟩 **(v1.1)[https://github.com/inartov555/user_hub_web_app/tree/stable_v1.1_dec_19_2025]** released on Dec-19-2025
+- 🟩 **(v1)[https://github.com/inartov555/user_hub_web_app/tree/stable_v1_nov_05_2025]**   released on Nov-05-2025
 
 ---
 
