@@ -308,15 +308,6 @@ export default function UsersTable(props: Props) {
       !sorted && "text-slate-700 dark:text-slate-200"
     ].join(" ");
 
-  const headerCellClassName = (sorted: boolean) =>
-    [
-      "relative select-none px-3 py-2 text-left font-semibold align-middle group",
-      "whitespace-normal break-words",
-      "transition-colors",
-      sorted ? "bg-slate-50/80 dark:bg-slate-900/50" : "",
-      "hover:bg-slate-50 dark:hover:bg-slate-900/40",
-    ].join(" ");
-
   // Sync TanStack sorting - server ordering
   const handleSortingChange = (updater: React.SetStateAction<SortingState>) => {
     const next = typeof updater === "function" ? (updater as (prev: SortingState) => SortingState)(sorting) : updater;

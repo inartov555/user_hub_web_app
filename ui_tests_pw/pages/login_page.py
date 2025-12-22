@@ -5,7 +5,7 @@ Page object for the Login page.
 from __future__ import annotations
 import re
 
-from playwright.sync_api import expect, Page, PlaywrightTimeoutError
+from playwright.sync_api import expect, Page
 
 from .base_page import BasePage
 
@@ -69,7 +69,7 @@ class LoginPage(BasePage):
         """
         try:
             self.cookie_consent_accept.wait_for(state="visible")
-        except PlaywrightTimeoutError:
+        except TimeoutError:
             return  # No cookie consent overlay
         self.cookie_consent_accept.click()
         expect(self.cookie_consent_accept).to_be_hidden()
