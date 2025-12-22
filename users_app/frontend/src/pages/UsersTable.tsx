@@ -294,12 +294,18 @@ export default function UsersTable(props: Props) {
 
   const headerButtonClassName = (sorted: boolean) =>
     [
-      "inline-flex items-center gap-1 rounded-md px-2 py-1 -ml-2",
-      "transition-colors select-none",
-      "hover:bg-slate-100 dark:hover:bg-slate-800",
-      "active:bg-slate-200 dark:active:bg-slate-700", // mouse down/up feedback
-      "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-400/60",
-      sorted ? "text-slate-900 dark:text-slate-100" : "text-slate-700 dark:text-slate-200",
+      "relative inline-flex items-center gap-2 rounded-xl px-2.5 py-1.5 -ml-2",
+      "font-semibold tracking-[0.01em]",
+      "transition-all duration-150",
+      "hover:bg-slate-100/80 dark:hover:bg-slate-800/70",
+      "active:bg-slate-200/80 dark:active:bg-slate-700/70",
+      "active:translate-y-[0.5px]",
+      "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500/35 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-slate-900",
+      // subtle underline glow on hover / sorted
+      "after:absolute after:left-3 after:right-3 after:-bottom-1 after:h-[2px] after:rounded-full after:bg-red-500/60 after:opacity-0 after:transition-opacity",
+      "hover:after:opacity-100",
+      sorted && "text-slate-900 dark:text-slate-50 after:opacity-100",
+      !sorted && "text-slate-700 dark:text-slate-200"
     ].join(" ");
 
   const headerCellClassName = (sorted: boolean) =>
@@ -384,8 +390,14 @@ export default function UsersTable(props: Props) {
             placeholder={t("users.search")}
             value={globalFilter}
             onChange={(e) => setGlobalFilter(e.target.value)}
-            className="w-48 dark:bg-slate-900 dark:text-slate-100 dark:placeholder-slate-500
-            dark:border-slate-700"
+            className="
+              w-full rounded-xl px-3 py-2
+              bg-white text-slate-900 placeholder-slate-500
+              border border-slate-300
+              focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500
+              dark:bg-slate-900 dark:text-slate-100 dark:placeholder-slate-500
+              dark:border-slate-700
+            "
           />
 
           {/* Columns menu */}
