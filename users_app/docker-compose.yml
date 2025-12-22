@@ -27,9 +27,6 @@ services:
     dns: [8.8.8.8, 1.1.1.1]
     environment:
       DJANGO_SETTINGS_MODULE: core.settings
-      DJANGO_SUPERUSER_USERNAME: admin
-      DJANGO_SUPERUSER_EMAIL: admin@example.com
-      DJANGO_SUPERUSER_PASSWORD: changeme123
       HOST_ARTIFACTS: /tests/artifacts
     ports: ["8000:8000"]
     volumes:

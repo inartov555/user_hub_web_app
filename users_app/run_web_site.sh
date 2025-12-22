@@ -12,7 +12,7 @@
 #          false - starting the service WITH cache (cache is cleared)
 #          default = false
 #
-#     Clearing Docker data and restarting the Docker service
+#     !!! Clearing Docker data (ALL Docker images, Docker network settings, etc.), and restarting the Docker service
 #   - $3 - true - clearing all docker data (network, images, etc.)
 #          false - docker starts with new data
 #          default = false
