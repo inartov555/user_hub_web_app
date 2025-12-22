@@ -13,18 +13,22 @@ export function AppShellHeartbeat() {
 
     const tick = async () => {
       const { runtimeAuth, accessToken } = useAuthStore.getState();
-      if (!runtimeAuth || !accessToken) {
-        // nothing to keep alive
-      } else if (document.visibilityState === "visible") {
-        try {
-          await api.get("/auth/users/me/", { headers: { "X-Skip-Auth-Checks": "1" } });
-          // any authorized endpoint works; /auth/ping is fine if you have it
-        } catch {
-          // ignore; response interceptor will handle auth failures globally
-        }
+
+    if (accessToken && document.visibilityState === "visible") {
+      try {
+        await api.get("/auth/users/me/", { headers: { "X-Skip-Auth-Checks": "1" } });
+      } catch {
+        // ignore; response interceptor handles auth failures
       }
-      const periodMs = runtimeAuth.IDLE_TIMEOUT_SECONDS;
-      timer = window.setTimeout(tick, periodMs);
+    }
+
+    const configured = runtimeAuth?.IDLE_TIMEOUT_SECONDS;
+    const periodMs =
+      Number.isFinite(configured) && (configured as number) > 0
+        ? (configured as number)
+        : 60000;
+
+    timer = window.setTimeout(tick, periodMs);
     };
 
     tick();
@@ -43,7 +47,7 @@ export default function App() {
 
   useEffect(() => {
     bootstrapAuth().finally(() => setAuthReady(true));
-    useAuthStore.getState().startIdleWatch();
+    useAuthStore.getState().setRuntimeAuth();
     return () => useAuthStore.getState().stopIdleWatch();
   }, []);
 

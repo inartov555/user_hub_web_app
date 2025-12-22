@@ -13,6 +13,40 @@ const decodeAccessExp = (jwt: string | null): number | null => {
   }
 };
 
+/**
+ * Runtime auth settings are stored in localStorage by fetchRuntimeAuth().
+ * NOTE: despite the *_SECONDS key names, the frontend stores these values in milliseconds.
+ *
+ * Returning null here is important: a { IDLE_TIMEOUT_SECONDS: 0, ... } object is truthy,
+ * and was causing the heartbeat loop to schedule with a 0ms interval before settings were fetched.
+ */
+const readRuntimeAuthFromLocalStorage = (): RuntimeAuth => {
+  try {
+    const renewRaw = localStorage.getItem("JWT_RENEW_AT_SECONDS");
+    const idleRaw = localStorage.getItem("IDLE_TIMEOUT_SECONDS");
+    const lifetimeRaw = localStorage.getItem("ACCESS_TOKEN_LIFETIME");
+    const rotateRaw = localStorage.getItem("ROTATE_REFRESH_TOKENS");
+
+    const anyPresent =
+      renewRaw !== null || idleRaw !== null || lifetimeRaw !== null || rotateRaw !== null;
+    if (!anyPresent) return null;
+
+    const toFiniteOrZero = (v: string | null): number => {
+      if (v === null) return 0;
+      const n = Number(v);
+      return Number.isFinite(n) ? n : 0;
+    };
+
+    return {
+      JWT_RENEW_AT_SECONDS: toFiniteOrZero(renewRaw),
+      IDLE_TIMEOUT_SECONDS: toFiniteOrZero(idleRaw),
+      ACCESS_TOKEN_LIFETIME: toFiniteOrZero(lifetimeRaw),
+      ROTATE_REFRESH_TOKENS: rotateRaw === "true" || rotateRaw === "1",
+    };
+  } catch {
+    return null;
+  }
+};
 
 type RuntimeAuth = {
   JWT_RENEW_AT_SECONDS: number;
@@ -50,21 +84,15 @@ type State = {
 };
 
 export const useAuthStore = create<State>((set, get) => ({
-  runtimeAuth: {
-    JWT_RENEW_AT_SECONDS: Number(localStorage.getItem("JWT_RENEW_AT_SECONDS")),
-    IDLE_TIMEOUT_SECONDS: Number(localStorage.getItem("IDLE_TIMEOUT_SECONDS")),
-    ACCESS_TOKEN_LIFETIME: Number(localStorage.getItem("ACCESS_TOKEN_LIFETIME")),
-    // localStorage stores "true"/"false" strings — parse correctly:
-    ROTATE_REFRESH_TOKENS: localStorage.getItem("ROTATE_REFRESH_TOKENS") === "true",
-  },
-  setRuntimeAuth: () => {
+  runtimeAuth: readRuntimeAuthFromLocalStorage(),
+    setRuntimeAuth: () => {
     const now = Date.now();
-    set({ lastActivityAt: now });
-    if (get().runtimeAuth && get().runtimeAuth.IDLE_TIMEOUT_SECONDS > 0) {
-      get().startIdleWatch();
-    } else {
-      get().stopIdleWatch();
-    }
+    const rt = readRuntimeAuthFromLocalStorage();
+    set({ runtimeAuth: rt, lastActivityAt: now });
+
+    // ensure we don't stack multiple watchers
+    get().stopIdleWatch();
+    if (rt && rt.IDLE_TIMEOUT_SECONDS > 0) get().startIdleWatch();
   },
   accessToken: localStorage.getItem("access"),
   refreshToken: localStorage.getItem("refresh"),
@@ -76,7 +104,12 @@ export const useAuthStore = create<State>((set, get) => ({
   setActivityNow: () => set({ lastActivityAt: Date.now() }),
 
   startIdleWatch: () => {
-    const onActivity = () => get().setActivityNow();
+    const rt = get().runtimeAuth;
+    if (!rt || !(rt.IDLE_TIMEOUT_SECONDS > 0)) return;
+
+    get().stopIdleWatch();
+
+    const onActivity = get().setActivityNow;
     ["mousemove","keydown","click","touchstart","visibilitychange","focus"].forEach(evt =>
       window.addEventListener(evt, onActivity, { passive: true })
     );
