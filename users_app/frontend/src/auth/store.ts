@@ -17,8 +17,7 @@ const decodeAccessExp = (jwt: string | null): number | null => {
  * Runtime auth settings are stored in localStorage by fetchRuntimeAuth().
  * NOTE: despite the *_SECONDS key names, the frontend stores these values in milliseconds.
  *
- * Returning null here is important: a { IDLE_TIMEOUT_SECONDS: 0, ... } object is truthy,
- * and was causing the heartbeat loop to schedule with a 0ms interval before settings were fetched.
+ * Returning null here is important: a { IDLE_TIMEOUT_SECONDS: 0, ... } object is truthy
  */
 const readRuntimeAuthFromLocalStorage = (): RuntimeAuth => {
   try {

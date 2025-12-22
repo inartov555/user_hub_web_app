@@ -301,7 +301,6 @@ export default function UsersTable(props: Props) {
       "active:bg-slate-200/80 dark:active:bg-slate-700/70",
       "active:translate-y-[0.5px]",
       "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500/35 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-slate-900",
-      // subtle underline glow on hover / sorted
       "after:absolute after:left-3 after:right-3 after:-bottom-1 after:h-[2px] after:rounded-full after:bg-red-500/60 after:opacity-0 after:transition-opacity",
       "hover:after:opacity-100",
       sorted && "text-slate-900 dark:text-slate-50 after:opacity-100",
@@ -398,7 +397,7 @@ export default function UsersTable(props: Props) {
             </Button>
             {showColumns && (
               <div
-                className="absolute right-0 z-10 mt-2 w-56 rounded-md border bg-white p-2 shadow-lg dark:bg-slate-900 dark:text-slate-100 dark:placeholder-slate-500
+                className="absolute right-0 z-50 mt-2 w-56 rounded-md border bg-white p-2 shadow-lg dark:bg-slate-900 dark:text-slate-100 dark:placeholder-slate-500
                   dark:border-slate-700"
                 role="menu"
               >
