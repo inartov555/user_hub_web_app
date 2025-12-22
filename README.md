@@ -21,6 +21,7 @@ This is a test website + automation framework
 
 ## 📌 Changelog v1.2 vs. v1.1
 - 🆕 **Added in `users_app`:** Cookie consent overlay
+- 🆕 **Added in `ui_tests_pw`:** Handling the cookie consent overlay in automation tests
 
 ---
 

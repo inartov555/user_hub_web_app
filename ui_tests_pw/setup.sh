@@ -69,5 +69,4 @@ cd "$MODULE_PATH"
 # playwright install
 
 echo "Virtual env set up to: '$(pwd)'"
-echo ""
 export TEST_VENV="$(pwd)"
