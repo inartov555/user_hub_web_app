@@ -413,6 +413,8 @@ export default function UsersTable(props: Props) {
     enableColumnResizing: true,
   });
 
+  const visibleLeafColumnCount = table.getVisibleLeafColumns().length;
+
   // persist pageSize
   useEffect(() => {
     localStorage.setItem("pageSize", String(pageSize));
@@ -532,133 +534,158 @@ export default function UsersTable(props: Props) {
       </CardBody>
 
       <CardBody>
-        <div className="overflow-auto rounded-xl border">
-          <table className="w-full text-sm table-auto border-collapse">
-            <thead className="sticky top-0 z-10 bg-slate-50/90 backdrop-blur dark:bg-slate-900/70">
-              {table.getHeaderGroups().map((headerGroup) => (
-                <tr key={headerGroup.id} className="border-b">
-                  {headerGroup.headers.map((header) => {
-                    const sortIndex = header.column.getSortIndex();
-                    return (
-                      <th
-                        key={header.id}
-                        colSpan={header.colSpan}
-                        style={{ width: header.getSize() }}
-                        className="relative select-none px-3 py-2 text-left font-semibold align-middle group whitespace-normal break-words"
-                      >
-                        {header.isPlaceholder ? null : (
-                          <div className="inline-flex items-center gap-1">
-                            {flexRender(header.column.columnDef.header, header.getContext())}
-                            {sortIndex > -1 && (
-                              <span className="text-xs text-muted-foreground">#{sortIndex + 1}</span>
-                            )}
-                          </div>
-                        )}
-                        {/* Resizer handle */}
-                        {header.column.getCanResize() && (
-                          <div
-                            onMouseDown={header.getResizeHandler()}
-                            onTouchStart={header.getResizeHandler()}
-                            className="absolute right-0 top-0 h-full w-1 cursor-col-resize select-none touch-none bg-transparent group-hover:bg-border"
-                          />
-                        )}
-                      </th>
-                    );
-                  })}
-                </tr>
-              ))}
-            </thead>
+        {visibleLeafColumnCount === 0 ? (
+          <div className="rounded-xl border p-8 text-center">
+            <p
+              data-tag="noVisibleColumnsHint"
+              className="text-sm text-slate-600 dark:text-slate-200"
+            >
+              {t("users.noVisibleColumns")}
+            </p>
 
-            <tbody>
-              {table.getRowModel().rows.length === 0 ? (
-                <tr>
-                  <td className="px-3 py-6 text-center text-muted-foreground" colSpan={columns.length}>
-                    No results
-                  </td>
-                </tr>
-              ) : (
-                table.getRowModel().rows.map((row) => (
-                  <tr data-tag={"row-" + row.id} key={row.id} className="border-b hover:bg-muted/40">
-                    {row.getVisibleCells().map((cell, cellIndex) => (
-                      <td
-                        key={cell.id}
-                        data-tag={"cell-" + cellIndex}
-                        style={{ width: cell.column.getSize() }}
-                        className="px-3 py-2 align-middle whitespace-normal break-words"
-                      >
-                        {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                      </td>
-                    ))}
-                  </tr>
-                ))
-              )}
-            </tbody>
-          </table>
-        </div>
-
-        {/* Footer / pagination */}
-        <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
-          <div className="flex items-center gap-2">
-            <Button
-              className="border-red-600 text-red-700 hover:bg-red-50"
-              onClick={() => (table.setPageIndex(0), setPage(1))}
-              disabled={!table.getCanPreviousPage()}
-            >
-              <ChevronsLeft className="h-4 w-4" />
-            </Button>
-            <Button
-              className="border-red-600 text-red-700 hover:bg-red-50"
-              onClick={() => (table.previousPage(), setPage((p) => Math.max(1, p - 1)))}
-              disabled={!table.getCanPreviousPage()}
-            >
-              <ChevronLeft className="h-4 w-4" />
-            </Button>
-            <Button
-              className="border-red-600 text-red-700 hover:bg-red-50"
-              onClick={() => (table.nextPage(), setPage((p) => p + 1))}
-              disabled={!table.getCanNextPage()}
-            >
-              <ChevronRight className="h-4 w-4" />
-            </Button>
-            <Button
-              className="border-red-600 text-red-700 hover:bg-red-50"
-              onClick={() => {
-                const last = Math.max(0, table.getPageCount() - 1);
-                table.setPageIndex(last);
-                setPage(last + 1);
-              }}
-              disabled={!table.getCanNextPage()}
-            >
-              <ChevronsRight className="h-4 w-4" />
-            </Button>
-          </div>
-
-          <div className="flex items-center gap-3 text-sm text-muted-foreground">
-            {isFetching && <span data-tag="isUpdating">{t("users.updating")}</span>}
-            <span>
-              {t("users.page")} <strong>{table.getState().pagination.pageIndex + 1}</strong> {t("users.of")} {table.getPageCount() || 1}
-            </span>
-            <label className="flex items-center gap-2">
-              {t("users.rowsPerPage")}
-              <select
-                className="rounded-md border bg-background px-2 py-1 dark:bg-slate-900 dark:text-slate-100 dark:placeholder-slate-500
-                  dark:border-slate-700"
-                value={table.getState().pagination.pageSize}
-                onChange={(e) => {
-                  const ps = Number(e.target.value);
-                  table.setPageSize(ps);
-                  setPageSize(ps);
-                }}
+            <div className="mt-4 flex justify-center">
+              <Button
+                id="openColumnVisibility"
+                variant="secondary"
+                className="gap-2"
+                onClick={() => setShowColumns(true)}
               >
-                {[10, 20, 30, 50, 100].map((ps) => (
-                  <option key={ps} value={ps}>
-                    {ps}
-                  </option>
-                ))}
-              </select>
-            </label>
+                <Columns className="h-4 w-4" /> {t("users.columns")}
+              </Button>
+            </div>
           </div>
-        </div>
+        ) : (
+          <>
+            <div className="overflow-auto rounded-xl border">
+              <table className="w-full text-sm table-auto border-collapse">
+                <thead className="bg-muted/50">
+                  {table.getHeaderGroups().map((headerGroup) => (
+                    <tr key={headerGroup.id} className="border-b">
+                      {headerGroup.headers.map((header) => {
+                        const sortIndex = header.column.getSortIndex();
+                        return (
+                          <th
+                            key={header.id}
+                            colSpan={header.colSpan}
+                            style={{ width: header.getSize() }}
+                            className="relative select-none px-3 py-2 text-left font-semibold align-middle group whitespace-normal break-words"
+                          >
+                            {header.isPlaceholder ? null : (
+                              <div className="inline-flex items-center gap-1">
+                                {flexRender(header.column.columnDef.header, header.getContext())}
+                                {sortIndex > -1 && (
+                                  <span className="text-xs text-muted-foreground">#{sortIndex + 1}</span>
+                                )}
+                              </div>
+                            )}
+                            {/* Resizer handle */}
+                            {header.column.getCanResize() && (
+                              <div
+                                onMouseDown={header.getResizeHandler()}
+                                onTouchStart={header.getResizeHandler()}
+                                className="absolute right-0 top-0 h-full w-1 cursor-col-resize select-none touch-none bg-transparent group-hover:bg-border"
+                              />
+                            )}
+                          </th>
+                        );
+                      })}
+                    </tr>
+                  ))}
+                </thead>
+
+                <tbody>
+                  {table.getRowModel().rows.length === 0 ? (
+                    <tr>
+                      <td className="px-3 py-6 text-center text-muted-foreground" colSpan={columns.length}>
+                        No results
+                      </td>
+                    </tr>
+                  ) : (
+                    table.getRowModel().rows.map((row) => (
+                      <tr data-tag={"row-" + row.id} key={row.id} className="border-b hover:bg-muted/40">
+                        {row.getVisibleCells().map((cell, cellIndex) => (
+                          <td
+                            key={cell.id}
+                            data-tag={"cell-" + cellIndex}
+                            style={{ width: cell.column.getSize() }}
+                            className="px-3 py-2 align-middle whitespace-normal break-words"
+                          >
+                            {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                          </td>
+                        ))}
+                      </tr>
+                    ))
+                  )}
+                </tbody>
+              </table>
+            </div>
+
+            {/* Footer / pagination */}
+            <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
+              <div className="flex items-center gap-2">
+                <Button
+                  variant="secondary"
+                  onClick={() => (table.setPageIndex(0), setPage(1))}
+                  disabled={!table.getCanPreviousPage()}
+                >
+                  <ChevronsLeft className="h-4 w-4" />
+                </Button>
+                <Button
+                  variant="secondary"
+                  onClick={() => (table.previousPage(), setPage((p) => Math.max(1, p - 1)))}
+                  disabled={!table.getCanPreviousPage()}
+                >
+                  <ChevronLeft className="h-4 w-4" />
+                </Button>
+                <Button
+                  variant="secondary"
+                  onClick={() => (table.nextPage(), setPage((p) => p + 1))}
+                  disabled={!table.getCanNextPage()}
+                >
+                  <ChevronRight className="h-4 w-4" />
+                </Button>
+                <Button
+                  variant="secondary"
+                  onClick={() => {
+                    const last = Math.max(0, table.getPageCount() - 1);
+                    table.setPageIndex(last);
+                    setPage(last + 1);
+                  }}
+                  disabled={!table.getCanNextPage()}
+                >
+                  <ChevronsRight className="h-4 w-4" />
+                </Button>
+              </div>
+
+              <div className="flex items-center gap-3 text-sm text-muted-foreground">
+                {isFetching && <span data-tag="isUpdating">{t("users.updating")}</span>}
+                <span>
+                  {t("users.page")} <strong>{table.getState().pagination.pageIndex + 1}</strong> {t("users.of")}{" "}
+                  {table.getPageCount() || 1}
+                </span>
+                <label className="flex items-center gap-2">
+                  {t("users.rowsPerPage")}
+                  <select
+                    className="rounded-md border bg-background px-2 py-1 dark:bg-slate-900 dark:text-slate-100 dark:placeholder-slate-500
+                      dark:border-slate-700"
+                    value={table.getState().pagination.pageSize}
+                    onChange={(e) => {
+                      const ps = Number(e.target.value);
+                      table.setPageSize(ps);
+                      setPageSize(ps);
+                    }}
+                  >
+                    {[10, 20, 30, 50, 100].map((ps) => (
+                      <option key={ps} value={ps}>
+                        {ps}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+              </div>
+            </div>
+          </>
+        )}
       </CardBody>
     </Card>
   );
