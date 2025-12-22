@@ -33,14 +33,14 @@ export default function ResetPassword() {
       <h1 className="text-2xl font-semibold mb-4">{t("resetPassword.resetPassword")}</h1>
       {sent ? <p data-tag="resetPassInfoMsg">{t("resetPassword.checkEmailForResetLink")}</p> : (
         <form onSubmit={onSubmit} className="space-y-3">
-          <FormInput placeholder="Email" id="email" type="email" className="
+          <FormInput placeholder="Email" id="email" className="
             w-full rounded-xl px-3 py-2
             bg-white text-slate-900 placeholder-slate-500
             border border-slate-300
             focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500
             dark:bg-slate-900 dark:text-slate-100 dark:placeholder-slate-500
             dark:border-slate-700
-          " value={email} onChange={e=>setEmail(e.target.value)} maxLength={40} required />
+          " value={email} onChange={e=>setEmail(e.target.value)} maxLength={40} />
           {error && <p className="text-red-600 text-sm whitespace-pre-line">{error}</p>}
           <div id="recoverEmail" className="mt-2 flex justify-center">
             <Button className="border-red-600 text-red-700 hover:bg-red-50" type="submit">{t("resetPassword.sendResetEmail")}</Button>

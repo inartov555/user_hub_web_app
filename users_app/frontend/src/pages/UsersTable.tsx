@@ -454,6 +454,7 @@ export default function UsersTable(props: Props) {
             placeholder={t("users.search")}
             value={globalFilter}
             onChange={(e) => setGlobalFilter(e.target.value)}
+            maxLength={40}
             className="
               w-full rounded-xl px-3 py-2
               bg-white text-slate-900 placeholder-slate-500

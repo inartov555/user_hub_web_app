@@ -36,7 +36,7 @@ export default function Signup() {
             focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500
             dark:bg-slate-900 dark:text-slate-100 dark:placeholder-slate-500
             dark:border-slate-700
-          " id="email" type="email" value={email} onChange={e=>setEmail(e.target.value)} maxLength={40} required />
+          " id="email" value={email} onChange={e=>setEmail(e.target.value)} maxLength={40} />
         <FormInput placeholder={t("signup.username")} className="
             w-full rounded-xl px-3 py-2
             bg-white text-slate-900 placeholder-slate-500
@@ -44,7 +44,7 @@ export default function Signup() {
             focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500
             dark:bg-slate-900 dark:text-slate-100 dark:placeholder-slate-500
             dark:border-slate-700
-          " id="username" type="username" value={username} onChange={e=>setUsername(e.target.value)} maxLength={40} required />
+          " id="username" type="username" value={username} onChange={e=>setUsername(e.target.value)} maxLength={40} />
         <FormInput placeholder={t("signup.password")} className="
             w-full rounded-xl px-3 py-2
             bg-white text-slate-900 placeholder-slate-500
@@ -52,7 +52,7 @@ export default function Signup() {
             focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500
             dark:bg-slate-900 dark:text-slate-100 dark:placeholder-slate-500
             dark:border-slate-700
-          " id="password" type="password" value={password} onChange={e=>setPassword(e.target.value)} maxLength={40} required />
+          " id="password" type="password" value={password} onChange={e=>setPassword(e.target.value)} maxLength={40} />
         {error && <p className="text-red-600 text-sm whitespace-pre-line">{t("signup.signupFailed", { message: error })}</p>}
         <div id="create" className="mt-2 flex justify-center">
           <Button className="border-red-600 text-red-700 hover:bg-red-50" type="submit">{t("auth.createAccount")}</Button>

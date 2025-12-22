@@ -56,7 +56,6 @@ export default function ChangePassword() {
           id="password"
           value={password}
           onChange={e => setPassword(e.target.value)}
-          required
           maxLength={40}
           className="
             w-full rounded-xl px-3 py-2
@@ -73,7 +72,6 @@ export default function ChangePassword() {
           id="confirmPassword"
           value={confirmPassword}
           onChange={e => setConfirmPassword(e.target.value)}
-          required
           maxLength={40}
           className="
             w-full rounded-xl px-3 py-2

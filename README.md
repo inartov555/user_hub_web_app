@@ -13,7 +13,7 @@ This is a test website + automation framework
 
 ## 📦 Releases
 
-- 🟨 **v1.2** is in progress, it is not released yet
+- 🟨 **[v1.2](https://NOT_YET_READY.com)** is in progress, it is not released yet
 - 🟩 **[v1.1](https://github.com/inartov555/user_hub_web_app/tree/stable_v1.1_dec_19_2025)** released on Dec-19-2025
 - 🟩 **[v1](https://github.com/inartov555/user_hub_web_app/tree/stable_v1_nov_05_2025)**   released on Nov-05-2025
 
@@ -26,6 +26,7 @@ This is a test website + automation framework
 - 🛠️ **Fixed in `users_app`:** Users table -> Column visibility popup was not dismissed when clicked outside the overlay
 - 🛠️ **Fixed in `users_app`:** Users table -> Column visibility popup settings were not preserved after page reload
 - 🛠️ **Fixed in `users_app`:** Empty space was displayed after deselecting all columns while being logged in as a regular user
+- 🛠️ **Fixed in `users_app`:** Profile Edit -> save an avatar > 1 MB -> 413 Request Entity Too Large
 - ✨ **Improved in `users_app`:** Unifying button style accross the website
 - ✨ **Improved in `users_app`:** Prettifying table headers (mouse over/up/down styles)
 - 🆕 **Added in `users_app`:** Cookie consent overlay
