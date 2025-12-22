@@ -16,9 +16,14 @@
 
 ## 📦 Releases
 
-- **v1.2** is in progress, it is not released yet
-- **v1.1** released on Dec-19-2025
-- **v1**   released on Nov-05-2025
+- 🟨 **v1.2** is in progress, it is not released yet
+- 🟩 **v1.1** released on Dec-19-2025
+- 🟩 **v1**   released on Nov-05-2025
+
+---
+
+## 📌 Changelog v1.2 vs. v1.1
+- NONE
 
 ---
 
