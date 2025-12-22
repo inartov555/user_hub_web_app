@@ -24,6 +24,7 @@ This is a test website + automation framework
 - 🛠️ **Fixed in `users_app`:** Infinite requesting /api/v1/auth/users/me/ after 1st login with clear localStorage
 - 🛠️ **Fixed in `users_app`:** Users table header was shown over the Column visibility popup
 - 🛠️ **Fixed in `users_app`:** Users table -> Column visibility popup was not dismissed when clicked outside the overlay
+- 🛠️ **Fixed in `users_app`:** Users table -> Column visibility popup settings were not preserved after page reload
 - ✨ **Improved in `users_app`:** Unifying button style accross the website
 - ✨ **Improved in `users_app`:** Prettifying table headers (mouse over/up/down styles)
 - 🆕 **Added in `users_app`:** Cookie consent overlay

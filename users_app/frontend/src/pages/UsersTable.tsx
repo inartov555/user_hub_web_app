@@ -60,6 +60,36 @@ const withStableTiebreaker = (ordering: string[], idField = "id") => {
  */
 const alwaysMulti = () => true;
 
+const readColumnVisibility = (): VisibilityState | null => {
+  try {
+    if (typeof window === "undefined") return null;
+    const raw = localStorage.getItem("usersTable.columnVisibility");
+    if (!raw) return null;
+    const parsed = JSON.parse(raw);
+    if (!parsed || typeof parsed !== "object") return null;
+    return parsed as VisibilityState;
+  } catch {
+    return null;
+  }
+};
+const defaultColumnVisibility = (isAdmin: boolean): VisibilityState =>
+  isAdmin ? {} : { select: false, change_password_action: false };
+const normalizeColumnVisibility = (vis: VisibilityState, isAdmin: boolean): VisibilityState => {
+  const next: VisibilityState = { ...vis };
+
+  if (isAdmin) {
+    // these are admin-only and are marked enableHiding: false -> never allow hidden state
+    delete next.select;
+    delete next.change_password_action;
+  } else {
+    // non-admin must never see these even if localStorage was polluted
+    next.select = false;
+    next.change_password_action = false;
+  }
+
+  return next;
+};
+
 type Props = {
   data?: User[]; // unused with server pagination
   onResetPasswords?: (userIds: number[]) => Promise<void> | void;
@@ -83,9 +113,14 @@ export default function UsersTable(props: Props) {
     }
   });
 
-  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>(() =>
-    isAdmin ? {} : { select: false, change_password_action: false }
-  );
+  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>(() => {
+    const stored = readColumnVisibility();
+    return normalizeColumnVisibility(stored ?? defaultColumnVisibility(isAdmin), isAdmin);
+  });
+  useEffect(() => {
+    const stored = readColumnVisibility();
+    setColumnVisibility(normalizeColumnVisibility(stored ?? defaultColumnVisibility(isAdmin), isAdmin));
+  }, [isAdmin]);
   const [showColumns, setShowColumns] = useState(false);
   const [rowSelection, setRowSelection] = React.useState<RowSelectionState>({});
 
@@ -388,6 +423,15 @@ export default function UsersTable(props: Props) {
     table.setPageIndex(0);
     setPage(1);
   }, [pageSize, globalFilter, ordering]); // ordering includes the tiebreaker
+
+  useEffect(() => {
+    try {
+      const normalized = normalizeColumnVisibility(columnVisibility, isAdmin);
+      localStorage.setItem("usersTable.columnVisibility", JSON.stringify(normalized));
+    } catch {
+      // ignore
+    }
+  }, [columnVisibility, isAdmin]);
 
   /** Navigate to confirmation page instead of deleting immediately */
   const handleGoToDeleteConfirm = () => {
