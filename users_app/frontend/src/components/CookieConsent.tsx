@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import Button from "./button";
 
 const STORAGE_KEY = "cookie_consent_accepted_v1";
@@ -65,14 +66,13 @@ export default function CookieConsent() {
           <div className="text-sm">
             <div className="font-semibold text-slate-900 dark:text-slate-100">The website uses cookies</div>
             <p className="mt-1 text-slate-700 dark:text-slate-200">
-              To improve your experience and to understand how the app is used, the website uses cookies. By
-              clicking “Accept”, you agree to website's use of cookies.
+              To improve your experience and to understand how the app is used, the website uses cookies. By clicking “Accept”, you agree to website's use of cookies.
             </p>
           </div>
 
           <div className="flex items-center justify-end gap-2">
             <Button id="cookieAccept" onClick={onAccept}>
-              Accept
+              {t("users.loading")}
             </Button>
           </div>
         </div>

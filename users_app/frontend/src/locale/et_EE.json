@@ -7,7 +7,10 @@
   },
   "app": {
     "title": "Kasutajate rakendus",
-    "hiUser": "Tere, {{username}}"
+    "hiUser": "Tere, {{username}}",
+    "cookieConsent.accept": "Nõustun",
+    "cookieConsent.title": "Veebisait kasutab küpsiseid",
+    "cookieConsent.body": "Teie kasutuskogemuse parandamiseks ja selleks, et mõista, kuidas rakendust kasutatakse, kasutab veebisait küpsiseid. Klõpsates 'Nõustun', annate nõusoleku veebisaidi küpsiste kasutamiseks."
   },
   "nav": {
     "users": "Kasutajad",
