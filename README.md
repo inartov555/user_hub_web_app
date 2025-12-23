@@ -2,10 +2,10 @@
 
 This is a test website + automation framework
 
-- ✅ **Users App - Stable version #1.1:** [stable_v1.1_dec_19_2025/users_app](https://github.com/inartov555/user_hub_web_app/tree/stable_v1.1_dec_19_2025/users_app)
-- ℹ️ More info related to the Users App: [tree/stable_v1.1_dec_19_2025/users_app/README.md](https://github.com/inartov555/user_hub_web_app/tree/stable_v1.1_dec_19_2025/users_app/README.md)
-- ✅ **UI tests - Stable version #1.1:** [stable_v1.1_dec_19_2025/ui_tests_pw](https://github.com/inartov555/user_hub_web_app/tree/stable_v1.1_dec_19_2025/ui_tests_pw)
-- ℹ️ More info related to the UI tests: [stable_v1.1_dec_19_2025/ui_tests_pw/README.md](https://github.com/inartov555/user_hub_web_app/tree/stable_v1.1_dec_19_2025/ui_tests_pw/README.md)
+- ✅ **Users App - Stable version #1.1:** [stable_v1.2_dec_23_2025/users_app](https://github.com/inartov555/user_hub_web_app/tree/stable_v1.2_dec_23_2025/users_app)
+- ℹ️ More info related to the Users App: [stable_v1.2_dec_23_2025/users_app/README.md](https://github.com/inartov555/user_hub_web_app/tree/stable_v1.2_dec_23_2025/users_app/README.md)
+- ✅ **UI tests - Stable version #1.1:** [stable_v1.2_dec_23_2025/ui_tests_pw](https://github.com/inartov555/user_hub_web_app/tree/stable_v1.2_dec_23_2025/ui_tests_pw)
+- ℹ️ More info related to the UI tests: [stable_v1.2_dec_23_2025/ui_tests_pw/README.md](https://github.com/inartov555/user_hub_web_app/tree/stable_v1.2_dec_23_2025/ui_tests_pw/README.md)
 - ℹ️ `users_app` module created on Oct-10-2025
 - ℹ️ `ui_tests_pw` module created on Nov-05-2025
 
@@ -13,7 +13,7 @@ This is a test website + automation framework
 
 ## 📦 Releases
 
-- 🟨 **[v1.2](https://NOT_YET_READY.com)** is in progress, it is not released yet
+- 🟩 **[v1.2](https://github.com/inartov555/user_hub_web_app/tree/stable_v1.2_dec_23_2025)** released on Dec-23-2025
 - 🟩 **[v1.1](https://github.com/inartov555/user_hub_web_app/tree/stable_v1.1_dec_19_2025)** released on Dec-19-2025
 - 🟩 **[v1](https://github.com/inartov555/user_hub_web_app/tree/stable_v1_nov_05_2025)**   released on Nov-05-2025
 
