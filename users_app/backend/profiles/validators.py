@@ -45,15 +45,12 @@ def validate_and_normalize_username(
     """
     if value is None or not str(value).strip():
         raise ValidationError("This field may not be blank.")
-
     normalized = str(value).strip()
-
     if exists:
         user_model = get_user_model()
-        qs = user_model.objects.filter(username__iexact=normalized)
+        filered_user = user_model.objects.filter(username__iexact=normalized)
         if exclude_user_id is not None:
-            qs = qs.exclude(id=exclude_user_id)
-        if qs.exists():
+            filered_user = filered_user.exclude(id=exclude_user_id)
+        if filered_user.exists():
             raise ValidationError("A user with this username already exists.")
-
     return normalized
