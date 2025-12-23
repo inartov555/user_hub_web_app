@@ -161,3 +161,6 @@ msgstr "Asegúrate de que este campo no tenga más de 40 caracteres."
 
 msgid "Ensure this field has at least 5 characters."
 msgstr "Asegúrate de que este campo tenga al menos 5 caracteres."
+
+msgid "A user with this username already exists."
+msgstr "Ya existe un usuario con este nombre de usuario."

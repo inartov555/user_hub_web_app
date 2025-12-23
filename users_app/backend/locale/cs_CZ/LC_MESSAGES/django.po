@@ -161,3 +161,6 @@ msgstr "Ujistěte se, že toto pole nemá více než 40 znaků."
 
 msgid "Ensure this field has at least 5 characters."
 msgstr "Ujistěte se, že toto pole má alespoň 5 znaků."
+
+msgid "A user with this username already exists."
+msgstr "Uživatel s tímto uživatelským jménem již existuje."

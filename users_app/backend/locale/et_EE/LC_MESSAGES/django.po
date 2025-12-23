@@ -161,3 +161,6 @@ msgstr "Veendu, et selles väljas poleks rohkem kui 40 märki."
 
 msgid "Ensure this field has at least 5 characters."
 msgstr "Veendu, et selles väljas oleks vähemalt 5 märki."
+
+msgid "A user with this username already exists."
+msgstr "Selle kasutajanimega kasutaja on juba olemas."

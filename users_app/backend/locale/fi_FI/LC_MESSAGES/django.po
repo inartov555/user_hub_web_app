@@ -161,3 +161,6 @@ msgstr "Varmista, että tässä kentässä ei ole enempää kuin 40 merkkiä."
 
 msgid "Ensure this field has at least 5 characters."
 msgstr "Varmista, että tässä kentässä on vähintään 5 merkkiä."
+
+msgid "A user with this username already exists."
+msgstr "Tällä käyttäjätunnuksella on jo olemassa käyttäjä."
