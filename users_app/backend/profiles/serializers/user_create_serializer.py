@@ -6,7 +6,7 @@ It defines which user fields are exposed through your API and which of them are 
 from djoser.serializers import UserCreateSerializer as BaseUserCreateSerializer
 from rest_framework import serializers
 
-from profiles.validators import validate_and_normalize_email
+from profiles.validators import validate_and_normalize_email, validate_and_normalize_username
 
 
 class UserCreateSerializer(BaseUserCreateSerializer):
@@ -33,3 +33,9 @@ class UserCreateSerializer(BaseUserCreateSerializer):
         Email validation
         """
         return validate_and_normalize_email(value=value, exists=True)
+
+    def validate_username(self, value: str) -> str:
+        """
+        Username validation
+        """
+        return validate_and_normalize_username(value=value, exists=True)

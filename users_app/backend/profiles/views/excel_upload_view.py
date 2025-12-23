@@ -16,6 +16,7 @@ from rest_framework.response import Response
 
 from ..models.profile import Profile
 from ..serializers.user_serializer import UserSerializer
+from ..validators import validate_and_normalize_email
 
 
 class ExcelUploadView(APIView):
@@ -35,7 +36,7 @@ class ExcelUploadView(APIView):
             return [permissions.AllowAny()]
         return [permissions.IsAuthenticated(), permissions.IsAdminUser()]
 
-    def get(self, request, *args, **kwargs):  # pylint: disable=unused-argument
+    def get(self, request, *args, **kwargs) -> HttpResponse:  # pylint: disable=unused-argument
         """
         Ingest an Excel file and create or update users (and their profiles).
 
@@ -51,7 +52,7 @@ class ExcelUploadView(APIView):
 
         # Build rows with safe profile access
         rows = []
-        # If your Profile is not reachable as user.profile, adjust accessor below.
+        # If Profile is not reachable as user.profile, adjust accessor below.
         # e.g. if Profile has FK user=OneToOne(User), Django default accessor is user.profile
         for u in qs:
             try:
@@ -92,7 +93,7 @@ class ExcelUploadView(APIView):
         resp["Content-Disposition"] = f'attachment; filename="{filename}"'
         return resp
 
-    def post(self, request, *args, **kwargs):  # pylint: disable=unused-argument
+    def post(self, request, *args, **kwargs) -> Response:  # pylint: disable=unused-argument
         """
         Ingest an Excel file and create or update users (and their profiles).
 
@@ -110,39 +111,37 @@ class ExcelUploadView(APIView):
             # Some fields are located in the User model, and the rest of them in the Profile model
             user_updated = False
             profile_changed = False
-            email = str(row.get("email", "")).strip().lower()
-            if not email:
+            username_cell = row.get("username")
+            email_cell = str(row.get("email", "")).strip().lower()
+            first_name_cell = row.get("first_name")
+            last_name_cell = row.get("last_name")
+            is_active_cell = row.get("is_active")
+            if not email_cell or not username_cell:
                 continue
-            user, was_created = user_model.objects.get_or_create(email=email, defaults={
-                "username": row.get("username") or email.split('@', maxsplit=1)[0],
+            validate_and_normalize_email(email_cell, exists=False)
+            user, was_created = user_model.objects.get_or_create(email=email_cell, defaults={
+                "username": row.get("username") or email_cell.split('@', maxsplit=1)[0],
                 "first_name": row.get("first_name", ""),
                 "last_name": row.get("last_name", ""),
+                "is_active": row.get("is_active", True),
             })
             if not was_created:
-                username_cell = row.get("username")
-                first_name_cell = row.get("first_name")
-                last_name_cell = row.get("last_name")
-                is_active_cell = row.get("is_active")
-                for f in ["first_name", "last_name"]:
-                    val = row.get(f)
+                for _name in ["first_name", "last_name"]:
+                    val = row.get(_name)
                     if pd.notna(val):
-                        setattr(user, f, val)
+                        setattr(user, _name, val)
                 if pd.notna(username_cell) and user.username != username_cell:
-                    user.username = username
+                    user.username = username_cell
                     user_updated = True
-                    print(f"\n\n username_cell = '{username_cell}' \n\n")
                 if pd.notna(first_name_cell) and user.first_name != first_name_cell:
-                    user.first_name = first_name
+                    user.first_name = first_name_cell
                     user_updated = True
-                    print(f"\n\n first_name_cell = '{first_name_cell}' \n\n")
                 if pd.notna(last_name_cell) and user.last_name != last_name_cell:
-                    user.last_name = last_name
+                    user.last_name = last_name_cell
                     user_updated = True
-                    print(f"\n\n last_name_cell = '{last_name_cell}' \n\n")
                 if pd.notna(is_active_cell) and user.is_active != is_active_cell:
-                    user.is_active = bool(row.get("is_active"))
+                    user.is_active = bool(is_active_cell)
                     user_updated = True
-                    print(f"\n\n is_active_cell = '{is_active_cell}' \n\n")
                 user.save()
             else:
                 created += 1
@@ -150,7 +149,6 @@ class ExcelUploadView(APIView):
             bio_cell = row.get("bio")
             if pd.notna(bio_cell):
                 if profile.bio != bio_cell:
-                    print(f"\n\n bio_cell = '{bio_cell}' \n profile.bio = '{profile.bio}' \n\n")
                     profile.bio = bio_cell
                     profile_changed = True
             if profile_changed:

@@ -32,6 +32,7 @@ This is a test website + automation framework
 - ✨ **Improved in `users_app`:** Unifying button style accross the website
 - ✨ **Improved in `users_app`:** Prettifying table headers (mouse over/up/down styles)
 - ✨ **Improved in `users_app`:** Localization for some error cases
+- ✨ **Improved in `users_app`:** Excel import -> email validation when importing
 - 🆕 **Added in `users_app`:** Cookie consent overlay
 - 🆕 **Added in `ui_tests_pw`:** Handling the cookie consent overlay in automation tests
 
