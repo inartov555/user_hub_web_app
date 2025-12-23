@@ -27,6 +27,8 @@ This is a test website + automation framework
 - 🛠️ **Fixed in `users_app`:** Users table -> Column visibility popup settings were not preserved after page reload
 - 🛠️ **Fixed in `users_app`:** Empty space was displayed after deselecting all columns while being logged in as a regular user
 - 🛠️ **Fixed in `users_app`:** Profile Edit -> save an avatar > 1 MB -> 413 Request Entity Too Large (increased size to 10 MB)
+- 🛠️ **Fixed in `users_app`:** Excel import -> incorrect counting of updated users (non-changed users were counted as updated ones when importing)
+- 🛠️ **Fixed in `users_app`:** Excel import -> there was no validation for user uniqueness when importing
 - ✨ **Improved in `users_app`:** Unifying button style accross the website
 - ✨ **Improved in `users_app`:** Prettifying table headers (mouse over/up/down styles)
 - ✨ **Improved in `users_app`:** Localization for some error cases

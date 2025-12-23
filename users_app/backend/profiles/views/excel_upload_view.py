@@ -43,9 +43,6 @@ class ExcelUploadView(APIView):
             Response
         """
         user_model = get_user_model()
-
-        # Pull users + profiles efficiently
-        # If Profile is OneToOne, select_related is fine; if not, use prefetch.
         qs = (
             user_model.objects.all()
             .select_related()  # will bring one-to-one (like profile) if declared on User
@@ -58,7 +55,6 @@ class ExcelUploadView(APIView):
         # e.g. if Profile has FK user=OneToOne(User), Django default accessor is user.profile
         for u in qs:
             try:
-                # If Profile may not exist yet, this won't crash thanks to try/except
                 p: Profile = u.profile  # adjust if related_name is different
                 bio = getattr(p, "bio", "")
             except Profile.DoesNotExist:
@@ -80,7 +76,7 @@ class ExcelUploadView(APIView):
             "email", "username", "first_name", "last_name", "bio"
         ])
         buf = BytesIO()
-        # Use openpyxl (installed alongside pandas in many stacks). You can swap to xlsxwriter if you prefer.
+        # Use openpyxl (installed alongside pandas in many stacks)
         with pd.ExcelWriter(buf, engine="openpyxl") as writer:
             df.to_excel(writer, index=False, sheet_name="users")
 
@@ -111,6 +107,9 @@ class ExcelUploadView(APIView):
         df = pd.read_excel(file)
         created, updated, processed = 0, 0, 0
         for _, row in df.iterrows():
+            # Some fields are located in the User model, and the rest of them in the Profile model
+            user_updated = False
+            profile_changed = False
             email = str(row.get("email", "")).strip().lower()
             if not email:
                 continue
@@ -120,21 +119,43 @@ class ExcelUploadView(APIView):
                 "last_name": row.get("last_name", ""),
             })
             if not was_created:
+                username_cell = row.get("username")
+                first_name_cell = row.get("first_name")
+                last_name_cell = row.get("last_name")
+                is_active_cell = row.get("is_active")
                 for f in ["first_name", "last_name"]:
                     val = row.get(f)
                     if pd.notna(val):
                         setattr(user, f, val)
-                if pd.notna(row.get("username")):
-                    user.username = row.get("username")
-                if pd.notna(row.get("is_active")):
+                if pd.notna(username_cell) and user.username != username_cell:
+                    user.username = username
+                    user_updated = True
+                    print(f"\n\n username_cell = '{username_cell}' \n\n")
+                if pd.notna(first_name_cell) and user.first_name != first_name_cell:
+                    user.first_name = first_name
+                    user_updated = True
+                    print(f"\n\n first_name_cell = '{first_name_cell}' \n\n")
+                if pd.notna(last_name_cell) and user.last_name != last_name_cell:
+                    user.last_name = last_name
+                    user_updated = True
+                    print(f"\n\n last_name_cell = '{last_name_cell}' \n\n")
+                if pd.notna(is_active_cell) and user.is_active != is_active_cell:
                     user.is_active = bool(row.get("is_active"))
+                    user_updated = True
+                    print(f"\n\n is_active_cell = '{is_active_cell}' \n\n")
                 user.save()
-                updated += 1
             else:
                 created += 1
             profile, _ = Profile.objects.get_or_create(user=user)
-            if pd.notna(row.get("bio")):
-                profile.bio = row.get("bio")
+            bio_cell = row.get("bio")
+            if pd.notna(bio_cell):
+                if profile.bio != bio_cell:
+                    print(f"\n\n bio_cell = '{bio_cell}' \n profile.bio = '{profile.bio}' \n\n")
+                    profile.bio = bio_cell
+                    profile_changed = True
+            if profile_changed:
                 profile.save()
+            if not was_created and (user_updated or profile_changed):
+                updated += 1
         processed = created + updated
         return Response({"created": created, "updated": updated, "processed": processed})
