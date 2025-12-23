@@ -93,7 +93,7 @@ class ExcelUploadView(APIView):
         resp["Content-Disposition"] = f'attachment; filename="{filename}"'
         return resp
 
-    def post(self, request, *args, **kwargs) -> Response:  # pylint: disable=unused-argument
+    def post(self, request, *args, **kwargs) -> Response:  # pylint: disable=unused-argument,too-many-locals,too-many-branches
         """
         Ingest an Excel file and create or update users (and their profiles).
 
