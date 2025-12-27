@@ -9,7 +9,6 @@ import re
 
 import pytest
 from playwright.sync_api import Page, Browser, expect
-from utils.django_localization import init_django
 
 from config import (
     frontend_url,
@@ -27,6 +26,7 @@ from utils.auth import ensure_regular_user
 from utils.file_utils import FileUtils
 from utils.app_config import AppConfig
 from utils.logger.logger import Logger
+from utils.django_localization import init_django
 from pages.login_page import LoginPage
 from pages.users_table_page import UsersTablePage
 from pages.excel_import_page import ExcelImportPage

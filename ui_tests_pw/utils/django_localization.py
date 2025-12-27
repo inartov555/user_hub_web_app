@@ -40,7 +40,7 @@ def get_backend_languages() -> List[Tuple[str, str]]:
     Return the list of configured Django languages.
 
     Returns:
-        A list of (code, human-readable name) tuples matching settings.LANGUAGES.
+        list, a list of (code, human-readable name) tuples matching settings.LANGUAGES.
     """
     init_django()
     return list(getattr(settings, "LANGUAGES", []))
@@ -48,7 +48,8 @@ def get_backend_languages() -> List[Tuple[str, str]]:
 
 def get_backend_locale_paths() -> List[str]:
     """
-    Return configured Django LOCALE_PATHS as string paths.
+    Returns:
+        list, configured Django LOCALE_PATHS as string paths.
     """
     init_django()
     return [str(p) for p in getattr(settings, "LOCALE_PATHS", [])]
@@ -56,7 +57,8 @@ def get_backend_locale_paths() -> List[str]:
 
 def get_backend_default_language_code() -> str:
     """
-    Return Django's default language code.
+    Returns:
+        str, Django's default language code.
     """
     init_django()
     return getattr(settings, "LANGUAGE_CODE", "en-us")

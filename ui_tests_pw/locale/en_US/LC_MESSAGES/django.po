@@ -13,5 +13,5 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 # Localizations used by automation tests
-msgid "Unknown error."
-msgstr "Unknown error."
+msgid "Change password"
+msgstr "Change password"

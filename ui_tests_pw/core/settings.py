@@ -28,7 +28,7 @@ LANGUAGES = [
     ("pl-pl", translation.gettext_lazy("Polish")),
     ("es-es", translation.gettext_lazy("Spanish")),
 ]
-LOCALE_PATHS = [BASE_DIR / "locale"]
+LOCALE_PATHS = [BASE_DIR.parent / "locale"]
 
 INSTALLED_APPS: list[str] = []
 MIDDLEWARE: list[str] = [

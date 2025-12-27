@@ -41,7 +41,8 @@ def test_admin_can_open_change_password_for_user(ui_theme_param: Theme,
     page.wait_for_url(re.compile(r".*/users/\d+/change-password$"))
     # Verifying localization
     actual = change_password_page.page_title.text_content()
-    expected = translation.gettext_lazy("Change password.")
+    with translation.override(ui_locale_param.lower()):
+        expected = translation.gettext("Change password")
     assert actual == expected, f"Wrong page title localization; actual '{actual}'; expected '{expected}'"
 
 
