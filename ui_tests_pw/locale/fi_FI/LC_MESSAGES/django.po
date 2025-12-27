@@ -1,0 +1,17 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: ui_tests_pw\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-12-27 12:42+0000\n"
+"PO-Revision-Date: 2025-12-27 12:42+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: fi_FI\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+# Localizations used by automation tests
+msgid "Unknown error."
+msgstr "Tuntematon virhe."

@@ -7,6 +7,7 @@ import re
 
 import pytest
 from playwright.sync_api import Page, expect
+from django.utils import translation
 
 from pages.users_table_page import UsersTablePage
 from utils.theme import Theme, set_theme
