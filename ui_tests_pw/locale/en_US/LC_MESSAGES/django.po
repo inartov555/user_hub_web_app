@@ -21,3 +21,6 @@ msgstr "Excel Import"
 
 msgid "Log in"
 msgstr "Log in"
+
+msgid "Edit profile"
+msgstr "Edit profile"

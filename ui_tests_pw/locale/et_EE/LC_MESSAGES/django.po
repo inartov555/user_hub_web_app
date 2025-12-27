@@ -21,3 +21,6 @@ msgstr "Exceli import"
 
 msgid "Log in"
 msgstr "Logi sisse"
+
+msgid "Edit profile"
+msgstr "Muuda profiili"

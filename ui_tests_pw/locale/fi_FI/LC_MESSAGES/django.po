@@ -21,3 +21,6 @@ msgstr "Tuonti Excelistä"
 
 msgid "Log in"
 msgstr "Kirjaudu sisään"
+
+msgid "Edit profile"
+msgstr "Muokkaa profiilia"

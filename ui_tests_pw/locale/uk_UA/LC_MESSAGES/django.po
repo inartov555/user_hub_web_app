@@ -21,3 +21,6 @@ msgstr "Імпорт з Excel"
 
 msgid "Log in"
 msgstr "Увійти"
+
+msgid "Edit profile"
+msgstr "Редагувати профіль"

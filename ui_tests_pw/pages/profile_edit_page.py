@@ -17,6 +17,7 @@ class ProfileEditPage(BasePage):
     def __init__(self, page: Page):
         super().__init__(page)
 
+        self.page_title = self.page.locator("h2")
         self.first_name = self.page.locator("#firstName")
         self.last_name = self.page.locator("#lastName")
         self.bio = self.page.locator("#bio")
