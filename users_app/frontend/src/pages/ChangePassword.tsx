@@ -56,7 +56,6 @@ export default function ChangePassword() {
           id="password"
           value={password}
           onChange={e => setPassword(e.target.value)}
-          maxLength={40}
         />
         <FormInput
           placeholder={t("changePassword.confirmPassword")}
@@ -64,7 +63,6 @@ export default function ChangePassword() {
           id="confirmPassword"
           value={confirmPassword}
           onChange={e => setConfirmPassword(e.target.value)}
-          maxLength={40}
         />
         {error && <p className="text-red-600 text-sm whitespace-pre-line">{error}</p>}
         <div className="flex gap-2">

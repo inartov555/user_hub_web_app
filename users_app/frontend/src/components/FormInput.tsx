@@ -13,6 +13,7 @@ const FormInput = React.forwardRef<HTMLInputElement, FormInputProps>(
         {label ? <span className="text-sm text-slate-700">{label}</span> : null}
         <input
           ref={ref}
+          maxLength={40}
           className={`w-full rounded-md border px-3 py-2 outline-none focus:ring
                       w-full rounded-xl px-3 py-2
                       bg-white text-slate-900 placeholder-slate-500

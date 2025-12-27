@@ -120,14 +120,12 @@ export default function ProfileEdit() {
             id="firstName"
             placeholder={t("users.firstName")}
             value={first_name}
-            maxLength={40}
             onChange={(e) => setFirstName(e.target.value)}
           />
           <FormInput
             id="lastName"
             placeholder={t("users.lastName")}
             value={last_name}
-            maxLength={40}
             onChange={(e) => setLastName(e.target.value)}
           />
         </div>

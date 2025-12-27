@@ -30,11 +30,11 @@ export default function Signup() {
       <h1 className="text-2xl font-semibold mb-4">Sign up</h1>
       <form onSubmit={onSubmit} className="space-y-3">
         <FormInput placeholder={t("signup.email")}
-                   id="email" value={email} onChange={e=>setEmail(e.target.value)} maxLength={40} />
+                   id="email" value={email} onChange={e=>setEmail(e.target.value)} />
         <FormInput placeholder={t("signup.username")}
-                   id="username" type="username" value={username} onChange={e=>setUsername(e.target.value)} maxLength={40} />
+                   id="username" type="username" value={username} onChange={e=>setUsername(e.target.value)} />
         <FormInput placeholder={t("signup.password")}
-                   id="password" type="password" value={password} onChange={e=>setPassword(e.target.value)} maxLength={40} />
+                   id="password" type="password" value={password} onChange={e=>setPassword(e.target.value)} />
         {error && <p className="text-red-600 text-sm whitespace-pre-line">{t("signup.signupFailed", { message: error })}</p>}
         <div id="create" className="mt-2 flex justify-center">
           <Button type="submit">{t("auth.createAccount")}</Button>

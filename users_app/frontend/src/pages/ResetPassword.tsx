@@ -33,7 +33,7 @@ export default function ResetPassword() {
       <h1 className="text-2xl font-semibold mb-4">{t("resetPassword.resetPassword")}</h1>
       {sent ? <p data-tag="resetPassInfoMsg">{t("resetPassword.checkEmailForResetLink")}</p> : (
         <form onSubmit={onSubmit} className="space-y-3">
-          <FormInput placeholder="Email" id="email" value={email} onChange={e=>setEmail(e.target.value)} maxLength={40} />
+          <FormInput placeholder="Email" id="email" value={email} onChange={e=>setEmail(e.target.value)} />
           {error && <p className="text-red-600 text-sm whitespace-pre-line">{error}</p>}
           <div id="recoverEmail" className="mt-2 flex justify-center">
             <Button type="submit">{t("resetPassword.sendResetEmail")}</Button>
