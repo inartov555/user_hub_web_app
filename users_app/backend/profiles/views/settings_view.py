@@ -18,5 +18,4 @@ class SettingsView(generics.RetrieveUpdateAPIView):
     serializer_class = SettingsSerializer
 
     def get_object(self):
-        # Dummy object for Serializer; we compute values in to_representation
         return {}

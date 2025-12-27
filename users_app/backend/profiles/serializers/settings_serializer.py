@@ -17,9 +17,9 @@ class SettingsSerializer(serializers.Serializer):
     """
     Settings serializer
     """
-    JWT_RENEW_AT_SECONDS = serializers.IntegerField(min_value=0)
-    IDLE_TIMEOUT_SECONDS = serializers.IntegerField(min_value=1)
-    ACCESS_TOKEN_LIFETIME = serializers.IntegerField(min_value=1)
+    JWT_RENEW_AT_SECONDS = serializers.IntegerField(min_value=0, max_value=9999)
+    IDLE_TIMEOUT_SECONDS = serializers.IntegerField(min_value=60, max_value=9999)
+    ACCESS_TOKEN_LIFETIME = serializers.IntegerField(min_value=60, max_value=9999)
     ROTATE_REFRESH_TOKENS = serializers.BooleanField()
 
     def to_representation(self, instance):
