@@ -9,6 +9,7 @@ import re
 
 import pytest
 from playwright.sync_api import Page, Browser, expect
+from utils.django_localization import init_django
 
 from config import (
     frontend_url,
@@ -69,6 +70,16 @@ def get_api_utils(request) -> UsersAppApi:
                 port = temp_port
     api_utils = UsersAppApi(protocol, host, port)
     return api_utils
+
+
+@pytest.fixture(scope="session", autouse=True)
+def _init_django_for_tests() -> None:
+    """
+    Initializing Django
+    """
+    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "core.settings")
+    os.environ.setdefault("COPIED_PROJECT_PATH", "")
+    init_django()
 
 
 @pytest.fixture(autouse=True, scope="session")
