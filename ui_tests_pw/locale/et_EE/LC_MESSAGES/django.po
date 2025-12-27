@@ -24,3 +24,6 @@ msgstr "Logi sisse"
 
 msgid "Edit profile"
 msgstr "Muuda profiili"
+
+msgid "Profile"
+msgstr "Profiil"

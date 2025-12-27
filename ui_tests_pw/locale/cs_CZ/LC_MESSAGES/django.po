@@ -24,3 +24,6 @@ msgstr "Přihlásit se"
 
 msgid "Edit profile"
 msgstr "Upravit profil"
+
+msgid "Profile"
+msgstr "Profil"

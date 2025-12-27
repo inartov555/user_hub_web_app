@@ -24,3 +24,6 @@ msgstr "Iniciar sesión"
 
 msgid "Edit profile"
 msgstr "Editar perfil"
+
+msgid "Profile"
+msgstr "Perfil"

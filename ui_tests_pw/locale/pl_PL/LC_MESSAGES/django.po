@@ -24,3 +24,6 @@ msgstr "Zaloguj się"
 
 msgid "Edit profile"
 msgstr "Edytuj profil"
+
+msgid "Profile"
+msgstr "Profil"
