@@ -114,19 +114,12 @@ export default function ProfileView() {
 
         {error && <ErrorAlert message={error} />}
         <div className="flex gap-2">
-          <Button id="editProfile">
-            <Link to="/profile-edit" className="btn inline-flex">
-              {t("profileView.editProfile")}
-            </Link>
+          <Button id="editProfile" onClick={() => navigate("/profile-edit")}>
+            {t("profileView.editProfile")}
           </Button>
           {profile?.user?.id != null && (
-            <Button id="changePassword">
-              <Link
-                to={`/users/${profile.user.id}/change-password`}
-                className="btn inline-flex"
-              >
-                {t("profileView.changePassword")}
-              </Link>
+            <Button id="changePassword" onClick={() => navigate(`/users/${profile.user.id}/change-password`)}>
+              {t("profileView.changePassword")}
             </Button>
           )}
         </div>

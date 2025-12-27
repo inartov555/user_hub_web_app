@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { api } from "../lib/axios";
 import FormInput from "../components/FormInput";
@@ -84,11 +84,11 @@ export default function ChangePassword() {
         />
         {error && <p className="text-red-600 text-sm whitespace-pre-line">{error}</p>}
         <div className="flex gap-2">
-          <Button type="submit" disabled={saving}>
+          <Button id="changePassword" type="submit" disabled={saving}>
             {saving ? t("changePassword.saving") : t("profileEdit.save")}
           </Button>
-          <Button>
-            <Link to="/users">{t("userDeleteConfirm.cancel")}</Link>
+          <Button id="cancel" onClick={() => navigate("/users")}>
+            {t("userDeleteConfirm.cancel")}
           </Button>
         </div>
       </form>

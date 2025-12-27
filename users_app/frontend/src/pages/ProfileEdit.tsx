@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link, useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { api } from "../lib/axios";
 import { useAuthStore } from "../auth/store";
@@ -178,8 +178,8 @@ export default function ProfileEdit() {
 
         <div className="flex gap-2">
           <Button id="save" onClick={onSave}>{t("profileEdit.save")}</Button>
-          <Button id="cancel">
-            <Link to="/profile-view">{t("userDeleteConfirm.cancel")}</Link>
+          <Button id="cancel" onClick={() => navigate("/profile-view")}>
+            {t("userDeleteConfirm.cancel")}
           </Button>
         </div>
       </div>
