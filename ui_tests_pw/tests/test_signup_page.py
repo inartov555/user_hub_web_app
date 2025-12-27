@@ -7,6 +7,7 @@ import re
 
 import pytest
 from playwright.sync_api import Page, expect
+from django.utils import translation
 
 from utils.theme import Theme, set_theme
 from utils.localization import set_locale
@@ -28,6 +29,11 @@ def test_signup_page_renders(page: Page,
     expect(signup_page.username).to_be_visible()
     expect(signup_page.email).to_be_visible()
     expect(signup_page.password).to_be_visible()
+    # Verifying localization
+    actual = settings_page.page_title.text_content()
+    with translation.override(ui_locale_param.lower()):
+        expected = translation.gettext("App Settings")
+    assert actual == expected, f"Wrong page title localization; actual '{actual}'; expected '{expected}'"
 
 
 @pytest.mark.parametrize("suffix", ["one", "two", "three"])

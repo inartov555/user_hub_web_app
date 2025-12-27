@@ -33,3 +33,6 @@ msgstr "Restablecer contraseña"
 
 msgid "App Settings"
 msgstr "Configuración de la aplicación"
+
+msgid "App Settings"
+msgstr "App Settings"

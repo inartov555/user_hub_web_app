@@ -33,3 +33,6 @@ msgstr "Reset password"
 
 msgid "App Settings"
 msgstr "App Settings"
+
+msgid "Sign up"
+msgstr "Sign up"

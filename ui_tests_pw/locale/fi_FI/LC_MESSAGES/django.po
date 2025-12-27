@@ -33,3 +33,6 @@ msgstr "Nollaa salasana"
 
 msgid "App Settings"
 msgstr "Sovelluksen asetukset"
+
+msgid "App Settings"
+msgstr "App Settings"
