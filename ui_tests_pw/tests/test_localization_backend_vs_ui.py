@@ -14,7 +14,7 @@ from utils.theme import set_theme
 from pages.login_page import LoginPage
 
 
-@pytest.mark.skipif(True, reason="To Fix: ModuleNotFoundError: No module named 'core'")
+# @pytest.mark.skipif(True, reason="To Fix: ModuleNotFoundError: No module named 'core'")
 def test_locale_dropdown_matches_backend_languages(login_page: LoginPage,  # pylint: disable=unused-argument
                                                    page: Page) -> None:
     """
