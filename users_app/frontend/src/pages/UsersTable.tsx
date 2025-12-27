@@ -450,18 +450,11 @@ export default function UsersTable(props: Props) {
         <div className="flex w-full items-center justify-end gap-2">
           <Input
             id="search"
+            className={`max-w-[360px]`}
             placeholder={t("users.search")}
             value={globalFilter}
             onChange={(e) => setGlobalFilter(e.target.value)}
             maxLength={40}
-            className="
-              w-full rounded-xl px-3 py-2
-              bg-white text-slate-900 placeholder-slate-500
-              border border-slate-300
-              focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500
-              dark:bg-slate-900 dark:text-slate-100 dark:placeholder-slate-500
-              dark:border-slate-700 max-w-[360px]
-            "
           />
 
           {/* Columns menu */}
@@ -472,7 +465,7 @@ export default function UsersTable(props: Props) {
             {showColumns && (
               <div
                 className="absolute right-0 z-50 mt-2 w-56 rounded-md border bg-white p-2 shadow-lg dark:bg-slate-900 dark:text-slate-100 dark:placeholder-slate-500
-                  dark:border-slate-700"
+                           dark:border-slate-700"
                 role="menu"
               >
                 <div className="px-2 py-1 text-xs font-medium text-slate-500">{t("users.toggleColumns")}</div>
@@ -594,7 +587,7 @@ export default function UsersTable(props: Props) {
                           <td
                             key={cell.id}
                             data-tag={"cell-" + cellIndex}
-                            style={{ width: cell.column.getSize() }}
+                            style={{ width: cell.column.getSize(), overflowWrap: "anywhere", wordBreak: "break-word", whiteSpace: "pre-wrap" }}
                             className="px-3 py-2 align-middle whitespace-normal break-words"
                           >
                             {flexRender(cell.column.columnDef.cell, cell.getContext())}

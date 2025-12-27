@@ -137,7 +137,7 @@ function Field({ label, value, id }: { label: string; value: string; id: string;
     <div>
       <Label>{label}</Label>
       <div id={id}
-           style={{overflowWrap: "anywhere", wordBreak: "break-word", whiteSpace: "pre-wrap"}}
+           style={{ overflowWrap: "anywhere", wordBreak: "break-word", whiteSpace: "pre-wrap" }}
            className="
              w-full rounded-xl px-3 py-2
              bg-white text-slate-900 placeholder-slate-500

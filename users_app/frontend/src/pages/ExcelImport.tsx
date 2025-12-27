@@ -89,8 +89,8 @@ export default function ExcelImportPanel() {
     <div className="max-w-xl mx-auto p-4 rounded-2xl shadow bg-white border dark:bg-slate-800 dark:text-slate-100 dark:border-slate-700">
       <h2 className="text-xl font-semibold mb-3">{t("excelImport.title")}</h2>
       <p>
-        <br/>
         <span>{t("excelImport.fileUploadMessage")} </span>
+        <br/>
         <span>{t("signup.email")}, </span>
         <span>{t("signup.username")}, </span>
         <span>{t("users.firstName")}, </span>
