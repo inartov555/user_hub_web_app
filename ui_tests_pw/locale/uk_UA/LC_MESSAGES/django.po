@@ -18,3 +18,6 @@ msgstr "Змінити пароль"
 
 msgid "Excel Import"
 msgstr "Імпорт з Excel"
+
+msgid "Log in"
+msgstr "Увійти"

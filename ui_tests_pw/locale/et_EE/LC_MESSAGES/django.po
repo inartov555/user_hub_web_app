@@ -18,3 +18,6 @@ msgstr "Muuda parooli"
 
 msgid "Excel Import"
 msgstr "Exceli import"
+
+msgid "Log in"
+msgstr "Logi sisse"

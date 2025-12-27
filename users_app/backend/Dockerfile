@@ -36,9 +36,6 @@ RUN sh -c 'set -eu; \
     msgfmt -c -o /dev/null "$PO"; \
   done'
 
-# Compile all message catalogs (manage.py is at /app/manage.py)
-# RUN python manage.py compilemessages -v 2
-
 # Compile all PO files to MO without importing Django
 # This finds every 'django.po' in any app/locale/<lang>/LC_MESSAGES/
 RUN sh -c 'set -eu; \

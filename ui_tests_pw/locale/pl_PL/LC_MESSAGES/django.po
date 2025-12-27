@@ -18,3 +18,6 @@ msgstr "Zmień hasło"
 
 msgid "Excel Import"
 msgstr "Import z Excela"
+
+msgid "Log in"
+msgstr "Zaloguj się"

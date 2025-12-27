@@ -18,3 +18,6 @@ msgstr "Vaihda salasana"
 
 msgid "Excel Import"
 msgstr "Tuonti Excelistä"
+
+msgid "Log in"
+msgstr "Kirjaudu sisään"
