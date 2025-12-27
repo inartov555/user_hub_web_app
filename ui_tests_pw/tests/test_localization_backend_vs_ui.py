@@ -6,7 +6,7 @@ from __future__ import annotations
 from typing import Set
 
 from playwright.sync_api import Page
-import pytest
+# import pytest
 
 from utils.django_localization import get_backend_languages
 from utils.localization import get_visible_locales
