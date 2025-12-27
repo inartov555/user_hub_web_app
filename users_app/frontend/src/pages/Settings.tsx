@@ -132,12 +132,12 @@ export default function Settings() {
             }}
             min={1}
           />
+          {error && <p className="text-red-600 text-sm whitespace-pre-line">{ error }</p>}
           <div className="flex gap-3 items-center">
             <Button disabled={saving} type="submit">
               {saving ? t("appSettings.saving") : t("profileEdit.save")}
             </Button>
             {saved && <span className="text-green-600 text-sm">{t("appSettings.saved")}</span>}
-            {error && <span className="text-red-600 text-sm">{error}</span>}
           </div>
         </form>
       </div>
