@@ -27,3 +27,6 @@ msgstr "Muokkaa profiilia"
 
 msgid "Profile"
 msgstr "Profiili"
+
+msgid "Reset password"
+msgstr "Nollaa salasana"

@@ -27,3 +27,6 @@ msgstr "Редагувати профіль"
 
 msgid "Profile"
 msgstr "Профіль"
+
+msgid "Reset password"
+msgstr "Скинути пароль"

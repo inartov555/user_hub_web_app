@@ -27,3 +27,6 @@ msgstr "Edytuj profil"
 
 msgid "Profile"
 msgstr "Profil"
+
+msgid "Reset password"
+msgstr "Zresetuj hasło"

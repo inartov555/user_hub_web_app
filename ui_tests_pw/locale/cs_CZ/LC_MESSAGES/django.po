@@ -27,3 +27,6 @@ msgstr "Upravit profil"
 
 msgid "Profile"
 msgstr "Profil"
+
+msgid "Reset password"
+msgstr "Obnovit heslo"

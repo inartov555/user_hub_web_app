@@ -27,3 +27,6 @@ msgstr "Muuda profiili"
 
 msgid "Profile"
 msgstr "Profiil"
+
+msgid "Reset password"
+msgstr "Lähtesta parool"
