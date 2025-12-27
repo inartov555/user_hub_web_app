@@ -91,10 +91,10 @@ export default function ExcelImportPanel() {
       <p>
         <span>{t("excelImport.fileUploadMessage")} </span>
         <br/>
-        <span>{t("signup.email")}, </span>
-        <span>{t("signup.username")}, </span>
-        <span>{t("users.firstName")}, </span>
-        <span>{t("users.lastName")}, </span>
+        <span>{t("signup.email")} | </span>
+        <span>{t("signup.username")} | </span>
+        <span>{t("users.firstName")} | </span>
+        <span>{t("users.lastName")} | </span>
         <span>{t("excelImport.bio")}</span>.
       </p>
 
