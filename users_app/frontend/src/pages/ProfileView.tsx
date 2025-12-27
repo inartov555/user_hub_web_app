@@ -136,14 +136,16 @@ function Field({ label, value, id }: { label: string; value: string; id: string;
   return (
     <div>
       <Label>{label}</Label>
-      <div id={id} className="
-            w-full rounded-xl px-3 py-2
-            bg-white text-slate-900 placeholder-slate-500
-            border border-slate-300
-            focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500
-            dark:bg-slate-900 dark:text-slate-100 dark:placeholder-slate-500
-            dark:border-slate-700
-          ">
+      <div id={id}
+           className="
+             w-full rounded-xl px-3 py-2
+             bg-white text-slate-900 placeholder-slate-500
+             border border-slate-300
+             focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500
+             dark:bg-slate-900 dark:text-slate-100 dark:placeholder-slate-500
+             dark:border-slate-700
+           "
+      >
         {value}
       </div>
     </div>
