@@ -10,6 +10,7 @@ from playwright.sync_api import Page, expect
 from django.utils import translation
 
 from pages.users_table_page import UsersTablePage
+from pages.change_password_page import ChangePasswordPage
 from utils.theme import Theme, set_theme
 from utils.localization import set_locale
 from config import DEFAULT_REGULAR_USERNAME
@@ -34,8 +35,14 @@ def test_admin_can_open_change_password_for_user(ui_theme_param: Theme,
     admin_users_page.search_and_wait_for_results(DEFAULT_REGULAR_USERNAME)
     # Click first change-password button
     admin_users_page.change_password_btn.first.click()
+    change_password_page = ChangePasswordPage(page)
     # Verify that the change-password URI is opened
     expect(page).to_have_url(re.compile(r".*/users/\d+/change-password$"))
+    page.wait_for_url(re.compile(r".*/users/\d+/change-password$"))
+    # Verifying localization
+    actual = change_password_page.page_title.text_content()
+    expected = translation.gettext_lazy("Change password.")
+    assert actual == expected, f"Wrong page title localization; actual '{actual}'; expected '{expected}'"
 
 
 @pytest.mark.regular_user
