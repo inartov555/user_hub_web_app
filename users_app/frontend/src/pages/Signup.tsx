@@ -27,7 +27,7 @@ export default function Signup() {
 
   return (
     <div className="max-w-xl mx-auto p-4 rounded-2xl shadow bg-white border dark:bg-slate-800 dark:text-slate-100 dark:border-slate-700">
-      <h1 className="text-2xl font-semibold mb-4">Sign up</h1>
+      <h1 className="text-2xl font-semibold mb-4">{t("signup.title")}</h1>
       <form onSubmit={onSubmit} className="space-y-3">
         <FormInput placeholder={t("signup.email")}
                    id="email" value={email} onChange={e=>setEmail(e.target.value)} />

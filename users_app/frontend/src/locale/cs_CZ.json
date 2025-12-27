@@ -30,6 +30,7 @@
     "loginFailed": "Přihlášení se nezdařilo: {{message}}"
   },
   "signup": {
+    "title": "Zaregistrovat se",
     "email": "E-mail",
     "username": "Uživatelské jméno",
     "password": "Heslo",

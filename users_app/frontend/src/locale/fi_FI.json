@@ -30,6 +30,7 @@
     "loginFailed": "Kirjautuminen epäonnistui: {{message}}"
   },
   "signup": {
+    "title": "Rekisteröidy",
     "email": "Sähköposti",
     "username": "Käyttäjänimi",
     "password": "Salasana",

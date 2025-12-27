@@ -30,6 +30,7 @@
     "loginFailed": "Error al iniciar sesión: {{message}}"
   },
   "signup": {
+    "title": "Registrarse",
     "email": "Correo electrónico",
     "username": "Nombre de usuario",
     "password": "Contraseña",

@@ -30,6 +30,7 @@
     "loginFailed": "Login failed: {{message}}"
   },
   "signup": {
+    "title": "Sign up",
     "email": "Email",
     "username": "Username",
     "password": "Password",

@@ -30,6 +30,7 @@
     "loginFailed": "Sisselogimine ebaõnnestus: {{message}}"
   },
   "signup": {
+    "title": "Registreeru",
     "email": "E-post",
     "username": "Kasutajanimi",
     "password": "Parool",

@@ -30,6 +30,7 @@
     "loginFailed": "Logowanie nie powiodło się: {{message}}"
   },
   "signup": {
+    "title": "Zarejestruj się",
     "email": "E-mail",
     "username": "Nazwa użytkownika",
     "password": "Hasło",
