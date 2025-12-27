@@ -69,7 +69,7 @@ export default function Login() {
           " id="password" type="password" value={password} onChange={e=>setPassword(e.target.value)} maxLength={40} />
         {error && <p className="text-red-600 text-sm whitespace-pre-line">{t("auth.loginFailed", { message: error })}</p>}
         <div className="mt-2 flex justify-center">
-          <Button className="border-red-600 text-red-700 hover:bg-red-50" type="submit">{t("auth.signin")}</Button>
+          <Button type="submit">{t("auth.signin")}</Button>
         </div>
       </form>
       <div className="mt-4 text-sm flex justify-between">

@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useQueryClient } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
+import { Trash2 } from "lucide-react";
 import { api } from "../lib/axios";
 import { Card, CardHeader, CardBody } from "../components/card";
 import Button from "../components/button";
@@ -121,17 +122,17 @@ export default function UserDeleteConfirm() {
 
         {error && <div className="text-sm text-red-600 whitespace-pre-line">{error}</div>}
 
-        <div className="flex items-center gap-2">
+        <div className="flex gap-2">
           <Button
             id="confirmDelete"
-            className="border-red-600 text-red-700 hover:bg-red-50"
             onClick={handleConfirm}
             disabled={loading}
             title={t("userDeleteConfirm.deleteUsers")}
           >
+            <Trash2 className="h-4 w-4" />
             {loading ? t("userDeleteConfirm.deleting") : `${t("users.deleteSelected")} ${users.length}`}
           </Button>
-          <Button id="cancel" className="border-red-600 text-red-700 hover:bg-red-50" onClick={handleCancel} disabled={loading}>
+          <Button id="cancel" onClick={handleCancel} disabled={loading}>
             {t("userDeleteConfirm.cancel")}
           </Button>
         </div>

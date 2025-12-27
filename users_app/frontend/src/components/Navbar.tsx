@@ -127,7 +127,6 @@ export default function Navbar() {
               </div>
               <Button
                 id="logout"
-                className="border-red-600 text-red-700 hover:bg-red-50"
                 onClick={() => {
                   logout();
                   navigate("/login");

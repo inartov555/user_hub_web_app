@@ -344,7 +344,6 @@ export default function UsersTable(props: Props) {
         <div className={headerButtonClassName(undefined)}>
           <Button
             data-tag="change-password"
-            className="border-red-600 text-red-700 hover:bg-red-50"
             onClick={() => navigate(`/users/${row.original.id}/change-password`)}
             title={t("users.changePassword")}
           >
@@ -447,8 +446,8 @@ export default function UsersTable(props: Props) {
   return (
     <Card className="w-full mx-auto dark:bg-slate-800 dark:text-slate-100 dark:border-slate-700">
       <CardHeader title={t("users.people")} />
-      <CardBody className="flex justify-end mt-2">
-        <div className="flex items-center gap-2">
+      <CardBody className="justify-end mt-2">
+        <div className="flex w-full items-center justify-end gap-2">
           <Input
             id="search"
             placeholder={t("users.search")}
@@ -461,13 +460,13 @@ export default function UsersTable(props: Props) {
               border border-slate-300
               focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500
               dark:bg-slate-900 dark:text-slate-100 dark:placeholder-slate-500
-              dark:border-slate-700
+              dark:border-slate-700 max-w-[360px]
             "
           />
 
           {/* Columns menu */}
           <div className="relative" ref={columnsMenuContainerRef}>
-            <Button id="columnVisibility" className="border-red-600 text-red-700 hover:bg-red-50" onClick={() => setShowColumns((v) => !v)}>
+            <Button id="columnVisibility" onClick={() => setShowColumns((v) => !v)}>
               <Columns className="h-4 w-4" /> {t("users.columns")}
             </Button>
             {showColumns && (
@@ -506,7 +505,6 @@ export default function UsersTable(props: Props) {
           {/* Clear sort */}
           <Button
             id="clearSort"
-            className="border-red-600 text-red-700 hover:bg-red-50"
             onClick={() => {
               setSorting([]);
               setPage(1);
@@ -521,7 +519,6 @@ export default function UsersTable(props: Props) {
           {isAdmin && (
             <Button
               id="deleteUsers"
-              className="border-red-600 text-red-700 hover:bg-red-50"
               onClick={handleGoToDeleteConfirm}
               disabled={table.getSelectedRowModel().rows.length === 0}
               title={t("users.deleteSelectedTitle")}
@@ -614,28 +611,24 @@ export default function UsersTable(props: Props) {
             <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
               <div className="flex items-center gap-2">
                 <Button
-                  className="border-red-600 text-red-700 hover:bg-red-50"
                   onClick={() => (table.setPageIndex(0), setPage(1))}
                   disabled={!table.getCanPreviousPage()}
                 >
                   <ChevronsLeft className="h-4 w-4" />
                 </Button>
                 <Button
-                  className="border-red-600 text-red-700 hover:bg-red-50"
                   onClick={() => (table.previousPage(), setPage((p) => Math.max(1, p - 1)))}
                   disabled={!table.getCanPreviousPage()}
                 >
                   <ChevronLeft className="h-4 w-4" />
                 </Button>
                 <Button
-                  className="border-red-600 text-red-700 hover:bg-red-50"
                   onClick={() => (table.nextPage(), setPage((p) => p + 1))}
                   disabled={!table.getCanNextPage()}
                 >
                   <ChevronRight className="h-4 w-4" />
                 </Button>
                 <Button
-                  className="border-red-600 text-red-700 hover:bg-red-50"
                   onClick={() => {
                     const last = Math.max(0, table.getPageCount() - 1);
                     table.setPageIndex(last);

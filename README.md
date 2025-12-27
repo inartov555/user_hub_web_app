@@ -11,9 +11,16 @@ This is a test website + automation framework
 
 ## 📦 Releases
 
+- 🟨 **v1.3** is in progress, it is not released yet
 - 🟩 **[v1.2](https://github.com/inartov555/user_hub_web_app/tree/stable_v1.2_dec_23_2025)** released on Dec-23-2025
 - 🟩 **[v1.1](https://github.com/inartov555/user_hub_web_app/tree/stable_v1.1_dec_19_2025)** released on Dec-19-2025
 - 🟩 **[v1](https://github.com/inartov555/user_hub_web_app/tree/stable_v1_nov_05_2025)**   released on Nov-05-2025
+
+---
+
+## 📌 Changelog v1.3 vs. v1.2
+
+- ✨ **Improved in `users_app`:** Polishing UI accross the website
 
 ---
 

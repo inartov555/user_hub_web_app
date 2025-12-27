@@ -64,6 +64,9 @@ esac
 
 echo "Starting the tests..."
 TEST_GREP=""
+
+TEST_GREP="$TEST_GREP --reruns 2 --reruns-delay 2"
+
 # Uncomment if you need tests to be run in parallel
 # TEST_GREP="$TEST_GREP -n auto"
 

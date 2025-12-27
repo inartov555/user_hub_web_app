@@ -71,7 +71,7 @@ export default function CookieConsent() {
             </p>
           </div>
 
-          <div className="flex items-center justify-end gap-2">
+          <div>
             <Button id="cookieAccept" onClick={onAccept}>
               {t("app.cookieConsentAccept")}
             </Button>

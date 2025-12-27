@@ -43,7 +43,7 @@ export default function ResetPassword() {
           " value={email} onChange={e=>setEmail(e.target.value)} maxLength={40} />
           {error && <p className="text-red-600 text-sm whitespace-pre-line">{error}</p>}
           <div id="recoverEmail" className="mt-2 flex justify-center">
-            <Button className="border-red-600 text-red-700 hover:bg-red-50" type="submit">{t("resetPassword.sendResetEmail")}</Button>
+            <Button type="submit">{t("resetPassword.sendResetEmail")}</Button>
           </div>
         </form>
       )}

@@ -106,13 +106,13 @@ export default function ExcelImportPanel() {
 
         {error && <p className="text-red-600 text-sm whitespace-pre-line">{error}</p>}
         <div className="flex gap-2">
-          <Button id="importTemplate" className="border-red-600 text-red-700 hover:bg-red-50" type="submit">
+          <Button id="importTemplate" type="submit">
             {submitting ? t("excelImport.uploading") : t("excelImport.startImport")}
           </Button>
 
           {/* If you rely on cookie auth, a plain anchor works: href={`${api.defaults.baseURL}/import-excel/`} */}
           {accessToken ? (
-            <Button id="downloadTemplate" className="border-red-600 text-red-700 hover:bg-red-50" onClick={downloadTemplate}>
+            <Button id="downloadTemplate" onClick={downloadTemplate}>
               {t("excelImport.downloadTemplate")}
             </Button>
           ) : (
