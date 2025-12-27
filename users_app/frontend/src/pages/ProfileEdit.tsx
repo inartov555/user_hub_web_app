@@ -122,14 +122,6 @@ export default function ProfileEdit() {
             value={first_name}
             maxLength={40}
             onChange={(e) => setFirstName(e.target.value)}
-            className="
-              w-full rounded-xl px-3 py-2
-              bg-white text-slate-900 placeholder-slate-500
-              border border-slate-300
-              focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500
-              dark:bg-slate-900 dark:text-slate-100 dark:placeholder-slate-500
-              dark:border-slate-700
-            "
           />
           <FormInput
             id="lastName"
@@ -137,14 +129,6 @@ export default function ProfileEdit() {
             value={last_name}
             maxLength={40}
             onChange={(e) => setLastName(e.target.value)}
-            className="
-              w-full rounded-xl px-3 py-2
-              bg-white text-slate-900 placeholder-slate-500
-              border border-slate-300
-              focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500
-              dark:bg-slate-900 dark:text-slate-100 dark:placeholder-slate-500
-              dark:border-slate-700
-            "
           />
         </div>
 

@@ -21,6 +21,7 @@ This is a test website + automation framework
 ## 📌 Changelog v1.3 vs. v1.2
 
 - ✨ **Improved in `users_app`:** Polishing UI accross the website
+- ✨ **Improved in `users_app`:** Behavior for the Cancel button in View/Edit Profile, Change Password pages (small area in the middle of the button was clickable)
 
 ---
 
