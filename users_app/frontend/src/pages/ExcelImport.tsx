@@ -88,14 +88,22 @@ export default function ExcelImportPanel() {
   return (
     <div className="max-w-xl mx-auto p-4 rounded-2xl shadow bg-white border dark:bg-slate-800 dark:text-slate-100 dark:border-slate-700">
       <h2 className="text-xl font-semibold mb-3">{t("excelImport.title")}</h2>
-      <p className="text-sm text-gray-600 mb-4">{t("excelImport.fileUploadMessage")} <code>{t("signup.email")}</code>, <code>{t("signup.username")}</code>, <code>{t("users.firstName")}</code>, <code>{t("users.lastName")}</code>, <code>{t("excelImport.bio")}</code>.</p>
+      <p>
+        <br/>
+        <span>{t("excelImport.fileUploadMessage")} </span>
+        <span>{t("signup.email")}, </span>
+        <span>{t("signup.username")}, </span>
+        <span>{t("users.firstName")}, </span>
+        <span>{t("users.lastName")}, </span>
+        <span>{t("excelImport.bio")}</span>.
+      </p>
 
       <form onSubmit={onSubmit} className="space-y-3">
         <Input
           key={inputKey}
           ref={inputRef}
           type="file"
-          name="file"
+          id="excelImportFile"
           accept=".xlsx,.xls,.csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel,text/csv"
           onChange={onFileChange}
           onClick={(e) => { (e.currentTarget as HTMLInputElement).value = ""; }} // allow re-select same file

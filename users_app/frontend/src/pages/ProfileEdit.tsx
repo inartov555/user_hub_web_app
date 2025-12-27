@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 import { api } from "../lib/axios";
 import { useAuthStore } from "../auth/store";
 import FormInput from "../components/FormInput";
+import { Input } from "../components/input";
 import Button from "../components/button";
 import { extractApiError } from "../lib/httpErrors";
 import ErrorAlert from "../components/ErrorAlert";
@@ -149,7 +150,8 @@ export default function ProfileEdit() {
         </label>
 
         <div>
-          <input
+          <Input
+            id="profileAvatarImage"
             type="file"
             accept="image/*"
             onChange={(e) => setAvatarFile(e.target.files?.[0] || null)}
