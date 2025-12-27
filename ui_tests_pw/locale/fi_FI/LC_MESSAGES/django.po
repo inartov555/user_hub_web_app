@@ -30,3 +30,6 @@ msgstr "Profiili"
 
 msgid "Reset password"
 msgstr "Nollaa salasana"
+
+msgid "App Settings"
+msgstr "Sovelluksen asetukset"

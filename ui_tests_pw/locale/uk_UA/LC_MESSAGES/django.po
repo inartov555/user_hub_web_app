@@ -30,3 +30,6 @@ msgstr "Профіль"
 
 msgid "Reset password"
 msgstr "Скинути пароль"
+
+msgid "App Settings"
+msgstr "Налаштування застосунку"

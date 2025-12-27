@@ -30,3 +30,6 @@ msgstr "Profiil"
 
 msgid "Reset password"
 msgstr "Lähtesta parool"
+
+msgid "App Settings"
+msgstr "Rakenduse sätted"
