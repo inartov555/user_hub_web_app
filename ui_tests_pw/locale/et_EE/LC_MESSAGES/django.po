@@ -34,5 +34,5 @@ msgstr "Lähtesta parool"
 msgid "App Settings"
 msgstr "Rakenduse sätted"
 
-msgid "App Settings"
-msgstr "App Settings"
+msgid "Sign up"
+msgstr "Registreeru"

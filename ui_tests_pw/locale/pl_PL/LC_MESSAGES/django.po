@@ -34,5 +34,5 @@ msgstr "Zresetuj hasło"
 msgid "App Settings"
 msgstr "Ustawienia aplikacji"
 
-msgid "App Settings"
-msgstr "App Settings"
+msgid "Sign up"
+msgstr "Zarejestruj się"

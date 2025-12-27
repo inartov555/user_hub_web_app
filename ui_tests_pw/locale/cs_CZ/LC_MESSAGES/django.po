@@ -34,5 +34,5 @@ msgstr "Obnovit heslo"
 msgid "App Settings"
 msgstr "Nastavení aplikace"
 
-msgid "App Settings"
-msgstr "App Settings"
+msgid "Sign up"
+msgstr "Zaregistrovat se"
