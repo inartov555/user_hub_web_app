@@ -66,6 +66,7 @@ export default function CookieConsent() {
         <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
           <div className="text-sm">
             <div data-tag="cookieConsentTitle" className="font-semibold text-slate-900 dark:text-slate-100">{t("app.cookieConsentTitle")}</div>
+            <hr className="my-3 mx-0 h-px border-0 bg-slate-300 dark:bg-slate-600" />
             <p data-tag="cookieConsentBody" className="mt-1 text-slate-700 dark:text-slate-200">
               {t("app.cookieConsentBody")}
             </p>
