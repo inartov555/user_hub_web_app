@@ -22,7 +22,7 @@ def test_locale_dropdown_matches_backend_languages(login_page: LoginPage,  # pyl
     """
     set_theme(page, "light")
     visible_draft = set(get_visible_locales(page))
-    visible = set([_ui_locale.lower() for _ui_locale in visible_draft])
+    visible: Set[str] = {_ui_locale.lower() for _ui_locale in visible_draft}
 
     backend_langs = get_backend_languages()
     backend_codes: Set[str] = {code.replace("_", "-").lower() for code, _name in backend_langs}
