@@ -18,6 +18,7 @@ class ExcelImportPage(BasePage):
     def __init__(self, page: Page):
         super().__init__(page)
 
+        self.page_title = self.page.locator("h2")
         self.import_template_btn = self.page.locator("#importTemplate")
         self.download_template_btn = self.page.locator("#downloadTemplate")
         self.input_file = self.page.locator("input[type='file']")

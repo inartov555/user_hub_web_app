@@ -36,8 +36,6 @@ RUN sh -c 'set -eu; \
     msgfmt -c -o /dev/null "$PO"; \
   done'
 
-# Compile all message catalogs
-
 # Compile all PO files to MO without importing Django
 # This finds every 'django.po' in any tests/locale/<lang>/LC_MESSAGES/
 RUN sh -c 'set -eu; \

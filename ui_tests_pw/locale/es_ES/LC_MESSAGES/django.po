@@ -15,3 +15,6 @@ msgstr ""
 # Localizations used by automation tests
 msgid "Change password"
 msgstr "Cambiar contraseña"
+
+msgid "Excel Import"
+msgstr "Importación desde Excel"
