@@ -16,20 +16,18 @@ USE_TZ = True
 TIME_ZONE = "UTC"
 
 USE_I18N = True
-
-LANGUAGE_CODE = "en-US"
+LANGUAGE_CODE = "en-us"
 LANGUAGES = [
-    ("en-US", "English"),
-    ("uk-UA", "Ukrainian"),
+    ("en-us", translation.gettext_lazy("English (US)")),
+    ("uk-ua", translation.gettext_lazy("Ukrainian")),
+    ("et-ee", translation.gettext_lazy("Estonian")),
+    ("fi-fi", translation.gettext_lazy("Finnish")),
+    ("cs-cz", translation.gettext_lazy("Czech")),
+    ("pl-pl", translation.gettext_lazy("Polish")),
+    ("es-es", translation.gettext_lazy("Spanish")),
 ]
-
-LOCALE_PATHS = [str(BASE_DIR / "locale")]
+LOCALE_PATHS = [BASE_DIR / "locale"]
 
 INSTALLED_APPS: list[str] = []
-MIDDLEWARE: list[str] = []
-
-DATABASES = {
-    "default": {"ENGINE": "django.db.backends.sqlite3", "NAME": ":memory:"}
-}
-
-DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+MIDDLEWARE: list[str] = [
+    "django.middleware.locale.LocaleMiddleware",]
