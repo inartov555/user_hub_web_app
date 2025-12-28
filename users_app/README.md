@@ -20,9 +20,9 @@
 **Prereqs:** Docker & docker‑compose.
 
 ```
-# You can just run ./run_web_site.sh, it defaults to ./run_web_site.sh false false false
+# You can just run ./run_website.sh, it defaults to ./run_website.sh false false false
 
-./run_web_site.sh param1 param2 param3
+./run_website.sh param1 param2 param3
 
 # Input parameters:
 #
@@ -83,17 +83,21 @@ Open:
 ```
 user_hub_web_app/
 |-- backend/                 # Django project
-|   |-- core/                # settings, urls, wsgi
+|   `-- core/                # settings, urls, wsgi
+|   `-- locale/              # /cs_CZ/LC_MESSAGES/django.po, etc.
 |   `-- profiles/            # users, profiles, settings, import, stats
+|   `-- tests/               # unit tests
 |-- frontend/                # React + Vite SPA
+|   `-- public/              # logo.svg
 |   `-- src/
-|       |-- auth/            # auth store + guards
-|       |-- lib/             # axios, query client, i18n, settings API
-|       |-- components/      # UI primitives
-|       |-- pages/           # screens (Login, Users, Profile, Settings, Import, Stats, ...)
+|       `-- auth/            # auth store + guards
+|       `-- components/      # UI primitives
+|       `-- lib/             # axios, query client, i18n, settings API
 |       `-- locale/          # translations
+|       `-- pages/           # screens (Login, Users, Profile, Settings, Import, Stats, ...)
+|       `-- __tests__/       # unit tests
 |-- docker-compose.yml
-|-- run_web_site.sh
+|-- run_website.sh
 `-- test_data/import_template_EXAMPLE.xlsx
 ```
 
