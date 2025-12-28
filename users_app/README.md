@@ -7,7 +7,7 @@
 ## 💡 Users App
 
 - A production‑grade example app with a **Django REST Framework (DRF)** backend and a **React + Vite + TypeScript** SPA frontend.
-- It demonstrates modern JWT auth with runtime tuning, profile management, Excel import, online-user stats, i18n, and a clean Tailwind UI.
+- It demonstrates JWT auth with runtime tuning, profile management, Excel import, online-user stats, i18n, and a clean Tailwind UI.
 - Created on Oct-10-2025
 
 ---
@@ -154,10 +154,10 @@ user_hub_web_app/
 ## ▶️ DEMOs
 
 ### ▶️ Light Theme. Main pages
-![Light Theme. Main pages](https://github.com/inartov555/user_hub_web_app/blob/main/users_app/DEMO/Light%20Theme.%20Main%20pages.gif)
+![Light Theme. Main pages](https://github.com/inartov555/user_hub_web_app/blob/stable_v1.2_dec_23_2025/users_app/DEMO/Light%20Theme.%20Main%20pages.gif)
 
 ### ▶️ Dark Theme. Main pages
-![Dark Theme. Main pages](https://github.com/inartov555/user_hub_web_app/blob/main/users_app/DEMO/Dark%20Theme.%20Main%20pages.gif)
+![Dark Theme. Main pages](https://github.com/inartov555/user_hub_web_app/blob/stable_v1.2_dec_23_2025/users_app/DEMO/Dark%20Theme.%20Main%20pages.gif)
 
 ### ▶️ Localization
-![Localization](https://github.com/inartov555/user_hub_web_app/blob/main/users_app/DEMO/Localization.gif)
+![Localization](https://github.com/inartov555/user_hub_web_app/blob/stable_v1.2_dec_23_2025/users_app/DEMO/Localization.gif)
