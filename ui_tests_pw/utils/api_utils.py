@@ -232,12 +232,12 @@ class UsersAppApi(ApiJsonRequest):
         auth = {"Authorization": f"Bearer {access}"}
         return auth
 
-    def get_access_token(self, username, password):
+    def api_login(self, username, password) -> dict:
         """
         /api/v1/auth/jwt/create
 
         Returns:
-            dict
+            dict, e.g. {"refresh":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9","access":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9"}
         """
         payload = {"username": username, "password": password}
         response = self.make_request("post",
@@ -259,7 +259,7 @@ class UsersAppApi(ApiJsonRequest):
                                      headers=self.get_authorization_token_dict(access))
         return response
 
-    def bulk_user_delete(self, access: str, user_id_list: list):
+    def bulk_user_delete(self, access: str, user_id_list: list) -> dict:
         """
         /api/v1/users/bulk-delete/
 
@@ -273,7 +273,7 @@ class UsersAppApi(ApiJsonRequest):
                                      headers=self.get_authorization_token_dict(access))
         return response
 
-    def create_user(self, access: str, username: str, email: str, password: str):
+    def create_user(self, access: str, username: str, email: str, password: str) -> dict:
         """
         /api/v1/auth/users/
 

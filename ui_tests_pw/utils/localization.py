@@ -13,15 +13,16 @@ def set_locale(page: Page, locale_code: str) -> None:
     Set the current UI locale via the navbar dropdown.
 
     Args:
-        page: Playwright page instance.
-        locale_code: Locale code such as ``"en-US"`` or ``"uk-UA"``.
+        page (Page): Playwright page instance.
+        locale_code (str): Locale code such as en-US or uk-UA.
     """
     page.locator("#locale").select_option(locale_code)
 
 
 def get_visible_locales(page: Page) -> List[str]:
     """
-    Return the list of locale codes that are visible in the navbar dropdown.
+    Returns:
+        list, the list of locale codes that are visible in the navbar dropdown.
     """
     options = page.locator("#locale option")
     values: List[str] = []
@@ -35,8 +36,8 @@ def assert_locale_visible(page: Page, expected: Iterable[str]) -> None:
     Assert that the provided locale codes exist in the dropdown options.
 
     Args:
-        page: Playwright page instance.
-        expected: Iterable of expected locale codes.
+        page (Page): Playwright page instance.
+        expected (Iterable[str]): Iterable of expected locale codes.
     """
     visible = set(get_visible_locales(page))
     expected_set = set(expected)

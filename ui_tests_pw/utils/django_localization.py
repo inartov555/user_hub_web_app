@@ -1,9 +1,5 @@
 """
 Helpers for introspecting Django localization from tests.
-
-The UI tests primarily validate the frontend behaviour, but this helper
-module demonstrates how Django can also be imported and used to verify
-that backend-localized languages are in sync with the UI language picker.
 """
 
 from __future__ import annotations
@@ -17,7 +13,8 @@ from django.conf import settings
 
 
 # Ensure the Django project (backend) is importable.
-BACKEND_PATH = os.environ.get("BACKEND_PATH", "/app/backend")
+# Defafult path is provided for Docker.
+BACKEND_PATH = os.environ.get("COPIED_PROJECT_PATH", "/tests")
 if BACKEND_PATH not in sys.path:
     sys.path.insert(0, BACKEND_PATH)
 
@@ -32,7 +29,7 @@ def init_django() -> None:
     This is safe to call from multiple tests; initialization happens only once.
     """
     if not settings.configured:
-        django.setup()  # pragma: no cover
+        django.setup()
 
 
 def get_backend_languages() -> List[Tuple[str, str]]:

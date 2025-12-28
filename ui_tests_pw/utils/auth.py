@@ -6,37 +6,49 @@ from __future__ import annotations
 from typing import Dict, Tuple
 
 import requests
-from playwright.sync_api import Page
+from playwright.sync_api import Page, expect
 
 from config import (
     BACKEND_API_BASE,
+    DEFAULT_ADMIN_USERNAME,
+    DEFAULT_ADMIN_PASSWORD,
     DEFAULT_REGULAR_USERNAME,
     DEFAULT_REGULAR_PASSWORD,
     frontend_url,
 )
 from .theme import set_theme
 from .localization import set_locale
+from .api_utils import UsersAppApi
 
 
-def api_login(username: str, password: str) -> Tuple[str, str]:
+def get_api_utils() -> UsersAppApi:
     """
-    Perform a backend JWT login via the Djoser endpoint.
-
-    Args:
-        username: Username to authenticate with.
-        password: Password to authenticate with.
-
-    Returns:
-        A tuple of (access_token, refresh_token).
-
-    Raises:
-        AssertionError: If the login request fails.
+    Get API Utils
     """
-    url = f"{BACKEND_API_BASE}/auth/jwt/create/"
-    resp = requests.post(url, json={"username": username, "password": password}, timeout=10)
-    assert resp.status_code == 200, f"API login failed for {username}: {resp.status_code} {resp.text}"
-    data: Dict[str, str] = resp.json()
-    return data["access"], data["refresh"]
+    base_url = frontend_url
+    ind_protocol = base_url.find("://")
+    protocol = "http"
+    host = base_url
+    port = UI_BASE_PORT
+    if ind_protocol > 0:
+        protocol = base_url[0:ind_protocol]
+        host = base_url[ind_protocol + 3:]
+    ind_port = host.find(":")
+    if ind_port > 0:
+        host = host[0:ind_port]
+        next_symb = base_url[ind_port + 1:ind_port + 2]
+        if next_symb != "/":
+            temp_port = ""
+            for cur_symb in base_url[ind_port + 1:]:
+                try:
+                    cur_num = int(cur_symb)
+                    temp_port += str(cur_num)
+                except Exception:  # pylint: disable=broad-exception-caught
+                    break
+            if temp_port:
+                port = temp_port
+    api_utils = UsersAppApi(protocol, host, port)
+    return api_utils
 
 
 def ensure_regular_user() -> None:
@@ -50,50 +62,47 @@ def ensure_regular_user() -> None:
        the Djoser registration endpoint.
     """
     try:
-        api_login(DEFAULT_REGULAR_USERNAME, DEFAULT_REGULAR_PASSWORD)
+        get_api_utils().api_login(DEFAULT_REGULAR_USERNAME, DEFAULT_REGULAR_PASSWORD)
         return  # user already exists
     except AssertionError:
         pass
-
-    # Create user via Djoser registration endpoint (open registration).
-    url = f"{BACKEND_API_BASE}/auth/users/"
-    payload = {
-        "username": DEFAULT_REGULAR_USERNAME,
-        "email": f"{DEFAULT_REGULAR_USERNAME}@example.com",
-        "password": DEFAULT_REGULAR_PASSWORD,
-    }
-    resp = requests.post(url, json=payload, timeout=10)
-    assert resp.status_code in (201, 400), (
-        f"Unexpected status when creating regular user: {resp.status_code} {resp.text}"
-    )
-    # If the user already exists we can ignore 400; otherwise a 201 means it was created.
+    access_token =  get_api_utils().get_access_token(DEFAULT_ADMIN_USERNAME, DEFAULT_ADMIN_PASSWORD)
+    get_api_utils().create_user(None,
+                                DEFAULT_REGULAR_USERNAME,
+                                f"{DEFAULT_REGULAR_USERNAME}@test.com",
+                                DEFAULT_REGULAR_PASSWORD)
 
 
 def login_via_ui(
     page: Page,
     username: str,
     password: str,
-    *,
-    theme: str | None = None,
-    locale_code: str | None = None,
+    ui_theme: str | None = None,
+    ui_locale: str | None = None,
 ) -> None:
     """
     Log in via the UI login page, optionally setting theme and locale.
 
     Args:
-        page: Playwright page instance.
-        username: Username.
-        password: Password.
-        theme: Optional theme (light or dark).
-        locale_code: Optional locale code such as en-US.
+        page (Page): Playwright page instance.
+        username (str): Username.
+        password (str): Password.
+        ui_theme (str): theme (light or dark).
+        ui_locale (str): locale code such as en-US.
     """
-    page.goto(frontend_url("/login"))
-    if theme is not None:
-        set_theme(page, theme)
-    if locale_code is not None:
-        set_locale(page, locale_code)
+    username_loc = page.locator("#username")
+    password_loc = page.locator("#password")
+    login_btn_loc = page.locator("form button[type='submit']")
+    users_tab_loc = page.locator('#users')
 
-    page.fill("#username", username)
-    page.fill("#password", password)
-    page.locator("form button[type='submit']").click()
-    page.wait_for_url("**/users")
+    page.goto(frontend_url("/login"))
+    if ui_theme is not None:
+        set_theme(page, ui_theme)
+    if ui_locale is not None:
+        set_locale(page, ui_locale)
+    username_loc.fill(username)
+    password_loc.fill(password)
+    login_btn_loc.click()
+    page.wait_for_url(re.compile(r".*/users$"))
+    expect(page).to_have_url(re.compile(r".*/users$"))
+    users_tab_loc.wait_for(state="visible")

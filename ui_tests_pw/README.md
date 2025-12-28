@@ -14,12 +14,8 @@
 ## 🔑 Prerequisites
 
 - Start the Users App website (`users_app` folder in the root project directory)
-- Create 1 user before running tests:
-```
-     a) Regular user: test1 / changeme123
-```
 - Docker & docker-compose installed
-- Python is only required inside the Docker image; host Python is optional
+- Python is only required inside the Docker image
 
 ## 🚀 How to run
 

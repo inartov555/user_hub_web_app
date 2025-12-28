@@ -25,6 +25,7 @@ This is a test website + automation framework
 - ✨ **Improved in `users_app`:** Polishing UI accross the website
 - ✨ **Improved in `users_app`:** Behavior for the Cancel button in View/Edit Profile, Change Password pages (small area in the middle of the button was clickable)
 - ✨ **Improved in `users_app`:** Validation in App Settings
+- ✨ **Improved in `ui_tests_pw`:** Now regular user which is required by tests is automatically created, if not present
 - 🆕 **Added in `ui_tests_pw`:** Added localization checks to tests
 
 ---

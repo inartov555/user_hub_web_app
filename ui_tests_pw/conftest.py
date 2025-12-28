@@ -19,10 +19,9 @@ from config import (
     DEFAULT_REGULAR_USERNAME,
     DEFAULT_REGULAR_PASSWORD,
 )
-from utils.api_utils import UsersAppApi
 from utils.theme import Theme, set_theme
 from utils.localization import set_locale
-from utils.auth import ensure_regular_user
+from utils.auth import ensure_regular_user, login_via_ui, get_api_utils
 from utils.file_utils import FileUtils
 from utils.app_config import AppConfig
 from utils.logger.logger import Logger
@@ -39,47 +38,6 @@ from pages.stats_page import StatsPage
 
 
 log = Logger(__name__)
-
-
-def get_api_utils(request) -> UsersAppApi:
-    """
-    Get API Utils
-    """
-    _app_config = request.getfixturevalue("app_config")
-    base_url = _app_config.base_url
-    ind_protocol = base_url.find("://")
-    protocol = "http"
-    host = base_url
-    port = UI_BASE_PORT
-    if ind_protocol > 0:
-        protocol = base_url[0:ind_protocol]
-        host = base_url[ind_protocol + 3:]
-    ind_port = host.find(":")
-    if ind_port > 0:
-        host = host[0:ind_port]
-        next_symb = base_url[ind_port + 1:ind_port + 2]
-        if next_symb != "/":
-            temp_port = ""
-            for cur_symb in base_url[ind_port + 1:]:
-                try:
-                    cur_num = int(cur_symb)
-                    temp_port += str(cur_num)
-                except Exception:  # pylint: disable=broad-exception-caught
-                    break
-            if temp_port:
-                port = temp_port
-    api_utils = UsersAppApi(protocol, host, port)
-    return api_utils
-
-
-@pytest.fixture(scope="session", autouse=True)
-def _init_django_for_tests() -> None:
-    """
-    Initializing Django
-    """
-    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "core.settings")
-    os.environ.setdefault("COPIED_PROJECT_PATH", "")
-    init_django()
 
 
 @pytest.fixture(autouse=True, scope="session")
@@ -100,6 +58,17 @@ def add_loggers():
     log.setup_cli_handler(level=log_level)
     log.setup_filehandler(level=log_file_level, file_name=log_file)
     log.info(f"General loglevel: '{log_level}', File: '{log_file_level}'")
+
+
+@pytest.fixture(scope="session", autouse=True)
+def _init_django_for_tests() -> None:
+    """
+    Initializing Django
+    """
+    log.info("Initializing Django")
+    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "core.settings")
+    os.environ.setdefault("COPIED_PROJECT_PATH", "")
+    init_django()
 
 
 def validate_app_config_params(**kwargs) -> None:
@@ -244,13 +213,7 @@ def logged_in_admin_fixture(page: Page, ui_theme: Theme, ui_locale: str) -> Page
     login_page = LoginPage(page)
     login_page.open()
     login_page.accept_cookie_consent_if_present()
-    set_theme(page, ui_theme)
-    set_locale(page, ui_locale)
-    login_page.fill_credentials(DEFAULT_ADMIN_USERNAME, DEFAULT_ADMIN_PASSWORD)
-    login_page.submit.click()
-    page.wait_for_url(re.compile(r".*/users$"))
-    users_tab_loc = page.locator('#users')
-    users_tab_loc.wait_for(state="visible")
+    login_via_ui(page, DEFAULT_ADMIN_USERNAME, DEFAULT_ADMIN_PASSWORD, ui_theme, ui_locale)
     return page
 
 
@@ -263,13 +226,7 @@ def logged_in_regular_fixture(page: Page, ui_theme: Theme, ui_locale: str) -> Pa
     login_page = LoginPage(page)
     login_page.open()
     login_page.accept_cookie_consent_if_present()
-    set_theme(page, ui_theme)
-    set_locale(page, ui_locale)
-    login_page.fill_credentials(DEFAULT_REGULAR_USERNAME, DEFAULT_REGULAR_PASSWORD)
-    login_page.submit.click()
-    page.wait_for_url(re.compile(r".*/users$"))
-    users_tab_loc = page.locator('#users')
-    users_tab_loc.wait_for(state="visible")
+    login_via_ui(page, DEFAULT_REGULAR_USERNAME, DEFAULT_REGULAR_PASSWORD, ui_theme, ui_locale)
     return page
 
 
@@ -435,7 +392,7 @@ def cleanup_delete_users_by_suffix(suffix: str, request) -> None:
     """
     yield
     log.info("Cleanup. Deleting users created while running a test")
-    api_utils = get_api_utils(request)
+    api_utils = get_api_utils()
     username = f"ui-test-{suffix}"
     email = f"{username}@test.com"
     login_info = api_utils.get_access_token(DEFAULT_ADMIN_USERNAME, DEFAULT_ADMIN_PASSWORD)
@@ -461,7 +418,7 @@ def setup_create_users_by_suffix(suffix: str, request) -> None:
         email = f"{username}@test.com"
     """
     log.info("Setup. Creating users before running a test")
-    api_utils = get_api_utils(request)
+    api_utils = get_api_utils()
     username = f"ui-test-{suffix}"
     email = f"{username}@test.com"
     password = "Ch@ngeme123"
