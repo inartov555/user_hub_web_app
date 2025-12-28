@@ -22,4 +22,4 @@ def test_locale_dropdown_matches_backend_languages(login_page: LoginPage,  # pyl
     set_theme(page, "light")
     backend_langs = get_backend_languages()
     backend_codes: Set[str] = {code.lower() for code, _name in backend_langs}
-    assert_locale_visible(backend_codes)
+    assert_locale_visible(page, backend_codes)
