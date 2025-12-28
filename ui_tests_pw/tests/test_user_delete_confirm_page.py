@@ -53,7 +53,7 @@ def test_admin_can_navigate_to_delete_confirm(page: Page,
     with translation.override(ui_locale_param.lower()):
         expected = translation.gettext("Confirm deletion")
     assert actual == expected, f"Wrong page title localization; actual '{actual}'; expected '{expected}'"
-    # Deleting the user from UI
+    # Now let's check deleting the user from UI
     confirm_page.confirm_delete.click()
     # Verifying that user is deleted
     # User is redirected to the /users page after successful deletion

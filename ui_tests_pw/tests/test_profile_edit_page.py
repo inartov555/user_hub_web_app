@@ -39,7 +39,7 @@ def test_profile_edit_renders_and_can_save(profile_edit_page_regular: Page,
     with translation.override(ui_locale_param.lower()):
         expected = translation.gettext("Edit profile")
     assert actual == expected, f"Wrong page title localization; actual '{actual}'; expected '{expected}'"
-    # Now checking if data are saved
+    # Now let's check if data are saved
     profile_edit_page_regular.fill_basic_fields(edit_data.get("firstName"), edit_data.get("lastName"), edit_data.get("bio"))
     profile_edit_page_regular.save.click()
     page.wait_for_url(re.compile(r".*/profile-view$"))
