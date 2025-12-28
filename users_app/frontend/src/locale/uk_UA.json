@@ -59,7 +59,11 @@
     "rowsPerPage": "Рядків на сторінку",
     "updating": "Оновлення…",
     "noVisibleColumns": "Не вибрано жодного стовпця для відображення",
-    "noSearchResults": "Немає результатів"
+    "noSearchResults": "Немає результатів",
+    "firstPage": "Перша сторінка",
+    "previousPage": "Попередня сторінка",
+    "nextPage": "Наступна сторінка",
+    "lastPage": "Остання сторінка"
   },
   "excelImport": {
     "title": "Імпорт з Excel",

@@ -59,7 +59,11 @@
     "rowsPerPage": "Rivejä sivulla",
     "updating": "Päivitetään…",
     "noVisibleColumns": "Näytettäviä sarakkeita ei ole valittu",
-    "noSearchResults": "Ei tuloksia"
+    "noSearchResults": "Ei tuloksia",
+    "firstPage": "Ensimmäinen sivu",
+    "previousPage": "Edellinen sivu",
+    "nextPage": "Seuraava sivu",
+    "lastPage": "Viimeinen sivu"
   },
   "excelImport": {
     "title": "Tuonti Excelistä",

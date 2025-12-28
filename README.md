@@ -27,7 +27,7 @@ This is a test website + automation framework
 - ✨ **Improved in `users_app`:** Validation in App Settings
 - ✨ **Improved in `ui_tests_pw`:** Now regular user which is required by tests is automatically created, if not present
 - 🆕 **Added in `ui_tests_pw`:** Localization checks to tests
-- 🆕 **Added in `users_app`:** Tooltip text to elements without text
+- 🆕 **Added in `users_app`:** Localized text to elements without any text
 
 ---
 

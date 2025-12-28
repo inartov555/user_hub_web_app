@@ -59,7 +59,11 @@
     "rowsPerPage": "Wierszy na stronę",
     "updating": "Aktualizowanie…",
     "noVisibleColumns": "Nie wybrano żadnych kolumn do wyświetlenia",
-    "noSearchResults": "Brak wyników"
+    "noSearchResults": "Brak wyników",
+    "firstPage": "Pierwsza strona",
+    "previousPage": "Poprzednia strona",
+    "nextPage": "Następna strona",
+    "lastPage": "Ostatnia strona"
   },
   "excelImport": {
     "title": "Import z Excela",

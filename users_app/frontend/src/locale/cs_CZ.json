@@ -59,7 +59,11 @@
     "rowsPerPage": "Řádků na stránku",
     "updating": "Aktualizace…",
     "noVisibleColumns": "Nejsou vybrané žádné sloupce k zobrazení",
-    "noSearchResults": "Žádné výsledky"
+    "noSearchResults": "Žádné výsledky",
+    "firstPage": "První stránka",
+    "previousPage": "Předchozí stránka",
+    "nextPage": "Další stránka",
+    "lastPage": "Poslední stránka"
   },
   "excelImport": {
     "title": "Import z Excelu",

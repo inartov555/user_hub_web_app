@@ -13,7 +13,7 @@ import {
 } from "@tanstack/react-table";
 import { useQuery, useQueryClient, keepPreviousData } from "@tanstack/react-query";
 import {
-  Trash2,
+  Trash2, FilterX,
   ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight,
   Columns, ArrowUpDown, ArrowUp, ArrowDown
 } from "lucide-react";
@@ -505,6 +505,7 @@ export default function UsersTable(props: Props) {
               localStorage.setItem("usersTable.sorting", undefined);
             }}
           >
+            <FilterX className="h-4 w-4" />
             {t("users.clearSort")}
           </Button>
 
@@ -604,24 +605,31 @@ export default function UsersTable(props: Props) {
             <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
               <div className="flex items-center gap-2">
                 <Button
+                  id="toFirstPage"
                   onClick={() => (table.setPageIndex(0), setPage(1))}
                   disabled={!table.getCanPreviousPage()}
                 >
                   <ChevronsLeft className="h-4 w-4" />
+                  {t("users.firstPage")}
                 </Button>
                 <Button
+                  id="toPreviousPage"
                   onClick={() => (table.previousPage(), setPage((p) => Math.max(1, p - 1)))}
                   disabled={!table.getCanPreviousPage()}
                 >
                   <ChevronLeft className="h-4 w-4" />
+                  {t("users.previousPage")}
                 </Button>
                 <Button
+                  id="toNextPage"
                   onClick={() => (table.nextPage(), setPage((p) => p + 1))}
                   disabled={!table.getCanNextPage()}
                 >
                   <ChevronRight className="h-4 w-4" />
+                  {t("users.nextPage")}
                 </Button>
                 <Button
+                  id="toLastPage"
                   onClick={() => {
                     const last = Math.max(0, table.getPageCount() - 1);
                     table.setPageIndex(last);
@@ -630,6 +638,7 @@ export default function UsersTable(props: Props) {
                   disabled={!table.getCanNextPage()}
                 >
                   <ChevronsRight className="h-4 w-4" />
+                  {t("users.lastPage")}
                 </Button>
               </div>
 

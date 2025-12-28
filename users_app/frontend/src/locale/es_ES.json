@@ -59,7 +59,11 @@
     "rowsPerPage": "Filas por página",
     "updating": "Actualizando…",
     "noVisibleColumns": "No hay columnas seleccionadas para mostrar",
-    "noSearchResults": "Sin resultados"
+    "noSearchResults": "Sin resultados",
+    "firstPage": "Primera página",
+    "previousPage": "Página anterior",
+    "nextPage": "Página siguiente",
+    "lastPage": "Última página"
   },
   "excelImport": {
     "title": "Importación desde Excel",

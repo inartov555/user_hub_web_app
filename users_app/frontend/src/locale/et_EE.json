@@ -59,7 +59,11 @@
     "rowsPerPage": "Ridu lehe kohta",
     "updating": "Uuendamine…",
     "noVisibleColumns": "Kuvamiseks pole ühtegi valitud veergu",
-    "noSearchResults": "Tulemusi ei leitud"
+    "noSearchResults": "Tulemusi ei leitud",
+    "firstPage": "Esimene leht",
+    "previousPage": "Eelmine leht",
+    "nextPage": "Järgmine leht",
+    "lastPage": "Viimane leht"
   },
   "excelImport": {
     "title": "Exceli import",
