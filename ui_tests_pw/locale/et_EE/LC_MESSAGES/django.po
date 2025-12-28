@@ -36,3 +36,6 @@ msgstr "Rakenduse sätted"
 
 msgid "Sign up"
 msgstr "Registreeru"
+
+msgid "Users online in the last 5 minutes"
+msgstr "Praegu veebis olevad kasutajad (viimase 5 minuti jooksul)"

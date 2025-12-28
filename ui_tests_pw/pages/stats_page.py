@@ -17,7 +17,7 @@ class StatsPage(BasePage):
     def __init__(self, page: Page):
         super().__init__(page)
 
-        self.title = self.page.locator("h2")
+        self.page_title = self.page.locator("h2")
         self.online_user_list = self.page.locator("ul li")
 
     def open(self) -> None:
@@ -30,7 +30,7 @@ class StatsPage(BasePage):
         """
         Assert that the stats title and list are visible.
         """
-        expect(self.title).to_be_visible()
+        expect(self.page_title).to_be_visible()
         expect(self.online_user_list.first).to_be_visible()
         # Depending on tests run before, there may be 1 or 2, or even more users online
         assert self.online_user_list.count() >= 1

@@ -36,3 +36,6 @@ msgstr "Ustawienia aplikacji"
 
 msgid "Sign up"
 msgstr "Zarejestruj się"
+
+msgid "Users online in the last 5 minutes"
+msgstr "Aktualnie użytkownicy online (ostatnie 5 minut)"

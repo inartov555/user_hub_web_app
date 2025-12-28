@@ -36,3 +36,6 @@ msgstr "Nastavení aplikace"
 
 msgid "Sign up"
 msgstr "Zaregistrovat se"
+
+msgid "Users online in the last 5 minutes"
+msgstr "Aktuálně online uživatelé (posledních 5 minut)"
