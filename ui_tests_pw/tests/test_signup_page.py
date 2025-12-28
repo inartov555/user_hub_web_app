@@ -9,6 +9,7 @@ import pytest
 from playwright.sync_api import Page, expect
 from django.utils import translation
 
+from pages.signup_page import SignupPage
 from utils.theme import Theme, set_theme
 from utils.localization import set_locale
 
@@ -17,8 +18,9 @@ from utils.localization import set_locale
 @pytest.mark.localization
 @pytest.mark.parametrize("ui_theme_param", ["light", "dark"])
 @pytest.mark.parametrize("ui_locale_param", ["en-US", "uk-UA", "et-EE", "fi-FI", "cs-CZ", "pl-PL", "es-ES"])
+@pytest.mark.usefixtures("cleanup_set_default_theme_and_locale")
 def test_signup_page_renders(page: Page,
-                             signup_page: Page,
+                             signup_page: SignupPage,
                              ui_theme_param: Theme,
                              ui_locale_param: str) -> None:
     """
@@ -37,9 +39,9 @@ def test_signup_page_renders(page: Page,
 
 
 @pytest.mark.parametrize("suffix", ["one", "two", "three"])
+@pytest.mark.usefixtures("cleanup_delete_users_by_suffix")
 def test_signup_with_random_username(page: Page,
-                                     signup_page: Page,
-                                     cleanup_delete_users_by_suffix,  # pylint: disable=unused-argument
+                                     signup_page: SignupPage,
                                      suffix: str) -> None:
     """
     Attempt signup with a random username; backend may accept or reject duplicates.
@@ -58,7 +60,7 @@ def test_signup_with_random_username(page: Page,
 
 
 def test_signup_link_back_to_login(page: Page,
-                                   signup_page: Page) -> None:
+                                   signup_page: SignupPage) -> None:
     """
     Signup page should link back to the login page.
     """

@@ -24,7 +24,8 @@ from config import (
 @pytest.mark.localization
 @pytest.mark.parametrize("ui_theme_param", ["light", "dark"])
 @pytest.mark.parametrize("ui_locale_param", ["en-US", "uk-UA", "et-EE", "fi-FI", "cs-CZ", "pl-PL", "es-ES"])
-def test_login_page_renders_in_theme_and_locale(login_page: LoginPage,  # pylint: disable=unused-argument
+@pytest.mark.usefixtures("cleanup_set_default_theme_and_locale")
+def test_login_page_renders_in_theme_and_locale(login_page: LoginPage,
                                                 page: Page,
                                                 ui_theme_param: Theme,
                                                 ui_locale_param: str) -> None:
@@ -49,7 +50,6 @@ def test_login_page_renders_in_theme_and_locale(login_page: LoginPage,  # pylint
     ],
 )
 def test_login_invalid_credentials_show_error(login_page: LoginPage,
-                                              page: Page,  # pylint: disable=unused-argument
                                               username: str,
                                               password: str) -> None:
     """

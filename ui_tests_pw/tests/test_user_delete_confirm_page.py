@@ -21,12 +21,13 @@ from utils.localization import set_locale
 @pytest.mark.parametrize("ui_theme_param", ["light", "dark"])
 @pytest.mark.parametrize("ui_locale_param", ["en-US", "uk-UA", "et-EE", "fi-FI", "cs-CZ", "pl-PL", "es-ES"])
 @pytest.mark.parametrize("suffix", ["one"])
-@pytest.mark.usefixtures('setup_create_users_by_suffix')
-@pytest.mark.usefixtures('cleanup_delete_users_by_suffix')
+@pytest.mark.usefixtures("setup_create_users_by_suffix")
+@pytest.mark.usefixtures("cleanup_delete_users_by_suffix")
+@pytest.mark.usefixtures("cleanup_set_default_theme_and_locale")
 def test_admin_can_navigate_to_delete_confirm(page: Page,
-                                              admin_users_page: UsersTablePage,  # pylint: disable=unused-argument
-                                              ui_locale_param: str,  # pylint: disable=unused-argument
-                                              ui_theme_param: Theme,  # pylint: disable=unused-argument
+                                              admin_users_page: UsersTablePage,
+                                              ui_locale_param: str,
+                                              ui_theme_param: Theme,
                                               suffix,
                                              ) -> None:
     """
@@ -66,10 +67,10 @@ def test_admin_can_navigate_to_delete_confirm(page: Page,
 
 @pytest.mark.admin
 @pytest.mark.parametrize("suffix", ["one"])
+@pytest.mark.usefixtures("setup_create_users_by_suffix")
+@pytest.mark.usefixtures("cleanup_delete_users_by_suffix")
 def test_admin_can_cancel_delete_confirm(page: Page,
                                          admin_users_page: UsersTablePage,
-                                         setup_create_users_by_suffix,  # pylint: disable=unused-argument
-                                         cleanup_delete_users_by_suffix,  # pylint: disable=unused-argument
                                          suffix,
                                         ) -> None:
     """

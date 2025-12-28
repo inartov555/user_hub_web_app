@@ -9,6 +9,7 @@ import pytest
 from playwright.sync_api import Page, expect
 from django.utils import translation
 
+from pages.profile_view_page import ProfileViewPage
 from utils.theme import Theme, set_theme
 from utils.localization import set_locale
 
@@ -18,8 +19,9 @@ from utils.localization import set_locale
 @pytest.mark.localization
 @pytest.mark.parametrize("ui_theme_param", ["light", "dark"])
 @pytest.mark.parametrize("ui_locale_param", ["en-US", "uk-UA", "et-EE", "fi-FI", "cs-CZ", "pl-PL", "es-ES"])
-def test_profile_view_renders_for_regular_user(page: Page,  # pylint: disable=unused-argument
-                                               profile_view_page_regular: Page,
+@pytest.mark.usefixtures("cleanup_set_default_theme_and_locale")
+def test_profile_view_renders_for_regular_user(page: Page,
+                                               profile_view_page_regular: ProfileViewPage,
                                                ui_theme_param: Theme,
                                                ui_locale_param: str) -> None:
     """
@@ -36,7 +38,7 @@ def test_profile_view_renders_for_regular_user(page: Page,  # pylint: disable=un
 
 
 @pytest.mark.admin
-def test_profile_view_renders_for_admin(profile_view_page_admin: Page) -> None:
+def test_profile_view_renders_for_admin(profile_view_page_admin: ProfileViewPage) -> None:
     """
     Admin user should also have a profile view.
     """
@@ -45,7 +47,7 @@ def test_profile_view_renders_for_admin(profile_view_page_admin: Page) -> None:
 
 @pytest.mark.regular_user
 def test_profile_view_has_edit_link(page: Page,
-                                    profile_view_page_regular: Page) -> None:
+                                    profile_view_page_regular: ProfileViewPage) -> None:
     """
     Profile view page should link to the edit profile form.
     """

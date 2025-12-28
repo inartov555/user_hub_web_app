@@ -21,6 +21,7 @@ from config import DEFAULT_REGULAR_USERNAME
 @pytest.mark.localization
 @pytest.mark.parametrize("ui_theme_param", ["light", "dark"])
 @pytest.mark.parametrize("ui_locale_param", ["en-US", "uk-UA", "et-EE", "fi-FI", "cs-CZ", "pl-PL", "es-ES"])
+@pytest.mark.usefixtures("cleanup_set_default_theme_and_locale")
 def test_admin_can_open_change_password_for_user(ui_theme_param: Theme,
                                                  ui_locale_param: str,
                                                  page: Page,

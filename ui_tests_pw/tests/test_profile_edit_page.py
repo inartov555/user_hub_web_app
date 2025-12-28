@@ -10,6 +10,7 @@ import pytest
 from playwright.sync_api import Page, expect
 from django.utils import translation
 
+from pages.profile_edit_page import ProfileEditPage
 from pages.profile_view_page import ProfileViewPage
 from utils.theme import Theme, set_theme
 from utils.localization import set_locale
@@ -20,7 +21,8 @@ from utils.localization import set_locale
 @pytest.mark.localization
 @pytest.mark.parametrize("ui_theme_param", ["light", "dark"])
 @pytest.mark.parametrize("ui_locale_param", ["en-US", "uk-UA", "et-EE", "fi-FI", "cs-CZ", "pl-PL", "es-ES"])
-def test_profile_edit_renders_and_can_save(profile_edit_page_regular: Page,
+@pytest.mark.usefixtures("cleanup_set_default_theme_and_locale")
+def test_profile_edit_renders_and_can_save(profile_edit_page_regular: ProfileEditPage,
                                            page: Page,
                                            ui_theme_param: Theme,
                                            ui_locale_param: str) -> None:
@@ -52,7 +54,7 @@ def test_profile_edit_renders_and_can_save(profile_edit_page_regular: Page,
 
 @pytest.mark.regular_user
 def test_profile_edit_cancel_returns_to_profile_view(page: Page,
-                                                     profile_edit_page_regular: Page) -> None:
+                                                     profile_edit_page_regular: ProfileEditPage) -> None:
     """
     Cancel button should navigate back to profile view.
     """

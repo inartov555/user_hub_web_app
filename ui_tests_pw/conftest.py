@@ -18,6 +18,8 @@ from config import (
     DEFAULT_REGULAR_USERNAME,
     DEFAULT_REGULAR_PASSWORD,
 )
+from utils.theme import set_theme
+from utils.localization import set_locale
 from utils.auth import ensure_regular_user, login_via_ui, get_api_utils
 from utils.file_utils import FileUtils
 from utils.app_config import AppConfig
@@ -371,6 +373,17 @@ def cleanup_delete_users_by_suffix(suffix: str) -> None:
             user_id_list.append(user.get("id"))
     if user_id_list:
         api_utils.bulk_user_delete(access_token, user_id_list)
+
+
+@pytest.fixture(scope="function")
+def cleanup_set_default_theme_and_locale(page: Page) -> None:
+    """
+    Cleanup. Default theme is light and defaul locale is en-US.
+    """
+    yield
+    log.info("Cleanup. Defaulting to light theme and en-US locale")
+    set_theme(page, "light")
+    set_locale(page, "en-US")
 
 
 @pytest.fixture(scope="function")

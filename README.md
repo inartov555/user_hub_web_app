@@ -28,6 +28,7 @@ This is a test website + automation framework
 - ✨ **Improved in `users_app`:** Button disabled state color now is more obvious
 - ✨ **Improved in `ui_tests_pw`:** Now regular user, which is required by tests, is automatically created if not present
 - 🆕 **Added in `ui_tests_pw`:** Localization checks to tests
+- 🆕 **Added in `ui_tests_pw`:** Cleanup fixture for theme and locale (default is light theme and en-US locale)
 - 🆕 **Added in `users_app`:** Localized text to elements without any text
 
 ---

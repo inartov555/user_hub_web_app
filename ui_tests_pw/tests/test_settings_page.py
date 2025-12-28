@@ -8,6 +8,8 @@ import pytest
 from playwright.sync_api import Page, expect
 from django.utils import translation
 
+from pages.settings_page import SettingsPage
+from pages.users_table_page import UsersTablePage
 from utils.theme import Theme, set_theme
 from utils.localization import set_locale
 
@@ -17,7 +19,8 @@ from utils.localization import set_locale
 @pytest.mark.localization
 @pytest.mark.parametrize("ui_theme_param", ["light", "dark"])
 @pytest.mark.parametrize("ui_locale_param", ["en-US", "uk-UA", "et-EE", "fi-FI", "cs-CZ", "pl-PL", "es-ES"])
-def test_settings_page_renders_for_admin(settings_page: Page,
+@pytest.mark.usefixtures("cleanup_set_default_theme_and_locale")
+def test_settings_page_renders_for_admin(settings_page: SettingsPage,
                                          page: Page,
                                          ui_theme_param: Theme,
                                          ui_locale_param: str) -> None:
@@ -35,7 +38,7 @@ def test_settings_page_renders_for_admin(settings_page: Page,
 
 
 @pytest.mark.regular_user
-def test_settings_page_not_accessible_for_regular_user(regular_users_page: Page) -> None:
+def test_settings_page_not_accessible_for_regular_user(regular_users_page: UsersTablePage) -> None:
     """
     Regular user should not be able to access the settings page.
     Settings tab is located under Additional tab.

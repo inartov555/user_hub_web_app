@@ -8,6 +8,7 @@ import pytest
 from playwright.sync_api import Page, expect
 from django.utils import translation
 
+from pages.reset_password_page import ResetPasswordPage
 from utils.theme import Theme, set_theme
 from utils.localization import set_locale
 
@@ -16,8 +17,9 @@ from utils.localization import set_locale
 @pytest.mark.localization
 @pytest.mark.parametrize("ui_theme_param", ["light", "dark"])
 @pytest.mark.parametrize("ui_locale_param", ["en-US", "uk-UA", "et-EE", "fi-FI", "cs-CZ", "pl-PL", "es-ES"])
+@pytest.mark.usefixtures("cleanup_set_default_theme_and_locale")
 def test_reset_password_page_renders(page: Page,
-                                     reset_password_page: Page,
+                                     reset_password_page: ResetPasswordPage,
                                      ui_theme_param: Theme,
                                      ui_locale_param: str) -> None:
     """
@@ -34,7 +36,7 @@ def test_reset_password_page_renders(page: Page,
 
 
 @pytest.mark.parametrize("email", ["user@example.com"])
-def test_reset_password_request_shows_feedback(reset_password_page: Page,
+def test_reset_password_request_shows_feedback(reset_password_page: ResetPasswordPage,
                                                email: str) -> None:
     """
     Submitting a reset-password request should show user feedback.
