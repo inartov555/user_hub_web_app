@@ -206,7 +206,7 @@ def logged_in_admin_fixture(page: Page) -> Page:
     login_page = LoginPage(page)
     login_page.open()
     login_page.accept_cookie_consent_if_present()
-    login_via_ui(page, DEFAULT_ADMIN_USERNAME, DEFAULT_ADMIN_PASSWORD)
+    login_via_ui(page, DEFAULT_ADMIN_USERNAME, DEFAULT_ADMIN_PASSWORD, "light", "en-US")
     return page
 
 
@@ -219,7 +219,7 @@ def logged_in_regular_fixture(page: Page) -> Page:
     login_page = LoginPage(page)
     login_page.open()
     login_page.accept_cookie_consent_if_present()
-    login_via_ui(page, DEFAULT_REGULAR_USERNAME, DEFAULT_REGULAR_PASSWORD)
+    login_via_ui(page, DEFAULT_REGULAR_USERNAME, DEFAULT_REGULAR_PASSWORD, "light", "en-US")
     return page
 
 
