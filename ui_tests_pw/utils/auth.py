@@ -70,12 +70,12 @@ def ensure_regular_user() -> None:
     log.info("Ensuring the regular user exists and creating it, if not present")
     try:
         get_api_utils().api_login(DEFAULT_REGULAR_USERNAME, DEFAULT_REGULAR_PASSWORD)
+        log.debug("Regular user exists")
         return  # user already exists
     except ApiError:
         pass
-    access_token =  get_api_utils().api_login(DEFAULT_ADMIN_USERNAME, DEFAULT_ADMIN_PASSWORD)
-    get_api_utils().create_user(None,
-                                DEFAULT_REGULAR_USERNAME,
+    log.debug("Creating a regular user")
+    get_api_utils().create_user(DEFAULT_REGULAR_USERNAME,
                                 f"{DEFAULT_REGULAR_USERNAME}@test.com",
                                 DEFAULT_REGULAR_PASSWORD)
 

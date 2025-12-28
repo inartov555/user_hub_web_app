@@ -71,6 +71,15 @@ def _init_django_for_tests() -> None:
     init_django()
 
 
+@pytest.fixture(scope="session", autouse=True)
+def before_tests() -> None:
+    """
+    Actions to be done before running tests.
+        1. Creating a regular user
+    """
+    ensure_regular_user()
+
+
 def validate_app_config_params(**kwargs) -> None:
     """
     Validation of the config parameters
@@ -423,6 +432,4 @@ def setup_create_users_by_suffix(suffix: str, request) -> None:
     username = f"ui-test-{suffix}"
     email = f"{username}@test.com"
     password = "Ch@ngeme123"
-    login_info = api_utils.api_login(DEFAULT_ADMIN_USERNAME, DEFAULT_ADMIN_PASSWORD)
-    access_token = login_info.get("access")
-    api_utils.create_user(access_token, username, email, password)
+    api_utils.create_user(username, email, password)

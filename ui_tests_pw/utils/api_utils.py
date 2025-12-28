@@ -275,7 +275,7 @@ class UsersAppApi(ApiJsonRequest):
                                      headers=self.get_authorization_token_dict(access))
         return response
 
-    def create_user(self, access: str, username: str, email: str, password: str) -> dict:
+    def create_user(self, username: str, email: str, password: str) -> dict:
         """
         /api/v1/auth/users/
 
