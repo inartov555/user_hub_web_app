@@ -8,7 +8,7 @@
 - **Python** + **Pytest**
 - **Playwright** (Chromium, Firefox, WebKit)
 - **Django backend** (the existing app) – used as the system under test, including its i18n setup
-- **Docker / docker-compose** – one stack for Django + Postgres + frontend + Playwright tests
+- **Docker / docker-compose** – one stack for Django (for localization tests) + Playwright tests
 - **Page Object Model (POM)** – one page-object class per UI page
 
 ## 🔑 Prerequisites
