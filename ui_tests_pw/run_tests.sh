@@ -73,7 +73,7 @@ TEST_GREP=""
 # If you need to run particular test(s), then set it as shown in the line below (TEST_GREP);
 # to run all tests, just set TEST_GREP="$TEST_GREP" (to preserve base settings)
 
-TEST_GREP="$TEST_GREP -k test_regular_user_can_login_and_redirects_to_users"
+TEST_GREP="$TEST_GREP -k test_profile_view_has_edit_link"
 
 docker compose run -e TEST_GREP="$TEST_GREP" --rm ui_tests_pw
 

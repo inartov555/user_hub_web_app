@@ -4,12 +4,14 @@ Helpers for logging in and preparing test users.
 
 from __future__ import annotations
 from typing import Dict, Tuple
+import re
 
 import requests
 from playwright.sync_api import Page, expect
 
 from config import (
     BACKEND_API_BASE,
+    UI_BASE_PORT,
     DEFAULT_ADMIN_USERNAME,
     DEFAULT_ADMIN_PASSWORD,
     DEFAULT_REGULAR_USERNAME,
@@ -25,7 +27,7 @@ def get_api_utils() -> UsersAppApi:
     """
     Get API Utils
     """
-    base_url = frontend_url
+    base_url = BACKEND_API_BASE
     ind_protocol = base_url.find("://")
     protocol = "http"
     host = base_url

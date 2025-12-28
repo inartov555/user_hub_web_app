@@ -98,7 +98,7 @@ def app_config(pytestconfig) -> AppConfig:
     result_dict["navigation_timeout"] = cfg.getfloat("pytest", "navigation_timeout", fallback=15000.0)
     result_dict["assert_timeout"] = cfg.getfloat("pytest", "assert_timeout", fallback=15000.0)
     result_dict["browser"] = cfg.get("pytest", "browser", fallback="chrome")
-    result_dict["base_url"] = cfg.get("pytest", "base_url", fallback=UI_BASE_URL)
+    result_dict["base_url"] = cfg.get("pytest", "base_url", fallback="{}:{}".format(UI_BASE_URL, UI_BASE_PORT))
     result_dict["is_headless"] = cfg.getboolean("pytest", "is_headless", fallback=False)
     result_dict["width"] = cfg.getint("pytest", "width", fallback=1920)
     result_dict["height"] = cfg.getint("pytest", "height", fallback=1080)
@@ -395,7 +395,7 @@ def cleanup_delete_users_by_suffix(suffix: str, request) -> None:
     api_utils = get_api_utils()
     username = f"ui-test-{suffix}"
     email = f"{username}@test.com"
-    login_info = api_utils.get_access_token(DEFAULT_ADMIN_USERNAME, DEFAULT_ADMIN_PASSWORD)
+    login_info = api_utils.api_login(DEFAULT_ADMIN_USERNAME, DEFAULT_ADMIN_PASSWORD)
     access_token = login_info.get("access")
     users = api_utils.get_users(access=access_token, search=username)
     user_id_list = []
@@ -422,6 +422,6 @@ def setup_create_users_by_suffix(suffix: str, request) -> None:
     username = f"ui-test-{suffix}"
     email = f"{username}@test.com"
     password = "Ch@ngeme123"
-    login_info = api_utils.get_access_token(DEFAULT_ADMIN_USERNAME, DEFAULT_ADMIN_PASSWORD)
+    login_info = api_utils.api_login(DEFAULT_ADMIN_USERNAME, DEFAULT_ADMIN_PASSWORD)
     access_token = login_info.get("access")
     api_utils.create_user(access_token, username, email, password)
