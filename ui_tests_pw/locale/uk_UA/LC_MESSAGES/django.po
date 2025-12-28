@@ -39,3 +39,6 @@ msgstr "Зареєструватися"
 
 msgid "Users online in the last 5 minutes"
 msgstr "Зараз онлайн користувачі (останні 5 хвилин)"
+
+msgid "Confirm deletion"
+msgstr "Підтвердити видалення"

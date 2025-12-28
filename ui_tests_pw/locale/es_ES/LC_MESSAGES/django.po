@@ -39,3 +39,6 @@ msgstr "Registrarse"
 
 msgid "Users online in the last 5 minutes"
 msgstr "Usuarios en línea actualmente (últimos 5 minutos)"
+
+msgid "Confirm deletion"
+msgstr "Confirmar eliminación"

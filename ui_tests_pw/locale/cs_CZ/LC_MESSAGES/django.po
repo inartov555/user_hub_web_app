@@ -39,3 +39,6 @@ msgstr "Zaregistrovat se"
 
 msgid "Users online in the last 5 minutes"
 msgstr "Aktuálně online uživatelé (posledních 5 minut)"
+
+msgid "Confirm deletion"
+msgstr "Potvrdit smazání"

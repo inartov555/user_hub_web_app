@@ -39,3 +39,6 @@ msgstr "Rekisteröidy"
 
 msgid "Users online in the last 5 minutes"
 msgstr "Tällä hetkellä verkossa olevat käyttäjät (viimeiset 5 minuuttia)"
+
+msgid "Confirm deletion"
+msgstr "Vahvista poisto"

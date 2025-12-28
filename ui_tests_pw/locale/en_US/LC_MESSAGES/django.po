@@ -39,3 +39,6 @@ msgstr "Sign up"
 
 msgid "Users online in the last 5 minutes"
 msgstr "Users online in the last 5 minutes"
+
+msgid "Confirm deletion"
+msgstr "Confirm deletion"

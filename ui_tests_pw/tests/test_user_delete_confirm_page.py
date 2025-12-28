@@ -7,6 +7,7 @@ import re
 
 import pytest
 from playwright.sync_api import Page, expect
+from django.utils import translation
 
 from pages.user_delete_confirm_page import UserDeleteConfirmPage
 from pages.users_table_page import UsersTablePage
@@ -47,6 +48,11 @@ def test_admin_can_navigate_to_delete_confirm(page: Page,
     admin_users_page.delete_users_btn.click()
     confirm_page = UserDeleteConfirmPage(page)
     confirm_page.assert_confirm_delete_loaded()
+    # Verifying localization
+    actual = confirm_page.page_title.text_content()
+    with translation.override(ui_locale_param.lower()):
+        expected = translation.gettext("Confirm deletion")
+    assert actual == expected, f"Wrong page title localization; actual '{actual}'; expected '{expected}'"
     # Deleting the user from UI
     confirm_page.confirm_delete.click()
     # Verifying that user is deleted

@@ -18,6 +18,7 @@ class UserDeleteConfirmPage(BasePage):
     def __init__(self, page: Page):
         super().__init__(page)
 
+        self.page_title = self.page.locator("h2")
         self.confirm_delete = self.page.locator("#confirmDelete")
         self.cancel = self.page.locator("#cancel")
 
