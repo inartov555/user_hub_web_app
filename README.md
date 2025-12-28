@@ -2,8 +2,8 @@
 
 This is a test website + automation framework
 
-- ✅ **Users App - Stable version #1.2:** [stable_v1.2_dec_23_2025/users_app](https://github.com/inartov555/user_hub_web_app/tree/stable_v1.2_dec_23_2025/users_app)
-- ✅ **UI tests - Stable version #1.2:** [stable_v1.2_dec_23_2025/ui_tests_pw](https://github.com/inartov555/user_hub_web_app/tree/stable_v1.2_dec_23_2025/ui_tests_pw)
+- ✅ **Users App - Stable version #1.2:** [stable_v1.3_dec_28_2025/users_app](https://github.com/inartov555/user_hub_web_app/tree/stable_v1.3_dec_28_2025/users_app)
+- ✅ **UI tests - Stable version #1.2:** [stable_v1.3_dec_28_2025/ui_tests_pw](https://github.com/inartov555/user_hub_web_app/tree/stable_v1.3_dec_28_2025/ui_tests_pw)
 - ℹ️ `users_app` module created on Oct-10-2025
 - ℹ️ `ui_tests_pw` module created on Nov-05-2025
 
