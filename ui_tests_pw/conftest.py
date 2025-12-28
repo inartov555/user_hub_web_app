@@ -5,7 +5,6 @@ conftest.py
 from __future__ import annotations
 import os
 from configparser import ConfigParser, ExtendedInterpolation
-import re
 
 import pytest
 from playwright.sync_api import Page, Browser, expect
@@ -391,7 +390,7 @@ def user_stats_page_fixture(logged_in_admin: Page, ui_theme: Theme, ui_locale: s
 
 
 @pytest.fixture(scope="function")
-def cleanup_delete_users_by_suffix(suffix: str, request) -> None:
+def cleanup_delete_users_by_suffix(suffix: str) -> None:
     """
     Delete users by passed suffix.
 
@@ -418,7 +417,7 @@ def cleanup_delete_users_by_suffix(suffix: str, request) -> None:
 
 
 @pytest.fixture(scope="function")
-def setup_create_users_by_suffix(suffix: str, request) -> None:
+def setup_create_users_by_suffix(suffix: str) -> None:
     """
     Delete users by passed suffix.
 

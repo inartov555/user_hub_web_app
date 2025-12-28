@@ -3,7 +3,7 @@ Utility helpers for handling localization in UI tests.
 """
 
 from __future__ import annotations
-from typing import Iterable, List
+from typing import List, Set
 
 from playwright.sync_api import Page
 
@@ -31,13 +31,13 @@ def get_visible_locales(page: Page) -> List[str]:
     return values
 
 
-def assert_locale_visible(page: Page, expected: Iterable[str]) -> None:
+def assert_locale_visible(page: Page, expected: List[str]) -> None:
     """
     Assert that the provided locale codes exist in the dropdown options.
 
     Args:
         page (Page): Playwright page instance.
-        expected (Iterable[str]): Iterable of expected locale codes.
+        expected (List[str]): List of expected locale codes.
     """
     visible_draft = get_visible_locales(page)
     visible: Set[str] = {_ui_locale.lower() for _ui_locale in visible_draft}

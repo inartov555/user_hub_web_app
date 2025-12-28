@@ -3,17 +3,13 @@ Helpers for logging in and preparing test users.
 """
 
 from __future__ import annotations
-from typing import Dict, Tuple
 import re
 
-import requests
 from playwright.sync_api import Page, expect
 
 from config import (
     BACKEND_API_BASE,
     UI_BASE_PORT,
-    DEFAULT_ADMIN_USERNAME,
-    DEFAULT_ADMIN_PASSWORD,
     DEFAULT_REGULAR_USERNAME,
     DEFAULT_REGULAR_PASSWORD,
     frontend_url,
@@ -71,7 +67,7 @@ def ensure_regular_user() -> None:
     try:
         get_api_utils().api_login(DEFAULT_REGULAR_USERNAME, DEFAULT_REGULAR_PASSWORD)
         log.debug("Regular user exists")
-        return  # user already exists
+        return
     except ApiError:
         pass
     log.debug("Creating a regular user")
