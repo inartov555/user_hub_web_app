@@ -42,3 +42,6 @@ msgstr "Aktuálně online uživatelé (posledních 5 minut)"
 
 msgid "Confirm deletion"
 msgstr "Potvrdit smazání"
+
+msgid "People"
+msgstr "Lidé"

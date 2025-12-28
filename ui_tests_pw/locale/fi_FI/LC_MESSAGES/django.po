@@ -42,3 +42,6 @@ msgstr "Tällä hetkellä verkossa olevat käyttäjät (viimeiset 5 minuuttia)"
 
 msgid "Confirm deletion"
 msgstr "Vahvista poisto"
+
+msgid "People"
+msgstr "Henkilöt"

@@ -42,3 +42,6 @@ msgstr "Users online in the last 5 minutes"
 
 msgid "Confirm deletion"
 msgstr "Confirm deletion"
+
+msgid "People"
+msgstr "People"

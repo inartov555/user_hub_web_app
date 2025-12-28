@@ -42,3 +42,6 @@ msgstr "Praegu veebis olevad kasutajad (viimase 5 minuti jooksul)"
 
 msgid "Confirm deletion"
 msgstr "Kinnita kustutamine"
+
+msgid "People"
+msgstr "Inimesed"
