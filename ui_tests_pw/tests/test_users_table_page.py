@@ -18,7 +18,7 @@ from config import DEFAULT_REGULAR_USERNAME
 @pytest.mark.theme
 @pytest.mark.localization
 @pytest.mark.parametrize("ui_theme_param", ["light", "dark"])
-@pytest.mark.parametrize("ui_locale_param", ["en-US", "uk-UA"])
+@pytest.mark.parametrize("ui_locale_param", ["en-US", "uk-UA", "et-EE", "fi-FI", "cs-CZ", "pl-PL", "es-ES"])
 def test_users_table_admin_theme_and_locale(page: Page,
                                             ui_theme_param: Theme,
                                             ui_locale_param: str,

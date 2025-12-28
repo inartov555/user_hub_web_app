@@ -16,7 +16,7 @@ from utils.localization import set_locale
 @pytest.mark.theme
 @pytest.mark.localization
 @pytest.mark.parametrize("ui_theme_param", ["light", "dark"])
-@pytest.mark.parametrize("ui_locale_param", ["en-US", "uk-UA"])
+@pytest.mark.parametrize("ui_locale_param", ["en-US", "uk-UA", "et-EE", "fi-FI", "cs-CZ", "pl-PL", "es-ES"])
 def test_settings_page_renders_for_admin(settings_page: Page,
                                          page: Page,
                                          ui_theme_param: Theme,

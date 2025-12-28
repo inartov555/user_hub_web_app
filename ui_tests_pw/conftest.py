@@ -198,38 +198,20 @@ def base_url_fixture() -> str:
     return frontend_url("/").rstrip("/")
 
 
-# @pytest.fixture(name="ui_theme", params=["light", "dark"], scope="function")
-@pytest.fixture(name="ui_theme", params=["light"], scope="function")
-def ui_theme_fixture(request: pytest.FixtureRequest) -> Theme:
-    """
-    Parametrized fixture for light / dark themes.
-    """
-    return request.param  # type: ignore[return-value]
-
-
-# @pytest.fixture(name="ui_locale", params=["en-US", "uk-UA"], scope="function")
-@pytest.fixture(name="ui_locale", params=["en-US"], scope="function")
-def ui_locale_fixture(request: pytest.FixtureRequest) -> str:
-    """
-    Parametrized fixture for a subset of locales to keep test time reasonable.
-    """
-    return request.param  # type: ignore[return-value]
-
-
 @pytest.fixture(name="logged_in_admin", scope="function")
-def logged_in_admin_fixture(page: Page, ui_theme: Theme, ui_locale: str) -> Page:
+def logged_in_admin_fixture(page: Page) -> Page:
     """
     Return a Playwright page already logged in as the admin user.
     """
     login_page = LoginPage(page)
     login_page.open()
     login_page.accept_cookie_consent_if_present()
-    login_via_ui(page, DEFAULT_ADMIN_USERNAME, DEFAULT_ADMIN_PASSWORD, ui_theme, ui_locale)
+    login_via_ui(page, DEFAULT_ADMIN_USERNAME, DEFAULT_ADMIN_PASSWORD)
     return page
 
 
 @pytest.fixture(name="logged_in_regular", scope="function")
-def logged_in_regular_fixture(page: Page, ui_theme: Theme, ui_locale: str) -> Page:
+def logged_in_regular_fixture(page: Page) -> Page:
     """
     Return a Playwright page already logged in as the regular test user.
     """
@@ -237,156 +219,130 @@ def logged_in_regular_fixture(page: Page, ui_theme: Theme, ui_locale: str) -> Pa
     login_page = LoginPage(page)
     login_page.open()
     login_page.accept_cookie_consent_if_present()
-    login_via_ui(page, DEFAULT_REGULAR_USERNAME, DEFAULT_REGULAR_PASSWORD, ui_theme, ui_locale)
+    login_via_ui(page, DEFAULT_REGULAR_USERNAME, DEFAULT_REGULAR_PASSWORD)
     return page
 
 
 @pytest.fixture(scope="function")
-def admin_users_page(logged_in_admin: Page, ui_theme: Theme, ui_locale: str) -> UsersTablePage:
+def admin_users_page(logged_in_admin: Page) -> UsersTablePage:
     """
     Get Users table page
     """
-    set_theme(logged_in_admin, ui_theme)
-    set_locale(logged_in_admin, ui_locale)
     users = UsersTablePage(logged_in_admin)
     users.open()
     return users
 
 
 @pytest.fixture(scope="function")
-def regular_users_page(logged_in_regular: Page, ui_theme: Theme, ui_locale: str) -> UsersTablePage:
+def regular_users_page(logged_in_regular: Page) -> UsersTablePage:
     """
     Get Users table page
     """
-    set_theme(logged_in_regular, ui_theme)
-    set_locale(logged_in_regular, ui_locale)
     users = UsersTablePage(logged_in_regular)
     users.open()
     return users
 
 
 @pytest.fixture(scope="function")
-def admin_excel_import_page(logged_in_admin: Page, ui_theme: Theme, ui_locale: str) -> ExcelImportPage:
+def admin_excel_import_page(logged_in_admin: Page) -> ExcelImportPage:
     """
     Get Excel import page
     """
-    set_theme(logged_in_admin, ui_theme)
-    set_locale(logged_in_admin, ui_locale)
     excel_import = ExcelImportPage(logged_in_admin)
     excel_import.open()
     return excel_import
 
 
 @pytest.fixture(name="login_page", scope="function")
-def login_page_fixture(page: Page, ui_theme: Theme, ui_locale: str) -> LoginPage:
+def login_page_fixture(page: Page) -> LoginPage:
     """
     Get Login page
     """
     login_page = LoginPage(page)
     login_page.open()
     login_page.accept_cookie_consent_if_present()
-    set_theme(page, ui_theme)
-    set_locale(page, ui_locale)
     return login_page
 
 
 @pytest.fixture(name="reset_password_page", scope="function")
 def reset_password_page_fixture(page: Page,
-                                login_page: Page,  # pylint: disable=unused-argument
-                                ui_theme: Theme,
-                                ui_locale: str) -> ResetPasswordPage:
+                                login_page: LoginPage,  # pylint: disable=unused-argument
+                               ) -> ResetPasswordPage:
     """
     Get Reset Password page
     """
     reset_password_page = ResetPasswordPage(page)
     reset_password_page.open()
-    set_theme(page, ui_theme)
-    set_locale(page, ui_locale)
     return reset_password_page
 
 
 @pytest.fixture(name="signup_page", scope="function")
 def signup_page_fixture(page: Page,
-                                login_page: Page,  # pylint: disable=unused-argument
-                                ui_theme: Theme,
-                                ui_locale: str) -> SignupPage:
+                        login_page: Page,  # pylint: disable=unused-argument
+                       ) -> SignupPage:
     """
     Get Reset Password page
     """
     signup = SignupPage(page)
     signup.open()
-    set_theme(page, ui_theme)
-    set_locale(page, ui_locale)
     return signup
 
 
 @pytest.fixture(name="profile_edit_page_regular", scope="function")
-def profile_edit_page_regular_fixture(logged_in_regular: Page, ui_theme: Theme, ui_locale: str) -> ProfileEditPage:
+def profile_edit_page_regular_fixture(logged_in_regular: Page) -> ProfileEditPage:
     """
     Get Profile Edit page
     """
-    set_theme(logged_in_regular, ui_theme)
-    set_locale(logged_in_regular, ui_locale)
     profile_edit = ProfileEditPage(logged_in_regular)
     profile_edit.open()
     return profile_edit
 
 
 @pytest.fixture(name="profile_edit_page_admin", scope="function")
-def profile_edit_page_admin_fixture(logged_in_admin: Page, ui_theme: Theme, ui_locale: str) -> ProfileEditPage:
+def profile_edit_page_admin_fixture(logged_in_admin: Page) -> ProfileEditPage:
     """
     Get Profile Edit page
     """
-    set_theme(logged_in_admin, ui_theme)
-    set_locale(logged_in_admin, ui_locale)
     profile_edit = ProfileEditPage(logged_in_admin)
     profile_edit.open()
     return profile_edit
 
 
 @pytest.fixture(name="profile_view_page_regular", scope="function")
-def profile_view_page_regular_fixture(logged_in_regular: Page, ui_theme: Theme, ui_locale: str) -> ProfileViewPage:
+def profile_view_page_regular_fixture(logged_in_regular: Page) -> ProfileViewPage:
     """
     Get Profile View page
     """
-    set_theme(logged_in_regular, ui_theme)
-    set_locale(logged_in_regular, ui_locale)
     profile_view = ProfileViewPage(logged_in_regular)
     profile_view.open()
     return profile_view
 
 
 @pytest.fixture(name="profile_view_page_admin", scope="function")
-def profile_view_page_admin_fixture(logged_in_admin: Page, ui_theme: Theme, ui_locale: str) -> ProfileViewPage:
+def profile_view_page_admin_fixture(logged_in_admin: Page) -> ProfileViewPage:
     """
     Get Profile View page
     """
-    set_theme(logged_in_admin, ui_theme)
-    set_locale(logged_in_admin, ui_locale)
     profile_view = ProfileViewPage(logged_in_admin)
     profile_view.open()
     return profile_view
 
 
 @pytest.fixture(name="settings_page", scope="function")
-def settings_page_fixture(logged_in_admin: Page, ui_theme: Theme, ui_locale: str) -> SettingsPage:
+def settings_page_fixture(logged_in_admin: Page) -> SettingsPage:
     """
     Get Profile View page
     """
-    set_theme(logged_in_admin, ui_theme)
-    set_locale(logged_in_admin, ui_locale)
     settings_page = SettingsPage(logged_in_admin)
     settings_page.open()
     return settings_page
 
 
 @pytest.fixture(name="user_stats_page", scope="function")
-def user_stats_page_fixture(logged_in_admin: Page, ui_theme: Theme, ui_locale: str) -> StatsPage:
+def user_stats_page_fixture(logged_in_admin: Page) -> StatsPage:
     """
     Get User Stats page
     """
-    set_theme(logged_in_admin, ui_theme)
-    set_locale(logged_in_admin, ui_locale)
     user_stats_page = StatsPage(logged_in_admin)
     user_stats_page.open()
     return user_stats_page

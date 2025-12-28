@@ -19,7 +19,7 @@ from utils.localization import set_locale
 @pytest.mark.theme
 @pytest.mark.localization
 @pytest.mark.parametrize("ui_theme_param", ["light", "dark"])
-@pytest.mark.parametrize("ui_locale_param", ["en-US", "uk-UA"])
+@pytest.mark.parametrize("ui_locale_param", ["en-US", "uk-UA", "et-EE", "fi-FI", "cs-CZ", "pl-PL", "es-ES"])
 @pytest.mark.parametrize("suffix", ["one"])
 @pytest.mark.usefixtures('setup_create_users_by_suffix')
 @pytest.mark.usefixtures('cleanup_delete_users_by_suffix')
