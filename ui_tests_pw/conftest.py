@@ -18,8 +18,6 @@ from config import (
     DEFAULT_REGULAR_USERNAME,
     DEFAULT_REGULAR_PASSWORD,
 )
-from utils.theme import Theme, set_theme
-from utils.localization import set_locale
 from utils.auth import ensure_regular_user, login_via_ui, get_api_utils
 from utils.file_utils import FileUtils
 from utils.app_config import AppConfig
