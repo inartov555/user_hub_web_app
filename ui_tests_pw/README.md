@@ -7,13 +7,13 @@
 
 - **Python** + **Pytest**
 - **Playwright** (Chromium, Firefox, WebKit)
-- **Django backend** (the existing app) – used as the system under test, including its i18n and logging setup
-- **Docker / docker-compose** – one stack for Django + Postgres + frontend + Playwright tests
+- **Django backend** (the existing app) – used as the system under test, including its i18n setup
+- **Docker / docker-compose** – one stack for Django (for localization tests) + Playwright tests
 - **Page Object Model (POM)** – one page-object class per UI page
 
 ## 🔑 Prerequisites
 
-- Start the Users App web site (`users_app` folder in the root project directory)
+- Start the Users App website (`users_app` folder in the root project directory)
 - Create 1 user before running tests:
 ```
      a) Regular user: test1 / changeme123
@@ -52,7 +52,7 @@
 - One POM per logical page:
   - Login, Signup, Reset password
   - Users table
-  - Profile view / edit
+  - Profile view/edit
   - Settings
   - Stats
   - Excel import
@@ -71,9 +71,5 @@
 
 ## ✨ Where Django is used from tests
 
-- The backend runs as part of the Docker stack and provides:
-  - Configured localization (`LocaleMiddleware`, compiled translations)
-  - Structured logging (console + rotating log files, as configured in `core.settings.LOGGING`)
-- Optionally, helper utilities in `tests/utils/django_localization.py` can initialize Django and
-  read its language configuration for cross-checks (e.g., ensuring UI locale options match server locales).
+- Helper utilities in `tests/utils/django_localization.py` can initialize Django and read its language configuration for cross-checks (e.g., ensuring UI locale options match server locales).
 
