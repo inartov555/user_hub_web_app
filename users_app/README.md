@@ -148,7 +148,7 @@ user_hub_web_app/
 ## 🛡️ Security & auth behaviour
 
 - Strong password validation with Django validators
-- JWTs are stored in memory on the client to reduce XSS persistence risk (no http‑only cookies)
+- JWTs are stored in memory on the client to reduce XSS persistence risk (no HTTP-only cookies)
 - CORS locked down with `django-cors-headers`
 - **Boot‑ID enforcement**: when the backend restarts, stale JWTs are invalidated; the frontend silently re‑auths/refreshes when possible
 - Excel import and serializers include strict validation & error reporting
