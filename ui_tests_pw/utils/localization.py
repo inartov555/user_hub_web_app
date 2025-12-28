@@ -39,7 +39,8 @@ def assert_locale_visible(page: Page, expected: Iterable[str]) -> None:
         page (Page): Playwright page instance.
         expected (Iterable[str]): Iterable of expected locale codes.
     """
-    visible = set(get_visible_locales(page))
-    expected_set = set(expected)
+    visible_draft = get_visible_locales(page)
+    visible: Set[str] = {_ui_locale.lower() for _ui_locale in visible_draft}
+    expected_set: Set[str] = {_ui_locale.lower() for _ui_locale in expected}
     missing = expected_set - visible
     assert not missing, f"Missing locales in UI: {sorted(missing)}; visible={sorted(visible)}"
