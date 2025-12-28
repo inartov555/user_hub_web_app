@@ -22,10 +22,10 @@ This is a test website + automation framework
 
 - 🛠️ **Fixed in `ui_tests_pw`:** test_locale_dropdown_matches_backend_languages (ModuleNotFoundError: No module named 'core')
 - 🛠️ **Fixed in `users_app`:** Unlocalized title for the Sign up page
-- ✨ **Improved in `ui_tests_pw`:** Added localization checks to 
 - ✨ **Improved in `users_app`:** Polishing UI accross the website
 - ✨ **Improved in `users_app`:** Behavior for the Cancel button in View/Edit Profile, Change Password pages (small area in the middle of the button was clickable)
 - ✨ **Improved in `users_app`:** Validation in App Settings
+- 🆕 **Added in `ui_tests_pw`:** Added localization checks to tests
 
 ---
 
