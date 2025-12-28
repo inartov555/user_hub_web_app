@@ -20,7 +20,11 @@ from config import (
 )
 from .theme import set_theme
 from .localization import set_locale
-from .api_utils import UsersAppApi
+from .api_utils import UsersAppApi, ApiError
+from .logger.logger import Logger
+
+
+log = Logger(__name__)
 
 
 def get_api_utils() -> UsersAppApi:
@@ -63,11 +67,14 @@ def ensure_regular_user() -> None:
     2. If login fails (e.g. user not yet created), it creates the user via
        the Djoser registration endpoint.
     """
+    log.info("Ensuring the regular user exists and creating it, if not present")
     try:
         get_api_utils().api_login(DEFAULT_REGULAR_USERNAME, DEFAULT_REGULAR_PASSWORD)
+        print("\n\n Logged in as a regular user \n\n")
         return  # user already exists
-    except AssertionError:
+    except ApiError:
         pass
+    print("\n\n Creating user \n\n")
     access_token =  get_api_utils().get_access_token(DEFAULT_ADMIN_USERNAME, DEFAULT_ADMIN_PASSWORD)
     get_api_utils().create_user(None,
                                 DEFAULT_REGULAR_USERNAME,
@@ -92,6 +99,7 @@ def login_via_ui(
         ui_theme (str): theme (light or dark).
         ui_locale (str): locale code such as en-US.
     """
+    log.info("Log in via UI")
     username_loc = page.locator("#username")
     password_loc = page.locator("#password")
     login_btn_loc = page.locator("form button[type='submit']")

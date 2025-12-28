@@ -151,6 +151,8 @@ class ApiBase:
                 message += f"\n{self.END_REQ}"
                 log.error(message)
                 raise ApiError(message) from ex
+            if resp.status_code not in (200, 201, 203, 204):
+                raise ApiError(f"HTTP status code is not successful: {resp.status_code}")
             client.close()
         else:
             raise ApiError(f"HTTP method is not implemented: {method}\n")
@@ -283,6 +285,5 @@ class UsersAppApi(ApiJsonRequest):
         payload = {"username": username, "email": email, "password": password}
         response = self.make_request("post",
                                      "/api/v1/auth/users/",
-                                     payload=payload,
-                                     headers=self.get_authorization_token_dict(access))
+                                     payload=payload)
         return response

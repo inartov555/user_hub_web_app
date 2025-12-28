@@ -416,6 +416,7 @@ def setup_create_users_by_suffix(suffix: str, request) -> None:
     Username & email are created with this logic:
         username = f"ui-test-{suffix}"
         email = f"{username}@test.com"
+        password = "Ch@ngeme123"
     """
     log.info("Setup. Creating users before running a test")
     api_utils = get_api_utils()
