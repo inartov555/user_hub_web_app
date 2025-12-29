@@ -20,7 +20,6 @@ export default function Button({
       ghost: "text-slate-700 hover:bg-slate-100",
     }[variant] || "";
 
-  // more obvious disabled colors per variant + no hover + cursor
   const disabledStyles =
     {
       primary: "bg-slate-300 text-slate-600",
