@@ -17,7 +17,7 @@
 
 ## 🚀 Quick start (Docker)
 
-**Prereqs:** Docker & docker‑compose.
+**Prerequisites:** Docker & docker‑compose.
 
 ```
 # You can just run ./run_website.sh, it defaults to ./run_website.sh false false false
