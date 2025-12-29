@@ -59,6 +59,12 @@ class BasePage:
 
     def assert_text_localization(self, ui_locale_param: str, actual: str, expected: str) -> None:
         """
+        Check text localization
+
+        Args:
+            ui_locale_param (str): e.g. en-US
+            actual (str): actual text localization retrieved from UI element
+            expected (str): expected text localization, provide the text code to retrieve the localization with Django
         """
         with translation.override(ui_locale_param.lower()):
             expected = translation.gettext(expected)
