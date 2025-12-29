@@ -5,6 +5,7 @@ Base page object with shared helpers.
 from __future__ import annotations
 
 from playwright.sync_api import Page
+from django.utils import translation
 
 from config import frontend_url
 from utils.theme import Theme, set_theme
@@ -55,3 +56,10 @@ class BasePage:
         """
         visible = get_visible_locales(self.page)
         assert expected_code in visible, f"Locale {expected_code!r} not in {visible}"
+
+    def assert_text_localization(self, ui_locale_param: str, actual: str, expected: str) -> None:
+        """
+        """
+        with translation.override(ui_locale_param.lower()):
+            expected = translation.gettext(expected)
+        assert actual == expected, f"Wrong text localization; actual '{actual}'; expected '{expected}'"

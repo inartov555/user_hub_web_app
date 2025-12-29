@@ -6,7 +6,6 @@ from __future__ import annotations
 
 import pytest
 from playwright.sync_api import Page, expect
-from django.utils import translation
 
 from pages.settings_page import SettingsPage
 from pages.users_table_page import UsersTablePage
@@ -32,9 +31,8 @@ def test_settings_page_renders_for_admin(settings_page: SettingsPage,
     settings_page.assert_loaded()
     # Verifying localization
     actual = settings_page.page_title.text_content()
-    with translation.override(ui_locale_param.lower()):
-        expected = translation.gettext("App Settings")
-    assert actual == expected, f"Wrong page title localization; actual '{actual}'; expected '{expected}'"
+    expected = "App Settings"
+    settings_page.assert_text_localization(ui_locale_param, actual, expected)
 
 
 @pytest.mark.regular_user

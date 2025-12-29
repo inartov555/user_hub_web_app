@@ -7,7 +7,6 @@ import re
 
 import pytest
 from playwright.sync_api import Page, expect
-from django.utils import translation
 
 from pages.profile_view_page import ProfileViewPage
 from utils.theme import Theme, set_theme
@@ -32,9 +31,8 @@ def test_profile_view_renders_for_regular_user(page: Page,
     profile_view_page_regular.assert_profile_basics_visible()
     # Verifying localization
     actual = profile_view_page_regular.page_title.text_content()
-    with translation.override(ui_locale_param.lower()):
-        expected = translation.gettext("Profile")
-    assert actual == expected, f"Wrong page title localization; actual '{actual}'; expected '{expected}'"
+    expected = "Profile"
+    profile_view_page_regular.assert_text_localization(ui_locale_param, actual, expected)
 
 
 @pytest.mark.admin

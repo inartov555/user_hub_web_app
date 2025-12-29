@@ -7,7 +7,6 @@ import re
 
 import pytest
 from playwright.sync_api import Page, expect
-from django.utils import translation
 
 from pages.login_page import LoginPage
 from utils.theme import Theme, set_theme
@@ -37,9 +36,8 @@ def test_login_page_renders_in_theme_and_locale(login_page: LoginPage,
     login_page.assert_on_login_page()
     # Verifying localization
     actual = login_page.page_title.text_content()
-    with translation.override(ui_locale_param.lower()):
-        expected = translation.gettext("Log in")
-    assert actual == expected, f"Wrong page title localization; actual '{actual}'; expected '{expected}'"
+    expected = "Log in"
+    login_page.assert_text_localization(ui_locale_param, actual, expected)
 
 
 @pytest.mark.parametrize(
