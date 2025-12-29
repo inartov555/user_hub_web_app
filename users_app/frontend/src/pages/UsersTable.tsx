@@ -464,6 +464,7 @@ export default function UsersTable(props: Props) {
             </Button>
             {showColumns && (
               <div
+                data-tag="columnVisibilityPopup"
                 className="absolute right-0 z-50 mt-2 w-56 rounded-md border bg-white p-2 shadow-lg dark:bg-slate-900 dark:text-slate-100 dark:placeholder-slate-500
                            dark:border-slate-700"
                 role="menu"
@@ -606,30 +607,31 @@ export default function UsersTable(props: Props) {
               <div className="flex items-center gap-2">
                 <Button
                   id="toFirstPage"
+                  title={t("users.firstPage")}
                   onClick={() => (table.setPageIndex(0), setPage(1))}
                   disabled={!table.getCanPreviousPage()}
                 >
                   <ChevronsLeft className="h-4 w-4" />
-                  {t("users.firstPage")}
                 </Button>
                 <Button
                   id="toPreviousPage"
+                  title={t("users.previousPage")}
                   onClick={() => (table.previousPage(), setPage((p) => Math.max(1, p - 1)))}
                   disabled={!table.getCanPreviousPage()}
                 >
                   <ChevronLeft className="h-4 w-4" />
-                  {t("users.previousPage")}
                 </Button>
                 <Button
                   id="toNextPage"
+                  title={t("users.nextPage")}
                   onClick={() => (table.nextPage(), setPage((p) => p + 1))}
                   disabled={!table.getCanNextPage()}
                 >
                   <ChevronRight className="h-4 w-4" />
-                  {t("users.nextPage")}
                 </Button>
                 <Button
                   id="toLastPage"
+                  title={t("users.lastPage")}
                   onClick={() => {
                     const last = Math.max(0, table.getPageCount() - 1);
                     table.setPageIndex(last);
@@ -638,19 +640,19 @@ export default function UsersTable(props: Props) {
                   disabled={!table.getCanNextPage()}
                 >
                   <ChevronsRight className="h-4 w-4" />
-                  {t("users.lastPage")}
                 </Button>
               </div>
 
-              <div className="flex items-center gap-3 text-sm text-muted-foreground">
+              <div data-tag="pagination" className="flex items-center gap-3 text-sm text-muted-foreground">
                 {isFetching && <span data-tag="isUpdating">{t("users.updating")}</span>}
-                <span>
+                <span data-tag="pageOfPages">
                   {t("users.page")} <strong>{table.getState().pagination.pageIndex + 1}</strong> {t("users.of")}{" "}
                   {table.getPageCount() || 1}
                 </span>
                 <label className="flex items-center gap-2">
                   {t("users.rowsPerPage")}
                   <select
+                    id="rowsPerPage"
                     className="rounded-md border bg-background px-2 py-1 dark:bg-slate-900 dark:text-slate-100 dark:placeholder-slate-500
                       dark:border-slate-700"
                     value={table.getState().pagination.pageSize}
@@ -660,7 +662,7 @@ export default function UsersTable(props: Props) {
                       setPageSize(ps);
                     }}
                   >
-                    {[10, 20, 30, 50, 100].map((ps) => (
+                    {[5, 10, 20, 30, 50, 100, 200].map((ps) => (
                       <option key={ps} value={ps}>
                         {ps}
                       </option>
