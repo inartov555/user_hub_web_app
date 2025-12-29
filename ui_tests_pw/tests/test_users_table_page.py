@@ -6,7 +6,6 @@ from __future__ import annotations
 
 import pytest
 from playwright.sync_api import Page, expect
-from django.utils import translation
 
 from config import DEFAULT_REGULAR_USERNAME
 from pages.users_table_page import UsersTablePage
@@ -33,9 +32,8 @@ def test_users_table_admin_theme_and_locale(page: Page,
     admin_users_page.assert_admin_controls_visible()
     # Verifying localization
     actual = admin_users_page.page_title.text_content()
-    with translation.override(ui_locale_param.lower()):
-        expected = translation.gettext("People")
-    assert actual == expected, f"Wrong page title localization; actual '{actual}'; expected '{expected}'"
+    expected = "People"
+    admin_users_page.assert_text_localization(ui_locale_param, actual, expected)
 
 
 @pytest.mark.regular_user

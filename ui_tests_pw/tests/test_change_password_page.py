@@ -7,7 +7,6 @@ import re
 
 import pytest
 from playwright.sync_api import Page, expect
-from django.utils import translation
 
 from pages.users_table_page import UsersTablePage
 from pages.change_password_page import ChangePasswordPage
@@ -42,9 +41,8 @@ def test_admin_can_open_change_password_for_user(ui_theme_param: Theme,
     page.wait_for_url(re.compile(r".*/users/\d+/change-password$"))
     # Verifying localization
     actual = change_password_page.page_title.text_content()
-    with translation.override(ui_locale_param.lower()):
-        expected = translation.gettext("Change password")
-    assert actual == expected, f"Wrong page title localization; actual '{actual}'; expected '{expected}'"
+    expected = "Change password"
+    change_password_page.assert_text_localization(ui_locale_param, actual, expected)
 
 
 @pytest.mark.regular_user

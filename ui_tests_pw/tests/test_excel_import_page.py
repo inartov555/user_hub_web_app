@@ -6,7 +6,6 @@ from __future__ import annotations
 
 import pytest
 from playwright.sync_api import Page, expect
-from django.utils import translation
 
 from pages.excel_import_page import ExcelImportPage
 from pages.users_table_page import UsersTablePage
@@ -34,9 +33,8 @@ def test_excel_import_page_renders_for_admin(page: Page,
     expect(admin_excel_import_page.download_template_btn).to_be_visible()
     # Verifying localization
     actual = admin_excel_import_page.page_title.text_content()
-    with translation.override(ui_locale_param.lower()):
-        expected = translation.gettext("Excel Import")
-    assert actual == expected, f"Wrong page title localization; actual '{actual}'; expected '{expected}'"
+    expected = "Excel Import"
+    admin_excel_import_page.assert_text_localization(ui_locale_param, actual, expected)
 
 
 @pytest.mark.regular_user

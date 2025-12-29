@@ -6,7 +6,6 @@ from __future__ import annotations
 
 import pytest
 from playwright.sync_api import Page, expect
-from django.utils import translation
 
 from pages.reset_password_page import ResetPasswordPage
 from utils.theme import Theme, set_theme
@@ -30,9 +29,8 @@ def test_reset_password_page_renders(page: Page,
     expect(reset_password_page.email).to_be_visible()
     # Verifying localization
     actual = reset_password_page.page_title.text_content()
-    with translation.override(ui_locale_param.lower()):
-        expected = translation.gettext("Reset password")
-    assert actual == expected, f"Wrong page title localization; actual '{actual}'; expected '{expected}'"
+    expected = "Reset password"
+    reset_password_page.assert_text_localization(ui_locale_param, actual, expected)
 
 
 @pytest.mark.parametrize("email", ["user@example.com"])

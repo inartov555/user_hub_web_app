@@ -8,7 +8,6 @@ import re
 
 import pytest
 from playwright.sync_api import Page, expect
-from django.utils import translation
 
 from pages.profile_edit_page import ProfileEditPage
 from pages.profile_view_page import ProfileViewPage
@@ -38,9 +37,8 @@ def test_profile_edit_renders_and_can_save(profile_edit_page_regular: ProfileEdi
     profile_edit_page_regular.assert_loaded()
     # Verifying localization
     actual = profile_edit_page_regular.page_title.text_content()
-    with translation.override(ui_locale_param.lower()):
-        expected = translation.gettext("Edit profile")
-    assert actual == expected, f"Wrong page title localization; actual '{actual}'; expected '{expected}'"
+    expected = "Edit profile"
+    profile_edit_page_regular.assert_text_localization(ui_locale_param, actual, expected)
     # Now let's check if data are saved
     profile_edit_page_regular.fill_basic_fields(edit_data.get("firstName"), edit_data.get("lastName"), edit_data.get("bio"))
     profile_edit_page_regular.save.click()
