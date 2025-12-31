@@ -16,7 +16,7 @@ export default function Brand({ title }: { title: string }) {
       <span className="inline-flex h-7 w-7 items-center justify-center
                        rounded-xl bg-brand-600 text-white text-xs font-bold
                        shadow ring-1 ring-white/60 select-none">
-        v1.3
+        v1.4
       </span>
       <span id="brandText" className="drop-shadow-[0_1px_0_rgba(255,255,255,0.6)]">
         {title}

@@ -44,7 +44,7 @@
 
 ## 🗂️ High-level test strategy
 
-- UI-centric tests that exercise the real **Django REST backend** and **React SPA**.
+- UI-centric tests that exercise the real Django REST backend and React SPA.
 - One POM per logical page:
   - Login, Signup, Reset password
   - Users table
@@ -54,13 +54,13 @@
   - Excel import
   - Change password
   - User delete confirm
-- For **each page** we cover at least ten scenarios when the suite is executed:
+- For each page at least one scenario is covered when the suite is executed:
   - Dark/light theme behavior
   - Localization (English + at least one non-English locale)
   - Access control for:
     - Regular user: `test1 / changeme123`
     - Admin: `admin / changeme123`
-- The **Users table** page gets additional coverage for:
+- The Users table page gets additional coverage for:
   - Multi-column sorting state & indicators
   - Admin-only controls (`Delete users`, `Change password` column)
   - Non-admin restrictions

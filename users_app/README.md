@@ -98,7 +98,7 @@ user_hub_web_app/
 |       `-- __tests__/       # unit tests
 |-- docker-compose.yml
 |-- run_website.sh
-`-- test_data/import_template_EXAMPLE.xlsx
+`-- test_data/               # *.xlsx
 ```
 
 ---
@@ -106,16 +106,12 @@ user_hub_web_app/
 ## ⚙️ Configuration
 
 ### Backend environment (most relevant)
-- `ALLOWED_HOSTS` — comma‑separated list
-- `CORS_ALLOWED_ORIGINS` — comma‑separated list
 - `DATABASE_URL` — Postgres DSN (`postgres://...`)
-- `DJANGO_DEBUG` — `true|false`
 - **JWT & idle timing**
   - `ACCESS_TOKEN_LIFETIME` — seconds (e.g. `1800`)
   - `IDLE_TIMEOUT_SECONDS` — seconds (e.g. `900`)
   - `JWT_RENEW_AT_SECONDS` — seconds before expiry to silently refresh (e.g. `1200`)
   - `ROTATE_REFRESH_TOKENS` — `true|false`
-- `SPECTACULAR_SETTINGS` — OpenAPI metadata (see `core/settings.py`)
 
 ### Frontend environment
 - `VITE_API_URL` — base API path; defaults to `/api/v1`
@@ -147,10 +143,10 @@ user_hub_web_app/
 
 ## 🛡️ Security & auth behaviour
 
-- Strong password validation with Django validators
+- Password validation with Django validators
 - JWTs are stored in memory on the client to reduce XSS persistence risk (no HTTP-only cookies)
 - CORS locked down with `django-cors-headers`
-- **Boot‑ID enforcement**: when the backend restarts, stale JWTs are invalidated; the frontend silently re‑auths/refreshes when possible
+- Boot‑ID enforcement: when the backend restarts, stale JWTs are invalidated; the frontend silently re‑auths/refreshes when possible
 - Excel import and serializers include strict validation & error reporting
 
 ---
