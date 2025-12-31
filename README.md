@@ -18,7 +18,7 @@ This is a test website + automation framework
 - 🟩 **[v1](https://github.com/inartov555/user_hub_web_app/tree/stable_v1_nov_05_2025)**   released on Nov-05-2025
 
 ---
-## 📌 Changelog v1.3 vs. v1.2
+## 📌 Changelog v1.4 vs. v1.3
 
 - 🆕 There's a plan to add a new tab
 
