@@ -2,11 +2,12 @@ import { useState, useEffect } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { api } from "../lib/axios";
+import { extractApiError } from "../lib/httpErrors";
 import { fetchRuntimeAuth } from "../lib/settings";
 import { useAuthStore } from "../auth/store";
 import FormInput from "../components/FormInput";
-import { extractApiError } from "../lib/httpErrors";
 import Button from "../components/button";
+import PasswordInput from "../components/PasswordInput";
 
 export default function Login() {
   const { t } = useTranslation();
@@ -53,8 +54,8 @@ export default function Login() {
       <form onSubmit={onSubmit} className="space-y-3">
         <FormInput placeholder={t("signup.username")}
                    id="username" type="username" value={username} onChange={e=>setUsername(e.target.value)} />
-        <FormInput placeholder={t("signup.password")}
-                   id="password" type="password" value={password} onChange={e=>setPassword(e.target.value)} />
+        <PasswordInput placeholder={t("signup.password")}
+                       id="password" value={password} onChange={e=>setPassword(e.target.value)}/>
         {error && <p className="text-red-600 text-sm whitespace-pre-line">{t("auth.loginFailed", { message: error })}</p>}
         <div className="mt-2 flex justify-center">
           <Button type="submit">{t("auth.signin")}</Button>

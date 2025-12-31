@@ -24,11 +24,11 @@ export default function PasswordInput({ label, error, className = "", id, ...pro
         />
         <button
           type="button"
-          aria-label={show ? "Hide password" : "Show password"}
+          data-tag={show ? "hide" : "show"}
           className="absolute right-2 top-1/2 -translate-y-1/2 text-sm"
           onClick={() => setShow((s) => !s)}
         >
-          {show ? <>{t("passwordComponent.show")}</> : <>{t("passwordComponent.hide")}</>}
+          {show ? <>{t("passwordComponent.hide")}</> : <>{t("passwordComponent.show")}</>}
         </button>
       </div>
       {error ? <span className="text-xs text-red-600">{error}</span> : null}

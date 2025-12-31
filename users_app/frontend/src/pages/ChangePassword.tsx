@@ -2,10 +2,11 @@ import { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { api } from "../lib/axios";
-import FormInput from "../components/FormInput";
 import { extractApiError } from "../lib/httpErrors";
 import { useAuthStore } from "../auth/store";
+import FormInput from "../components/FormInput";
 import Button from "../components/button";
+import PasswordInput from "../components/PasswordInput";
 
 export default function ChangePassword() {
   const { t, i18n } = useTranslation();

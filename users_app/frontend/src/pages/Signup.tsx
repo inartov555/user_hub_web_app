@@ -2,9 +2,10 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { api } from "../lib/axios";
-import FormInput from "../components/FormInput";
 import { extractApiError } from "../lib/httpErrors";
+import FormInput from "../components/FormInput";
 import Button from "../components/button";
+import PasswordInput from "../components/PasswordInput";
 
 export default function Signup() {
   const { t } = useTranslation();

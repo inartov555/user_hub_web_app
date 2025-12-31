@@ -4,10 +4,10 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 import { Trash2 } from "lucide-react";
 import { api } from "../lib/axios";
-import { Card, CardHeader, CardBody } from "../components/card";
-import Button from "../components/button";
 import { extractApiError } from "../lib/httpErrors";
 import { useAuthStore } from "../auth/store";
+import { Card, CardHeader, CardBody } from "../components/card";
+import Button from "../components/button";
 
 type User = {
   id: number;
@@ -42,10 +42,11 @@ export default function UserDeleteConfirm() {
     setLoading(true);
     setError(null);
     try {
-      // Try bulk endpoint first
+      // Bulk user deletion
       const bulk = await api.post("/users/bulk-delete/", { ids }, { validateStatus: () => true });
 
-      // Fallback retry user deletion, set validateStatus to true when you need it
+      // Uncomment this block to have additional user deletion one by one
+      /*
       if (bulk.status < 200 || bulk.status >= 300) {
         const parsed = extractApiError(bulk);
         setError(prev => (prev ? `${prev}` : "") + `${t("userDeleteConfirm.failedToDeleteSelectedUsers")}\n\n`);
@@ -70,6 +71,7 @@ export default function UserDeleteConfirm() {
         await qc.invalidateQueries({ queryKey: ["users"] });
         navigate("/users", { replace: true });
       }
+      */
     } catch (erro: any) {
       const parsed = extractApiError(erro);
       setError(prev => (prev ? `${prev}` : "") + `\n${t("userDeleteConfirm.failedToDeleteSelectedUsers")} ${parsed.message}`);
