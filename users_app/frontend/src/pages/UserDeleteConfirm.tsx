@@ -8,6 +8,7 @@ import { extractApiError } from "../lib/httpErrors";
 import { useAuthStore } from "../auth/store";
 import { Card, CardHeader, CardBody } from "../components/card";
 import Button from "../components/button";
+import PasswordInput from "../components/PasswordInput";
 
 type User = {
   id: number;

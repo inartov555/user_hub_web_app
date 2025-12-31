@@ -34,8 +34,8 @@ export default function Signup() {
                    id="email" value={email} onChange={e=>setEmail(e.target.value)} />
         <FormInput placeholder={t("signup.username")}
                    id="username" type="username" value={username} onChange={e=>setUsername(e.target.value)} />
-        <FormInput placeholder={t("signup.password")}
-                   id="password" type="password" value={password} onChange={e=>setPassword(e.target.value)} />
+        <PasswordInput placeholder={t("signup.password")}
+                       id="password" value={password} onChange={e=>setPassword(e.target.value)} />
         {error && <p className="text-red-600 text-sm whitespace-pre-line">{t("signup.signupFailed", { message: error })}</p>}
         <div id="create" className="mt-2 flex justify-center">
           <Button type="submit">{t("auth.createAccount")}</Button>

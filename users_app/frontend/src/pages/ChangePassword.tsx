@@ -50,21 +50,14 @@ export default function ChangePassword() {
     <div className="max-w-xl mx-auto p-4 rounded-2xl shadow bg-white border dark:bg-slate-800 dark:text-slate-100 dark:border-slate-700">
       <h1 className="text-2xl font-semibold mb-4">{t("users.changePassword")}</h1>
       <form onSubmit={onSubmit} className="space-y-3">
-        <FormInput
-          ref={pwRef}
-          placeholder={t("changePassword.newPassword")}
-          type="password"
-          id="password"
-          value={password}
-          onChange={e => setPassword(e.target.value)}
-        />
-        <FormInput
-          placeholder={t("changePassword.confirmPassword")}
-          type="password"
-          id="confirmPassword"
-          value={confirmPassword}
-          onChange={e => setConfirmPassword(e.target.value)}
-        />
+        <PasswordInput placeholder={t("changePassword.newPassword")}
+                       id="password"
+                       value={password}
+                       onChange={e => setPassword(e.target.value)} />
+        <PasswordInput placeholder={t("changePassword.confirmPassword")}
+                       id="confirmPassword"
+                       value={confirmPassword}
+                       onChange={e => setConfirmPassword(e.target.value)} />
         {error && <p className="text-red-600 text-sm whitespace-pre-line">{error}</p>}
         <div className="flex gap-2">
           <Button id="changePassword" type="submit" disabled={saving}>

@@ -14,12 +14,20 @@ export default function PasswordInput({ label, error, className = "", id, ...pro
   return (
     <label className="block space-y-1">
       {label ? <span className="text-sm text-slate-700">{label}</span> : null}
-      <div className="relative">
+      <div data-tag="passwordField" className="relative">
         <input
           id={id}
           maxLength={40}
           type={show ? "text" : "password"}
-          className={`w-full rounded-md border px-3 py-2 pr-10 outline-none focus:ring ${className}`}
+          className={`
+            w-full rounded-xl px-3 py-2
+            bg-white text-slate-900 placeholder-slate-500
+            border border-slate-300
+            focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500
+            dark:bg-slate-900 dark:text-slate-100 dark:placeholder-slate-500
+            dark:border-slate-700
+            ${className}
+          `}
           {...props}
         />
         <button
