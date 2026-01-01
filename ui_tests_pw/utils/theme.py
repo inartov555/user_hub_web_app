@@ -8,8 +8,8 @@ import re
 
 from playwright.sync_api import Page, expect
 
-from .logger.logger import Logger
 from core.constants import ThemeConsts
+from .logger.logger import Logger
 
 
 Theme = Literal[ThemeConsts.LIGHT, ThemeConsts.DARK]

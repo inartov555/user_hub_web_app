@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { NavLink, Link, useLocation, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { MessageCircle } from "lucide-react";
 import { useAuthStore } from "../auth/store";
 import i18n from "../lib/i18n";
 import { LocaleFlag } from "../components/LocaleFlag";
@@ -120,7 +121,10 @@ export default function Navbar() {
           {user && (
             <>
               <div className="bg-gray-200 border rounded-full px-2 py-1 text-sm flex items-center gap-2 dark:bg-slate-900 dark:text-slate-100 dark:placeholder-slate-500
-            dark:border-slate-700">
+                              dark:border-slate-700">
+                <span id="greeting" className="text-sm">
+                  <MessageCircle className="h-4 w-4" />
+                </span>
                 <span id="greeting" className="text-sm">
                   {t("app.hiUser", { username: user.username })}
                 </span>
