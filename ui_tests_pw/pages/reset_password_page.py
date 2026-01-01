@@ -17,7 +17,7 @@ class ResetPasswordPage(BasePage):
     def __init__(self, page: Page):
         super().__init__(page)
 
-        self.page_title = self.page.locator("h1")
+        self.page_title = self.page.locator("h2")
         self.email = self.page.locator("#email")
         self.submit = self.page.locator("form button[type='submit']")
         self.reset_pswd_info_msg = self.page.locator("p[data-tag='resetPassInfoMsg']")

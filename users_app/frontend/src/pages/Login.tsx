@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { LogIn } from "lucide-react";
 import { api } from "../lib/axios";
 import { extractApiError } from "../lib/httpErrors";
 import { fetchRuntimeAuth } from "../lib/settings";
@@ -8,6 +9,7 @@ import { useAuthStore } from "../auth/store";
 import FormInput from "../components/FormInput";
 import Button from "../components/button";
 import PasswordInput from "../components/PasswordInput";
+import UnifiedTitle from "../components/UnifiedTitle";
 
 export default function Login() {
   const { t } = useTranslation();
@@ -50,7 +52,7 @@ export default function Login() {
 
   return (
     <div className="max-w-xl mx-auto p-4 rounded-2xl shadow bg-white border dark:bg-slate-800 dark:text-slate-100 dark:border-slate-700">
-      <h1 className="text-2xl font-semibold mb-4">{t("auth.login")}</h1>
+      <UnifiedTitle icon=<LogIn className="h-4 w-4" /> title={t("auth.login")} />
       <form onSubmit={onSubmit} className="space-y-3">
         <FormInput placeholder={t("signup.username")}
                    id="username" type="username" value={username} onChange={e=>setUsername(e.target.value)} />

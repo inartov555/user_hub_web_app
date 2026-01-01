@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { fetchAuthSettings, updateAuthSettings, AuthSettings } from "../lib/settings";
+import { Settings as SettingsIcon } from "lucide-react";
+import { fetchAuthSettings, updateAuthSettings, AuthSettings, fetchRuntimeAuth } from "../lib/settings";
 import { useAuthStore } from "../auth/store";
 import { extractApiError } from "../lib/httpErrors";
 import Button from "../components/button";
-import { fetchRuntimeAuth } from "../lib/settings";
+import UnifiedTitle from "../components/UnifiedTitle";
 
 export default function Settings() {
   const { t } = useTranslation();
@@ -59,41 +60,39 @@ export default function Settings() {
   return (
     <div className="max-w-xl mx-auto p-4 rounded-2xl shadow bg-white border dark:bg-slate-800 dark:text-slate-100 dark:border-slate-700">
       <div className="max-w-3xl mx-auto p-4">
-        <h1 className="text-xl font-semibold mb-4">{t("appSettings.title")}</h1>
-        <p className="text-xs text-blue-800 dark:text-blue-200 mt-6">
-          {t("appSettings.noteNewSessions")}
-        </p>
-        <br />
+        <UnifiedTitle icon=<SettingsIcon className="h-4 w-4" /> title={t("appSettings.title")} subtitle={t("appSettings.noteNewSessions")} />
         <form className="space-y-6" onSubmit={onSubmit}>
-          {/* Rotate refresh tokens (controls visibility & value of renewAtSeconds) */}
-          <label className="block text-sm font-medium">{t("appSettings.jwtRotateTokens")}</label>
-          <p className="text-xs text-slate-500">{t("appSettings.jwtRotateTokensHelp")}</p>
-          <select
-            id="rotateRefreshTokens"
-              className="w-full rounded-xl px-3 py-2
-              bg-white text-slate-900 placeholder-slate-500
-              border border-slate-300
-              focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500
-              dark:bg-slate-900 dark:text-slate-100 dark:placeholder-slate-500
-              dark:border-slate-700"
-            value={form.ROTATE_REFRESH_TOKENS ? "true" : "false"}
-            onChange={(e) => {
-              const next = e.target.value === "true";
+          <div className="space-y-1">
+            {/* Rotate refresh tokens (controls visibility & value of renewAtSeconds) */}
+            <label className="block text-sm font-medium">{t("appSettings.jwtRotateTokens")}</label>
+            <p className="text-xs text-slate-500">{t("appSettings.jwtRotateTokensHelp")}</p>
+            <select
+              id="rotateRefreshTokens"
+                className="w-full rounded-xl px-3 py-2
+                bg-white text-slate-900 placeholder-slate-500
+                border border-slate-300
+                focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500
+                dark:bg-slate-900 dark:text-slate-100 dark:placeholder-slate-500
+                dark:border-slate-700"
+              value={form.ROTATE_REFRESH_TOKENS ? "true" : "false"}
+              onChange={(e) => {
+                const next = e.target.value === "true";
 
-              if (next) {
-                const base = Number(form.ACCESS_TOKEN_LIFETIME) || 0;
-                const renew = Math.floor(base * 0.7);
-                onChange("JWT_RENEW_AT_SECONDS", renew);
-                onChange("ROTATE_REFRESH_TOKENS", true);
-              } else {
-                onChange("JWT_RENEW_AT_SECONDS", 0);
-                onChange("ROTATE_REFRESH_TOKENS", false);
-              }
-            }}
-          >
-            <option value="true">true</option>
-            <option value="false">false</option>
+                if (next) {
+                  const base = Number(form.ACCESS_TOKEN_LIFETIME) || 0;
+                  const renew = Math.floor(base * 0.7);
+                  onChange("JWT_RENEW_AT_SECONDS", renew);
+                  onChange("ROTATE_REFRESH_TOKENS", true);
+                } else {
+                  onChange("JWT_RENEW_AT_SECONDS", 0);
+                  onChange("ROTATE_REFRESH_TOKENS", false);
+                }
+              }}
+            >
+              <option value="true">true</option>
+              <option value="false">false</option>
           </select>
+          </div>
           {/* Renew at (conditionally visible) */}
           {form.ROTATE_REFRESH_TOKENS && (
             <Field

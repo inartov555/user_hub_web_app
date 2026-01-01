@@ -1,10 +1,12 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { KeySquare } from "lucide-react";
 import { api } from "../lib/axios";
+import { extractApiError } from "../lib/httpErrors";
 import FormInput from "../components/FormInput";
 import Button from "../components/button";
-import { extractApiError } from "../lib/httpErrors";
+import UnifiedTitle from "../components/UnifiedTitle";
 
 export default function ResetPassword() {
   const { t, i18n } = useTranslation();
@@ -30,7 +32,7 @@ export default function ResetPassword() {
 
   return (
     <div className="max-w-xl mx-auto p-4 rounded-2xl shadow bg-white border dark:bg-slate-800 dark:text-slate-100 dark:border-slate-700">
-      <h1 className="text-2xl font-semibold mb-4">{t("resetPassword.resetPassword")}</h1>
+      <UnifiedTitle icon=<KeySquare className="h-4 w-4" /> title={t("resetPassword.resetPassword")} />
       {sent ? <p data-tag="resetPassInfoMsg">{t("resetPassword.checkEmailForResetLink")}</p> : (
         <form onSubmit={onSubmit} className="space-y-3">
           <FormInput placeholder="Email" id="email" value={email} onChange={e=>setEmail(e.target.value)} />

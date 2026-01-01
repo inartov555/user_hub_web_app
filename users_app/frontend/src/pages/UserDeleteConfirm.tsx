@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useQueryClient } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
-import { Trash2 } from "lucide-react";
+import { Trash2, UserX } from "lucide-react";
 import { api } from "../lib/axios";
 import { extractApiError } from "../lib/httpErrors";
 import { useAuthStore } from "../auth/store";
@@ -47,7 +47,6 @@ export default function UserDeleteConfirm() {
       const bulk = await api.post("/users/bulk-delete/", { ids }, { validateStatus: () => true });
 
       // Uncomment this block to have additional user deletion one by one
-      /*
       if (bulk.status < 200 || bulk.status >= 300) {
         const parsed = extractApiError(bulk);
         setError(prev => (prev ? `${prev}` : "") + `${t("userDeleteConfirm.failedToDeleteSelectedUsers")}\n\n`);
@@ -72,7 +71,6 @@ export default function UserDeleteConfirm() {
         await qc.invalidateQueries({ queryKey: ["users"] });
         navigate("/users", { replace: true });
       }
-      */
     } catch (erro: any) {
       const parsed = extractApiError(erro);
       setError(prev => (prev ? `${prev}` : "") + `\n${t("userDeleteConfirm.failedToDeleteSelectedUsers")} ${parsed.message}`);
@@ -87,7 +85,7 @@ export default function UserDeleteConfirm() {
 
   return (
     <Card className="w-full mx-auto max-w-3xl dark:bg-slate-800 dark:text-slate-100 dark:border-slate-700">
-      <CardHeader title={t("userDeleteConfirm.confirmDelete")} />
+      <CardHeader icon=<UserX className="h-4 w-4" /> title={t("userDeleteConfirm.confirmDelete")} />
       <CardBody className="space-y-4">
         <p className="text-sm text-slate-700 dark:text-slate-100">
           {t("userDeleteConfirm.youAboutToDelete")} <strong>{users.length}</strong> {t("userDeleteConfirm.cannotBeUndone")}

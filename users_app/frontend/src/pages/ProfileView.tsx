@@ -1,11 +1,13 @@
 import { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { UserCircle } from "lucide-react";
 import { api } from "../lib/axios";
+import { extractApiError } from "../lib/httpErrors";
 import { useAuthStore } from "../auth/store";
 import Button from "../components/button";
-import { extractApiError } from "../lib/httpErrors";
 import ErrorAlert from "../components/ErrorAlert";
+import UnifiedTitle from "../components/UnifiedTitle";
 
 type ProfileUser = {
   id: number;
@@ -96,10 +98,7 @@ export default function ProfileView() {
 
       {/* Right: Details */}
       <div className="md:col-span-2 space-y-4">
-        <div>
-          <h2 className="text-xl font-semibold">{t("profileView.profile")}</h2>
-          <p className="text-sm text-slate-500">{t("profileView.yourPersonalDetails")}</p>
-        </div>
+        <UnifiedTitle icon=<UserCircle className="h-4 w-4" /> title={t("profileView.profile")} subtitle={t("profileView.yourPersonalDetails")} />
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <Field id="fullName" label={t("profileView.fullName")} value={fullName} />

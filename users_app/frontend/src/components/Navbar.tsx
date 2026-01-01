@@ -2,11 +2,11 @@ import React, { useState, useEffect } from "react";
 import { NavLink, Link, useLocation, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useAuthStore } from "../auth/store";
-import { LocaleFlag } from "./LocaleFlag";
-import Brand from "./Brand";
-import Button from "../components/button";
-import DarkModeToggle from "./DarkModeToggle";
 import i18n from "../lib/i18n";
+import { LocaleFlag } from "../components/LocaleFlag";
+import Brand from "../components/Brand";
+import Button from "../components/button";
+import DarkModeToggle from "../components/DarkModeToggle";
 
 export default function Navbar() {
   const { t } = useTranslation();
@@ -21,12 +21,12 @@ export default function Navbar() {
       ? "bg-slate-900 text-white border-slate-900 shadow-soft"
       : "bg-white/60 text-slate-700 border-slate-200 hover:bg-white shadow-soft"
   }`;
-  // Helper: treat multiple routes as active for one tab
+  // Treat multiple routes as active for one tab
   const isProfileActive = pathname.startsWith("/profile-view") || pathname.startsWith("/profile-edit");
   // "Additional" tab logic
   const secondRowRoutes = ["/stats", "/settings", "/import-excel"];
   const routeIsSecondRow = secondRowRoutes.some((p) => pathname.startsWith(p));
-  // Show row 2 if user clicked Additional *or* a second-row route is active
+  // Show row 2 if user clicked Additional or a second-row route is active
   const [additionalOpen, setAdditionalOpen] = useState(false);
   const isAdditionalActive = additionalOpen || routeIsSecondRow;
 

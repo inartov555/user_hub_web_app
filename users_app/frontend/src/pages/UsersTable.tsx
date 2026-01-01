@@ -13,7 +13,7 @@ import {
 } from "@tanstack/react-table";
 import { useQuery, useQueryClient, keepPreviousData } from "@tanstack/react-query";
 import {
-  Trash2, FilterX,
+  Trash2, FilterX, Users,
   ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight,
   Columns, ArrowUpDown, ArrowUp, ArrowDown
 } from "lucide-react";
@@ -445,7 +445,7 @@ export default function UsersTable(props: Props) {
 
   return (
     <Card className="w-full mx-auto dark:bg-slate-800 dark:text-slate-100 dark:border-slate-700">
-      <CardHeader title={t("users.people")} />
+      <CardHeader icon=<Users className="h-4 w-4" /> title={t("users.people")} />
       <CardBody className="justify-end mt-2">
         <div className="flex w-full items-center justify-end gap-2">
           <Input

@@ -1,10 +1,12 @@
 import React, { useState, useRef } from "react";
 import { useTranslation } from "react-i18next";
+import { FileSpreadsheet } from "lucide-react";
 import { api } from "../lib/axios";
 import { extractApiError } from "../lib/httpErrors";
 import { useAuthStore } from "../auth/store";
 import { Input } from "../components/input";
 import Button from "../components/button";
+import UnifiedTitle from "../components/UnifiedTitle";
 
 export default function ExcelImportPanel() {
   const { t } = useTranslation();
@@ -87,7 +89,7 @@ export default function ExcelImportPanel() {
 
   return (
     <div className="max-w-xl mx-auto p-4 rounded-2xl shadow bg-white border dark:bg-slate-800 dark:text-slate-100 dark:border-slate-700">
-      <h2 className="text-xl font-semibold mb-3">{t("excelImport.title")}</h2>
+      <UnifiedTitle icon=<FileSpreadsheet className="h-4 w-4" /> title={t("excelImport.title")} />
       <p>
         <span>{t("excelImport.fileUploadMessage")} </span>
         <br/>

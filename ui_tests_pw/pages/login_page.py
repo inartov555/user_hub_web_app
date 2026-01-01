@@ -18,7 +18,7 @@ class LoginPage(BasePage):
     def __init__(self, page: Page):
         super().__init__(page)
 
-        self.page_title = self.page.locator("h1")
+        self.page_title = self.page.locator("h2")
         # /users page after logging in
         self.users_tab = self.page.locator('#users')
 

@@ -17,7 +17,7 @@ class SettingsPage(BasePage):
     def __init__(self, page: Page):
         super().__init__(page)
 
-        self.page_title = self.page.locator("h1")
+        self.page_title = self.page.locator("h2")
         self.idle_timeout_sec = self.page.locator("#idleTimeoutSeconds")
         self.access_token_lifetime = self.page.locator("#accessTokenLifetime")
         self.renew_at_sec = self.page.locator("#renewAtSeconds")
