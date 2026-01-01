@@ -101,7 +101,7 @@ export default function UsersTable(props: Props) {
   const isAdmin = Boolean(cur_user?.is_admin || cur_user?.is_staff || cur_user?.is_superuser);
   const navigate = useNavigate();
   const [page, setPage] = useState(1);
-  const [pageSize, setPageSize] = useState<number>(() => Number(localStorage.getItem("pageSize")) || 20);
+  const [pageSize, setPageSize] = useState<number>(() => Number(localStorage.getItem("pageSize")) || 5);
   const [globalFilter, setGlobalFilter] = useState("");
 
   const [sorting, setSorting] = useState<SortingState>(() => {

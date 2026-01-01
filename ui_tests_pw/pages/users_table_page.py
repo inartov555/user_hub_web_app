@@ -52,6 +52,7 @@ class UsersTablePage(BasePage):
         """
         Typing text to search and waiting while Users Table finishes refreshing data
         """
+        expect(self.search_input).to_be_visible()
         self.search_input.fill(text)
         self.wait_till_users_table_update_finished()
 

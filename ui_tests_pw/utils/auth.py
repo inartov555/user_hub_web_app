@@ -110,3 +110,8 @@ def login_via_ui(
     page.wait_for_url(re.compile(r".*/users$"))
     expect(page).to_have_url(re.compile(r".*/users$"))
     users_tab_loc.wait_for(state="visible")
+
+    # Wait for the login API call to succeed
+    with page.expect_response(re.compile(r".*/api/v1/users/?page.*$")) as r:
+        login_btn_loc.click()
+    assert r.value.ok, f"Login failed: {r.value.status}"

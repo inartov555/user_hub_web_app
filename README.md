@@ -20,6 +20,7 @@ This is a test website + automation framework
 ---
 ## 📌 Changelog v1.4 vs. v1.3
 
+- 🛠️ **Fixed in `users_app`:** 200 users are selected max while more are available for selection to delete
 - ✨ **Improved in `users_app`:** Lite UI polishing
 - 🆕 **Added in `users_app`:** Show/hide button for the password field
 - 🆕 **Added in `users_app`:** Icons to page titles

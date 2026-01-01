@@ -9,6 +9,6 @@ class StandardResultsSetPagination(PageNumberPagination):
     """
     Django REST Framework pagination class that controls how list endpoints return results.
     """
-    page_size = 20
+    page_size = 5
     page_size_query_param = "page_size"
-    max_page_size = 200
+    # max_page_size = 2000
