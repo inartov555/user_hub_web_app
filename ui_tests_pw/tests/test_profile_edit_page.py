@@ -9,17 +9,16 @@ import re
 import pytest
 from playwright.sync_api import Page, expect
 
+from core.constants import LocaleConsts, ThemeConsts
 from pages.profile_edit_page import ProfileEditPage
 from pages.profile_view_page import ProfileViewPage
-from utils.theme import Theme, set_theme
-from utils.localization import set_locale
 
 
 @pytest.mark.regular_user
 @pytest.mark.theme
 @pytest.mark.localization
-@pytest.mark.parametrize("ui_theme_param", ["light", "dark"])
-@pytest.mark.parametrize("ui_locale_param", ["en-US", "uk-UA", "et-EE", "fi-FI", "cs-CZ", "pl-PL", "es-ES"])
+@pytest.mark.parametrize("ui_theme_param", ThemeConsts.ALL_SUPPORTED_THEMES)
+@pytest.mark.parametrize("ui_locale_param", LocaleConsts.ALL_SUPPORTED_LOCALES)
 @pytest.mark.usefixtures("cleanup_set_default_theme_and_locale")
 def test_profile_edit_renders_and_can_save(profile_edit_page_regular: ProfileEditPage,
                                            page: Page,
@@ -32,8 +31,8 @@ def test_profile_edit_renders_and_can_save(profile_edit_page_regular: ProfileEdi
     edit_data = {"firstName": "UI_{}".format(rand_num),  # pylint: disable=consider-using-f-string
                  "lastName": "Tester_{}".format(rand_num),  # pylint: disable=consider-using-f-string
                  "bio": "Bio from automated test._{}".format(rand_num)}  # pylint: disable=consider-using-f-string
-    set_theme(page, ui_theme_param)
-    set_locale(page, ui_locale_param)
+    profile_edit_page_regular.ensure_theme(ui_theme_param)
+    profile_edit_page_regular.ensure_locale(ui_locale_param)
     profile_edit_page_regular.assert_loaded()
     # Verifying localization
     actual = profile_edit_page_regular.page_title.text_content()

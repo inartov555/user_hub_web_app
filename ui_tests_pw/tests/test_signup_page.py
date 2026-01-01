@@ -9,6 +9,8 @@ import pytest
 from playwright.sync_api import Page, expect
 
 from pages.signup_page import SignupPage
+from pages.login_page import LoginPage
+from pages.users_table_page import UsersTablePage
 from utils.theme import Theme, set_theme
 from utils.localization import set_locale
 
@@ -40,6 +42,7 @@ def test_signup_page_renders(page: Page,
 @pytest.mark.usefixtures("cleanup_delete_users_by_suffix")
 def test_signup_with_random_username(page: Page,
                                      signup_page: SignupPage,
+                                     login_page: LoginPage,
                                      suffix: str) -> None:
     """
     Attempt signup with a random username; backend may accept or reject duplicates.
@@ -47,14 +50,26 @@ def test_signup_with_random_username(page: Page,
     Username & email are created with this logic:
         username = f"ui-test-{suffix}"
         email = f"{username}@test.com"
+        password = "changeme123"
     """
     username = f"ui-test-{suffix}"
     email = f"{username}@test.com"
-    signup_page.fill_form(username, email, "changeme123")
+    password = "changeme123"
+    signup_page.fill_form(username, email, password)
     signup_page.save.click()
     # The user is redirected to the Login page after successful user creation
     page.wait_for_url(re.compile(r".*/login$"))
     expect(page).to_have_url(re.compile(r".*/login$"))
+    # Now, let's check if just created user can login
+    login_page.fill_credentials(username, password)
+    login_page.submit.click()
+    page.wait_for_url(re.compile(r".*/users$"))
+    expect(page).to_have_url(re.compile(r".*/users$"))
+    users_table_page = UsersTablePage(page)
+    # Verifying if username of just created user is contained in the greeting message
+    users_table_page.assert_username_contained_in_greeting_message(username)
+    import time
+    time.sleep(5)
 
 
 def test_signup_link_back_to_login(page: Page,

@@ -21,8 +21,10 @@ This is a test website + automation framework
 ## 📌 Changelog v1.4 vs. v1.3
 
 - ✨ **Improved in `users_app`:** Added icons to page titles
-- 🆕 There's a plan to polish UI
+- ✨ **Improved in `users_app`:** Lite UI polishing
 - 🆕 **Added in `users_app`:** Show/hide button for the password field
+- 🆕 **Added in `ui_tests_pw`:** Logging in of the just created user for `test_signup_with_random_username`
+- 🆕 **Added in `ui_tests_pw`:** Locale and theme constants
 
 ---
 

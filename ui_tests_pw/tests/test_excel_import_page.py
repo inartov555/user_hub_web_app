@@ -7,17 +7,16 @@ from __future__ import annotations
 import pytest
 from playwright.sync_api import Page, expect
 
+from core.constants import LocaleConsts, ThemeConsts
 from pages.excel_import_page import ExcelImportPage
 from pages.users_table_page import UsersTablePage
-from utils.theme import Theme, set_theme
-from utils.localization import set_locale
 
 
 @pytest.mark.admin
 @pytest.mark.theme
 @pytest.mark.localization
-@pytest.mark.parametrize("ui_theme_param", ["light", "dark"])
-@pytest.mark.parametrize("ui_locale_param", ["en-US", "uk-UA", "et-EE", "fi-FI", "cs-CZ", "pl-PL", "es-ES"])
+@pytest.mark.parametrize("ui_theme_param", ThemeConsts.ALL_SUPPORTED_THEMES)
+@pytest.mark.parametrize("ui_locale_param", LocaleConsts.ALL_SUPPORTED_LOCALES)
 @pytest.mark.usefixtures("cleanup_set_default_theme_and_locale")
 def test_excel_import_page_renders_for_admin(page: Page,
                                              ui_theme_param: Theme,
@@ -26,8 +25,8 @@ def test_excel_import_page_renders_for_admin(page: Page,
     """
     Admin user can open the Excel import page.
     """
-    set_theme(page, ui_theme_param)
-    set_locale(page, ui_locale_param)
+    admin_excel_import_page.ensure_theme(ui_theme_param)
+    admin_excel_import_page.ensure_locale(ui_locale_param)
     # Verifying if Import & Download buttons are visible
     expect(admin_excel_import_page.import_template_btn).to_be_visible()
     expect(admin_excel_import_page.download_template_btn).to_be_visible()

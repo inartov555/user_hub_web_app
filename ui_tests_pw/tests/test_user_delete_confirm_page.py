@@ -8,17 +8,16 @@ import re
 import pytest
 from playwright.sync_api import Page, expect
 
+from core.constants import LocaleConsts, ThemeConsts
 from pages.user_delete_confirm_page import UserDeleteConfirmPage
 from pages.users_table_page import UsersTablePage
-from utils.theme import Theme, set_theme
-from utils.localization import set_locale
 
 
 @pytest.mark.admin
 @pytest.mark.theme
 @pytest.mark.localization
-@pytest.mark.parametrize("ui_theme_param", ["light", "dark"])
-@pytest.mark.parametrize("ui_locale_param", ["en-US", "uk-UA", "et-EE", "fi-FI", "cs-CZ", "pl-PL", "es-ES"])
+@pytest.mark.parametrize("ui_theme_param", ThemeConsts.ALL_SUPPORTED_THEMES)
+@pytest.mark.parametrize("ui_locale_param", LocaleConsts.ALL_SUPPORTED_LOCALES)
 @pytest.mark.parametrize("suffix", ["one"])
 @pytest.mark.usefixtures("setup_create_users_by_suffix")
 @pytest.mark.usefixtures("cleanup_delete_users_by_suffix")
@@ -37,8 +36,8 @@ def test_admin_can_navigate_to_delete_confirm(page: Page,
         email = f"{username}@test.com"
     """
     username = f"ui-test-{suffix}"
-    set_theme(page, ui_theme_param)
-    set_locale(page, ui_locale_param)
+    admin_users_page.ensure_theme(ui_theme_param)
+    admin_users_page.ensure_locale(ui_locale_param)
     admin_users_page.search_and_wait_for_results(username)
     # Let's be on the safe side and check if there's the only 1 user in the search results
     expect(admin_users_page.check_rows).to_have_count(1)

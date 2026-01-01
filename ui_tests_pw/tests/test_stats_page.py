@@ -7,26 +7,24 @@ from __future__ import annotations
 import pytest
 from playwright.sync_api import Page, expect
 
+from core.constants import LocaleConsts, ThemeConsts
 from pages.users_table_page import UsersTablePage
-from utils.theme import Theme, set_theme
-from utils.localization import set_locale
 
 
 @pytest.mark.admin
 @pytest.mark.theme
 @pytest.mark.localization
-@pytest.mark.parametrize("ui_theme_param", ["light", "dark"])
-@pytest.mark.parametrize("ui_locale_param", ["en-US", "uk-UA", "et-EE", "fi-FI", "cs-CZ", "pl-PL", "es-ES"])
+@pytest.mark.parametrize("ui_theme_param", ThemeConsts.ALL_SUPPORTED_THEMES)
+@pytest.mark.parametrize("ui_locale_param", LocaleConsts.ALL_SUPPORTED_LOCALES)
 @pytest.mark.usefixtures("cleanup_set_default_theme_and_locale")
-def test_stats_page_renders_for_admin(page: Page,
-                                      user_stats_page: UsersTablePage,
+def test_stats_page_renders_for_admin(user_stats_page: UsersTablePage,
                                       ui_theme_param: Theme,
                                       ui_locale_param: str) -> None:
     """
     Admin user can open the online-users stats page.
     """
-    set_theme(page, ui_theme_param)
-    set_locale(page, ui_locale_param)
+    user_stats_page.ensure_theme(ui_theme_param)
+    user_stats_page.ensure_locale(ui_locale_param)
     user_stats_page.assert_loaded()
     # Verifying localization
     actual = user_stats_page.page_title.text_content()

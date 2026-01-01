@@ -19,6 +19,7 @@ class UsersTablePage(BasePage):
         super().__init__(page)
 
         self.page_title = self.page.locator("h2")
+        self.greeting_mes = self.page.locator('#greeting')
         self.users_tab = self.page.locator('#users')
         self.addtional_tab = self.page.locator('#additional')
 
@@ -90,3 +91,9 @@ class UsersTablePage(BasePage):
         # No header-level checkbox for regular user.
         expect(self.check_all_header).to_have_count(0)
         expect(self.change_password_header).to_have_count(0)
+
+    def assert_username_contained_in_greeting_message(self, text: str) -> List[str]:
+        """
+        Assert that username is contained in the greeting message
+        """
+        expect(self.greeting_mes).to_contain_text(text)

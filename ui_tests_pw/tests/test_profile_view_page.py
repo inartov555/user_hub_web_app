@@ -8,26 +8,24 @@ import re
 import pytest
 from playwright.sync_api import Page, expect
 
+from core.constants import LocaleConsts, ThemeConsts
 from pages.profile_view_page import ProfileViewPage
-from utils.theme import Theme, set_theme
-from utils.localization import set_locale
 
 
 @pytest.mark.regular_user
 @pytest.mark.theme
 @pytest.mark.localization
-@pytest.mark.parametrize("ui_theme_param", ["light", "dark"])
-@pytest.mark.parametrize("ui_locale_param", ["en-US", "uk-UA", "et-EE", "fi-FI", "cs-CZ", "pl-PL", "es-ES"])
+@pytest.mark.parametrize("ui_theme_param", ThemeConsts.ALL_SUPPORTED_THEMES)
+@pytest.mark.parametrize("ui_locale_param", LocaleConsts.ALL_SUPPORTED_LOCALES)
 @pytest.mark.usefixtures("cleanup_set_default_theme_and_locale")
-def test_profile_view_renders_for_regular_user(page: Page,
-                                               profile_view_page_regular: ProfileViewPage,
+def test_profile_view_renders_for_regular_user(profile_view_page_regular: ProfileViewPage,
                                                ui_theme_param: Theme,
                                                ui_locale_param: str) -> None:
     """
     Regular user should be able to see their own profile under different themes/locales.
     """
-    set_theme(page, ui_theme_param)
-    set_locale(page, ui_locale_param)
+    profile_view_page_regular.ensure_theme(ui_theme_param)
+    profile_view_page_regular.ensure_locale(ui_locale_param)
     profile_view_page_regular.assert_profile_basics_visible()
     # Verifying localization
     actual = profile_view_page_regular.page_title.text_content()
