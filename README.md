@@ -21,6 +21,10 @@ This is a test website + automation framework
 ## 📌 Changelog v1.4 vs. v1.3
 
 - 🛠️ **Fixed in `users_app`:** 200 users are selected max while more are available for selection to delete
+- 🛠️ **Fixed in `ui_tests_pw`:** Firefox: user redirected to the /login page after successful logging in and trying to open the /users page
+- 🛠️ **Fixed in `ui_tests_pw`:** Firefox: sometimes, failed to set the theme because /login page is not fully loaded yet
+- 🛠️ **Fixed in `ui_tests_pw`:** Firefox: sometimes, failed to login because submit button cannot be clicked on the /login page
+- 🛠️ **Fixed in `ui_tests_pw`:** Firefox: sometimes, failed to type search text due to not found search input on the /users page
 - ✨ **Improved in `users_app`:** Lite UI polishing
 - 🆕 **Added in `users_app`:** Show/hide button for the password field
 - 🆕 **Added in `users_app`:** Icons to page titles

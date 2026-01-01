@@ -98,20 +98,32 @@ def login_via_ui(
     password_loc = page.locator("#password")
     login_btn_loc = page.locator("form button[type='submit']")
     users_tab_loc = page.locator('#users')
+    search_input_loc = page.locator('#search')
 
     page.goto(frontend_url("/login"))
+    page.wait_for_url(re.compile(r".*/login$"))
+    expect(page).to_have_url(re.compile(r".*/login$"))
+    username_loc.wait_for(state="visible")
+
     if ui_theme is not None:
         set_theme(page, ui_theme)
     if ui_locale is not None:
         set_locale(page, ui_locale)
+
     username_loc.fill(username)
     password_loc.fill(password)
+    # Focusing the submit button before clicking it
+    login_btn_loc.focus()
+    expect(login_btn_loc).to_be_focused()
     login_btn_loc.click()
     page.wait_for_url(re.compile(r".*/users$"))
     expect(page).to_have_url(re.compile(r".*/users$"))
-    users_tab_loc.wait_for(state="visible")
 
     # Wait for the login API call to succeed
-    with page.expect_response(re.compile(r".*/api/v1/users/\?page.*")) as res:
+    with page.expect_response(re.compile(r".*/api/v1/users/\?page.*"), timeout=60000) as res:
         pass  # we just wait for the /users page to load
     assert res.value.ok, f"Login failed: {res.value.status}"
+
+    # Additional checks for elements on the /users page
+    users_tab_loc.wait_for(state="visible")
+    search_input_loc.wait_for(state="visible")
