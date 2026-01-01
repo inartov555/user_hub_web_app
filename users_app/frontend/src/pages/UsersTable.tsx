@@ -662,7 +662,7 @@ export default function UsersTable(props: Props) {
                       setPageSize(ps);
                     }}
                   >
-                    {[5, 10, 20, 30, 50, 100, 200, 500, 1000].map((ps) => (
+                    {[5, 10, 20, 30, 50, 100, 200, 500, 1000, 2000].map((ps) => (
                       <option key={ps} value={ps}>
                         {ps}
                       </option>

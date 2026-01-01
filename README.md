@@ -23,7 +23,7 @@ This is a test website + automation framework
 - ✨ **Improved in `users_app`:** Lite UI polishing
 - 🆕 **Added in `users_app`:** Show/hide button for the password field
 - 🆕 **Added in `users_app`:** Icons to page titles
-- 🆕 **Added in `ui_tests_pw`:** Logging in of the just created user for `test_signup_with_random_username`
+- 🆕 **Added in `ui_tests_pw`:** Logging in as a just created user for `test_signup_with_random_username`
 
 ---
 
