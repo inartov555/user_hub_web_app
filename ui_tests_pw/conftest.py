@@ -207,7 +207,11 @@ def logged_in_admin_fixture(page: Page) -> Page:
     login_page = LoginPage(page)
     login_page.open()
     login_page.accept_cookie_consent_if_present()
-    login_via_ui(page, DEFAULT_ADMIN_USERNAME, DEFAULT_ADMIN_PASSWORD, "light", "en-US")
+    login_via_ui(page,
+                 DEFAULT_ADMIN_USERNAME,
+                 DEFAULT_ADMIN_PASSWORD,
+                 ThemeConsts.LIGHT,
+                 LocaleConsts.ENGLISH_US)
     return page
 
 
@@ -220,7 +224,11 @@ def logged_in_regular_fixture(page: Page) -> Page:
     login_page = LoginPage(page)
     login_page.open()
     login_page.accept_cookie_consent_if_present()
-    login_via_ui(page, DEFAULT_REGULAR_USERNAME, DEFAULT_REGULAR_PASSWORD, "light", "en-US")
+    login_via_ui(page,
+                 DEFAULT_REGULAR_USERNAME,
+                 DEFAULT_REGULAR_PASSWORD,
+                 ThemeConsts.LIGHT,
+                 LocaleConsts.ENGLISH_US)
     return page
 
 
@@ -379,12 +387,12 @@ def cleanup_delete_users_by_suffix(suffix: str) -> None:
 @pytest.fixture(scope="function")
 def cleanup_set_default_theme_and_locale(page: Page) -> None:
     """
-    Cleanup. Default theme is light and defaul locale is en-US.
+    Cleanup. Default theme is ThemeConsts.LIGHT and default locale is LocaleConsts.ENGLISH_US.
     """
     yield
     log.info("Cleanup. Defaulting to light theme and en-US locale")
-    set_theme(page, "light")
-    set_locale(page, "en-US")
+    set_theme(page, ThemeConsts.LIGHT)
+    set_locale(page, LocaleConsts.ENGLISH_US)
 
 
 @pytest.fixture(scope="function")
