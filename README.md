@@ -21,7 +21,7 @@ This is a test website + automation framework
 ## 📌 Changelog v1.4 vs. v1.3
 
 - ✨ **Improved in `users_app`:** Added icons to page titles
-- 🆕 There's a plan to add a new tab
+- 🆕 There's a plan to polish UI
 - 🆕 **Added in `users_app`:** Show/hide button for the password field
 
 ---
