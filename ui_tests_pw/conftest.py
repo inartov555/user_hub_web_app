@@ -137,15 +137,20 @@ def get_browser(playwright, request) -> Browser:
     """
     log.info("Getting a browser basing on the config properties")
     _app_config = request.getfixturevalue("app_config")
-    if _app_config.browser in ("chromium", "chrome", "msedge"):
+    if _app_config.browser in ("chromium", "chrome", "msedge",):
         # Chromium Google Chrome, MS Edge
         if _app_config.is_headless:
             args = [f"--window-size={_app_config.width},{_app_config.height}"]
         else:
             args = []
-        browser = playwright.chromium.launch(headless=_app_config.is_headless,
-                                             args=args)
-    elif _app_config.browser in ("firefox"):
+        if _app_config.browser == "chromium":
+            browser = playwright.chromium.launch(headless=_app_config.is_headless,
+                                                 args=args)
+        else:
+            browser = playwright.chromium.launch(channel=_app_config.browser,
+                                                 headless=_app_config.is_headless,
+                                                 args=args)
+    elif _app_config.browser == "firefox":
         # Firefox
         if _app_config.is_headless:
             args = [f"--window-size={_app_config.width},{_app_config.height}"]
@@ -153,28 +158,16 @@ def get_browser(playwright, request) -> Browser:
             args = []
         browser = playwright.firefox.launch(headless=_app_config.is_headless,
                                             args=args)
-    elif _app_config.browser in ("webkit", "safari"):
+    elif _app_config.browser in ("webkit", "safari",):
         # WebKit, Safari
         browser = playwright.webkit.launch(headless=_app_config.is_headless)
     else:
         raise ValueError(f"browser config param contains incorrect value: {_app_config.browser}")
-    if _app_config.browser in ("webkit", "safari") or not _app_config.is_headless:
-        context = browser.new_context(viewport={"width": _app_config.width, "height": _app_config.height})
-    else:
-        context = browser.new_context(viewport=None)
-    page = context.new_page()
-    # Setting default timeouts
-    context.set_default_navigation_timeout(_app_config.navigation_timeout)
-    context.set_default_timeout(_app_config.action_timeout)
-    page.set_default_navigation_timeout(_app_config.navigation_timeout)
-    page.set_default_timeout(_app_config.action_timeout)
-    expect.set_options(timeout=_app_config.assert_timeout)
-    request.node.stash["page_obj_fresh"] = page  # it is needed to pass an acutal page to BasePage objects
     log.info(f"{_app_config.browser} browser is selected")
     return browser
 
 
-@pytest.fixture(autouse=True, name="browser", scope="function")
+@pytest.fixture(autouse=True, name="browser", scope="session")
 def browser_setup(playwright, request):
     """
     Set the browser driver
@@ -182,6 +175,38 @@ def browser_setup(playwright, request):
     browser = get_browser(playwright, request)
     yield browser
     browser.close()
+
+
+@pytest.fixture(name="page", scope="function")
+def page_fixture(browser: Browser, request) -> Page:
+    if _app_config.browser in ("webkit", "safari",) or not _app_config.is_headless:
+        context = browser.new_context(viewport={"width": _app_config.width, "height": _app_config.height})
+    else:
+        context = browser.new_context(viewport=None)
+    page_context = context.new_page()
+    # Setting default timeouts
+    context.set_default_navigation_timeout(_app_config.navigation_timeout)
+    context.set_default_timeout(_app_config.action_timeout)
+    page_context.set_default_navigation_timeout(_app_config.navigation_timeout)
+    page_context.set_default_timeout(_app_config.action_timeout)
+    expect.set_options(timeout=_app_config.assert_timeout)
+    request.node.stash["page_obj_fresh"] = page_context  # it is needed to pass an acutal page to BasePage objects
+
+    # cfg = request.getfixturevalue("app_config")
+
+    # context = browser.new_context(
+    #    viewport={"width": cfg.width, "height": cfg.height}
+    # )
+    # context.set_default_navigation_timeout(cfg.navigation_timeout)
+    # context.set_default_timeout(cfg.action_timeout)
+
+    # page = context.new_page()
+    # page.set_default_navigation_timeout(cfg.navigation_timeout)
+    # page.set_default_timeout(cfg.action_timeout)
+
+    # request.node.stash["page_obj_fresh"] = page
+    yield page_context
+    context.close()
 
 
 def pytest_addoption(parser):

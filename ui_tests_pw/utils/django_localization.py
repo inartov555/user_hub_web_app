@@ -11,6 +11,8 @@ from typing import List, Tuple
 import django
 from django.conf import settings
 
+from core.constants import LocaleConsts
+
 
 # Ensure the Django project (backend) is importable.
 # Defafult path is provided for Docker.
@@ -58,4 +60,4 @@ def get_backend_default_language_code() -> str:
         str, Django's default language code.
     """
     init_django()
-    return getattr(settings, "LANGUAGE_CODE", "en-us")
+    return getattr(settings, "LANGUAGE_CODE", LocaleConsts.ENGLISH_US.lower())

@@ -9,9 +9,10 @@ import re
 from playwright.sync_api import Page, expect
 
 from .logger.logger import Logger
+from core.constants import ThemeConsts
 
 
-Theme = Literal["light", "dark"]
+Theme = Literal[ThemeConsts.LIGHT, ThemeConsts.DARK]
 log = Logger(__name__)
 
 
