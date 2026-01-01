@@ -196,19 +196,6 @@ def page_fixture(browser: Browser, request) -> Page:
     expect.set_options(timeout=_app_config.assert_timeout)
     request.node.stash["page_obj_fresh"] = page_context  # it is needed to pass an acutal page to BasePage objects
 
-    # cfg = request.getfixturevalue("app_config")
-
-    # context = browser.new_context(
-    #    viewport={"width": cfg.width, "height": cfg.height}
-    # )
-    # context.set_default_navigation_timeout(cfg.navigation_timeout)
-    # context.set_default_timeout(cfg.action_timeout)
-
-    # page = context.new_page()
-    # page.set_default_navigation_timeout(cfg.navigation_timeout)
-    # page.set_default_timeout(cfg.action_timeout)
-
-    # request.node.stash["page_obj_fresh"] = page
     yield page_context
     context.close()
 

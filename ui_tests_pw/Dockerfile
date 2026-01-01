@@ -22,6 +22,9 @@ RUN apt-get update \
  && apt-get install -y --no-install-recommends gettext gosu \
  && rm -rf /var/lib/apt/lists/*
 
+RUN python -m pip install --no-cache-dir playwright \
+ && python -m playwright install --with-deps chromium firefox webkit msedge
+
 RUN chown -R pwuser:pwuser /tests
 USER pwuser
 
