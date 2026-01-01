@@ -57,7 +57,11 @@ class BasePage:
         visible = get_visible_locales(self.page)
         assert expected_code in visible, f"Locale {expected_code!r} not in {visible}"
 
-    def assert_text_localization(self, ui_locale_param: str, actual: str, expected: str) -> None:
+    def assert_text_localization(self,
+                                 ui_locale_param: str,
+                                 actual: str,
+                                 expected: str,
+                                 mode: str = "strict") -> None:
         """
         Check text localization
 
@@ -65,7 +69,13 @@ class BasePage:
             ui_locale_param (str): e.g. en-US
             actual (str): actual text localization retrieved from UI element
             expected (str): expected text localization, provide the text code to retrieve the localization with Django
+            mode (str): one of (contans, strict)
         """
         with translation.override(ui_locale_param.lower()):
             expected = translation.gettext(expected)
-        assert actual == expected, f"Wrong text localization; actual '{actual}'; expected '{expected}'"
+        err_msg = f"Wrong text localization; actual '{actual}'; expected '{expected}'; mode '{mode}'"
+        if mode.lower().strip() == "contains":
+            assert expected in actual, err_msg
+        else:
+            # strict
+            assert expected == actual, err_msg

@@ -32,7 +32,7 @@ def test_users_table_admin_theme_and_locale(ui_theme_param: Theme,
     # Verifying localization
     actual = admin_users_page.page_title.text_content()
     expected = "People"
-    admin_users_page.assert_text_localization(ui_locale_param, actual, expected)
+    admin_users_page.assert_text_localization(ui_locale_param, actual, expected, "contains")
 
 
 @pytest.mark.regular_user

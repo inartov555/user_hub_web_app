@@ -9,6 +9,7 @@ from configparser import ConfigParser, ExtendedInterpolation
 import pytest
 from playwright.sync_api import Page, Browser, expect
 
+from core.constants import LocaleConsts, ThemeConsts
 from config import (
     frontend_url,
     UI_BASE_URL,

@@ -131,7 +131,7 @@ export default function UserDeleteConfirm() {
             title={t("userDeleteConfirm.deleteUsers")}
           >
             <Trash2 className="h-4 w-4" />
-            {loading ? t("userDeleteConfirm.deleting") : `${t("users.deleteSelected")} ${users.length}`}
+            {loading ? t("userDeleteConfirm.deleting") : `${t("users.deleteSelected")} (${users.length})`}
           </Button>
           <Button id="cancel" onClick={handleCancel} disabled={loading}>
             {t("userDeleteConfirm.cancel")}

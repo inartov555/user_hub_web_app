@@ -55,7 +55,7 @@ const withStableTiebreaker = (ordering: string[], idField = "id") => {
 };
 
 /**
- * Treat *every* header click as a multi-sort gesture (no Shift/Ctrl needed).
+ * Treat every header click as a multi-sort gesture (no Shift/Ctrl needed).
  * This keeps previous sort columns intact instead of resetting them.
  */
 const alwaysMulti = () => true;
@@ -445,7 +445,7 @@ export default function UsersTable(props: Props) {
 
   return (
     <Card className="w-full mx-auto dark:bg-slate-800 dark:text-slate-100 dark:border-slate-700">
-      <CardHeader icon=<Users className="h-4 w-4" /> title={t("users.people")} />
+      <CardHeader icon=<Users className="h-4 w-4" /> title={`${t("users.people")} (${totalCount})`} />
       <CardBody className="justify-end mt-2">
         <div className="flex w-full items-center justify-end gap-2">
           <Input
@@ -662,7 +662,7 @@ export default function UsersTable(props: Props) {
                       setPageSize(ps);
                     }}
                   >
-                    {[5, 10, 20, 30, 50, 100, 200].map((ps) => (
+                    {[5, 10, 20, 30, 50, 100, 200, 500, 1000].map((ps) => (
                       <option key={ps} value={ps}>
                         {ps}
                       </option>
