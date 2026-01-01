@@ -138,7 +138,7 @@ def get_browser(playwright, request) -> Browser:
     log.info("Getting a browser basing on the config properties")
     _app_config = request.getfixturevalue("app_config")
     if _app_config.browser in ("chromium", "chrome", "msedge",):
-        # Chromium Google Chrome, MS Edge
+        # Chromium, Google Chrome, MS Edge
         if _app_config.is_headless:
             args = [f"--window-size={_app_config.width},{_app_config.height}"]
         else:

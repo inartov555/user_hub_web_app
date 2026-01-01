@@ -1,8 +1,5 @@
 FROM mcr.microsoft.com/playwright/python:v1.57.0-jammy
 
-# RUN addgroup --system pwuser \
-# && adduser  --system --ingroup pwuser --disabled-password --home /home/pwuser pwuser
-
 # Saner Python & pip defaults
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
@@ -23,7 +20,7 @@ RUN apt-get update \
  && rm -rf /var/lib/apt/lists/*
 
 RUN python -m pip install --no-cache-dir playwright \
- && python -m playwright install --with-deps chromium firefox webkit msedge
+ && python -m playwright install --with-deps chromium chrome msedge firefox webkit
 
 RUN chown -R pwuser:pwuser /tests
 USER pwuser
