@@ -5,11 +5,12 @@ Tests for the Excel import page (admin-only).
 from __future__ import annotations
 
 import pytest
-from playwright.sync_api import Page, expect
+from playwright.sync_api import expect
 
 from core.constants import LocaleConsts, ThemeConsts
 from pages.excel_import_page import ExcelImportPage
 from pages.users_table_page import UsersTablePage
+from utils.theme import Theme
 
 
 @pytest.mark.admin
@@ -18,8 +19,7 @@ from pages.users_table_page import UsersTablePage
 @pytest.mark.parametrize("ui_theme_param", ThemeConsts.ALL_SUPPORTED_THEMES)
 @pytest.mark.parametrize("ui_locale_param", LocaleConsts.ALL_SUPPORTED_LOCALES)
 @pytest.mark.usefixtures("cleanup_set_default_theme_and_locale")
-def test_excel_import_page_renders_for_admin(page: Page,
-                                             ui_theme_param: Theme,
+def test_excel_import_page_renders_for_admin(ui_theme_param: Theme,
                                              ui_locale_param: str,
                                              admin_excel_import_page: ExcelImportPage) -> None:
     """

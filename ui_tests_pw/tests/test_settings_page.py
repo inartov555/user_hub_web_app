@@ -5,11 +5,12 @@ Tests for the admin Settings page.
 from __future__ import annotations
 
 import pytest
-from playwright.sync_api import Page, expect
+from playwright.sync_api import expect
 
 from core.constants import LocaleConsts, ThemeConsts
 from pages.settings_page import SettingsPage
 from pages.users_table_page import UsersTablePage
+from utils.theme import Theme
 
 
 @pytest.mark.admin

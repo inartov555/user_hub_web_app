@@ -12,6 +12,7 @@ from core.constants import LocaleConsts, ThemeConsts
 from pages.users_table_page import UsersTablePage
 from pages.change_password_page import ChangePasswordPage
 from config import DEFAULT_REGULAR_USERNAME
+from utils.theme import Theme
 
 
 @pytest.mark.admin

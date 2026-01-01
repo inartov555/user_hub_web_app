@@ -5,11 +5,12 @@ Tests for the Users table page, including multi-column sorting.
 from __future__ import annotations
 
 import pytest
-from playwright.sync_api import Page, expect
+from playwright.sync_api import expect
 
 from core.constants import LocaleConsts, ThemeConsts
 from config import DEFAULT_REGULAR_USERNAME
 from pages.users_table_page import UsersTablePage
+from utils.theme import Theme
 
 
 @pytest.mark.admin
@@ -18,8 +19,7 @@ from pages.users_table_page import UsersTablePage
 @pytest.mark.parametrize("ui_theme_param", ThemeConsts.ALL_SUPPORTED_THEMES)
 @pytest.mark.parametrize("ui_locale_param", LocaleConsts.ALL_SUPPORTED_LOCALES)
 @pytest.mark.usefixtures("cleanup_set_default_theme_and_locale")
-def test_users_table_admin_theme_and_locale(page: Page,
-                                            ui_theme_param: Theme,
+def test_users_table_admin_theme_and_locale(ui_theme_param: Theme,
                                             ui_locale_param: str,
                                             admin_users_page: UsersTablePage) -> None:
     """

@@ -11,6 +11,7 @@ from playwright.sync_api import Page, expect
 from core.constants import LocaleConsts, ThemeConsts
 from pages.user_delete_confirm_page import UserDeleteConfirmPage
 from pages.users_table_page import UsersTablePage
+from utils.theme import Theme
 
 
 @pytest.mark.admin

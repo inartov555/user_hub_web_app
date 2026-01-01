@@ -12,6 +12,7 @@ from playwright.sync_api import Page, expect
 from core.constants import LocaleConsts, ThemeConsts
 from pages.profile_edit_page import ProfileEditPage
 from pages.profile_view_page import ProfileViewPage
+from utils.theme import Theme
 
 
 @pytest.mark.regular_user

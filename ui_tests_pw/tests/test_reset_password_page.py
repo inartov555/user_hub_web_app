@@ -5,10 +5,11 @@ Tests for the Reset Password page.
 from __future__ import annotations
 
 import pytest
-from playwright.sync_api import Page, expect
+from playwright.sync_api import expect
 
 from core.constants import LocaleConsts, ThemeConsts
 from pages.reset_password_page import ResetPasswordPage
+from utils.theme import Theme
 
 
 @pytest.mark.theme

@@ -68,8 +68,6 @@ def test_signup_with_random_username(page: Page,
     users_table_page = UsersTablePage(page)
     # Verifying if username of just created user is contained in the greeting message
     users_table_page.assert_username_contained_in_greeting_message(username)
-    import time
-    time.sleep(5)
 
 
 def test_signup_link_back_to_login(page: Page,
