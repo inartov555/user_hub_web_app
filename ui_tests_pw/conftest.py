@@ -179,6 +179,10 @@ def browser_setup(playwright, request):
 
 @pytest.fixture(name="page", scope="function")
 def page_fixture(browser: Browser, request) -> Page:
+    """
+    Page fixture
+    """
+    _app_config = request.getfixturevalue("app_config")
     if _app_config.browser in ("webkit", "safari",) or not _app_config.is_headless:
         context = browser.new_context(viewport={"width": _app_config.width, "height": _app_config.height})
     else:
