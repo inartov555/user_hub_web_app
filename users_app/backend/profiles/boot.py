@@ -8,7 +8,6 @@ Priority for the epoch source:
 
 from __future__ import annotations
 from datetime import datetime, timezone
-from typing import Optional
 
 try:
     from django.conf import settings as DJANGO_SETTINGS

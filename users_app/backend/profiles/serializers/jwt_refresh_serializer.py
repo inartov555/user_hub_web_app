@@ -17,7 +17,6 @@ from rest_framework_simplejwt.serializers import TokenRefreshSerializer
 from rest_framework_simplejwt.tokens import RefreshToken, AccessToken, Token
 from rest_framework_simplejwt.exceptions import TokenError
 
-from ..boot import get_boot_id
 from ..models.app_settings import get_effective_auth_settings
 
 
