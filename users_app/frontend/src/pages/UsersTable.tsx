@@ -465,8 +465,10 @@ export default function UsersTable(props: Props) {
             {showColumns && (
               <div
                 data-tag="columnVisibilityPopup"
-                className="absolute right-0 z-50 mt-2 w-56 rounded-md border bg-white p-2 shadow-lg dark:bg-slate-900 dark:text-slate-100 dark:placeholder-slate-500
-                           dark:border-slate-700"
+                className="
+                  absolute right-0 z-50 mt-2 w-56 rounded-md border bg-white p-2 shadow-lg dark:bg-slate-900
+                  dark:text-slate-100 dark:placeholder-slate-500 dark:border-slate-700
+                "
                 role="menu"
               >
                 <div className="px-2 py-1 text-xs font-medium text-slate-500">{t("users.toggleColumns")}</div>

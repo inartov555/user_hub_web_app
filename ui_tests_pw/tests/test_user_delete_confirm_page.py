@@ -35,6 +35,7 @@ def test_admin_can_navigate_to_delete_confirm(page: Page,
     Username & email are created with this logic:
         username = f"ui-test-{suffix}"
         email = f"{username}@test.com"
+        password = "Ch@ngeme123"
     """
     username = f"ui-test-{suffix}"
     admin_users_page.ensure_theme(ui_theme_param)
@@ -77,6 +78,7 @@ def test_admin_can_cancel_delete_confirm(page: Page,
     Username & email are created with this logic:
         username = f"ui-test-{suffix}"
         email = f"{username}@test.com"
+        password = "Ch@ngeme123"
     """
     username = f"ui-test-{suffix}"
     admin_users_page.search_and_wait_for_results(username)

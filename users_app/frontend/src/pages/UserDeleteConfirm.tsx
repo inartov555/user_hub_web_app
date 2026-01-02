@@ -94,25 +94,51 @@ export default function UserDeleteConfirm() {
         <div className="rounded-lg border overflow-hidden">
           <table className="w-full text-sm table-auto">
             <thead className="bg-muted/50">
-              <tr>
-                <th className="text-left px-3 py-2">{t("signup.username")}</th>
-                <th className="text-left px-3 py-2">{t("signup.email")}</th>
-                <th className="text-left px-3 py-2">{t("users.firstName")}</th>
-                <th className="text-left px-3 py-2">{t("users.lastName")}</th>
+              <tr className="border-t divide-x divide-slate-200 dark:divide-slate-700">
+                <th className="relative select-none px-3 py-2 text-left font-semibold align-middle group whitespace-normal break-words">
+                  {t("signup.username")}
+                </th>
+                <th className="relative select-none px-3 py-2 text-left font-semibold align-middle group whitespace-normal break-words">
+                  {t("signup.email")}
+                </th>
+                <th className="relative select-none px-3 py-2 text-left font-semibold align-middle group whitespace-normal break-words">
+                  {t("users.firstName")}
+                </th>
+                <th className="relative select-none px-3 py-2 text-left font-semibold align-middle group whitespace-normal break-words">
+                  {t("users.lastName")}
+                </th>
               </tr>
             </thead>
             <tbody>
-              {users.slice(0, 20).map((u) => (
-                <tr key={u.id} className="border-t">
-                  <td className="px-3 py-2">{u.username}</td>
-                  <td className="px-3 py-2">{u.email}</td>
-                  <td className="px-3 py-2">{u.first_name}</td>
-                  <td className="px-3 py-2">{u.last_name}</td>
+              {users.slice(0, 20).map((row) => (
+                <tr data-tag={"row-" + row.id} className="border-t divide-x divide-slate-200 dark:divide-slate-700">
+                  <td className="px-3 py-2 align-middle whitespace-normal break-words"
+                      style={{ width: cell.column.getSize(), overflowWrap: "anywhere", wordBreak: "break-word", whiteSpace: "pre-wrap" }}
+                  >
+                    {row.username}
+                  </td>
+                  <td className="px-3 py-2 align-middle whitespace-normal break-words"
+                      style={{ width: cell.column.getSize(), overflowWrap: "anywhere", wordBreak: "break-word", whiteSpace: "pre-wrap" }}
+                  >
+                    {row.email}
+                  </td>
+                  <td className="px-3 py-2 align-middle whitespace-normal break-words"
+                      style={{ width: cell.column.getSize(), overflowWrap: "anywhere", wordBreak: "break-word", whiteSpace: "pre-wrap" }}
+                  >
+                    {row.first_name}
+                  </td>
+                  <td className="px-3 py-2 align-middle whitespace-normal break-words"
+                      style={{ width: cell.column.getSize(), overflowWrap: "anywhere", wordBreak: "break-word", whiteSpace: "pre-wrap" }}
+                  >
+                    {row.last_name}
+                  </td>
                 </tr>
               ))}
               {users.length > 20 && (
                 <tr className="border-t">
-                  <td className="px-3 py-2 text-slate-500" colSpan={4}>
+                  <td className="px-3 py-2 text-slate-500"
+                      colSpan={4}
+                  >
                     {t("userDeleteConfirm.and")} {users.length - 20} {t("userDeleteConfirm.more")}
                   </td>
                 </tr>
