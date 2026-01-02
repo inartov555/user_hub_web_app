@@ -337,7 +337,11 @@ export default function UsersTable(props: Props) {
       accessorKey: "change_password_action",
       meta: { i18nKey: "users.changePassword" },
       enableHiding: false,
-      header: () => (<div data-tag="changePasswordHeader" className="w-full justify-center">{t("users.changePassword")}</div>),
+      header: () => (<div data-tag="changePasswordHeader"
+                          className="inline-flex items-center gap-1 w-full justify-center"
+                     >
+                       <span>{t("users.changePassword")}</span>
+                     </div>),
       size: 205,
       enableSorting: false,
       cell: ({ row }) => (

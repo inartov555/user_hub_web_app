@@ -96,33 +96,41 @@ export default function UserDeleteConfirm() {
             <thead className="bg-muted/50">
               <tr className="divide-x divide-slate-300 dark:divide-slate-600 border-b border-slate-300 dark:border-slate-600">
                 <th data-tag="header-username"
-                    className="bg-slate-100 dark:bg-slate-700 text-slate-900 dark:text-slate-100
+                    className="
+                      bg-slate-100 dark:bg-slate-700 text-slate-900 dark:text-slate-100
                       relative select-none px-3 py-2 text-left font-semibold align-middle
-                      whitespace-normal break-words
+                      whitespace-normal break-words text-center
+                      hover:bg-slate-200/80 dark:hover:bg-slate-800/70
                     "
                 >
                   {t("signup.username")}
                 </th>
                 <th data-tag="header-email"
-                    className="bg-slate-100 dark:bg-slate-700 text-slate-900 dark:text-slate-100
+                    className="
+                      bg-slate-100 dark:bg-slate-700 text-slate-900 dark:text-slate-100
                       relative select-none px-3 py-2 text-left font-semibold align-middle
-                      whitespace-normal break-words
+                      whitespace-normal break-words text-center
+                      hover:bg-slate-200/80 dark:hover:bg-slate-800/70
                     "
                 >
                   {t("signup.email")}
                 </th>
                 <th data-tag="header-firstName"
-                    className="bg-slate-100 dark:bg-slate-700 text-slate-900 dark:text-slate-100
+                    className="
+                      bg-slate-100 dark:bg-slate-700 text-slate-900 dark:text-slate-100
                       relative select-none px-3 py-2 text-left font-semibold align-middle
-                      whitespace-normal break-words
+                      whitespace-normal break-words text-center
+                      hover:bg-slate-200/80 dark:hover:bg-slate-800/70
                     "
                 >
                   {t("users.firstName")}
                 </th>
                 <th data-tag="header-lastName"
-                    className="bg-slate-100 dark:bg-slate-700 text-slate-900 dark:text-slate-100
+                    className="
+                      bg-slate-100 dark:bg-slate-700 text-slate-900 dark:text-slate-100
                       relative select-none px-3 py-2 text-left font-semibold align-middle
-                      whitespace-normal break-words
+                      whitespace-normal break-words text-center
+                      hover:bg-slate-200/80 dark:hover:bg-slate-800/70
                     "
                 >
                   {t("users.lastName")}
@@ -131,7 +139,12 @@ export default function UserDeleteConfirm() {
             </thead>
             <tbody>
               {users.slice(0, 20).map((row) => (
-                <tr data-tag={"row-userId-" + row.id} className="border-b divide-x divide-slate-300 dark:divide-slate-600">
+                <tr data-tag={"row-userId-" + row.id}
+                    className="
+                      border-b divide-x divide-slate-300 dark:divide-slate-600
+                      hover:bg-slate-200/70 dark:hover:bg-slate-200/80 dark:hover:text-slate-900
+                    "
+                >
                   <td data-tag={"cell-username"}
                       className="px-3 py-2 align-middle whitespace-normal break-words"
                       style={{ overflowWrap: "anywhere", wordBreak: "break-word", whiteSpace: "pre-wrap" }}
