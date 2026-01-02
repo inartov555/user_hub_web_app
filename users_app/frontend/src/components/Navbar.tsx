@@ -148,7 +148,9 @@ export default function Navbar() {
             </span>
             <select
               id="locale"
-              className="border border-slate-300 dark:border-slate-700 rounded bg-white dark:bg-slate-900 px-2 py-1 text-sm"
+              className="
+                border border-slate-300 dark:border-slate-700 rounded bg-white dark:bg-slate-900 px-2 py-1 text-sm
+              "
               value={locale}
               onChange={(e) => {
                 const next = e.target.value;

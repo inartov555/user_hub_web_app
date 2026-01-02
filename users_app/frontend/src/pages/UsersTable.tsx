@@ -653,8 +653,10 @@ export default function UsersTable(props: Props) {
                   {t("users.rowsPerPage")}
                   <select
                     id="rowsPerPage"
-                    className="rounded-md border bg-background px-2 py-1 dark:bg-slate-900 dark:text-slate-100 dark:placeholder-slate-500
-                      dark:border-slate-700"
+                    className="
+                      rounded-md border bg-background px-2 py-1 dark:bg-slate-900 dark:text-slate-100 dark:placeholder-slate-500
+                      dark:border-slate-700
+                    "
                     value={table.getState().pagination.pageSize}
                     onChange={(e) => {
                       const ps = Number(e.target.value);

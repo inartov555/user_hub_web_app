@@ -68,12 +68,14 @@ export default function Settings() {
             <p className="text-xs text-slate-500">{t("appSettings.jwtRotateTokensHelp")}</p>
             <select
               id="rotateRefreshTokens"
-                className="w-full rounded-xl px-3 py-2
+              className="
+                w-full rounded-xl px-3 py-2
                 bg-white text-slate-900 placeholder-slate-500
                 border border-slate-300
                 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500
                 dark:bg-slate-900 dark:text-slate-100 dark:placeholder-slate-500
-                dark:border-slate-700"
+                dark:border-slate-700
+              "
               value={form.ROTATE_REFRESH_TOKENS ? "true" : "false"}
               onChange={(e) => {
                 const next = e.target.value === "true";
@@ -165,13 +167,13 @@ function Field({
         value={value}
         onChange={(e) => onChange(parseInt(e.target.value || "0", 10))}
         className="
-            w-full rounded-xl px-3 py-2
-            bg-white text-slate-900 placeholder-slate-500
-            border border-slate-300
-            focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500
-            dark:bg-slate-900 dark:text-slate-100 dark:placeholder-slate-500
-            dark:border-slate-700
-          "
+          w-full rounded-xl px-3 py-2
+          bg-white text-slate-900 placeholder-slate-500
+          border border-slate-300
+          focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500
+          dark:bg-slate-900 dark:text-slate-100 dark:placeholder-slate-500
+          dark:border-slate-700
+        "
       />
     </div>
   );
