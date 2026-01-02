@@ -217,7 +217,7 @@ export default function UsersTable(props: Props) {
         const all = table.getIsAllRowsSelected();
         const some = table.getIsSomeRowsSelected();
         return (
-          <div className="px-2">
+          <div className="px-2 w-full justify-center">
             <Checkbox
               data-tag="check-all-rows"
               checked={all}
@@ -230,7 +230,7 @@ export default function UsersTable(props: Props) {
         );
       },
       cell: ({ row }) => (
-        <div className="px-2">
+        <div className="px-2 w-full justify-center">
           <Checkbox
             data-tag="check-a-row"
             checked={row.getIsSelected()}
@@ -241,7 +241,7 @@ export default function UsersTable(props: Props) {
           />
         </div>
       ),
-      size: 48,
+      size: 30,
       enableResizing: false,
       enableSorting: false,
     }] : []),
@@ -337,9 +337,9 @@ export default function UsersTable(props: Props) {
       accessorKey: "change_password_action",
       meta: { i18nKey: "users.changePassword" },
       enableHiding: false,
-      header: () => (<div data-tag="changePasswordHeader">{t("users.changePassword")}</div>),
+      header: () => (<div data-tag="changePasswordHeader" className="w-full justify-center">{t("users.changePassword")}</div>),
+      size: 205,
       enableSorting: false,
-      size: 180,
       cell: ({ row }) => (
         <div className={headerButtonClassName(undefined)}>
           <Button
@@ -359,13 +359,13 @@ export default function UsersTable(props: Props) {
       "relative inline-flex items-center gap-2 rounded-xl px-2.5 py-1.5 -ml-2",
       "font-semibold tracking-[0.01em]",
       "transition-all duration-150",
-      "hover:bg-slate-100/80 dark:hover:bg-slate-800/70",
       "active:bg-slate-200/80 dark:active:bg-slate-700/70",
       "active:translate-y-[0.5px]",
-      "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500/35 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-slate-900",
-      "after:absolute after:left-3 after:right-3 after:-bottom-1 after:h-[2px] after:rounded-full after:bg-red-500/60 after:opacity-0 after:transition-opacity",
-      "hover:after:opacity-100",
-      sorted && "text-slate-900 dark:text-slate-50 after:opacity-100",
+      "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500/35 focus-visible:ring-offset-2",
+      "focus-visible:ring-offset-white dark:focus-visible:ring-offset-slate-900",
+      "after:absolute after:left-3 after:right-3 after:-bottom-1 after:h-[2px] after:rounded-full after:bg-red-500/60",
+      "after:opacity-0 after:transition-opacity",
+      sorted && "text-slate-900 dark:text-slate-50 after:opacity-100 w-full justify-center",
       !sorted && "text-slate-700 dark:text-slate-200"
     ].join(" ");
 
@@ -484,7 +484,7 @@ export default function UsersTable(props: Props) {
                     meta?.label ??
                     (meta?.i18nKey ? t(meta.i18nKey) : undefined);
                   return (
-                    <label className="flex cursor-pointer items-center gap-2 rounded px-2 py-1.5 hover:bg-slate-50">
+                    <label key={col.id} className="flex cursor-pointer items-center gap-2 rounded px-2 py-1.5 hover:bg-slate-50">
                       <input
                         type="checkbox"
                         checked={col.getIsVisible()}
@@ -545,7 +545,11 @@ export default function UsersTable(props: Props) {
                 <thead className="bg-muted/50">
                   {table.getHeaderGroups().map((headerGroup) => (
                     <tr key={headerGroup.id}
-                        className="divide-x divide-slate-300 dark:divide-slate-600 border-b border-slate-300 dark:border-slate-600">
+                        className="
+                          divide-x divide-slate-300 dark:divide-slate-600 border-b border-slate-300
+                          dark:border-slate-600
+                        "
+                    >
                       {headerGroup.headers.map((header) => {
                         const sortIndex = header.column.getSortIndex();
                         return (
@@ -553,13 +557,15 @@ export default function UsersTable(props: Props) {
                             key={header.id}
                             colSpan={header.colSpan}
                             style={{ width: header.getSize() }}
-                            className="bg-slate-100 dark:bg-slate-700 text-slate-900 dark:text-slate-100
+                            className="
+                              group bg-slate-100 dark:bg-slate-700 text-slate-900 dark:text-slate-100
                               relative select-none px-3 py-2 text-left font-semibold align-middle
-                              whitespace-normal break-words
+                              whitespace-normal break-words w-full justify-center
+                              hover:bg-slate-200/80 dark:hover:bg-slate-800/70
                             "
                           >
                             {header.isPlaceholder ? null : (
-                              <div className="inline-flex items-center gap-1">
+                              <div className="inline-flex items-center gap-1 w-full justify-center">
                                 {flexRender(header.column.columnDef.header, header.getContext())}
                                 {sortIndex > -1 && (
                                   <span className="text-xs text-muted-foreground">#{sortIndex + 1}</span>
@@ -592,7 +598,11 @@ export default function UsersTable(props: Props) {
                     table.getRowModel().rows.map((row) => (
                       <tr key={row.id}
                           data-tag={"row-userId-" + row.id}
-                          className="border-b divide-x divide-slate-300 dark:divide-slate-600">
+                          className="
+                            border-b divide-x divide-slate-300 dark:divide-slate-600
+                            hover:bg-slate-200/70 dark:hover:bg-slate-200/80 dark:hover:text-slate-900
+                          "
+                      >
                         {row.getVisibleCells().map((cell, cellIndex) => (
                           <td
                             key={cell.id}
