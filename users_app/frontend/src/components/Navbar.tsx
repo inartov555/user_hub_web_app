@@ -173,18 +173,3 @@ export default function Navbar() {
     </header>
   );
 }
-
-function navCls(path: string, hrefs: string | string[]) {
-  // Tab active/inactive styles
-  const list = Array.isArray(hrefs) ? hrefs : [hrefs];
-  const active = list.some((h) => path.startsWith(h));
-  return `px-3 py-1 rounded-lg ${
-    active ? "bg-slate-900 text-white" : "hover:bg-slate-100"
-  }`;
-}
-
-function dropdownItemCls(active: boolean) {
-  return `block w-full text-left px-3 py-2 rounded-md text-sm ${
-    active ? "bg-slate-100 font-medium" : "hover:bg-slate-50"
-  }`;
-}

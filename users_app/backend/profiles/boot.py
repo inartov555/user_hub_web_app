@@ -21,19 +21,6 @@ except Exception:  # pylint: disable=broad-exception-caught
 _FALLBACK_BOOT_ID: int = datetime.now(timezone.utc).timestamp()
 
 
-def _coerce_epoch(value: Optional[object]) -> Optional[int]:
-    """
-    Try to coerce a value to an int epoch; return None if not possible.
-    Accepts strings like "1730112345" or ints.
-    """
-    if value is None:
-        return None
-    try:
-        return int(value)
-    except (TypeError, ValueError):
-        return None
-
-
 def get_boot_id() -> int:
     """
     Get the current boot id as an integer.

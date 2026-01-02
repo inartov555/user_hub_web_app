@@ -54,30 +54,6 @@ class CustomTokenRefreshSerializer(TokenRefreshSerializer):
 
         return data
 
-    def _inject_boot_id_into_tokens(self, result: Dict[str, Any]) -> None:
-        """
-        Add current boot_id to the returned access token (and rotated refresh if present).
-        """
-        boot_id = int(get_boot_id())
-        # Access token
-        access_str = result.get("access")
-        if access_str:
-            access_tok = AccessToken(access_str)
-            access_tok["boot_id"] = boot_id
-            result["access"] = str(access_tok)
-        # Rotated refresh token (only present when ROTATE_REFRESH_TOKENS=True)
-        refresh_str = result.get("refresh")
-        if refresh_str:
-            try:
-                ref_tok = RefreshToken(refresh_str)
-            except TokenError:
-                ref_tok = None
-            if ref_tok is not None:
-                ref_tok["boot_id"] = boot_id
-                # Also attempt to blacklist when enabled
-                self._try_blacklist_refresh(ref_tok)
-                result["refresh"] = str(ref_tok)
-
     def _try_blacklist_refresh(self, refresh_token: RefreshToken) -> None:
         """
         Attempt to blacklist a refresh token safely.

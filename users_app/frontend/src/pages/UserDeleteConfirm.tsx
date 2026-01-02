@@ -95,16 +95,24 @@ export default function UserDeleteConfirm() {
           <table className="w-full text-sm table-auto">
             <thead className="bg-muted/50">
               <tr className="border-t divide-x divide-slate-200 dark:divide-slate-700">
-                <th className="relative select-none px-3 py-2 text-left font-semibold align-middle group whitespace-normal break-words">
+                <th data-tag="header-username"
+                    className="relative select-none px-3 py-2 text-left font-semibold align-middle group whitespace-normal break-words"
+                >
                   {t("signup.username")}
                 </th>
-                <th className="relative select-none px-3 py-2 text-left font-semibold align-middle group whitespace-normal break-words">
+                <th data-tag="header-email"
+                    className="relative select-none px-3 py-2 text-left font-semibold align-middle group whitespace-normal break-words"
+                >
                   {t("signup.email")}
                 </th>
-                <th className="relative select-none px-3 py-2 text-left font-semibold align-middle group whitespace-normal break-words">
+                <th data-tag="header-firstName"
+                    className="relative select-none px-3 py-2 text-left font-semibold align-middle group whitespace-normal break-words"
+                >
                   {t("users.firstName")}
                 </th>
-                <th className="relative select-none px-3 py-2 text-left font-semibold align-middle group whitespace-normal break-words">
+                <th data-tag="header-lastName"
+                    className="relative select-none px-3 py-2 text-left font-semibold align-middle group whitespace-normal break-words"
+                >
                   {t("users.lastName")}
                 </th>
               </tr>
@@ -112,23 +120,27 @@ export default function UserDeleteConfirm() {
             <tbody>
               {users.slice(0, 20).map((row) => (
                 <tr data-tag={"row-" + row.id} className="border-t divide-x divide-slate-200 dark:divide-slate-700">
-                  <td className="px-3 py-2 align-middle whitespace-normal break-words"
-                      style={{ width: cell.column.getSize(), overflowWrap: "anywhere", wordBreak: "break-word", whiteSpace: "pre-wrap" }}
+                  <td data-tag={"cell-username"}
+                      className="px-3 py-2 align-middle whitespace-normal break-words"
+                      style={{ overflowWrap: "anywhere", wordBreak: "break-word", whiteSpace: "pre-wrap" }}
                   >
                     {row.username}
                   </td>
-                  <td className="px-3 py-2 align-middle whitespace-normal break-words"
-                      style={{ width: cell.column.getSize(), overflowWrap: "anywhere", wordBreak: "break-word", whiteSpace: "pre-wrap" }}
+                  <td data-tag={"cell-email"}
+                      className="px-3 py-2 align-middle whitespace-normal break-words"
+                      style={{ overflowWrap: "anywhere", wordBreak: "break-word", whiteSpace: "pre-wrap" }}
                   >
                     {row.email}
                   </td>
-                  <td className="px-3 py-2 align-middle whitespace-normal break-words"
-                      style={{ width: cell.column.getSize(), overflowWrap: "anywhere", wordBreak: "break-word", whiteSpace: "pre-wrap" }}
+                  <td data-tag={"cell-first_name"}
+                      className="px-3 py-2 align-middle whitespace-normal break-words"
+                      style={{ overflowWrap: "anywhere", wordBreak: "break-word", whiteSpace: "pre-wrap" }}
                   >
                     {row.first_name}
                   </td>
-                  <td className="px-3 py-2 align-middle whitespace-normal break-words"
-                      style={{ width: cell.column.getSize(), overflowWrap: "anywhere", wordBreak: "break-word", whiteSpace: "pre-wrap" }}
+                  <td data-tag={"cell-last_name"}
+                      className="px-3 py-2 align-middle whitespace-normal break-words"
+                      style={{ overflowWrap: "anywhere", wordBreak: "break-word", whiteSpace: "pre-wrap" }}
                   >
                     {row.last_name}
                   </td>

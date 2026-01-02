@@ -484,7 +484,7 @@ export default function UsersTable(props: Props) {
                     meta?.label ??
                     (meta?.i18nKey ? t(meta.i18nKey) : undefined);
                   return (
-                    <label key={col.id} className="flex cursor-pointer items-center gap-2 rounded px-2 py-1.5 hover:bg-slate-50">
+                    <label className="flex cursor-pointer items-center gap-2 rounded px-2 py-1.5 hover:bg-slate-50">
                       <input
                         type="checkbox"
                         checked={col.getIsVisible()}
@@ -544,12 +544,11 @@ export default function UsersTable(props: Props) {
               <table className="w-full text-sm table-auto border-collapse">
                 <thead className="bg-muted/50">
                   {table.getHeaderGroups().map((headerGroup) => (
-                    <tr key={headerGroup.id} className="border-b">
+                    <tr className="border-b divide-x divide-slate-200 dark:divide-slate-700">
                       {headerGroup.headers.map((header) => {
                         const sortIndex = header.column.getSortIndex();
                         return (
                           <th
-                            key={header.id}
                             colSpan={header.colSpan}
                             style={{ width: header.getSize() }}
                             className="relative select-none px-3 py-2 text-left font-semibold align-middle group whitespace-normal break-words"
@@ -586,10 +585,9 @@ export default function UsersTable(props: Props) {
                     </tr>
                   ) : (
                     table.getRowModel().rows.map((row) => (
-                      <tr data-tag={"row-" + row.id} key={row.id} className="border-b hover:bg-muted/40">
+                      <tr data-tag={"row-" + row.id} className="border-b divide-x divide-slate-200 dark:divide-slate-700 hover:bg-muted/40">
                         {row.getVisibleCells().map((cell, cellIndex) => (
                           <td
-                            key={cell.id}
                             data-tag={"cell-" + cellIndex}
                             style={{ width: cell.column.getSize(), overflowWrap: "anywhere", wordBreak: "break-word", whiteSpace: "pre-wrap" }}
                             className="px-3 py-2 align-middle whitespace-normal break-words"
