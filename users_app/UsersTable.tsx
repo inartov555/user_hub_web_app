@@ -13,7 +13,7 @@ import {
 } from "@tanstack/react-table";
 import { useQuery, useQueryClient, keepPreviousData } from "@tanstack/react-query";
 import {
-  Trash2, FilterX,
+  Trash2, FilterX, Users,
   ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight,
   Columns, ArrowUpDown, ArrowUp, ArrowDown
 } from "lucide-react";
@@ -55,7 +55,7 @@ const withStableTiebreaker = (ordering: string[], idField = "id") => {
 };
 
 /**
- * Treat *every* header click as a multi-sort gesture (no Shift/Ctrl needed).
+ * Treat every header click as a multi-sort gesture (no Shift/Ctrl needed).
  * This keeps previous sort columns intact instead of resetting them.
  */
 const alwaysMulti = () => true;
@@ -101,7 +101,7 @@ export default function UsersTable(props: Props) {
   const isAdmin = Boolean(cur_user?.is_admin || cur_user?.is_staff || cur_user?.is_superuser);
   const navigate = useNavigate();
   const [page, setPage] = useState(1);
-  const [pageSize, setPageSize] = useState<number>(() => Number(localStorage.getItem("pageSize")) || 20);
+  const [pageSize, setPageSize] = useState<number>(() => Number(localStorage.getItem("pageSize")) || 5);
   const [globalFilter, setGlobalFilter] = useState("");
 
   const [sorting, setSorting] = useState<SortingState>(() => {
@@ -445,7 +445,7 @@ export default function UsersTable(props: Props) {
 
   return (
     <Card className="w-full mx-auto dark:bg-slate-800 dark:text-slate-100 dark:border-slate-700">
-      <CardHeader title={t("users.people")} />
+      <CardHeader icon=<Users className="h-4 w-4" /> title={`${t("users.people")} (${totalCount})`} />
       <CardBody className="justify-end mt-2">
         <div className="flex w-full items-center justify-end gap-2">
           <Input
@@ -465,8 +465,10 @@ export default function UsersTable(props: Props) {
             {showColumns && (
               <div
                 data-tag="columnVisibilityPopup"
-                className="absolute right-0 z-50 mt-2 w-56 rounded-md border bg-white p-2 shadow-lg dark:bg-slate-900 dark:text-slate-100 dark:placeholder-slate-500
-                           dark:border-slate-700"
+                className="
+                  absolute right-0 z-50 mt-2 w-56 rounded-md border bg-white p-2 shadow-lg dark:bg-slate-900
+                  dark:text-slate-100 dark:placeholder-slate-500 dark:border-slate-700
+                "
                 role="menu"
               >
                 <div className="px-2 py-1 text-xs font-medium text-slate-500">{t("users.toggleColumns")}</div>
@@ -482,7 +484,7 @@ export default function UsersTable(props: Props) {
                     meta?.label ??
                     (meta?.i18nKey ? t(meta.i18nKey) : undefined);
                   return (
-                    <label key={col.id} className="flex cursor-pointer items-center gap-2 rounded px-2 py-1.5 hover:bg-slate-50">
+                    <label className="flex cursor-pointer items-center gap-2 rounded px-2 py-1.5 hover:bg-slate-50">
                       <input
                         type="checkbox"
                         checked={col.getIsVisible()}
@@ -542,7 +544,8 @@ export default function UsersTable(props: Props) {
               <table className="w-full text-sm table-auto border-collapse">
                 <thead className="bg-muted/50">
                   {table.getHeaderGroups().map((headerGroup) => (
-                    <tr key={headerGroup.id} className="border-b">
+                    <tr key={headerGroup.id}
+                        className="divide-x divide-slate-300 dark:divide-slate-600 border-b border-slate-300 dark:border-slate-600">
                       {headerGroup.headers.map((header) => {
                         const sortIndex = header.column.getSortIndex();
                         return (
@@ -550,7 +553,10 @@ export default function UsersTable(props: Props) {
                             key={header.id}
                             colSpan={header.colSpan}
                             style={{ width: header.getSize() }}
-                            className="relative select-none px-3 py-2 text-left font-semibold align-middle group whitespace-normal break-words"
+                            className="bg-slate-100 dark:bg-slate-700 text-slate-900 dark:text-slate-100
+                              relative select-none px-3 py-2 text-left font-semibold align-middle
+                              whitespace-normal break-words
+                            "
                           >
                             {header.isPlaceholder ? null : (
                               <div className="inline-flex items-center gap-1">
@@ -584,7 +590,9 @@ export default function UsersTable(props: Props) {
                     </tr>
                   ) : (
                     table.getRowModel().rows.map((row) => (
-                      <tr data-tag={"row-" + row.id} key={row.id} className="border-b hover:bg-muted/40">
+                      <tr key={row.id}
+                          data-tag={"row-userId-" + row.id}
+                          className="border-b divide-x divide-slate-300 dark:divide-slate-600">
                         {row.getVisibleCells().map((cell, cellIndex) => (
                           <td
                             key={cell.id}
@@ -653,8 +661,10 @@ export default function UsersTable(props: Props) {
                   {t("users.rowsPerPage")}
                   <select
                     id="rowsPerPage"
-                    className="rounded-md border bg-background px-2 py-1 dark:bg-slate-900 dark:text-slate-100 dark:placeholder-slate-500
-                      dark:border-slate-700"
+                    className="
+                      rounded-md border bg-background px-2 py-1 dark:bg-slate-900 dark:text-slate-100 dark:placeholder-slate-500
+                      dark:border-slate-700
+                    "
                     value={table.getState().pagination.pageSize}
                     onChange={(e) => {
                       const ps = Number(e.target.value);
@@ -662,7 +672,7 @@ export default function UsersTable(props: Props) {
                       setPageSize(ps);
                     }}
                   >
-                    {[5, 10, 20, 30, 50, 100, 200].map((ps) => (
+                    {[5, 10, 20, 30, 50, 100, 200, 500, 1000, 2000].map((ps) => (
                       <option key={ps} value={ps}>
                         {ps}
                       </option>
