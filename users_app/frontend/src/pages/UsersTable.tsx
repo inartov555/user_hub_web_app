@@ -544,14 +544,17 @@ export default function UsersTable(props: Props) {
               <table className="w-full text-sm table-auto border-collapse">
                 <thead className="bg-muted/50">
                   {table.getHeaderGroups().map((headerGroup) => (
-                    <tr className="border-b divide-x divide-slate-200 dark:divide-slate-700">
+                    <tr className="divide-x divide-slate-300 dark:divide-slate-600 border-b border-slate-300 dark:border-slate-600">
                       {headerGroup.headers.map((header) => {
                         const sortIndex = header.column.getSortIndex();
                         return (
                           <th
                             colSpan={header.colSpan}
                             style={{ width: header.getSize() }}
-                            className="relative select-none px-3 py-2 text-left font-semibold align-middle group whitespace-normal break-words"
+                            className="bg-slate-100 dark:bg-slate-700 text-slate-900 dark:text-slate-100
+                              relative select-none px-3 py-2 text-left font-semibold align-middle
+                              whitespace-normal break-words
+                            "
                           >
                             {header.isPlaceholder ? null : (
                               <div className="inline-flex items-center gap-1">
@@ -585,7 +588,7 @@ export default function UsersTable(props: Props) {
                     </tr>
                   ) : (
                     table.getRowModel().rows.map((row) => (
-                      <tr data-tag={"row-" + row.id} className="border-b divide-x divide-slate-200 dark:divide-slate-700 hover:bg-muted/40">
+                      <tr data-tag={"row-userId-" + row.id} className="border-b divide-x divide-slate-300 dark:divide-slate-600">
                         {row.getVisibleCells().map((cell, cellIndex) => (
                           <td
                             data-tag={"cell-" + cellIndex}
