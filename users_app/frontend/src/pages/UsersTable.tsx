@@ -688,6 +688,7 @@ export default function UsersTable(props: Props) {
                             row.getIsSelected() && "bg-slate-200/70 dark:bg-slate-200/80 dark:text-slate-900",
                             // Also keep highlight when any control inside has focus
                             "focus-within:bg-slate-200/70 dark:focus-within:bg-slate-200/80 dark:focus-within:text-slate-900",
+                            "hover:bg-slate-400/80 dark:hover:bg-slate-400/80 dark:hover:text-slate-600",
                           ].filter(Boolean).join(" ")}
                       >
                         {row.getVisibleCells().map((cell, cellIndex) => (

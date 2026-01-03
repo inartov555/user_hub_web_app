@@ -208,7 +208,7 @@ export default function UserDeleteConfirm() {
                 <tr data-tag={"row-userId-" + row.id}
                     className="
                       border-b divide-x divide-slate-300 dark:divide-slate-600
-                      hover:bg-slate-200/70 dark:hover:bg-slate-200/80 dark:hover:text-slate-900
+                      hover:bg-slate-400/80 dark:hover:bg-slate-400/80 dark:hover:text-slate-600
                     "
                 >
                   <td data-tag={"cell-userId"}
