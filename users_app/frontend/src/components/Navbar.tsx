@@ -50,7 +50,11 @@ export default function Navbar() {
   };
 
   return (
-    <header className="sticky top-0 z-10 bg-white/70 backdrop-blur border-b border-slate-200 dark:bg-slate-800 dark:text-slate-100 dark:border-slate-700">
+    <header className="
+              sticky top-0 z-10 bg-white/70 backdrop-blur border-b border-slate-200 dark:bg-slate-800
+              dark:text-slate-100 dark:border-slate-700
+            "
+    >
       {/* 3-column grid: Left (logo) | Middle (two tab rows) | Right (user/lang) */}
       <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-[auto_1fr_auto] items-start gap-3 p-3">
         {/* Left: app title */}
@@ -125,7 +129,7 @@ export default function Navbar() {
                      dark:text-slate-100 dark:placeholder-slate-500 dark:border-slate-700
                    "
               >
-                <span id="greeting" className="text-sm">
+                <span data-tag="greeting-icon" className="text-sm">
                   <MessageCircle className="h-4 w-4" />
                 </span>
                 <span id="greeting" className="text-sm">
