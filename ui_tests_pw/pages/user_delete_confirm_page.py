@@ -21,7 +21,8 @@ class UserDeleteConfirmPage(BasePage):
         self.page_title = self.page.locator("h2")
         self.confirm_delete_top = self.page.locator("#confirmDeleteTop")
         self.confirm_delete_bottom = self.page.locator("#confirmDeleteBottom")
-        self.cancel = self.page.locator("#cancel")
+        self.cancel_top = self.page.locator("#cancelTop")
+        self.cancel_bottom = self.page.locator("#cancelBottom")
 
     def open(self) -> None:
         """
@@ -36,3 +37,5 @@ class UserDeleteConfirmPage(BasePage):
         expect(self.page).to_have_url(re.compile(r".*/users/confirm-delete$"))
         expect(self.confirm_delete_top).to_be_visible()
         expect(self.confirm_delete_bottom).to_be_visible()
+        expect(self.cancel_top).to_be_visible()
+        expect(self.cancel_bottom).to_be_visible()

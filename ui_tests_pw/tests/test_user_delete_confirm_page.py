@@ -85,7 +85,7 @@ def test_admin_can_cancel_delete_confirm(page: Page,
     admin_users_page.check_all_header.click()
     admin_users_page.delete_users_btn.click()
     confirm_page = UserDeleteConfirmPage(page)
-    confirm_page.cancel.click()
+    confirm_page.cancel_top.click()
     # Verifying that user is redirected to the /users page
     page.wait_for_url(re.compile(r".*/users$"))
     expect(page).to_have_url(re.compile(r".*/users$"))
