@@ -119,7 +119,8 @@
     "more": "más",
     "deleteUsers": "Eliminar usuarios",
     "deleting": "Eliminando…",
-    "cancel": "Cancelar"
+    "cancel": "Cancelar",
+    "userId": "ID de usuario"
   },
   "stats": {
     "curOnline5Mins": "Usuarios en línea actualmente (últimos 5 minutos)"

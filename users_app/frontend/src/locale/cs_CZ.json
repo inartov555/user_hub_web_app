@@ -119,7 +119,8 @@
     "more": "další",
     "deleteUsers": "Smazat uživatele",
     "deleting": "Mazání…",
-    "cancel": "Zrušit"
+    "cancel": "Zrušit",
+    "userId": "ID uživatele"
   },
   "stats": {
     "curOnline5Mins": "Aktuálně online uživatelé (posledních 5 minut)"

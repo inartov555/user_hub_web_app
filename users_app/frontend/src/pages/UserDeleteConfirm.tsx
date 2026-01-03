@@ -81,7 +81,7 @@ export default function UserDeleteConfirm() {
             if (res.status === "rejected") {
               const parsed = extractApiError(res.reason);
               const msg = (parsed?.message ?? "").trim();
-              if (msg) setError(prev => (prev ? `${prev}` : "") + `userId ${id}: ${msg}\n`);
+              if (msg) setError(prev => (prev ? `${prev}` : "") + `${id}: ${msg}\n`);
               for (const _user of users) {
                 if (_user.id === id) {
                   failedReqUsers.push(_user);
@@ -93,7 +93,7 @@ export default function UserDeleteConfirm() {
               if (resp.status > 204) {
                 const parsed = extractApiError(resp);
                 const msg = (parsed?.message ?? "").trim();
-                if (msg) setError(prev => (prev ? `${prev}` : "") + `userId ${id}: ${msg}\n`);
+                if (msg) setError(prev => (prev ? `${prev}` : "") + `${id}: ${msg}\n`);
                 for (const _user of users) {
                   if (_user.id === id) {
                     failedReqUsers.push(_user);

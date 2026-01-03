@@ -119,7 +119,8 @@
     "more": "lisää",
     "deleteUsers": "Poista käyttäjät",
     "deleting": "Poistetaan…",
-    "cancel": "Peruuta"
+    "cancel": "Peruuta",
+    "userId": "Käyttäjätunnus"
   },
   "stats": {
     "curOnline5Mins": "Tällä hetkellä verkossa olevat käyttäjät (viimeiset 5 minuuttia)"

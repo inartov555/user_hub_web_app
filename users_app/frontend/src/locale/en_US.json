@@ -119,7 +119,8 @@
     "more": "more",
     "deleteUsers": "Delete users",
     "deleting": "Deleting…",
-    "cancel": "Cancel"
+    "cancel": "Cancel",
+    "userId": "User ID"
   },
   "stats": {
     "curOnline5Mins": "Users online in the last 5 minutes"
