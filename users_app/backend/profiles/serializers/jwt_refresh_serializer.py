@@ -53,40 +53,6 @@ class CustomTokenRefreshSerializer(TokenRefreshSerializer):
 
         return data
 
-    def _try_blacklist_refresh(self, refresh_token: RefreshToken) -> None:
-        """
-        Attempt to blacklist a refresh token safely.
-        - No-op if the blacklist app is not installed (keeps behavior compatible).
-        - Raises localized, specific exceptions for expected failure modes.
-        """
-        eff = get_effective_auth_settings()  # pulls DB overrides live
-        should_rotate = eff.rotate_refresh_tokens
-        is_blacklist = settings.SIMPLE_JWT.get("BLACKLIST_AFTER_ROTATION", False)
-        # Fast exit if the blacklist app isn’t installed
-        if not apps.is_installed("rest_framework_simplejwt.token_blacklist"):
-            return
-
-        # Honor SIMPLE_JWT setting (should already be true in caller, but keep defensive)
-        if not should_rotate and not is_blacklist:
-            return
-
-        # Access blacklist() safely to satisfy linters when the attribute may not exist on the type
-        blacklister: Optional[Callable[[], None]] = getattr(refresh_token, "blacklist", None)
-        if not callable(blacklister):
-            return
-
-        try:
-            blacklister()  # pylint: disable=no-member
-        except TokenError as exc:
-            # Surface as a field validation error for the client (localized)
-            raise ValidationError({"refresh": ["Invalid refresh token."]}) from exc
-        except (IntegrityError, DatabaseError) as exc:
-            # Database write failed (duplicate/DB down). Tell the client clearly (localized).
-            # The global exception handler will wrap this into the standard error envelope.
-            raise ValidationError(
-                {"non_field_errors": ["Failed to blacklist token."]}
-            ) from exc
-
     @staticmethod
     def _user_from_token(token: Token):
         """

@@ -99,7 +99,11 @@ export default function ProfileEdit() {
     (data.avatar ? mediaBase + data.avatar : `https://placehold.co/160x160?text=${encodeURIComponent(initials)}`);
 
   return (
-    <div className="card grid grid-cols-1 md:grid-cols-3 gap-6 p-4 rounded-2xl border bg-white dark:bg-slate-800 dark:text-slate-100 dark:border-slate-700">
+    <div className="
+           card grid grid-cols-1 md:grid-cols-3 gap-6 p-4 rounded-2xl border bg-white dark:bg-slate-800
+           dark:text-slate-100 dark:border-slate-700
+         "
+    >
       {/* Left: Avatar */}
       <div className="flex items-start justify-center md:justify-start">
         <img

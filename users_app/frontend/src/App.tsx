@@ -7,7 +7,7 @@ import { bootstrapAuth } from "./auth/bootstrap";
 import Navbar from "./components/Navbar";
 import CookieConsent from "./components/CookieConsent";
 
-export function AppShellHeartbeat() {
+function AppShellHeartbeat() {
   useEffect(() => {
     let timer: number | null = null;
 

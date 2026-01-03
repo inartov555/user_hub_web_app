@@ -681,10 +681,14 @@ export default function UsersTable(props: Props) {
                     table.getRowModel().rows.map((row) => (
                       <tr key={row.id}
                           data-tag={"row-userId-" + row.id}
-                          className="
-                            border-b divide-x divide-slate-300 dark:divide-slate-600
-                            hover:bg-slate-200/70 dark:hover:bg-slate-200/80 dark:hover:text-slate-900
-                          "
+                          className={[
+                            "border-b divide-x divide-slate-300 dark:divide-slate-600",
+                            "hover:bg-slate-200/70 dark:hover:bg-slate-200/80 dark:hover:text-slate-900",
+                            // Persistent highlight when checked/selected
+                            row.getIsSelected() && "bg-slate-200/70 dark:bg-slate-200/80 dark:text-slate-900",
+                            // Also keep highlight when any control inside has focus
+                            "focus-within:bg-slate-200/70 dark:focus-within:bg-slate-200/80 dark:focus-within:text-slate-900",
+                          ].filter(Boolean).join(" ")}
                       >
                         {row.getVisibleCells().map((cell, cellIndex) => (
                           <td

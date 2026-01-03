@@ -66,9 +66,6 @@ class JWTAuthentication(BaseAuthentication):
             # Flag near-expiry (no auto-renew)
             seconds_left = self._seconds_to_expiry(access_token)
             request.jwt.seconds_to_expiry = seconds_left
-            # Token renew logic
-            # if self._should_renew(access_token):
-            #    request.jwt.near_expiry = True
 
             # On success, DRF expects (user, auth)
             return (user, str(access_token))
@@ -121,18 +118,3 @@ class JWTAuthentication(BaseAuthentication):
             return None
         now_ts = int(datetime.now(timezone.utc).timestamp())
         return max(0, exp_ts - now_ts)
-
-    def _should_renew(self, token: AccessToken) -> bool:
-        eff = get_effective_auth_settings()  # pulls DB overrides live
-        seconds_left = self._seconds_to_expiry(token)
-        if seconds_left is None:
-            return False
-
-        threshold = eff.jwt_renew_at_seconds
-        should_rotate = eff.rotate_refresh_tokens
-        try:
-            threshold_int = int(threshold)
-        except (TypeError, ValueError):
-            threshold_int = 0
-
-        return should_rotate and seconds_left <= max(0, threshold_int)

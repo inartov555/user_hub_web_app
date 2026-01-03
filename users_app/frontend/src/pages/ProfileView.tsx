@@ -57,7 +57,6 @@ export default function ProfileView() {
   }, []);
 
   if (loading) return <div className="card p-4">{t("users.loading")}</div>;
-  // if (error) return <div className="card p-4 text-red-600">{t("profileView.pViewError", { message: error })}</div>; / not pretty error displaying
   if (error) return <ErrorAlert message={error} />;
 
   if (!profile)
@@ -83,7 +82,11 @@ export default function ProfileView() {
     (profile.avatar ? mediaBase + profile.avatar : `https://placehold.co/160x160?text=${encodeURIComponent(initials || "👤")}`);
 
   return (
-    <div className="card grid grid-cols-1 gap-6 md:grid-cols-3 p-4 rounded-2xl border bg-white dark:bg-slate-800 dark:text-slate-100 dark:border-slate-700">
+    <div className="
+           card grid grid-cols-1 gap-6 md:grid-cols-3 p-4 rounded-2xl border bg-white dark:bg-slate-800
+           dark:text-slate-100 dark:border-slate-700
+         "
+    >
       {/* Left: Avatar */}
       <div className="flex items-start justify-center md:justify-start">
         <img

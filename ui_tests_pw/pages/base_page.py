@@ -9,7 +9,7 @@ from django.utils import translation
 
 from config import frontend_url
 from utils.theme import Theme, set_theme
-from utils.localization import set_locale, get_visible_locales
+from utils.localization import set_locale, assert_locale_visible
 
 
 class BasePage:
@@ -54,8 +54,7 @@ class BasePage:
         """
         Assert that the given locale code is visible in the navbar dropdown.
         """
-        visible = get_visible_locales(self.page)
-        assert expected_code in visible, f"Locale {expected_code!r} not in {visible}"
+        assert_locale_visible(self.page, expected_code)
 
     def assert_text_localization(self,
                                  ui_locale_param: str,
