@@ -5,17 +5,14 @@ Ensures that:
 This allows clients to recover after a server restart without forcing a full re-login.
 """
 
-from typing import Any, Dict, Optional, Callable
+from typing import Any, Dict
 from datetime import datetime, timezone
 
 from django.conf import settings
-from django.apps import apps
 from django.contrib.auth import get_user_model
-from django.db import DatabaseError, IntegrityError
 from rest_framework.exceptions import ValidationError
 from rest_framework_simplejwt.serializers import TokenRefreshSerializer
 from rest_framework_simplejwt.tokens import RefreshToken, AccessToken, Token
-from rest_framework_simplejwt.exceptions import TokenError
 
 from ..models.app_settings import get_effective_auth_settings
 

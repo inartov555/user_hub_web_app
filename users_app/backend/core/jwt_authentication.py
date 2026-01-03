@@ -18,8 +18,6 @@ from rest_framework.exceptions import AuthenticationFailed, ValidationError
 from rest_framework_simplejwt.tokens import AccessToken
 from rest_framework_simplejwt.exceptions import TokenError, InvalidToken
 
-from profiles.models.app_settings import get_effective_auth_settings
-
 
 logger = logging.getLogger(__name__)
 
