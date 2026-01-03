@@ -45,7 +45,6 @@ export default function UserDeleteConfirm() {
   */
 
   const handleConfirm = async () => {
-    console.log("const handleConfirm = async () => { " + remainingUsers);
     const ids = remainingUsers.map((u) => u.id);
     if (!ids.length) return;
 
@@ -64,112 +63,44 @@ export default function UserDeleteConfirm() {
         const results = await Promise.allSettled(
           ids.map((id) => api.delete(`/users/${id}/delete-user/`, { validateStatus: () => true }))
         );
+
         const failed = results.filter(
 	      (res1) => res1.status === "rejected" || (res1.status === "fulfilled" && res1.value.status > 204)
         );
-        /*
-        if (failed.length) {
-          // const failedIds: number[] = [];
-          setError(prev => (prev ? `${prev}` : "") + `${t("userDeleteConfirm.singleDeleteFailed")}\n`);
-          setError(prev => (prev ? `${prev}` : "") + `${t("userDeleteConfirm.failedToDelete")} ${failed.length} ${t("users.of")} ${ids.length} ${t("users.title")}.`);
-          for (let idx = 0; idx < failed.length; idx++) {
-            const id = ids[idx];
-            const res = results[idx];
-            if (res.status === "rejected") {
-              const parsed = extractApiError(res.reason);
-            } else {
-              // res1.value.status > 204
-              const parsed = extractApiError(res.value);
-            }
-            const parsed = extractApiError(res.value);
-            setError(prev => (prev ? `${prev}` : "") + `${parsed.message}`);
-            // failedIds.push(id);
-            setRemainingUsers((prev) => prev.filter((u) => u.id == id));
-          }
-          // setRemainingUsers((prev) => prev.filter((u) => failedIds.includes(remainingUsers.id)));
-        }
-        */
+
         if (failed.length) {
           const failedReqUsers: User[] = [];
 
           setError(prev => (prev ? `${prev}` : "") + `${t("userDeleteConfirm.singleDeleteFailed")}\n`);
-          setError(prev => (prev ? `${prev}` : "") + `${t("userDeleteConfirm.failedToDelete")} ${failed.length} ${t("users.of")} ${ids.length} ${t("users.title")}.`);
+          setError(prev => (prev ? `${prev}` : "") + `${t("userDeleteConfirm.failedToDelete")} ${failed.length} ${t("users.of")} ${ids.length} ${t("users.title")}.\n`);
 
           for (let idx = 0; idx < results.length; idx++) {
-            console.log("for (let idx = 0; idx < results.length; idx++) {");
             const id = ids[idx];
             const res = results[idx];
 
-            /*
-            for (let curId = 0; curId < users.length; curId++) {
-              const curUser = users[curId];
-              const curUserId = curUser.id;
-              if ()
-              setRemainingUsers();
-            }
-            */
-
             if (res.status === "rejected") {
-              console.log("if (res.status === \"rejected\") {");
               const parsed = extractApiError(res.reason);
-              setError(prev => (prev ? `${prev}` : "") + `${id}: ${parsed.message}\n`);
+              if (parsed.message) setError(prev => (prev ? `${prev}` : "") + `${id}: ${parsed.message}\n`);
               for (const _user of users) {
-                console.log("for (const _user of users)");
                 if (_user.id === id) {
                   failedReqUsers.push(_user);
-                  console.log("Pushing failed users");
                 }
               }
-              console.log("status === rejected")
-              // console.log(parsed.message);
             } else {
               // res.value.status > 204
-              console.log("// res.value.status > 204");
               const resp = res.value;
               if (resp.status > 204) {
                 const parsed = extractApiError(resp);
-                setError(prev => (prev ? `${prev}` : "") + `${id}: ${parsed.message}\n`);
+                if (parsed.message) setError(prev => (prev ? `${prev}` : "") + `${id}: ${parsed.message}\n`);
                 for (const _user of users) {
-                  console.log("for (const _user of users)");
                   if (_user.id === id) {
                     failedReqUsers.push(_user);
-                    console.log("Pushing failed users");
                   }
                 }
-                console.log("status === 204")
-                // console.log(parsed.message);
               }
             }
-
-            /*
-            if (res.status === "rejected") {
-              console.log("if (res.status === \"rejected\") {");
-              const parsed = extractApiError(res.reason);
-              setError(prev => (prev ? `${prev}` : "") + `${id}: ${parsed.message}\n`);
-              // failedIds.push(id);
-              for (const _user of users) {
-                console.log("for (const _user of users) {");
-                if (_user.id === id) {
-                  failedReqUsers.push(_user);
-                  console.log("Pushing failed users");
-                }
-              }
-              // continue;
-            }
-            */
-            /*
-            else {
-              // res.value.status > 204
-              const parsed = extractApiError(res.value);
-              setError(prev => (prev ? `${prev}` : "") + `${id}: ${parsed.message}\n`);
-              failedIds.push(id);
-            }
-            */
           }
-          console.log("remainingUsers = " + remainingUsers);
           setRemainingUsers(failedReqUsers);
-          // keep only failed users
-          // setRemainingUsers(prev => prev.filter(u => failedIds.includes(u.id)));
         }
       }
       else {
