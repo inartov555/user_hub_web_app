@@ -644,7 +644,7 @@ export default function UsersTable(props: Props) {
                               group bg-slate-100 dark:bg-slate-700 text-slate-900 dark:text-slate-100
                               relative select-none px-3 py-2 text-left font-semibold align-middle
                               whitespace-normal break-words w-full justify-center
-                              hover:bg-slate-200/80 dark:hover:bg-slate-800/70
+                              hover:bg-slate-400/80 dark:hover:bg-slate-400/80 dark:hover:text-slate-100
                             "
                           >
                             {header.isPlaceholder ? null : (
@@ -687,8 +687,8 @@ export default function UsersTable(props: Props) {
                             // Persistent highlight when checked/selected
                             row.getIsSelected() && "bg-slate-200/70 dark:bg-slate-200/80 dark:text-slate-900",
                             // Also keep highlight when any control inside has focus
-                            "focus-within:bg-slate-200/70 dark:focus-within:bg-slate-200/80 dark:focus-within:text-slate-900",
-                            "hover:bg-slate-400/80 dark:hover:bg-slate-400/80 dark:hover:text-slate-600",
+                            row.getIsSelected() && "focus-within:bg-slate-200/70 dark:focus-within:bg-slate-200/80 dark:focus-within:text-slate-900",
+                            "hover:bg-slate-400/80 dark:hover:bg-slate-400/80 dark:hover:text-slate-100",
                           ].filter(Boolean).join(" ")}
                       >
                         {row.getVisibleCells().map((cell, cellIndex) => (

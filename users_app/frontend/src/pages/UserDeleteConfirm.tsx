@@ -156,7 +156,7 @@ export default function UserDeleteConfirm() {
                       bg-slate-100 dark:bg-slate-700 text-slate-900 dark:text-slate-100
                       relative select-none px-3 py-2 text-left font-semibold align-middle
                       whitespace-normal break-words text-center
-                      hover:bg-slate-200/80 dark:hover:bg-slate-800/70
+                      hover:bg-slate-400/80 dark:hover:bg-slate-400/80 dark:hover:text-slate-100
                     "
                 >
                   {t("userDeleteConfirm.userId")}
@@ -166,7 +166,7 @@ export default function UserDeleteConfirm() {
                       bg-slate-100 dark:bg-slate-700 text-slate-900 dark:text-slate-100
                       relative select-none px-3 py-2 text-left font-semibold align-middle
                       whitespace-normal break-words text-center
-                      hover:bg-slate-200/80 dark:hover:bg-slate-800/70
+                      hover:bg-slate-400/80 dark:hover:bg-slate-400/80 dark:hover:text-slate-100
                     "
                 >
                   {t("signup.username")}
@@ -176,7 +176,7 @@ export default function UserDeleteConfirm() {
                       bg-slate-100 dark:bg-slate-700 text-slate-900 dark:text-slate-100
                       relative select-none px-3 py-2 text-left font-semibold align-middle
                       whitespace-normal break-words text-center
-                      hover:bg-slate-200/80 dark:hover:bg-slate-800/70
+                      hover:bg-slate-400/80 dark:hover:bg-slate-400/80 dark:hover:text-slate-100
                     "
                 >
                   {t("signup.email")}
@@ -186,7 +186,7 @@ export default function UserDeleteConfirm() {
                       bg-slate-100 dark:bg-slate-700 text-slate-900 dark:text-slate-100
                       relative select-none px-3 py-2 text-left font-semibold align-middle
                       whitespace-normal break-words text-center
-                      hover:bg-slate-200/80 dark:hover:bg-slate-800/70
+                      hover:bg-slate-400/80 dark:hover:bg-slate-400/80 dark:hover:text-slate-100
                     "
                 >
                   {t("users.firstName")}
@@ -196,7 +196,7 @@ export default function UserDeleteConfirm() {
                       bg-slate-100 dark:bg-slate-700 text-slate-900 dark:text-slate-100
                       relative select-none px-3 py-2 text-left font-semibold align-middle
                       whitespace-normal break-words text-center
-                      hover:bg-slate-200/80 dark:hover:bg-slate-800/70
+                      hover:bg-slate-400/80 dark:hover:bg-slate-400/80 dark:hover:text-slate-100
                     "
                 >
                   {t("users.lastName")}
@@ -208,7 +208,7 @@ export default function UserDeleteConfirm() {
                 <tr data-tag={"row-userId-" + row.id}
                     className="
                       border-b divide-x divide-slate-300 dark:divide-slate-600
-                      hover:bg-slate-400/80 dark:hover:bg-slate-400/80 dark:hover:text-slate-600
+                      hover:bg-slate-400/80 dark:hover:bg-slate-400/80 dark:hover:text-slate-100
                     "
                 >
                   <td data-tag={"cell-userId"}
