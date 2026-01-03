@@ -3,6 +3,7 @@ Page object for the Reset Password page.
 """
 
 from __future__ import annotations
+import re
 
 from playwright.sync_api import expect, Page
 
@@ -21,6 +22,8 @@ class ResetPasswordPage(BasePage):
         self.email = self.page.locator("#email")
         self.submit = self.page.locator("form button[type='submit']")
         self.reset_pswd_info_msg = self.page.locator("p[data-tag='resetPassInfoMsg']")
+        self.error = self.page.locator("div[data-tag='simpleErrorMessage'] p")
+        self.login = self.page.locator("a[href='/login']")
 
     def open(self) -> None:
         """
@@ -40,3 +43,17 @@ class ResetPasswordPage(BasePage):
         Assert that reset password info message is visible.
         """
         expect(self.reset_pswd_info_msg).to_be_visible()
+
+    def assert_error_visible(self) -> None:
+        """
+        Assert that an error message is visible after a failed /reset-password page.
+        """
+        expect(self.error).to_be_visible()
+
+    def click_sign_in_link(self) -> None:
+        """
+        Clicking the Sign in link on the Reset Password page
+        """
+        self.login.click()
+        self.page.wait_for_url(re.compile(r".*/login$"))
+        expect(self.page).to_have_url(re.compile(r".*/login$"))

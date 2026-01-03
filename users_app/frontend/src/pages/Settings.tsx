@@ -59,9 +59,16 @@ export default function Settings() {
   }
 
   return (
-    <div className="max-w-xl mx-auto p-4 rounded-2xl shadow bg-white border dark:bg-slate-800 dark:text-slate-100 dark:border-slate-700">
+    <div className="
+    	   max-w-xl mx-auto p-4 rounded-2xl shadow bg-white border dark:bg-slate-800 dark:text-slate-100
+    	   dark:border-slate-700
+    	 "
+    >
       <div className="max-w-3xl mx-auto p-4">
-        <UnifiedTitle icon={<SettingsIcon className="h-4 w-4" />} title={t("appSettings.title")} subtitle={t("appSettings.noteNewSessions")} />
+        <UnifiedTitle icon={<SettingsIcon className="h-4 w-4" />}
+                      title={t("appSettings.title")}
+                      subtitle={t("appSettings.noteNewSessions")}
+        />
         <form className="space-y-6" onSubmit={onSubmit}>
           <div className="space-y-1">
             {/* Rotate refresh tokens (controls visibility & value of renewAtSeconds) */}

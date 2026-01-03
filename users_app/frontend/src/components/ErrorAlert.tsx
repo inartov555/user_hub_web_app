@@ -27,6 +27,7 @@ export default function ErrorAlert({ message, title }: ErrorAlertProps) {
 
   return (
     <div
+      data-tag="errorAlert"
       role="alert"
       className="rounded-xl border border-red-200 bg-red-50 text-red-800
                  dark:border-red-900/50 dark:bg-red-900/20 dark:text-red-200 p-4"
@@ -52,7 +53,7 @@ export function SimpleErrorMessage({ errorUi, errorBackend }: SimpleErrorMessage
   if (!errorBackend) return null;
   const text = [errorUi, errorBackend].filter(Boolean).join(" ");
   return (
-    <div className="text-sm text-red-600 whitespace-pre-line">
+    <div data-tag="simpleErrorMessage" className="text-sm text-red-600 whitespace-pre-line">
       <p className="text-red-600 text-sm whitespace-pre-line">{text}</p>
     </div>
   );

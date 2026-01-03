@@ -32,7 +32,11 @@ export default function ResetPassword() {
   }
 
   return (
-    <div className="max-w-xl mx-auto p-4 rounded-2xl shadow bg-white border dark:bg-slate-800 dark:text-slate-100 dark:border-slate-700">
+    <div className="
+           max-w-xl mx-auto p-4 rounded-2xl shadow bg-white border dark:bg-slate-800
+           dark:text-slate-100 dark:border-slate-700
+         "
+    >
       <UnifiedTitle icon={<KeySquare className="h-4 w-4" />} title={t("resetPassword.resetPassword")} />
       {sent ? <p data-tag="resetPassInfoMsg">{t("resetPassword.checkEmailForResetLink")}</p> : (
         <form onSubmit={onSubmit} className="space-y-3">

@@ -101,7 +101,10 @@ export default function ProfileView() {
 
       {/* Right: Details */}
       <div className="md:col-span-2 space-y-4">
-        <UnifiedTitle icon=<UserCircle className="h-4 w-4" /> title={t("profileView.profile")} subtitle={t("profileView.yourPersonalDetails")} />
+        <UnifiedTitle icon={<UserCircle className="h-4 w-4" />}
+                      title={t("profileView.profile")}
+                      subtitle={t("profileView.yourPersonalDetails")}
+        />
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <Field id="fullName" label={t("profileView.fullName")} value={fullName} />

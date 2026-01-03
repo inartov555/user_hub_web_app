@@ -38,6 +38,12 @@ class BasePage:
         """
         self.page.goto(frontend_url(path), wait_until="load")
 
+    def reload(self) -> None:
+        """
+        Reload the current page
+        """
+        self.page.reload(wait_until="load")
+
     def ensure_theme(self, theme: Theme) -> None:
         """
         Ensure the UI uses the given theme.

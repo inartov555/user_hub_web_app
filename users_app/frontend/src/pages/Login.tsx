@@ -52,7 +52,11 @@ export default function Login() {
   }
 
   return (
-    <div className="max-w-xl mx-auto p-4 rounded-2xl shadow bg-white border dark:bg-slate-800 dark:text-slate-100 dark:border-slate-700">
+    <div className="
+           max-w-xl mx-auto p-4 rounded-2xl shadow bg-white border dark:bg-slate-800
+           dark:text-slate-100 dark:border-slate-700
+         "
+    >
       <UnifiedTitle icon={<LogIn className="h-4 w-4" />} title={t("auth.login")} />
       <form onSubmit={onSubmit} className="space-y-3">
         <FormInput placeholder={t("signup.username")}

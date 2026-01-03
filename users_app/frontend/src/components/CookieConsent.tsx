@@ -52,7 +52,7 @@ export default function CookieConsent() {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-4">
+    <div data-tag="cookieConsentContainer" className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-4">
       {/* Backdrop */}
       <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" aria-hidden="true" />
 

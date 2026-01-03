@@ -118,7 +118,10 @@ export default function ProfileEdit() {
 
       {/* Right: Form */}
       <div className="md:col-span-2 space-y-3">
-        <UnifiedTitle icon=<UserPen className="h-4 w-4" /> title={t("profileEdit.editProfile")} subtitle={t("profileView.yourPersonalDetails")} />
+        <UnifiedTitle icon={<UserPen className="h-4 w-4" />}
+                      title={t("profileEdit.editProfile")}
+                      subtitle={t("profileView.yourPersonalDetails")}
+        />
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <FormInput
             id="firstName"

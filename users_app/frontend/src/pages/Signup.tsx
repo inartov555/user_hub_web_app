@@ -30,7 +30,11 @@ export default function Signup() {
   }
 
   return (
-    <div className="max-w-xl mx-auto p-4 rounded-2xl shadow bg-white border dark:bg-slate-800 dark:text-slate-100 dark:border-slate-700">
+    <div className="
+           max-w-xl mx-auto p-4 rounded-2xl shadow bg-white border dark:bg-slate-800
+           dark:text-slate-100 dark:border-slate-700
+         "
+    >
       <UnifiedTitle icon={<UserPlus className="h-4 w-4" />} title={t("signup.title")} />
       <form onSubmit={onSubmit} className="space-y-3">
         <FormInput placeholder={t("signup.email")}
