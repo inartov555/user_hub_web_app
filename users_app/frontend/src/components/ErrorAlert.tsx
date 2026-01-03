@@ -38,3 +38,13 @@ export default function ErrorAlert({ message, title }: Props) {
     </div>
   );
 }
+
+export function SimpleErrorMessage({ error_message, error }) {
+  /*
+   * error_message (string): this one describes UI error, e.g., auth.loginFailed
+   * error (string): backend error
+   */
+  if (!error) return null;
+  const text = [error_message, error].filter(Boolean).join(" ");
+  return <p className="text-red-600 text-sm whitespace-pre-line">{text}</p>;
+}

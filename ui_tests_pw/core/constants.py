@@ -14,7 +14,10 @@ class LocaleConsts:
     POLISH = "pl-PL"
     SPANISH = "es-ES"
 
-    ALL_SUPPORTED_LOCALES = [ENGLISH_US, UKRAINIAN, ESTONIAN, FINNISH, CZECH, POLISH, SPANISH]
+    # Locales available in the website
+    ALL_AVAILABLE_LOCALES = [ENGLISH_US, UKRAINIAN, ESTONIAN, FINNISH, CZECH, POLISH, SPANISH]
+    # Locales supported by the automation framework for testing
+    ALL_SUPPORTED_LOCALES = ALL_AVAILABLE_LOCALES
 
 
 class ThemeConsts:
@@ -24,4 +27,7 @@ class ThemeConsts:
     LIGHT = "light"
     DARK = "dark"
 
-    ALL_SUPPORTED_THEMES = [LIGHT, DARK]
+    # Themes available in the website
+    ALL_AVAILABLE_THEMES = [LIGHT, DARK]
+    # Themes supported by the automation framework for testing
+    ALL_SUPPORTED_THEMES = ALL_AVAILABLE_THEMES

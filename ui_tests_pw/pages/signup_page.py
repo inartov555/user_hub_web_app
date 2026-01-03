@@ -37,3 +37,11 @@ class SignupPage(BasePage):
         self.username.fill(username)
         self.email.fill(email)
         self.password.fill(password)
+
+    def click_sign_in_link(self) -> None:
+        """
+        Clicking the Sign in link on the Sign up page
+        """
+        self.login.click()
+        self.page.wait_for_url(re.compile(r".*/login$"))
+        expect(self.page).to_have_url(re.compile(r".*/login$"))

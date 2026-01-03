@@ -40,8 +40,8 @@ from pages.stats_page import StatsPage
 log = Logger(__name__)
 
 
-@pytest.fixture(autouse=True, scope="session")
-def add_loggers():
+@pytest.fixture(scope="session", autouse=True)
+def add_loggers() -> None:
     """
     The fixture to configure loggers
     It uses built-in pytest arguments to configure loggigng level and files
@@ -78,6 +78,40 @@ def before_tests() -> None:
         1. Creating a regular user
     """
     ensure_regular_user()
+
+
+@pytest.fixture(scope="session", autouse=True)
+def screenshot_dir() -> str:
+    """
+    Getting screenshot directory
+    """
+    artifacts_folder_default = os.getenv("HOST_ARTIFACTS")
+    os.makedirs(artifacts_folder_default, exist_ok=True)
+    return artifacts_folder_default
+
+
+@pytest.fixture(name="browser", scope="session", autouse=True)
+def browser_setup(playwright, request):
+    """
+    Set the browser driver
+    """
+    browser = get_browser(playwright, request)
+    yield browser
+    browser.close()
+
+
+def take_a_screenshot(page: Page) -> str:
+    """
+    Taking a screenshot of the currently shown page
+
+    Returns:
+        str, taken screenshot path
+    """
+    screenshot_path = os.path.join(FileUtils.timestamped_path("screenshot",
+                                   "png",
+                                   os.getenv("HOST_ARTIFACTS")))
+    page.screenshot(path=screenshot_path, full_page=True, timeout=10000)
+    return screenshot_path
 
 
 def validate_app_config_params(**kwargs) -> None:
@@ -121,16 +155,6 @@ def app_config(pytestconfig) -> AppConfig:
     return AppConfig(**result_dict)
 
 
-@pytest.fixture(scope="session")
-def screenshot_dir() -> str:
-    """
-    Getting screenshot directory
-    """
-    artifacts_folder_default = os.getenv("HOST_ARTIFACTS")
-    os.makedirs(artifacts_folder_default, exist_ok=True)
-    return artifacts_folder_default
-
-
 def get_browser(playwright, request) -> Browser:
     """
     Set up a browser and return it
@@ -165,16 +189,6 @@ def get_browser(playwright, request) -> Browser:
         raise ValueError(f"browser config param contains incorrect value: {_app_config.browser}")
     log.info(f"{_app_config.browser} browser is selected")
     return browser
-
-
-@pytest.fixture(autouse=True, name="browser", scope="session")
-def browser_setup(playwright, request):
-    """
-    Set the browser driver
-    """
-    browser = get_browser(playwright, request)
-    yield browser
-    browser.close()
 
 
 @pytest.fixture(name="page", scope="function")

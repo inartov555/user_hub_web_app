@@ -51,6 +51,22 @@ class LoginPage(BasePage):
         self.username.fill(username)
         self.password.fill(password)
 
+    def click_create_account_link(self) -> None:
+        """
+        Clicking the Create account link on the Login page
+        """
+        self.signup.click()
+        self.page.wait_for_url(re.compile(r".*/signup$"))
+        expect(self.page).to_have_url(re.compile(r".*/signup$"))
+
+    def click_forgot_password_link(self) -> None:
+        """
+        Clicking the Forgot password? link on the Login page
+        """
+        self.forgot_password.click()
+        self.page.wait_for_url(re.compile(r".*/reset-password$"))
+        expect(self.page).to_have_url(re.compile(r".*/reset-password$"))
+
     def assert_error_visible(self) -> None:
         """
         Assert that an error message is visible after a failed login attempt.
