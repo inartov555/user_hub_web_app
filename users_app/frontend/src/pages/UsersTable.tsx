@@ -544,6 +544,78 @@ export default function UsersTable(props: Props) {
           </div>
         ) : (
           <>
+            {/* Top / pagination */}
+            <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
+              <div className="flex items-center gap-2">
+                <Button
+                  id="toFirstPageTop"
+                  title={t("users.firstPage")}
+                  onClick={() => (table.setPageIndex(0), setPage(1))}
+                  disabled={!table.getCanPreviousPage()}
+                >
+                  <ChevronsLeft className="h-4 w-4" />
+                </Button>
+                <Button
+                  id="toPreviousPageTop"
+                  title={t("users.previousPage")}
+                  onClick={() => (table.previousPage(), setPage((p) => Math.max(1, p - 1)))}
+                  disabled={!table.getCanPreviousPage()}
+                >
+                  <ChevronLeft className="h-4 w-4" />
+                </Button>
+                <Button
+                  id="toNextPageTop"
+                  title={t("users.nextPage")}
+                  onClick={() => (table.nextPage(), setPage((p) => p + 1))}
+                  disabled={!table.getCanNextPage()}
+                >
+                  <ChevronRight className="h-4 w-4" />
+                </Button>
+                <Button
+                  id="toLastPageTop"
+                  title={t("users.lastPage")}
+                  onClick={() => {
+                    const last = Math.max(0, table.getPageCount() - 1);
+                    table.setPageIndex(last);
+                    setPage(last + 1);
+                  }}
+                  disabled={!table.getCanNextPage()}
+                >
+                  <ChevronsRight className="h-4 w-4" />
+                </Button>
+              </div>
+
+              <div data-tag="paginationTop" className="flex items-center gap-3 text-sm text-muted-foreground">
+                {isFetching && <span data-tag="isUpdatingTop">{t("users.updating")}</span>}
+                <span data-tag="pageOfPagesTop">
+                  {t("users.page")} <strong>{table.getState().pagination.pageIndex + 1}</strong> {t("users.of")}{" "}
+                  {table.getPageCount() || 1}
+                </span>
+                <label className="flex items-center gap-2">
+                  {t("users.rowsPerPage")}
+                  <select
+                    id="rowsPerPageTop"
+                    className="
+                      border border-slate-300 dark:border-slate-700 rounded bg-white dark:bg-slate-900 px-2 py-1 text-sm
+                    "
+                    value={table.getState().pagination.pageSize}
+                    onChange={(e) => {
+                      const ps = Number(e.target.value);
+                      table.setPageSize(ps);
+                      setPageSize(ps);
+                    }}
+                  >
+                    {[5, 10, 20, 30, 50, 100, 200, 500, 1000, 2000].map((ps) => (
+                      <option key={ps} value={ps}>
+                        {ps}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+              </div>
+            </div>
+
+            {/* The users table */}
             <div className="overflow-auto rounded-xl border">
               <table className="w-full text-sm table-auto border-collapse">
                 <thead className="bg-muted/50">
@@ -628,7 +700,7 @@ export default function UsersTable(props: Props) {
             <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
               <div className="flex items-center gap-2">
                 <Button
-                  id="toFirstPage"
+                  id="toFirstPageBottom"
                   title={t("users.firstPage")}
                   onClick={() => (table.setPageIndex(0), setPage(1))}
                   disabled={!table.getCanPreviousPage()}
@@ -636,7 +708,7 @@ export default function UsersTable(props: Props) {
                   <ChevronsLeft className="h-4 w-4" />
                 </Button>
                 <Button
-                  id="toPreviousPage"
+                  id="toPreviousPageBottom"
                   title={t("users.previousPage")}
                   onClick={() => (table.previousPage(), setPage((p) => Math.max(1, p - 1)))}
                   disabled={!table.getCanPreviousPage()}
@@ -644,7 +716,7 @@ export default function UsersTable(props: Props) {
                   <ChevronLeft className="h-4 w-4" />
                 </Button>
                 <Button
-                  id="toNextPage"
+                  id="toNextPageBottom"
                   title={t("users.nextPage")}
                   onClick={() => (table.nextPage(), setPage((p) => p + 1))}
                   disabled={!table.getCanNextPage()}
@@ -652,7 +724,7 @@ export default function UsersTable(props: Props) {
                   <ChevronRight className="h-4 w-4" />
                 </Button>
                 <Button
-                  id="toLastPage"
+                  id="toLastPageBottom"
                   title={t("users.lastPage")}
                   onClick={() => {
                     const last = Math.max(0, table.getPageCount() - 1);
@@ -665,19 +737,18 @@ export default function UsersTable(props: Props) {
                 </Button>
               </div>
 
-              <div data-tag="pagination" className="flex items-center gap-3 text-sm text-muted-foreground">
-                {isFetching && <span data-tag="isUpdating">{t("users.updating")}</span>}
-                <span data-tag="pageOfPages">
+              <div data-tag="paginationBottom" className="flex items-center gap-3 text-sm text-muted-foreground">
+                {isFetching && <span data-tag="isUpdatingBottom">{t("users.updating")}</span>}
+                <span data-tag="pageOfPagesBottom">
                   {t("users.page")} <strong>{table.getState().pagination.pageIndex + 1}</strong> {t("users.of")}{" "}
                   {table.getPageCount() || 1}
                 </span>
                 <label className="flex items-center gap-2">
                   {t("users.rowsPerPage")}
                   <select
-                    id="rowsPerPage"
+                    id="rowsPerPageBottom"
                     className="
-                      rounded-md border bg-background px-2 py-1 dark:bg-slate-900 dark:text-slate-100 dark:placeholder-slate-500
-                      dark:border-slate-700
+                      border border-slate-300 dark:border-slate-700 rounded bg-white dark:bg-slate-900 px-2 py-1 text-sm
                     "
                     value={table.getState().pagination.pageSize}
                     onChange={(e) => {

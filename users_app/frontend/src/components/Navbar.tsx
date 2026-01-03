@@ -120,8 +120,11 @@ export default function Navbar() {
         <div className="flex items-center gap-3 justify-self-end">
           {user && (
             <>
-              <div className="bg-gray-200 border rounded-full px-2 py-1 text-sm flex items-center gap-2 dark:bg-slate-900 dark:text-slate-100 dark:placeholder-slate-500
-                              dark:border-slate-700">
+              <div className="
+                     bg-gray-200 border rounded-full px-2 py-1 text-sm flex items-center gap-2 dark:bg-slate-900
+                     dark:text-slate-100 dark:placeholder-slate-500 dark:border-slate-700
+                   "
+              >
                 <span id="greeting" className="text-sm">
                   <MessageCircle className="h-4 w-4" />
                 </span>

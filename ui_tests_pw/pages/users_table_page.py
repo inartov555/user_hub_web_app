@@ -39,7 +39,7 @@ class UsersTablePage(BasePage):
         self.change_password_btn = self.page.locator('button[data-tag="change-password"]')
 
         self.sort_labels = self.page.locator("thead th span.text-xs")
-        self.is_updating = self.page.locator('span[data-tag="isUpdating"]')
+        self.is_updating_top = self.page.locator('span[data-tag="isUpdatingTop"]')
         self.table_rows = self.page.locator('tbody tr')
 
     def open(self) -> None:
@@ -60,7 +60,7 @@ class UsersTablePage(BasePage):
         """
         There's isUpdating element's text shown while Users Table data is refreshed
         """
-        self.is_updating.wait_for(state="detached", timeout=30000)
+        self.is_updating_top.wait_for(state="detached", timeout=30000)
 
     def sort_by_username_then_email(self) -> None:
         """

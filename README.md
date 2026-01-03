@@ -29,7 +29,7 @@ This is a test website + automation framework
 - 🛠️ **Fixed in `ui_tests_pw`:** Firefox: sometimes, one random test failed to type search text due to not found search input on the /users page
 - 🛠️ **Fixed in `ui_tests_pw`:** Safari/Webkit: sometimes, one random test failed because browser got closed
 - ✨ **Improved in `users_app`:** Lite UI polishing
-- ✨ **Improved in `users_app`:** Duplicating buttons, in the bottom and top of the content block
+- ✨ **Improved in `users_app`:** Duplicating buttons, in the bottom and top of the content block for the UsersTable and UserDeleteConfirm pages
 - 🆕 **Added in `users_app`:** Show/hide button for the password field
 - 🆕 **Added in `users_app`:** Icons to page titles
 - 🆕 **Added in `users_app`:** User ID column to the UserDeleteConfirm page

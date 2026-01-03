@@ -130,6 +130,23 @@ export default function UserDeleteConfirm() {
           {t("userDeleteConfirm.youAboutToDelete")} <strong>{remainingUsers.length}</strong> {t("userDeleteConfirm.cannotBeUndone")}
         </p>
 
+        {/* Top button pair */}
+        <div className="flex gap-2">
+          <Button
+            id="confirmDeleteTop"
+            onClick={handleConfirm}
+            disabled={loading}
+            title={t("userDeleteConfirm.deleteUsers")}
+          >
+            <Trash2 className="h-4 w-4" />
+            {loading ? t("userDeleteConfirm.deleting") : `${t("users.deleteSelected")} (${remainingUsers.length})`}
+          </Button>
+          <Button id="cancelTop" onClick={handleCancel} disabled={loading}>
+            {t("userDeleteConfirm.cancel")}
+          </Button>
+        </div>
+
+        {/* The user list to delete */}
         <div className="rounded-lg border overflow-hidden">
           <table className="w-full text-sm table-auto">
             <thead className="bg-muted/50">
@@ -241,9 +258,10 @@ export default function UserDeleteConfirm() {
 
         {error && <div className="text-sm text-red-600 whitespace-pre-line">{error}</div>}
 
+        {/* Bottom button pair */}
         <div className="flex gap-2">
           <Button
-            id="confirmDelete"
+            id="confirmDeleteBottom"
             onClick={handleConfirm}
             disabled={loading}
             title={t("userDeleteConfirm.deleteUsers")}
@@ -251,7 +269,7 @@ export default function UserDeleteConfirm() {
             <Trash2 className="h-4 w-4" />
             {loading ? t("userDeleteConfirm.deleting") : `${t("users.deleteSelected")} (${remainingUsers.length})`}
           </Button>
-          <Button id="cancel" onClick={handleCancel} disabled={loading}>
+          <Button id="cancelBottom" onClick={handleCancel} disabled={loading}>
             {t("userDeleteConfirm.cancel")}
           </Button>
         </div>
