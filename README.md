@@ -20,9 +20,10 @@ This is a test website + automation framework
 ---
 ## 📌 Changelog v1.4 vs. v1.3
 
-- 🛠️ **Fixed in `users_app`:** 200 users are selected max while more are available for selection to delete
+- 🛠️ **Fixed in `users_app`:** 200 users were selected max while more are available for selection to delete
 - 🛠️ **Fixed in `users_app`:** Breaking words without spaces in lines in the UserDeleteConfirm page
-- 🛠️ **Fixed in `users_app`:** The page shows error with the same list of users including removed ones, when some users were not removed
+- 🛠️ **Fixed in `users_app`:** The page showed error with the same list of users including removed ones, when some users were not removed
+- 🛠️ **Fixed in `users_app`:** Highlight hid the text when mouse point was over a item on the column visibility pop-up of the UsersTable page
 - 🛠️ **Fixed in `ui_tests_pw`:** Firefox: user redirected to the /login page after successful logging in and trying to open the /users page
 - 🛠️ **Fixed in `ui_tests_pw`:** Firefox: sometimes, one random test failed to set the theme because /login page is not fully loaded yet
 - 🛠️ **Fixed in `ui_tests_pw`:** Firefox: sometimes, one random test failed to login because submit button cannot be clicked on the /login page

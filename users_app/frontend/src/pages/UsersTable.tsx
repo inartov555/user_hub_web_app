@@ -461,7 +461,7 @@ export default function UsersTable(props: Props) {
             maxLength={40}
           />
 
-          {/* Columns menu */}
+          {/* Column visibility button */}
           <div className="relative" ref={columnsMenuContainerRef}>
             <Button id="columnVisibility" onClick={() => setShowColumns((v) => !v)}>
               <Columns className="h-4 w-4" /> {t("users.columns")}
@@ -481,28 +481,35 @@ export default function UsersTable(props: Props) {
                   .getAllLeafColumns()
                   .filter((col) => col.columnDef.enableHiding !== false)
                   .map((col) => {
-                  const accessorKey = typeof col.columnDef.header === "string" ? col.columnDef.header : col.id;
-                  // Safely derive a localized string
-                  const meta = col.columnDef.meta as { label?: string; i18nKey?: string } | undefined;
-                  const label =
-                    meta?.label ??
-                    (meta?.i18nKey ? t(meta.i18nKey) : undefined);
-                  return (
-                    <label key={col.id} className="flex cursor-pointer items-center gap-2 rounded px-2 py-1.5 hover:bg-slate-50">
-                      <input
-                        type="checkbox"
-                        checked={col.getIsVisible()}
-                        onChange={(e) => col.toggleVisibility(e.target.checked)}
-                      />
-                      <span>{label}</span>
-                    </label>
-                  );
-                })}
+                    const accessorKey = typeof col.columnDef.header === "string" ? col.columnDef.header : col.id;
+                    // Safely derive a localized string
+                    const meta = col.columnDef.meta as { label?: string; i18nKey?: string } | undefined;
+                    const label =
+                      meta?.label ??
+                      (meta?.i18nKey ? t(meta.i18nKey) : undefined);
+                    return (
+                      <label data-tag={col.id}
+                             key={col.id}
+                             className="
+                               flex cursor-pointer items-center gap-2 rounded px-2 py-1.5
+                               hover:bg-slate-200/70 dark:hover:bg-slate-200/80 dark:hover:text-slate-900
+                             "
+                      >
+                        <input
+                          type="checkbox"
+                          checked={col.getIsVisible()}
+                          onChange={(e) => col.toggleVisibility(e.target.checked)}
+                        />
+                        <span>{label}</span>
+                      </label>
+                    );
+                  })
+                }
               </div>
             )}
           </div>
 
-          {/* Clear sort */}
+          {/* Clear sort button */}
           <Button
             id="clearSort"
             onClick={() => {
@@ -516,7 +523,7 @@ export default function UsersTable(props: Props) {
             {t("users.clearSort")}
           </Button>
 
-          {/* Delete selected (admin only) */}
+          {/* Delete selected button (admin only) */}
           {isAdmin && (
             <Button
               id="deleteUsers"
