@@ -41,4 +41,4 @@ class SettingsPage(BasePage):
         """
         Set a new idle timeout value.
         """
-        self.idle_timeout_sec.fill(str(value))
+        self.idle_timeout_sec.fill(str(int(value)))

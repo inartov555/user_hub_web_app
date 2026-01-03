@@ -42,3 +42,19 @@ def test_settings_page_not_accessible_for_regular_user(regular_users_page: Users
     """
     # Navbar Additional tab is staff-only.
     expect(regular_users_page.addtional_tab).to_have_count(0)
+
+# Case #1: ROTATE_REFRESH_TOKENS is False, session expires due to IDLE_TIMEOUT_SECONDS (user inactivity)
+# Case #2: ROTATE_REFRESH_TOKENS is False, session expires due to ACCESS_TOKEN_LIFETIME (user makes some actions but session is limited)
+# Case #3: ROTATE_REFRESH_TOKENS is True, session expires due to IDLE_TIMEOUT_SECONDS (user inactivity, before 1st refresh)
+# Case #4: ROTATE_REFRESH_TOKENS is True, session refreshes when user makes some actions
+# Case #5: ROTATE_REFRESH_TOKENS is True, session refreshes when user makes some actions, but eventually it expires due to IDLE_TIMEOUT_SECONDS (user inactivity)
+
+
+@pytest.mark.regular_user
+def test_settings_page_not_accessible_for_regular_user(settings_page: SettingsPage) -> None:
+    """
+    Regular user should not be able to access the settings page.
+    Settings tab is located under Additional tab.
+    """
+    # Navbar Additional tab is staff-only.
+    expect(regular_users_page.addtional_tab).to_have_count(0)
