@@ -10,6 +10,7 @@ import FormInput from "../components/FormInput";
 import Button from "../components/button";
 import PasswordInput from "../components/PasswordInput";
 import UnifiedTitle from "../components/UnifiedTitle";
+import SimpleErrorMessage from "../components/ErrorAlert";
 
 export default function Login() {
   const { t } = useTranslation();
@@ -58,7 +59,7 @@ export default function Login() {
                    id="username" type="username" value={username} onChange={e=>setUsername(e.target.value)} />
         <PasswordInput placeholder={t("signup.password")}
                        id="password" value={password} onChange={e=>setPassword(e.target.value)} />
-        {error && <p className="text-red-600 text-sm whitespace-pre-line">{t("auth.loginFailed", { message: error })}</p>}
+        <SimpleErrorMessage error_message={t("auth.loginFailed"} error={error} />
         <div className="mt-2 flex justify-center">
           <Button type="submit">{t("auth.signin")}</Button>
         </div>
