@@ -80,7 +80,8 @@ export default function UserDeleteConfirm() {
 
             if (res.status === "rejected") {
               const parsed = extractApiError(res.reason);
-              if (parsed.message) setError(prev => (prev ? `${prev}` : "") + `${id}: ${parsed.message}\n`);
+              const msg = (parsed?.message ?? "").trim();
+              if (msg) setError(prev => (prev ? `${prev}` : "") + `userId ${id}: ${msg}\n`);
               for (const _user of users) {
                 if (_user.id === id) {
                   failedReqUsers.push(_user);
@@ -91,7 +92,8 @@ export default function UserDeleteConfirm() {
               const resp = res.value;
               if (resp.status > 204) {
                 const parsed = extractApiError(resp);
-                if (parsed.message) setError(prev => (prev ? `${prev}` : "") + `${id}: ${parsed.message}\n`);
+                const msg = (parsed?.message ?? "").trim();
+                if (msg) setError(prev => (prev ? `${prev}` : "") + `userId ${id}: ${msg}\n`);
                 for (const _user of users) {
                   if (_user.id === id) {
                     failedReqUsers.push(_user);
@@ -132,6 +134,16 @@ export default function UserDeleteConfirm() {
           <table className="w-full text-sm table-auto">
             <thead className="bg-muted/50">
               <tr className="divide-x divide-slate-300 dark:divide-slate-600 border-b border-slate-300 dark:border-slate-600">
+                <th data-tag="header-userId"
+                    className="
+                      bg-slate-100 dark:bg-slate-700 text-slate-900 dark:text-slate-100
+                      relative select-none px-3 py-2 text-left font-semibold align-middle
+                      whitespace-normal break-words text-center
+                      hover:bg-slate-200/80 dark:hover:bg-slate-800/70
+                    "
+                >
+                  {t("userDeleteConfirm.userId")}
+                </th>
                 <th data-tag="header-username"
                     className="
                       bg-slate-100 dark:bg-slate-700 text-slate-900 dark:text-slate-100
@@ -182,6 +194,12 @@ export default function UserDeleteConfirm() {
                       hover:bg-slate-200/70 dark:hover:bg-slate-200/80 dark:hover:text-slate-900
                     "
                 >
+                  <td data-tag={"cell-userId"}
+                      className="px-3 py-2 align-middle whitespace-normal break-words"
+                      style={{ overflowWrap: "anywhere", wordBreak: "break-word", whiteSpace: "pre-wrap" }}
+                  >
+                    {row.id}
+                  </td>
                   <td data-tag={"cell-username"}
                       className="px-3 py-2 align-middle whitespace-normal break-words"
                       style={{ overflowWrap: "anywhere", wordBreak: "break-word", whiteSpace: "pre-wrap" }}

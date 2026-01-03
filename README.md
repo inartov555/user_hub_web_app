@@ -32,6 +32,7 @@ This is a test website + automation framework
 - ✨ **Improved in `users_app`:** Duplicating buttons, in the bottom and top of the content block
 - 🆕 **Added in `users_app`:** Show/hide button for the password field
 - 🆕 **Added in `users_app`:** Icons to page titles
+- 🆕 **Added in `users_app`:** User ID column to the UserDeleteConfirm page
 - 🆕 **Added in `ui_tests_pw`:** Logging in as a just created user for `test_signup_with_random_username`
 
 ---
