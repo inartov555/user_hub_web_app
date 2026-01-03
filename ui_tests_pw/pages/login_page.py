@@ -19,9 +19,6 @@ class LoginPage(BasePage):
         super().__init__(page)
 
         self.page_title = self.page.locator("h2")
-        # /users page after logging in
-        self.users_tab = self.page.locator('#users')
-
         self.username = self.page.locator("#username")
         self.password = self.page.locator("#password")
         self.submit = self.page.locator("form button[type='submit']")
@@ -35,6 +32,10 @@ class LoginPage(BasePage):
         self.forgot_password = self.page.locator("a[href='/reset-password']")
 
         self.cookie_consent_div = self.page.locator("div[data-tag='cookieConsentContainer']")
+
+        # /users page after logging in
+        self.users_tab = self.page.locator('#users')
+        self.search_input = self.page.locator('#search')
 
     def open(self) -> None:
         """
@@ -70,8 +71,8 @@ class LoginPage(BasePage):
             pass  # we just wait for the /users page to load
         assert res.value.ok, f"Login failed: {res.value.status}"
         # Additional checks for elements on the /users page
-        users_tab_loc.wait_for(state="visible")
-        search_input_loc.wait_for(state="visible")
+        self.users_tab.wait_for(state="visible")
+        self.search_input.wait_for(state="visible")
 
     def submit_credentials_error(self, username: str, password: str) -> None:
         """

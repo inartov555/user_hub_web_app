@@ -7,7 +7,11 @@ from typing import List
 
 from playwright.sync_api import expect, Page
 
-from .base_page import BasePage
+from pages.base_page import BasePage
+from utils.logger.logger import Logger
+
+
+log = Logger(__name__)
 
 
 class UsersTablePage(BasePage):
@@ -30,10 +34,7 @@ class UsersTablePage(BasePage):
         self.check_all_header = self.page.locator('input[data-tag="check-all-rows"]')
         # This locator returs all checkboxes (NON-header ones) for the current page
         self.check_rows = self.page.locator('input[data-tag="check-a-row"]')
-        self.username_header = self.page.locator('button[data-tag="sort-by-username"]')
-        self.email_header = self.page.locator('button[data-tag="sort-by-email"]')
-        self.first_name_header = self.page.locator('button[data-tag="sort-by-email"]')
-        self.last_name_header = self.page.locator('button[data-tag="sort-by-email"]')
+        self.sortable_columl_header_str = 'button[data-tag="sort-by-{}"]'
         self.change_password_header = self.page.locator('div[data-tag="changePasswordHeader"]')
 
         self.change_password_btn = self.page.locator('button[data-tag="change-password"]')
@@ -98,3 +99,127 @@ class UsersTablePage(BasePage):
         Assert that username is contained in the greeting message
         """
         expect(self.greeting_mes).to_contain_text(text)
+
+    def get_current_column_sort_order(self, column: str) -> str:
+        """
+        Get current column sort order.
+        svg contains arrow-down/arrow-up/arrow-up-down in the className attribute.
+
+        Args:
+            column (str): one of (username, email, firstname, lastname)
+
+        Returns:
+            str, one of (asc, desc, default)
+        """
+        _column = column.lower()
+        if _column not in ("username", "email", "firstname", "lastname"):
+            raise ValueError(f"Current value of the column param ({column}) is not correct")
+        sorted_column_header_loc = self.page.locator(self.sortable_columl_header_str.format(_column))
+        svg_class_attr = sorted_column_header_loc.locator("svg").get_attribute("class")
+        # lucide lucide-arrow-up h-4 w-4 = ascending
+        # lucide lucide-arrow-down h-4 w-4 = descending
+        # lucide lucide-arrow-up-down h-4 w-4 opacity-40 = default
+        if "lucide-arrow-up " in svg_class_attr:
+            return "asc"
+        elif "lucide-arrow-down " in svg_class_attr:
+            return "desc"
+        elif "lucide-arrow-up-down " in svg_class_attr:
+            return "default"
+        return None  # most likely, changed styles
+
+    def change_column_sorting(self, column: str, sort_order: str) -> None:
+        """
+        Assert that username is contained in the greeting message.
+
+        Args:
+            column (str): one of (username, email, firstname, lastname)
+            sort_order (str): one of (asc, desc, default)
+        """
+        _column = column.lower()
+        _sort_order = sort_order.lower()
+        if _sort_order not in ("asc", "desc", "default"):
+            raise ValueError(f"Current value of the sort order ({sort_order}) is not correct")
+
+        cur_sort_order = self.get_current_column_sort_order(_column)
+        sorted_column_header_loc = self.page.locator(self.sortable_columl_header_str.format(_column))
+
+        if cur_sort_order == "default" and _sort_order == "asc":
+            # Click to get ascending order
+            _next_expected_sort_loc_str = "svg.lucide-arrow-up"
+            sorted_column_header_loc.click()
+            next_expected_sort_order = sorted_column_header_loc.locator(_next_expected_sort_loc_str)
+            expect(next_expected_sort_order).to_be_visible()
+        elif cur_sort_order == "default" and _sort_order == "desc":
+            # Click to get ascending order
+            _next_expected_sort_loc_str = "svg.lucide-arrow-up"
+            sorted_column_header_loc.click()
+            next_expected_sort_order = sorted_column_header_loc.locator(_next_expected_sort_loc_str)
+            expect(next_expected_sort_order).to_be_visible()
+            # Click to get desceing order
+            _next_expected_sort_loc_str = "svg.lucide-arrow-down"
+            sorted_column_header_loc.click()
+            next_expected_sort_order = sorted_column_header_loc.locator(_next_expected_sort_loc_str)
+            expect(next_expected_sort_order).to_be_visible()
+        elif cur_sort_order == "asc" and _sort_order == "default":
+            # Click to get descending order
+            _next_expected_sort_loc_str = "svg.lucide-arrow-down"
+            sorted_column_header_loc.click()
+            next_expected_sort_order = sorted_column_header_loc.locator(_next_expected_sort_loc_str)
+            expect(next_expected_sort_order).to_be_visible()
+            # Click to get default order
+            _next_expected_sort_loc_str = "svg.lucide-arrow-up-down"
+            sorted_column_header_loc.click()
+            next_expected_sort_order = sorted_column_header_loc.locator(_next_expected_sort_loc_str)
+            expect(next_expected_sort_order).to_be_visible()
+        elif cur_sort_order == "asc" and _sort_order == "desc":
+            # Click to get desceing order
+            _next_expected_sort_loc_str = "svg.lucide-arrow-down"
+            sorted_column_header_loc.click()
+            next_expected_sort_order = sorted_column_header_loc.locator(_next_expected_sort_loc_str)
+            expect(next_expected_sort_order).to_be_visible()
+        elif cur_sort_order == "desc" and _sort_order == "default":
+            # Click to get default order
+            _next_expected_sort_loc_str = "svg.lucide-arrow-up-down"
+            sorted_column_header_loc.click()
+            next_expected_sort_order = sorted_column_header_loc.locator(_next_expected_sort_loc_str)
+            expect(next_expected_sort_order).to_be_visible()
+        elif cur_sort_order == "desc" and _sort_order == "asc":
+            # Click to get default order
+            _next_expected_sort_loc_str = "svg.lucide-arrow-up-down"
+            sorted_column_header_loc.click()
+            next_expected_sort_order = sorted_column_header_loc.locator(_next_expected_sort_loc_str)
+            expect(next_expected_sort_order).to_be_visible()
+            # Click to get ascending order
+            _next_expected_sort_loc_str = "svg.lucide-arrow-up"
+            sorted_column_header_loc.click()
+            next_expected_sort_order = sorted_column_header_loc.locator(_next_expected_sort_loc_str)
+            expect(next_expected_sort_order).to_be_visible()
+        else:
+            log.warning("Current sort order already is set, no need to change it; "
+                        f"column {_column}; current {cur_sort_order}; expected {_sort_order}")
+
+    def assert_column_sorting(self, column: str, sort_order: str) -> None:
+        """
+        Assert that the passed sort order for the passed column is actually applied on UI.
+        svg contains arrow-down/arrow-up/arrow-up-down in the className attribute.
+
+        Args:
+            column (str): one of (username, email, firstname, lastname)
+            sort_order (str): one of (asc, desc, default)
+        """
+        _column = column.lower()
+        _sort_order = sort_order.lower()
+        if _sort_order not in ("asc", "desc", "default"):
+            raise ValueError(f"Current value of the sort order ({sort_order}) is not correct")
+
+        cur_sort_order = self.get_current_column_sort_order(_column)
+
+        if cur_sort_order == "asc":
+            raise AssertionError(f"{_column} column sort order does not match; actual {svg_class_attr}; "
+                                 f"expected {_sort_order}")
+        elif cur_sort_order == "desc":
+            raise AssertionError(f"{_column} column sort order does not match; actual {cur_sort_order}; "
+                                 f"expected {_sort_order}")
+        elif cur_sort_order == "default":
+            raise AssertionError(f"{_column} column sort order does not match; actual {svg_class_attr}; "
+                                 f"expected {_sort_order}")

@@ -55,7 +55,7 @@ class SignupPage(BasePage):
         Expected: Failed user creation.
         Submitting the input credentials and waiting for the error message on the /signup page
         """
-        self.fill_form(username, emai, password)
+        self.fill_form(username, email, password)
         self.save.click()
         self.page.wait_for_url(re.compile(r".*/signup$"))
         expect(self.page).to_have_url(re.compile(r".*/signup$"))

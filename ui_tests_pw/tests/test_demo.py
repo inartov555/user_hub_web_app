@@ -81,7 +81,55 @@ def test_base_demo(page: Page,
 
     # Now, let's check the /users page
     login_page.submit_credentials_success("admin", "changeme123")
-    
+    # Let's set multi-column sorting (First Name - ascending, Last Name - descending)
+    users_table_page = UsersTablePage(page)
+    import time
+    wait_time = 0
+    for i in range(8):
+        users_table_page.change_column_sorting("firstname", "default")
+        print('\n\n\n FINISH "firstname", "default" \n\n\n')
+        time.sleep(wait_time)
+
+        users_table_page.change_column_sorting("firstname", "asc")
+        print('\n\n\n FINISH "firstname", "asc" \n\n\n')
+        time.sleep(wait_time)
+
+        users_table_page.change_column_sorting("firstname", "desc")
+        print('\n\n\n FINISH "firstname", "desc" \n\n\n')
+        time.sleep(wait_time)
+
+        users_table_page.change_column_sorting("firstname", "default")
+        print('\n\n\n FINISH "firstname", "default" \n\n\n')
+        time.sleep(wait_time)
+
+        users_table_page.change_column_sorting("firstname", "desc")
+        print('\n\n\n FINISH "firstname", "desc" \n\n\n')
+        time.sleep(wait_time)
+
+        users_table_page.change_column_sorting("firstname", "asc")
+        print('\n\n\n FINISH "firstname", "asc" \n\n\n')
+        time.sleep(wait_time)
+
+        users_table_page.change_column_sorting("firstname", "default")
+        print('\n\n\n FINISH "firstname", "default" \n\n\n')
+        time.sleep(wait_time)
+
+        users_table_page.change_column_sorting("firstname", "asc")
+        print('\n\n\n FINISH "firstname", "asc" \n\n\n')
+        time.sleep(wait_time)
+
+        users_table_page.change_column_sorting("firstname", "asc")
+        print('\n\n\n FINISH "firstname", "asc" \n\n\n')
+        time.sleep(wait_time)
+
+        users_table_page.change_column_sorting("firstname", "desc")
+        print('\n\n\n FINISH "firstname", "desc" \n\n\n')
+        time.sleep(wait_time)
+
+        users_table_page.change_column_sorting("firstname", "desc")
+        print('\n\n\n FINISH "firstname", "desc" \n\n\n')
+        time.sleep(wait_time)
+        print("\n\n\n ------ THE END OF THE ITERATION ------ \n\n\n")
 
 
 @pytest.mark.parametrize(
