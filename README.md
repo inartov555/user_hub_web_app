@@ -22,6 +22,7 @@ This is a test website + automation framework
 
 - 🛠️ **Fixed in `users_app`:** 200 users are selected max while more are available for selection to delete
 - 🛠️ **Fixed in `users_app`:** Breaking words without spaces in lines in the UserDeleteConfirm page
+- 🛠️ **Fixed in `users_app`:** The page shows error with the same list of users including removed ones, when some users were not removed
 - 🛠️ **Fixed in `ui_tests_pw`:** Firefox: user redirected to the /login page after successful logging in and trying to open the /users page
 - 🛠️ **Fixed in `ui_tests_pw`:** Firefox: sometimes, one random test failed to set the theme because /login page is not fully loaded yet
 - 🛠️ **Fixed in `ui_tests_pw`:** Firefox: sometimes, one random test failed to login because submit button cannot be clicked on the /login page

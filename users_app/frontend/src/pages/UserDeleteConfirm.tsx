@@ -26,18 +26,23 @@ export default function UserDeleteConfirm() {
   const qc = useQueryClient();
   const { state } = useLocation() as { state?: LocationState };
   const users = state?.users ?? [];
+  const [remainingUsers, setRemainingUsers] = useState<User[]>(() => users);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    if (!users.length) {
+    setRemainingUsers(remainingUsers);
+  }, [remainingUsers]);
+
+  useEffect(() => {
+    if (!remainingUsers.length) {
       // nothing to confirm
       navigate("/users", { replace: true });
     }
-  }, [users.length, navigate]);
+  }, [remainingUsers.length, navigate]);
 
   const handleConfirm = async () => {
-    const ids = users.map((u) => u.id);
+    const ids = remainingUsers.map((u) => u.id);
     if (!ids.length) return;
 
     setLoading(true);
@@ -47,24 +52,67 @@ export default function UserDeleteConfirm() {
       const bulk = await api.post("/users/bulk-delete/", { ids }, { validateStatus: () => true });
 
       // Uncomment this block to have additional user deletion one by one
-      if (bulk.status < 200 || bulk.status >= 300) {
+      if (bulk.status < 200 || bulk.status > 204) {
         const parsed = extractApiError(bulk);
         setError(prev => (prev ? `${prev}` : "") + `${t("userDeleteConfirm.failedToDeleteSelectedUsers")}\n\n`);
         setError(prev => (prev ? `${prev}` : "") + `${t("userDeleteConfirm.bulkDeleteFailed")} ${parsed.message}\n\n`);
-        // Fallback to per-user delete
+        // Fallback (on-by-one user deletion)
         const results = await Promise.allSettled(
           ids.map((id) => api.delete(`/users/${id}/delete-user/`, { validateStatus: () => true }))
         );
         const failed = results.filter(
-	      (r) => r.status === "rejected" || (r.status === "fulfilled" && r.value.status > 204)
+	      (res1) => res1.status === "rejected" || (res1.status === "fulfilled" && res1.value.status > 204)
         );
+        /*
         if (failed.length) {
+          // const failedIds: number[] = [];
           setError(prev => (prev ? `${prev}` : "") + `${t("userDeleteConfirm.singleDeleteFailed")}\n`);
           setError(prev => (prev ? `${prev}` : "") + `${t("userDeleteConfirm.failedToDelete")} ${failed.length} ${t("users.of")} ${ids.length} ${t("users.title")}.`);
-          for (const err_item of failed) {
-            const parsed = extractApiError(err_item);
+          for (let idx = 0; idx < failed.length; idx++) {
+            const id = ids[idx];
+            const res = results[idx];
+            if (res.status === "rejected") {
+              const parsed = extractApiError(res.reason);
+            } else {
+              // res1.value.status > 204
+              const parsed = extractApiError(res.value);
+            }
+            const parsed = extractApiError(res.value);
             setError(prev => (prev ? `${prev}` : "") + `${parsed.message}`);
+            // failedIds.push(id);
+            setRemainingUsers((prev) => prev.filter((u) => u.id == id));
           }
+          // setRemainingUsers((prev) => prev.filter((u) => failedIds.includes(remainingUsers.id)));
+        }
+        */
+        if (failed.length) {
+          const failedIds: number[] = [];
+
+          setError(prev => (prev ? `${prev}` : "") + `${t("userDeleteConfirm.singleDeleteFailed")}\n`);
+          setError(prev => (prev ? `${prev}` : "") + `${t("userDeleteConfirm.failedToDelete")} ${failed.length} ${t("users.of")} ${ids.length} ${t("users.title")}.`);
+
+          for (let idx = 0; idx < results.length; idx++) {
+            const id = ids[idx];
+            const res = results[idx];
+
+            if (res.status === "rejected") {
+              const parsed = extractApiError(res.reason);
+              setError(prev => (prev ? `${prev}` : "") + `${id}: ${parsed.message}\n`);
+              failedIds.push(id);
+              continue;
+            }
+            /*
+            else {
+              // res.value.status > 204
+              const parsed = extractApiError(res.value);
+              setError(prev => (prev ? `${prev}` : "") + `${id}: ${parsed.message}\n`);
+              failedIds.push(id);
+            }
+            */
+          }
+
+          // keep only failed users
+          setRemainingUsers(prev => prev.filter(u => failedIds.includes(u.id)));
         }
       }
       else {
@@ -73,6 +121,7 @@ export default function UserDeleteConfirm() {
       }
     } catch (erro: any) {
       const parsed = extractApiError(erro);
+      setError(prev => "This is a debug message to check");
       setError(prev => (prev ? `${prev}` : "") + `\n${t("userDeleteConfirm.failedToDeleteSelectedUsers")} ${parsed.message}`);
     } finally {
       setLoading(false);
@@ -81,14 +130,14 @@ export default function UserDeleteConfirm() {
 
   const handleCancel = () => navigate("/users");
 
-  if (!users.length) return null;
+  if (!remainingUsers.length) return null;
 
   return (
     <Card className="w-full mx-auto max-w-3xl dark:bg-slate-800 dark:text-slate-100 dark:border-slate-700">
       <CardHeader icon=<UserX className="h-4 w-4" /> title={t("userDeleteConfirm.confirmDelete")} />
       <CardBody className="space-y-4">
         <p className="text-sm text-slate-700 dark:text-slate-100">
-          {t("userDeleteConfirm.youAboutToDelete")} <strong>{users.length}</strong> {t("userDeleteConfirm.cannotBeUndone")}
+          {t("userDeleteConfirm.youAboutToDelete")} <strong>{remainingUsers.length}</strong> {t("userDeleteConfirm.cannotBeUndone")}
         </p>
 
         <div className="rounded-lg border overflow-hidden">
@@ -138,7 +187,7 @@ export default function UserDeleteConfirm() {
               </tr>
             </thead>
             <tbody>
-              {users.slice(0, 20).map((row) => (
+              {remainingUsers.slice(0, 20).map((row) => (
                 <tr data-tag={"row-userId-" + row.id}
                     className="
                       border-b divide-x divide-slate-300 dark:divide-slate-600
@@ -171,12 +220,12 @@ export default function UserDeleteConfirm() {
                   </td>
                 </tr>
               ))}
-              {users.length > 20 && (
+              {remainingUsers.length > 20 && (
                 <tr className="border-t">
                   <td className="px-3 py-2 text-slate-500"
                       colSpan={4}
                   >
-                    {t("userDeleteConfirm.and")} {users.length - 20} {t("userDeleteConfirm.more")}
+                    {t("userDeleteConfirm.and")} {remainingUsers.length - 20} {t("userDeleteConfirm.more")}
                   </td>
                 </tr>
               )}
@@ -194,7 +243,7 @@ export default function UserDeleteConfirm() {
             title={t("userDeleteConfirm.deleteUsers")}
           >
             <Trash2 className="h-4 w-4" />
-            {loading ? t("userDeleteConfirm.deleting") : `${t("users.deleteSelected")} (${users.length})`}
+            {loading ? t("userDeleteConfirm.deleting") : `${t("users.deleteSelected")} (${remainingUsers.length})`}
           </Button>
           <Button id="cancel" onClick={handleCancel} disabled={loading}>
             {t("userDeleteConfirm.cancel")}
