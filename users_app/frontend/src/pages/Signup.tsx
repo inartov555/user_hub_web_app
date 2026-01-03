@@ -8,6 +8,7 @@ import FormInput from "../components/FormInput";
 import Button from "../components/button";
 import PasswordInput from "../components/PasswordInput";
 import UnifiedTitle from "../components/UnifiedTitle";
+import { SimpleErrorMessage } from "../components/ErrorAlert";
 
 export default function Signup() {
   const { t } = useTranslation();
@@ -30,7 +31,7 @@ export default function Signup() {
 
   return (
     <div className="max-w-xl mx-auto p-4 rounded-2xl shadow bg-white border dark:bg-slate-800 dark:text-slate-100 dark:border-slate-700">
-      <UnifiedTitle icon=<UserPlus className="h-4 w-4" /> title={t("signup.title")} />
+      <UnifiedTitle icon={<UserPlus className="h-4 w-4" />} title={t("signup.title")} />
       <form onSubmit={onSubmit} className="space-y-3">
         <FormInput placeholder={t("signup.email")}
                    id="email" value={email} onChange={e=>setEmail(e.target.value)} />
@@ -38,7 +39,7 @@ export default function Signup() {
                    id="username" type="username" value={username} onChange={e=>setUsername(e.target.value)} />
         <PasswordInput placeholder={t("signup.password")}
                        id="password" value={password} onChange={e=>setPassword(e.target.value)} />
-        {error && <p className="text-red-600 text-sm whitespace-pre-line">{t("signup.signupFailed", { message: error })}</p>}
+        {error && <SimpleErrorMessage errorBackend={t("signup.signupFailed", { message: error })} />}
         <div id="create" className="mt-2 flex justify-center">
           <Button type="submit">{t("auth.createAccount")}</Button>
         </div>

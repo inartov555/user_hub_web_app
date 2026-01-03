@@ -7,6 +7,7 @@ import { useAuthStore } from "../auth/store";
 import { Input } from "../components/input";
 import Button from "../components/button";
 import UnifiedTitle from "../components/UnifiedTitle";
+import { SimpleErrorMessage } from "../components/ErrorAlert";
 
 export default function ExcelImportPanel() {
   const { t } = useTranslation();
@@ -89,7 +90,7 @@ export default function ExcelImportPanel() {
 
   return (
     <div className="max-w-xl mx-auto p-4 rounded-2xl shadow bg-white border dark:bg-slate-800 dark:text-slate-100 dark:border-slate-700">
-      <UnifiedTitle icon=<FileSpreadsheet className="h-4 w-4" /> title={t("excelImport.title")} />
+      <UnifiedTitle icon={<FileSpreadsheet className="h-4 w-4" />} title={t("excelImport.title")} />
       <p>
         <span>{t("excelImport.fileUploadMessage")} </span>
         <br/>
@@ -114,7 +115,7 @@ export default function ExcelImportPanel() {
           <div className="text-sm text-gray-600 dark:text-slate-300 mt-1">{t("excelImport.selectedFile")} {file.name}</div>
         )}
 
-        {error && <p className="text-red-600 text-sm whitespace-pre-line">{error}</p>}
+        {error && <SimpleErrorMessage errorBackend={error} />}
         <div className="flex gap-2">
           <Button id="importTemplate" type="submit">
             {submitting ? t("excelImport.uploading") : t("excelImport.startImport")}

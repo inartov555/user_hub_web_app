@@ -9,6 +9,7 @@ import FormInput from "../components/FormInput";
 import Button from "../components/button";
 import PasswordInput from "../components/PasswordInput";
 import UnifiedTitle from "../components/UnifiedTitle";
+import { SimpleErrorMessage } from "../components/ErrorAlert";
 
 export default function ChangePassword() {
   const { t, i18n } = useTranslation();
@@ -50,7 +51,7 @@ export default function ChangePassword() {
 
   return (
     <div className="max-w-xl mx-auto p-4 rounded-2xl shadow bg-white border dark:bg-slate-800 dark:text-slate-100 dark:border-slate-700">
-      <UnifiedTitle icon=<KeyRound className="h-4 w-4" /> title={t("users.changePassword")} />
+      <UnifiedTitle icon={<KeyRound className="h-4 w-4" />} title={t("users.changePassword")} />
       <form onSubmit={onSubmit} className="space-y-3">
         <PasswordInput placeholder={t("changePassword.newPassword")}
                        id="password"
@@ -60,7 +61,7 @@ export default function ChangePassword() {
                        id="confirmPassword"
                        value={confirmPassword}
                        onChange={e => setConfirmPassword(e.target.value)} />
-        {error && <p className="text-red-600 text-sm whitespace-pre-line">{error}</p>}
+        {error && <SimpleErrorMessage errorBackend={error} />}
         <div className="flex gap-2">
           <Button id="changePassword" type="submit" disabled={saving}>
             {saving ? t("changePassword.saving") : t("profileEdit.save")}

@@ -7,6 +7,7 @@ import { extractApiError } from "../lib/httpErrors";
 import FormInput from "../components/FormInput";
 import Button from "../components/button";
 import UnifiedTitle from "../components/UnifiedTitle";
+import { SimpleErrorMessage } from "../components/ErrorAlert";
 
 export default function ResetPassword() {
   const { t, i18n } = useTranslation();
@@ -32,11 +33,11 @@ export default function ResetPassword() {
 
   return (
     <div className="max-w-xl mx-auto p-4 rounded-2xl shadow bg-white border dark:bg-slate-800 dark:text-slate-100 dark:border-slate-700">
-      <UnifiedTitle icon=<KeySquare className="h-4 w-4" /> title={t("resetPassword.resetPassword")} />
+      <UnifiedTitle icon={<KeySquare className="h-4 w-4" />} title={t("resetPassword.resetPassword")} />
       {sent ? <p data-tag="resetPassInfoMsg">{t("resetPassword.checkEmailForResetLink")}</p> : (
         <form onSubmit={onSubmit} className="space-y-3">
           <FormInput placeholder="Email" id="email" value={email} onChange={e=>setEmail(e.target.value)} />
-          {error && <p className="text-red-600 text-sm whitespace-pre-line">{error}</p>}
+          {error && <SimpleErrorMessage errorBackend={error} />}
           <div id="recoverEmail" className="mt-2 flex justify-center">
             <Button type="submit">{t("resetPassword.sendResetEmail")}</Button>
           </div>

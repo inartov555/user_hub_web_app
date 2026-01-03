@@ -9,6 +9,7 @@ import { useAuthStore } from "../auth/store";
 import { Card, CardHeader, CardBody } from "../components/card";
 import Button from "../components/button";
 import PasswordInput from "../components/PasswordInput";
+import { SimpleErrorMessage } from "../components/ErrorAlert";
 
 type User = {
   id: number;
@@ -36,13 +37,6 @@ export default function UserDeleteConfirm() {
       navigate("/users", { replace: true });
     }
   }, [remainingUsers.length, navigate]);
-
-  /*
-  useEffect(() => {
-    // nothing to confirm
-    if (!users.length) navigate("/users", { replace: true });
-  }, [users.length, navigate]);
-  */
 
   const handleConfirm = async () => {
     const ids = remainingUsers.map((u) => u.id);
@@ -256,7 +250,7 @@ export default function UserDeleteConfirm() {
           </table>
         </div>
 
-        {error && <div className="text-sm text-red-600 whitespace-pre-line">{error}</div>}
+        {error && <SimpleErrorMessage errorBackend={error} />}
 
         {/* Bottom button pair */}
         <div className="flex gap-2">

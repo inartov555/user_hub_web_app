@@ -32,6 +32,7 @@ This is a test website + automation framework
 - ✨ **Improved in `users_app`:** Lite UI polishing
 - ✨ **Improved in `users_app`:** Duplicating buttons, in the bottom and top of the content block for the UsersTable and UserDeleteConfirm pages
 - ✨ **Improved in `users_app`:** Highlight kept for a row after checking it on the UsersTable page
+- ✨ **Improved in `users_app`:** Unifying error message with a SimpleErrorMessage component
 - 🆕 **Added in `users_app`:** Show/hide button for the password field
 - 🆕 **Added in `users_app`:** Icons to page titles
 - 🆕 **Added in `users_app`:** User ID column to the UserDeleteConfirm page

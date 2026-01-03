@@ -1,8 +1,13 @@
 import * as React from "react";
 
-type Props = {
+type ErrorAlertProps = {
   message?: unknown;
   title?: React.ReactNode;
+};
+
+type SimpleErrorMessageProps = {
+  errorUi?: string;
+  errorBackend?: string | null;
 };
 
 function splitLines(raw: unknown): string[] {
@@ -16,7 +21,7 @@ function splitLines(raw: unknown): string[] {
     .filter(line => line.length > 0);
 }
 
-export default function ErrorAlert({ message, title }: Props) {
+export default function ErrorAlert({ message, title }: ErrorAlertProps) {
   const lines = splitLines(message);
   if (!lines.length) return null;
 
@@ -39,12 +44,16 @@ export default function ErrorAlert({ message, title }: Props) {
   );
 }
 
-export function SimpleErrorMessage({ error_message, error }) {
+export function SimpleErrorMessage({ errorUi, errorBackend }: SimpleErrorMessageProps) {
   /*
-   * error_message (string): this one describes UI error, e.g., auth.loginFailed
-   * error (string): backend error
+   * errorUi (string): this one describes UI error, e.g., auth.loginFailed
+   * errorBackend (string): backend error
    */
-  if (!error) return null;
-  const text = [error_message, error].filter(Boolean).join(" ");
-  return <p className="text-red-600 text-sm whitespace-pre-line">{text}</p>;
+  if (!errorBackend) return null;
+  const text = [errorUi, errorBackend].filter(Boolean).join(" ");
+  return (
+    <div className="text-sm text-red-600 whitespace-pre-line">
+      <p className="text-red-600 text-sm whitespace-pre-line">{text}</p>
+    </div>
+  );
 }
