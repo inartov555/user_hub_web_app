@@ -408,7 +408,7 @@ export default function UsersTable(props: Props) {
     // Always treat clicks as multi-sort; don't require Shift/Ctrl
     isMultiSortEvent: alwaysMulti,
     // Avoid the "third click removes sorting" behavior (keeps column in sort)
-    enableSortingRemoval: false,
+    enableSortingRemoval: true,
     maxMultiSortColCount: 5,
 
     getPaginationRowModel: getPaginationRowModel(),

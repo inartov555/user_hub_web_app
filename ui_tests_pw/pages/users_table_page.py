@@ -213,6 +213,8 @@ class UsersTablePage(BasePage):
             raise ValueError(f"Current value of the sort order ({sort_order}) is not correct")
 
         cur_sort_order = self.get_current_column_sort_order(_column)
+        sorted_column_header_loc = self.page.locator(self.sortable_columl_header_str.format(_column))
+        svg_class_attr = sorted_column_header_loc.locator("svg").get_attribute("class")
 
         if cur_sort_order == "asc":
             raise AssertionError(f"{_column} column sort order does not match; actual {svg_class_attr}; "

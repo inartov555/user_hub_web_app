@@ -34,6 +34,7 @@ class UserDeleteConfirmPage(BasePage):
         """
         Assert that the confirmation UI is visible.
         """
+        self.page.wait_for_url(re.compile(r".*/users/confirm-delete$"))
         expect(self.page).to_have_url(re.compile(r".*/users/confirm-delete$"))
         expect(self.confirm_delete_top).to_be_visible()
         expect(self.confirm_delete_bottom).to_be_visible()

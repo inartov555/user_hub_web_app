@@ -13,6 +13,7 @@ from pages.login_page import LoginPage
 from pages.signup_page import SignupPage
 from pages.reset_password_page import ResetPasswordPage
 from pages.users_table_page import UsersTablePage
+from pages.user_delete_confirm_page import UserDeleteConfirmPage
 from utils.theme import Theme
 from config import (
     DEFAULT_ADMIN_USERNAME,
@@ -83,53 +84,23 @@ def test_base_demo(page: Page,
     login_page.submit_credentials_success("admin", "changeme123")
     # Let's set multi-column sorting (First Name - ascending, Last Name - descending)
     users_table_page = UsersTablePage(page)
-    import time
-    wait_time = 0
-    for i in range(8):
-        users_table_page.change_column_sorting("firstname", "default")
-        print('\n\n\n FINISH "firstname", "default" \n\n\n')
-        time.sleep(wait_time)
+    users_table_page.change_column_sorting("firstname", "asc")
+    users_table_page.change_column_sorting("lastname", "desc")
+    users_table_page.assert_column_sorting("firstname", "asc")
+    users_table_page.assert_column_sorting("lastname", "desc")
+    users_table_page.search_and_wait_for_results("mi")
+    users_table_page.check_rows.nth(0).click()
+    users_table_page.check_rows.nth(1).click()
+    users_table_page.check_rows.nth(3).click()
+    # Screenshot -> /users page -> Multi column sort on
+    take_a_screenshot(page)
 
-        users_table_page.change_column_sorting("firstname", "asc")
-        print('\n\n\n FINISH "firstname", "asc" \n\n\n')
-        time.sleep(wait_time)
-
-        users_table_page.change_column_sorting("firstname", "desc")
-        print('\n\n\n FINISH "firstname", "desc" \n\n\n')
-        time.sleep(wait_time)
-
-        users_table_page.change_column_sorting("firstname", "default")
-        print('\n\n\n FINISH "firstname", "default" \n\n\n')
-        time.sleep(wait_time)
-
-        users_table_page.change_column_sorting("firstname", "desc")
-        print('\n\n\n FINISH "firstname", "desc" \n\n\n')
-        time.sleep(wait_time)
-
-        users_table_page.change_column_sorting("firstname", "asc")
-        print('\n\n\n FINISH "firstname", "asc" \n\n\n')
-        time.sleep(wait_time)
-
-        users_table_page.change_column_sorting("firstname", "default")
-        print('\n\n\n FINISH "firstname", "default" \n\n\n')
-        time.sleep(wait_time)
-
-        users_table_page.change_column_sorting("firstname", "asc")
-        print('\n\n\n FINISH "firstname", "asc" \n\n\n')
-        time.sleep(wait_time)
-
-        users_table_page.change_column_sorting("firstname", "asc")
-        print('\n\n\n FINISH "firstname", "asc" \n\n\n')
-        time.sleep(wait_time)
-
-        users_table_page.change_column_sorting("firstname", "desc")
-        print('\n\n\n FINISH "firstname", "desc" \n\n\n')
-        time.sleep(wait_time)
-
-        users_table_page.change_column_sorting("firstname", "desc")
-        print('\n\n\n FINISH "firstname", "desc" \n\n\n')
-        time.sleep(wait_time)
-        print("\n\n\n ------ THE END OF THE ITERATION ------ \n\n\n")
+    # Now, let's see the user deletion page
+    users_table_page.delete_users_btn.click()
+    user_delete_page = UserDeleteConfirmPage(page)
+    user_delete_page.assert_confirm_delete_loaded()
+    # Screenshot -> User Delete Confirm page -> List of users to delete
+    take_a_screenshot(page)
 
 
 @pytest.mark.parametrize(
