@@ -19,7 +19,8 @@ class UserDeleteConfirmPage(BasePage):
         super().__init__(page)
 
         self.page_title = self.page.locator("h2")
-        self.confirm_delete = self.page.locator("#confirmDelete")
+        self.confirm_delete_top = self.page.locator("#confirmDeleteTop")
+        self.confirm_delete_bottom = self.page.locator("#confirmDeleteBottom")
         self.cancel = self.page.locator("#cancel")
 
     def open(self) -> None:
@@ -33,4 +34,5 @@ class UserDeleteConfirmPage(BasePage):
         Assert that the confirmation UI is visible.
         """
         expect(self.page).to_have_url(re.compile(r".*/users/confirm-delete$"))
-        expect(self.confirm_delete).to_be_visible()
+        expect(self.confirm_delete_top).to_be_visible()
+        expect(self.confirm_delete_bottom).to_be_visible()

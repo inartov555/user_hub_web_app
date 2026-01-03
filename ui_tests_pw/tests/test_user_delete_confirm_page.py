@@ -54,7 +54,7 @@ def test_admin_can_navigate_to_delete_confirm(page: Page,
     expected = "Confirm deletion"
     confirm_page.assert_text_localization(ui_locale_param, actual, expected)
     # Now let's check deleting the user from UI
-    confirm_page.confirm_delete.click()
+    confirm_page.confirm_delete_top.click()
     # Verifying that user is deleted
     # User is redirected to the /users page after successful deletion
     page.wait_for_url(re.compile(r".*/users$"))
