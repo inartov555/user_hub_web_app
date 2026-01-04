@@ -58,3 +58,9 @@ class ExcelImportPage(BasePage):
         expect(self.success_title).to_have_text(re.compile(r".+"))
         expect(self.success_body).to_be_visible()
         expect(self.success_body).to_have_text(re.compile(r".+"))
+
+    def assert_error_alert_shown(self) -> None:
+        """
+        Verify that error message is shown
+        """
+        expect(self.error).to_be_visible()

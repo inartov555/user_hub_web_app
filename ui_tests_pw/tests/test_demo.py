@@ -193,3 +193,10 @@ def test_base_demo(page: Page,
     excel_import_page = ExcelImportPage(page)
     excel_import_page.click_additional_excel_import_tab()
     excel_import_page.assert_loaded()
+    # Screenshot -> Admin User -> Excel Import Page
+    take_a_screenshot(page)
+    # Let's check error case
+    excel_import_page.import_template_btn.click()
+    excel_import_page.assert_error_alert_shown()
+    # Screenshot -> Admin User -> Excel Import Page -> Error case
+    take_a_screenshot(page)

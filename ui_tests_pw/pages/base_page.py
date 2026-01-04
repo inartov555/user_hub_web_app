@@ -5,7 +5,7 @@ Base page object with shared helpers.
 from __future__ import annotations
 import re
 
-from playwright.sync_api import Page
+from playwright.sync_api import Page, expect
 from django.utils import translation
 
 from config import frontend_url
