@@ -97,6 +97,7 @@ def _helper_users_table_page_admin_user(page: Page, ui_theme_param: Theme, ui_lo
     """
     This is a helper function that takes screenshots on the Users Table page (table, controls)
     """
+    login_page = LoginPage(page)
     # Now, let's login as Admin user to get to the Users Table page
     login_page.submit_credentials_success(DEFAULT_ADMIN_USERNAME, DEFAULT_ADMIN_PASSWORD)
     # Let's set multi-column sorting (First Name - ascending, Last Name - descending)
