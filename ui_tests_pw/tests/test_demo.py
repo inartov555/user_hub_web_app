@@ -56,6 +56,7 @@ def _helper_signup_page(page: Page, ui_theme_param: Theme, ui_locale_param: str)
     """
     This is a helper function that takes screenshots on the Sign up page (Success/Error cases)
     """
+    login_page = LoginPage(page)
     login_page.click_create_account_link()
     # Screenshot -> Signup page
     take_a_screenshot(page)
@@ -71,6 +72,7 @@ def _helper_reset_password_page(page: Page, ui_theme_param: Theme, ui_locale_par
     """
     This is a helper function that takes screenshots on the Reset Password page (Success/Error cases)
     """
+    login_page = LoginPage(page)
     # Now, let's open Forgot Password page
     login_page.click_forgot_password_link()
     # Screenshot -> Forgot Password page -> Email input
@@ -115,6 +117,7 @@ def _helper_user_delete_page(page: Page, ui_theme_param: Theme, ui_locale_param:
     """
     This is a helper function that takes screenshots on the User Delete page (Success/Error cases)
     """
+    users_table_page = UsersTablePage(page)
     # Now, let's see the user deletion page
     users_table_page.delete_users_btn.click()
     user_delete_page = UserDeleteConfirmPage(page)
@@ -135,6 +138,7 @@ def _helper_change_password_page(page: Page, ui_theme_param: Theme, ui_locale_pa
     """
     This is a helper function that takes screenshots on the Change Password page (Success/Error cases)
     """
+    users_table_page = UsersTablePage(page)
     # Let's click the Change Password button
     users_table_page.search_and_wait_for_results("mi")
     # Let's select the 1st user for changing the password
@@ -154,6 +158,7 @@ def _helper_users_table_page_regular_user(page: Page, ui_theme_param: Theme, ui_
     """
     This is a helper function that takes screenshots on the Users Table page (table, controls)
     """
+    users_table_page = UsersTablePage(page)
     # Let's log in to the website as a regular user
     change_password_page.click_logout_and_wait_for_login_page()
     login_page.submit_credentials_success(DEFAULT_REGULAR_USERNAME, DEFAULT_REGULAR_PASSWORD)
@@ -186,6 +191,7 @@ def _helper_profile_edit_page_regular_user(page: Page, ui_theme_param: Theme, ui
     """
     This is a helper function that takes screenshots on the Profile Edit page (Success/Error cases)
     """
+    profile_view_page = ProfileViewPage(page)
     # Now, let's see the Profile Edit page
     profile_view_page.click_edit_button()
     profile_edit_page = ProfileEditPage(page)
@@ -208,6 +214,7 @@ def _helper_user_stats_page_admin_user(page: Page, ui_theme_param: Theme, ui_loc
     """
     This is a helper function that takes screenshots on the User Stats page
     """
+    profile_edit_page = ProfileEditPage(page)
     # Let's log in to the website as Admin user
     profile_edit_page.click_logout_and_wait_for_login_page()
     login_page.submit_credentials_success(DEFAULT_ADMIN_USERNAME, DEFAULT_ADMIN_PASSWORD)
