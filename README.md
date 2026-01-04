@@ -37,6 +37,7 @@ This is a test website + automation framework
 - 🆕 **Added in `users_app`:** Icons to page titles
 - 🆕 **Added in `users_app`:** User ID column to the UserDeleteConfirm page
 - 🆕 **Added in `ui_tests_pw`:** Logging in as a just created user for `test_signup_with_random_username`
+- 🆕 **Added in `ui_tests_pw`:** New `test_base_demo` which walks all main pages and takes screenshots
 
 ---
 

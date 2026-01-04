@@ -126,6 +126,7 @@ def test_base_demo(page: Page,
     # Error case
     change_password_page = ChangePasswordPage(page)
     change_password_page.fill_passwords("short", "short")
+    change_password_page.self.submit.click()
     change_password_page.assert_error_visible()
     # Screenshot -> Admin user -> Change Password page -> Error case
     take_a_screenshot(page)
