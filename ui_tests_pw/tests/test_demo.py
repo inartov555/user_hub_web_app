@@ -1,5 +1,6 @@
 """
-DEMO tests
+DEMO tests.
+Non-test methods that start from _* are state dependent.
 """
 
 from __future__ import annotations
@@ -108,8 +109,6 @@ def _helper_users_table_page_admin_user(page: Page, ui_theme_param: Theme, ui_lo
     users_table_page.assert_column_sorting("lastname", "desc")
     users_table_page.search_and_wait_for_results("mi")
     users_table_page.check_rows.nth(0).click()
-    users_table_page.check_rows.nth(1).click()
-    users_table_page.check_rows.nth(3).click()
     # Screenshot -> Admin user -> Users Table page -> Multi column sort on
     take_a_screenshot(page)
 
@@ -216,6 +215,7 @@ def _helper_user_stats_page_admin_user(page: Page, ui_theme_param: Theme, ui_loc
     """
     This is a helper function that takes screenshots on the User Stats page
     """
+    login_page = LoginPage(page)
     profile_edit_page = ProfileEditPage(page)
     # Let's log in to the website as Admin user
     profile_edit_page.click_logout_and_wait_for_login_page()
@@ -263,8 +263,7 @@ def _helper_excel_import_page_admin_user(page: Page, ui_theme_param: Theme, ui_l
     take_a_screenshot(page)
 
 
-@pytest.mark.theme
-@pytest.mark.localization
+@pytest.mark.demo
 @pytest.mark.parametrize("ui_theme_param", ["light", "dark"])
 @pytest.mark.parametrize("ui_locale_param", ["en-US"])
 # @pytest.mark.parametrize("ui_locale_param", ["en-US", "uk-UA", "et-EE", "fi-FI", "cs-CZ", "pl-PL", "es-ES"])
@@ -288,3 +287,26 @@ def test_base_demo(page: Page,
     _helper_user_stats_page_admin_user(page, ui_theme_param, ui_locale_param)
     _helper_app_settings_page_admin_user(page, ui_theme_param, ui_locale_param)
     _helper_excel_import_page_admin_user(page, ui_theme_param, ui_locale_param)
+
+
+@pytest.mark.demo
+@pytest.mark.parametrize("ui_theme_param", ["light"])
+# @pytest.mark.parametrize("ui_locale_param", ["en-US", "uk-UA", "et-EE", "fi-FI", "cs-CZ", "pl-PL", "es-ES"])
+# @pytest.mark.parametrize("ui_theme_param", ["light"])
+# @pytest.mark.usefixtures("cleanup_set_default_theme_and_locale")
+def test_locale_demo(page: Page, ui_theme_param: Theme) -> None:  # pylint: disable=too-many-statements
+    """
+    Locale DEMO test to run multiple pages and take screenshots
+    """
+    _helper_login_page(page, ui_theme_param, "et-EE")
+    _helper_signup_page(page, ui_theme_param, "fi-FI")
+    _helper_reset_password_page(page, ui_theme_param, "en-US")
+    _helper_users_table_page_admin_user(page, ui_theme_param, "uk-UA")
+    _helper_user_delete_page(page, ui_theme_param, "cs-CZ")
+    # _helper_change_password_page(page, ui_theme_param, ui_locale_param)
+    # _helper_users_table_page_regular_user(page, ui_theme_param, ui_locale_param)
+    # _helper_profile_view_page_regular_user(page, ui_theme_param, ui_locale_param)
+    # _helper_profile_edit_page_regular_user(page, ui_theme_param, ui_locale_param)
+    # _helper_user_stats_page_admin_user(page, ui_theme_param, ui_locale_param)
+    _helper_app_settings_page_admin_user(page, ui_theme_param, "pl-PL")
+    _helper_excel_import_page_admin_user(page, ui_theme_param, "es-ES")
