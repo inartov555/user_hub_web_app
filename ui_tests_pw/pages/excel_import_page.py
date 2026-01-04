@@ -64,3 +64,11 @@ class ExcelImportPage(BasePage):
         Verify that error message is shown
         """
         expect(self.error).to_be_visible()
+
+    def assert_loaded(self) -> None:
+        """
+        Verify if Excel Import page is load and key elements are shown
+        """
+        expect(self.import_template_btn).to_be_visible()
+        expect(self.download_template_btn).to_be_visible()
+        expect(self.input_file).to_be_visible()
