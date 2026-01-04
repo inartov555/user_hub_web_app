@@ -5,6 +5,7 @@ DEMO tests
 from __future__ import annotations
 import re
 import random
+import string
 
 import pytest
 from playwright.sync_api import Page, expect
