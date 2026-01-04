@@ -23,12 +23,15 @@ class ProfileEditPage(BasePage):
         self.bio = self.page.locator("#bio")
         self.save = self.page.locator("#save")
         self.cancel = self.page.locator("#cancel")
+        self.error = self.page.locator("div[data-tag='errorAlert']")
 
     def open(self) -> None:
         """
         Open the profile edit page.
         """
         self.goto("/profile-edit")
+        self.page.wait_for_url(re.compile(r".*/profile-edit$"))
+        expect(self.page).to_have_url(re.compile(r".*/profile-edit$"))
 
     def fill_basic_fields(self, first_name: str, last_name: str, bio: str) -> None:
         """
@@ -45,3 +48,17 @@ class ProfileEditPage(BasePage):
         expect(self.first_name).to_be_visible()
         expect(self.last_name).to_be_visible()
         expect(self.bio).to_be_visible()
+
+    def remove_maxlength_attribute_from_input_fields(self) -> None:
+        """
+        Remove maxlength attribute from the input fields for further error validation
+        """
+        self.first_name.evaluate("node => node.removeAttribute('maxlength')")
+        self.last_name.evaluate("node => node.removeAttribute('maxlength')")
+        self.bio.evaluate("node => node.removeAttribute('maxlength')")
+
+    def assert_error_alert_shown(self) -> None:
+        """
+        Verify that error alert is shown when e.g. field length exceeded
+        """
+        expect(self.error).to_be_visible()

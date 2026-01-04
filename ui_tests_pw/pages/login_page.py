@@ -33,18 +33,12 @@ class LoginPage(BasePage):
 
         self.cookie_consent_div = self.page.locator("div[data-tag='cookieConsentContainer']")
 
-        # /users page after logging in
-        self.users_tab = self.page.locator('#users')
-        self.search_input = self.page.locator('#search')
-
     def open(self) -> None:
         """
         Navigate to the login page.
         """
         self.goto("/login")
-        self.page.wait_for_url(re.compile(r".*/login$"))
-        expect(self.page).to_have_url(re.compile(r".*/login$"))
-        expect(self.username).to_be_visible()
+        self.assert_login_page_is_displayed()
 
     def fill_credentials(self, username: str, password: str) -> None:
         """
@@ -64,15 +58,7 @@ class LoginPage(BasePage):
         """
         self.fill_credentials(username, password)
         self.submit.click()
-        self.page.wait_for_url(re.compile(r".*/users$"))
-        expect(self.page).to_have_url(re.compile(r".*/users$"))
-        # Wait for the login API call to succeed
-        with self.page.expect_response(re.compile(r".*/api/v1/users/\?page.*"), timeout=60000) as res:
-            pass  # we just wait for the /users page to load
-        assert res.value.ok, f"Login failed: {res.value.status}"
-        # Additional checks for elements on the /users page
-        self.users_tab.wait_for(state="visible")
-        self.search_input.wait_for(state="visible")
+        self.wait_for_the_users_table_page_to_load()
 
     def submit_credentials_error(self, username: str, password: str) -> None:
         """
@@ -106,13 +92,6 @@ class LoginPage(BasePage):
         Assert that an error message is visible after a failed login attempt.
         """
         expect(self.error).to_be_visible()
-
-    def assert_on_login_page(self) -> None:
-        """
-        Assert that the current page is still the login page.
-        """
-        expect(self.username).to_be_visible()
-        expect(self.page).to_have_url(re.compile(r".*/login$"))
 
     def accept_cookie_consent_if_present(self) -> None:
         """

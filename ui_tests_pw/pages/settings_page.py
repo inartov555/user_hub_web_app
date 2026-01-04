@@ -3,6 +3,7 @@ Page object for the admin Settings page.
 """
 
 from __future__ import annotations
+import re
 
 from playwright.sync_api import expect, Page
 
@@ -22,12 +23,15 @@ class SettingsPage(BasePage):
         self.access_token_lifetime = self.page.locator("#accessTokenLifetime")
         self.renew_at_sec = self.page.locator("#renewAtSeconds")
         self.save = self.page.locator("form button[type='submit']")
+        self.error = self.page.locator("div[data-tag='simpleErrorMessage'] p")
 
     def open(self) -> None:
         """
         Open the settings page.
         """
         self.goto("/settings")
+        self.page.wait_for_url(re.compile(r".*/settings$"))
+        expect(self.page).to_have_url(re.compile(r".*/settings$"))
 
     def assert_loaded(self) -> None:
         """
@@ -42,3 +46,9 @@ class SettingsPage(BasePage):
         Set a new idle timeout value.
         """
         self.idle_timeout_sec.fill(str(int(value)))
+
+    def assert_error_visible(self) -> None:
+        """
+        Assert that an error message is visible after a failed App Settings save attempt.
+        """
+        expect(self.error).to_be_visible()

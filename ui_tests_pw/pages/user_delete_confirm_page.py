@@ -23,6 +23,7 @@ class UserDeleteConfirmPage(BasePage):
         self.confirm_delete_bottom = self.page.locator("#confirmDeleteBottom")
         self.cancel_top = self.page.locator("#cancelTop")
         self.cancel_bottom = self.page.locator("#cancelBottom")
+        self.error = self.page.locator("div[data-tag='simpleErrorMessage'] p")
 
     def open(self) -> None:
         """
@@ -40,3 +41,16 @@ class UserDeleteConfirmPage(BasePage):
         expect(self.confirm_delete_bottom).to_be_visible()
         expect(self.cancel_top).to_be_visible()
         expect(self.cancel_bottom).to_be_visible()
+
+    def click_top_cancel(self) -> None:
+        """
+        Clicking top cancel button and waiting for the /users page to load
+        """
+        self.cancel_top.click()
+        self.wait_for_the_users_table_page_to_load()
+
+    def assert_error_visible(self) -> None:
+        """
+        Assert that an error message is visible after a failed User Delete Confirm page.
+        """
+        expect(self.error).to_be_visible()

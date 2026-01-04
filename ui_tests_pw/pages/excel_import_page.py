@@ -22,7 +22,7 @@ class ExcelImportPage(BasePage):
         self.import_template_btn = self.page.locator("#importTemplate")
         self.download_template_btn = self.page.locator("#downloadTemplate")
         self.input_file = self.page.locator("input[type='file']")
-        self.error = self.page.locator("p.text-red-600")
+        self.error = self.page.locator("div[data-tag='simpleErrorMessage'] p")
         self.success_title = page.locator('div[data-tag="resultSuccessTitle"]')
         self.success_body = page.locator('div[data-tag="resultSuccessBody"]')
 
@@ -31,6 +31,8 @@ class ExcelImportPage(BasePage):
         Open the Excel import page.
         """
         self.goto("/import-excel")
+        self.page.wait_for_url(re.compile(r".*/import-excel$"))
+        expect(self.page).to_have_url(re.compile(r".*/import-excel$"))
 
     def download_template(self) -> Download:
         """

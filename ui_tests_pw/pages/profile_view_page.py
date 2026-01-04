@@ -3,6 +3,7 @@ Page object for the Profile view page.
 """
 
 from __future__ import annotations
+import re
 
 from playwright.sync_api import expect, Page
 
@@ -31,6 +32,8 @@ class ProfileViewPage(BasePage):
         Open the profile view page.
         """
         self.goto("/profile-view")
+        self.page.wait_for_url(re.compile(r".*/profile-view$"))
+        expect(self.page).to_have_url(re.compile(r".*/profile-view$"))
 
     def assert_profile_basics_visible(self) -> None:
         """
@@ -39,3 +42,11 @@ class ProfileViewPage(BasePage):
         expect(self.username).to_be_visible()
         expect(self.email).to_be_visible()
         expect(self.full_name).to_be_visible()
+
+    def click_edit_button(self) -> None:
+        """
+        Click Edit button to enter the Profile Edit page
+        """
+        self.edit_profile.click()
+        self.page.wait_for_url(re.compile(r".*/profile-edit$"))
+        expect(self.page).to_have_url(re.compile(r".*/profile-edit$"))

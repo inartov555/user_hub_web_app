@@ -33,7 +33,7 @@ def test_login_page_renders_in_theme_and_locale(login_page: LoginPage,
     """
     set_theme(page, ui_theme_param)
     set_locale(page, ui_locale_param)
-    login_page.assert_on_login_page()
+    login_page.assert_login_page_is_displayed()
     # Verifying localization
     actual = login_page.page_title.text_content()
     expected = "Log in"
@@ -55,7 +55,7 @@ def test_login_invalid_credentials_show_error(login_page: LoginPage,
     """
     login_page.fill_credentials(username, password)
     login_page.submit.click()
-    login_page.assert_on_login_page()
+    login_page.assert_login_page_is_displayed()
     login_page.assert_error_visible()
 
 

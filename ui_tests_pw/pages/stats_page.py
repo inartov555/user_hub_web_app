@@ -25,6 +25,8 @@ class StatsPage(BasePage):
         Open the stats page.
         """
         self.goto("/stats")
+        self.page.wait_for_url(re.compile(r".*/stats$"))
+        expect(self.page).to_have_url(re.compile(r".*/stats$"))
 
     def assert_loaded(self) -> None:
         """

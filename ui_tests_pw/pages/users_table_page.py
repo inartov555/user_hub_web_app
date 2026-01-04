@@ -24,10 +24,8 @@ class UsersTablePage(BasePage):
 
         self.page_title = self.page.locator("h2")
         self.greeting_mes = self.page.locator('#greeting')
-        self.users_tab = self.page.locator('#users')
         self.addtional_tab = self.page.locator('#additional')
 
-        self.search_input = self.page.locator("#search")
         self.clear_sort_btn = self.page.locator("#clearSort")
         self.delete_users_btn = self.page.locator("#deleteUsers")
 
@@ -37,6 +35,7 @@ class UsersTablePage(BasePage):
         self.sortable_columl_header_str = 'button[data-tag="sort-by-{}"]'
         self.change_password_header = self.page.locator('div[data-tag="changePasswordHeader"]')
 
+        # The list of all Change Password buttons
         self.change_password_btn = self.page.locator('button[data-tag="change-password"]')
 
         self.sort_labels = self.page.locator("thead th span.text-xs")
@@ -67,8 +66,8 @@ class UsersTablePage(BasePage):
         """
         Apply a multi-column sort: first by username, then by email.
         """
-        self.username_header.click()
-        self.email_header.click()
+        self.change_column_sorting("username", "asc")
+        self.change_column_sorting("email", "asc")
 
     def get_sort_order_labels(self) -> List[str]:
         """
@@ -213,15 +212,7 @@ class UsersTablePage(BasePage):
             raise ValueError(f"Current value of the sort order ({sort_order}) is not correct")
 
         cur_sort_order = self.get_current_column_sort_order(_column)
-        sorted_column_header_loc = self.page.locator(self.sortable_columl_header_str.format(_column))
-        svg_class_attr = sorted_column_header_loc.locator("svg").get_attribute("class")
 
-        if cur_sort_order == "asc":
-            raise AssertionError(f"{_column} column sort order does not match; actual {svg_class_attr}; "
-                                 f"expected {_sort_order}")
-        elif cur_sort_order == "desc":
+        if cur_sort_order != sort_order:
             raise AssertionError(f"{_column} column sort order does not match; actual {cur_sort_order}; "
-                                 f"expected {_sort_order}")
-        elif cur_sort_order == "default":
-            raise AssertionError(f"{_column} column sort order does not match; actual {svg_class_attr}; "
                                  f"expected {_sort_order}")

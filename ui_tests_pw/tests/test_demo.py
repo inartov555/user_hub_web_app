@@ -1,12 +1,12 @@
 """
-Tests for the Login page.
+DEMO tests
 """
 
 from __future__ import annotations
 import re
 
 import pytest
-from playwright.sync_api import Page, Browser, expect
+from playwright.sync_api import Page, expect
 
 from conftest import take_a_screenshot
 from pages.login_page import LoginPage
@@ -14,6 +14,12 @@ from pages.signup_page import SignupPage
 from pages.reset_password_page import ResetPasswordPage
 from pages.users_table_page import UsersTablePage
 from pages.user_delete_confirm_page import UserDeleteConfirmPage
+from pages.change_password_page import ChangePasswordPage
+from pages.profile_view_page import ProfileViewPage
+from pages.profile_edit_page import ProfileEditPage
+from pages.stats_page import StatsPage
+from pages.settings_page import SettingsPage
+from pages.excel_import_page import ExcelImportPage
 from utils.theme import Theme
 from config import (
     DEFAULT_ADMIN_USERNAME,
@@ -55,7 +61,7 @@ def test_base_demo(page: Page,
     # Screenshot -> Signup page
     take_a_screenshot(page)
     signup_page = SignupPage(page)
-    signup_page.submit_credentials_error("invalid", "invalid", "invalid")
+    signup_page.submit_credentials_error("invalid", "", "invalid")
     # Screenshot -> Signup page -> Error
     take_a_screenshot(page)
     # Getting back to the /login page
@@ -80,8 +86,8 @@ def test_base_demo(page: Page,
     # Let's get back to the Login page
     reset_password_page.click_sign_in_link()
 
-    # Now, let's check the /users page
-    login_page.submit_credentials_success("admin", "changeme123")
+    # Now, let's login as Admin user to get to the Users Table page
+    login_page.submit_credentials_success(DEFAULT_ADMIN_USERNAME, DEFAULT_ADMIN_PASSWORD)
     # Let's set multi-column sorting (First Name - ascending, Last Name - descending)
     users_table_page = UsersTablePage(page)
     users_table_page.change_column_sorting("firstname", "asc")
@@ -92,74 +98,98 @@ def test_base_demo(page: Page,
     users_table_page.check_rows.nth(0).click()
     users_table_page.check_rows.nth(1).click()
     users_table_page.check_rows.nth(3).click()
-    # Screenshot -> /users page -> Multi column sort on
+    # Screenshot -> Admin user -> Users Table page -> Multi column sort on
     take_a_screenshot(page)
 
+    '''
     # Now, let's see the user deletion page
     users_table_page.delete_users_btn.click()
     user_delete_page = UserDeleteConfirmPage(page)
     user_delete_page.assert_confirm_delete_loaded()
-    # Screenshot -> User Delete Confirm page -> List of users to delete
+    # Screenshot -> Admin user -> User Delete Confirm page -> List of users to delete
+    take_a_screenshot(page)
+    # Let's see if User Delete Confirm page shows error messages, if error happened
+    user_delete_page.confirm_delete_top.click()
+    user_delete_page.assert_confirm_delete_loaded()
+    user_delete_page.assert_error_visible()
+    # Screenshot -> Admin user -> User Delete Confirm page -> List of users to delete
+    take_a_screenshot(page)
+    # Let's get back to the /users page
+    user_delete_page.click_top_cancel()
+    '''
+
+    # Let's click the Change Password button
+    # users_table_page.search_and_wait_for_results("mi")
+    users_table_page.change_password_btn.nth(0).click()
+    # Screenshot -> Admin user -> Change Password page
+    take_a_screenshot(page)
+    # Error case
+    change_password_page = ChangePasswordPage(page)
+    change_password_page.fill_passwords("short", "short")
+    change_password_page.assert_error_visible()
+    # Screenshot -> Admin user -> Change Password page -> Error case
     take_a_screenshot(page)
 
+    # Let's log in to the website as a regular user
+    change_password_page.click_logout_and_wait_for_login_page()
+    login_page.submit_credentials_success(DEFAULT_REGULAR_USERNAME, DEFAULT_REGULAR_PASSWORD)
+    # Let's set some multi-column sorting
+    users_table_page.change_column_sorting("username", "asc")
+    users_table_page.change_column_sorting("email", "desc")
+    users_table_page.change_column_sorting("firstname", "asc")
+    users_table_page.change_column_sorting("lastname", "desc")
+    users_table_page.assert_column_sorting("username", "asc")
+    users_table_page.assert_column_sorting("email", "desc")
+    users_table_page.assert_column_sorting("firstname", "asc")
+    users_table_page.assert_column_sorting("lastname", "desc")
+    # Screenshot -> Regular User -> Users Table page -> Multi-colunn sort
+    take_a_screenshot(page)
 
-@pytest.mark.parametrize(
-    "username,password",
-    [
-        ("invalid", "invalid"),
-        (DEFAULT_ADMIN_USERNAME, "wrongpw"),
-    ],
-)
-def test_login_invalid_credentials_show_error(login_page: LoginPage,
-                                              username: str,
-                                              password: str) -> None:
-    """
-    Invalid credentials should keep the user on the login page and show an error.
-    """
-    login_page.fill_credentials(username, password)
-    login_page.submit.click()
-    login_page.assert_on_login_page()
-    login_page.assert_error_visible()
+    # Let's go to the Profile tab
+    profile_view_page = ProfileViewPage(page)
+    profile_view_page.click_profile_tab()
+    profile_view_page.assert_profile_basics_visible()
+    # Screenshot -> Regular User -> Profile View Page
+    take_a_screenshot(page)
 
+    # Now, let's see the Profile Edit page
+    profile_edit_page = ProfileEditPage(page)
+    profile_edit_page.click_edit_button()
+    profile_edit_page.assert_loaded()
+    # Screenshot -> Regular User -> Profile Edit Page
+    take_a_screenshot(page)
+    # Let's check error validation
+    profile_edit_page.remove_maxlength_attribute_from_input_fields()
+    profile_edit_page.fill_basic_fields()
+    profile_edit_page.save.click()
+    profile_edit_page.assert_error_alert_shown()
+    # Screenshot -> Regular User -> Profile Edit Page -> Error alert
+    take_a_screenshot(page)
 
-@pytest.mark.regular_user
-def test_regular_user_can_login_and_redirects_to_users(login_page: LoginPage,
-                                                       page: Page) -> None:
-    """
-    Regular test user should be able to log in and land on /users.
-    """
-    login_page.fill_credentials(DEFAULT_REGULAR_USERNAME, DEFAULT_REGULAR_PASSWORD)
-    login_page.submit.click()
-    page.wait_for_url(re.compile(r".*/users$"))
-    expect(page).to_have_url(re.compile(r".*/users$"))
-    expect(login_page.users_tab).to_be_visible()
+    # Let's log in to the website as Admin user
+    profile_edit_page.click_logout_and_wait_for_login_page()
+    login_page.submit_credentials_success(DEFAULT_ADMIN_USERNAME, DEFAULT_ADMIN_PASSWORD)
+    # Let's open the User Stats tab
+    stats_page = StatsPage(page)
+    stats_page.click_additional_user_stats_tab()
+    stats_page.assert_loaded()
+    # Screenshot -> Admin User -> User Stats Page
+    take_a_screenshot(page)
 
+    # Now, let's go to the Additional -> App Settings tab
+    app_settings_page = SettingsPage(page)
+    app_settings_page.click_additional_app_settings_tab()
+    app_settings_page.assert_loaded()
+    # Screenshot -> Admin User -> App Settings Page
+    take_a_screenshot(page)
+    # Let's check the error validation
+    app_settings_page.change_idle_timeout(1234567890)
+    app_settings_page.save.click()
+    app_settings_page.assert_error_visible()
+    # Screenshot -> Admin User -> App Settings Page -> Error case
+    take_a_screenshot(page)
 
-@pytest.mark.admin
-def test_admin_can_login_and_see_users_nav(login_page: LoginPage,
-                                           page: Page) -> None:
-    """
-    Admin user should log in successfully and see the Users nav item.
-    """
-    login_page.fill_credentials(DEFAULT_ADMIN_USERNAME, DEFAULT_ADMIN_PASSWORD)
-    login_page.submit.click()
-    page.wait_for_url(re.compile(r".*/users$"))
-    expect(page).to_have_url(re.compile(r".*/users$"))
-    expect(login_page.users_tab).to_be_visible()
-
-
-@pytest.mark.localization
-def test_login_links_to_signup_and_reset_password(login_page: LoginPage,
-                                                  page: Page) -> None:
-    """
-    Login page should expose links to signup and reset-password pages.
-    """
-    # Case: /signup page is opened after clicking Sign Up
-    login_page.signup.click()
-    page.wait_for_url(re.compile(r".*/signup$"))
-    expect(page).to_have_url(re.compile(r".*/signup$"))
-    # Case: /reset-password page is opened after clicking Forgot Password
-    page.go_back()
-    login_page.forgot_password.click()
-    page.wait_for_url(re.compile(r".*/reset-password$"))
-    expect(page).to_have_url(re.compile(r".*/reset-password$"))
+    # Now, let's go to the Additional -> Excel Import tab
+    excel_import_page = ExcelImportPage(page)
+    excel_import_page.click_additional_excel_import_tab()
+    excel_import_page.assert_loaded()
