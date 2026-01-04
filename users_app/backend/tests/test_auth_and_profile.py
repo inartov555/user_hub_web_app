@@ -9,7 +9,7 @@ from rest_framework import status
 
 class AuthAndProfileTests(APITestCase):
     """
-    Authentication and profile related tests
+    Authentication and profile-related tests
     """
     def setUp(self):
         """
@@ -39,7 +39,7 @@ class AuthAndProfileTests(APITestCase):
         me = self.client.get("/api/v1/me/profile/")
         self.assertEqual(me.status_code, status.HTTP_200_OK)
 
-        # Refresh should work (endpoint is overridden in app urls)
+        # Refresh should work (endpoint is overridden in app URLs)
         refresh = self.client.post("/api/v1/auth/jwt/refresh/", {"refresh": tokens["refresh"]}, format="json")
         self.assertEqual(refresh.status_code, status.HTTP_200_OK)
         self.assertIn("access", refresh.json())
