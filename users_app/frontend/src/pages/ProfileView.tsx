@@ -105,7 +105,6 @@ export default function ProfileView() {
                       title={t("profileView.profile")}
                       subtitle={t("profileView.yourPersonalDetails")}
         />
-        <hr className="my-3 mx-0 h-px border-0 bg-slate-300 dark:bg-slate-600" />
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <Field id="fullName" label={t("profileView.fullName")} value={fullName} />

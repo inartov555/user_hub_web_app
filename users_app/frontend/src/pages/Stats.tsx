@@ -14,7 +14,6 @@ export default function Stats() {
     	 "
     >
       <UnifiedTitle icon={<BarChart3 className="h-4 w-4" />} title={t("stats.curOnline5Mins")} />
-      <hr className="my-3 mx-0 h-px border-0 bg-slate-300 dark:bg-slate-600" />
       <ul className="list-disc pl-6">
         {(data ?? []).map((u: any) => (
           <li key={u.id}>{u.username} ({u.email})</li>

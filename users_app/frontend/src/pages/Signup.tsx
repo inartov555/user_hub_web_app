@@ -36,7 +36,6 @@ export default function Signup() {
          "
     >
       <UnifiedTitle icon={<UserPlus className="h-4 w-4" />} title={t("signup.title")} />
-      <hr className="my-3 mx-0 h-px border-0 bg-slate-300 dark:bg-slate-600" />
       <form onSubmit={onSubmit} className="space-y-3">
         <FormInput placeholder={t("signup.email")}
                    id="email" value={email} onChange={e=>setEmail(e.target.value)} />
