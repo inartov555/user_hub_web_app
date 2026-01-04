@@ -60,28 +60,38 @@ export default function CookieConsent() {
          "
     >
       {/* Backdrop */}
-      <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" aria-hidden="true" />
+      <div
+        className="
+          absolute inset-0 bg-gradient-to-b from-slate-900/50 via-slate-900/40 to-black/60 backdrop-blur-md
+        "
+        aria-hidden="true"
+      />
+      <div
+        className="
+          pointer-events-none absolute inset-0 opacity-[0.08]
+          [background-image:radial-gradient(circle_at_1px_1px,white_1px,transparent_0)]
+          [background-size:18px_18px]
+        "
+        aria-hidden="true"
+      />
 
       {/* Dialog */}
-      <section
-        role="dialog"
-        aria-modal="true"
-        aria-label="Cookie consent"
-        className="
-          relative w-full max-w-xl rounded-2xl border border-slate-200 bg-white p-4 shadow-soft
-          dark:bg-slate-900 dark:border-slate-700
-        "
+      <div className="
+             relative w-full max-w-xl rounded-2xl border p-4 shadow-lg border-slate-200/80
+             bg-[linear-gradient(135deg,#e2e8f0_0%,#cbd5e1_45%,#bfdbfe_100%)] dark:border-slate-700/70
+             dark:bg-[linear-gradient(135deg,#1f2937_0%,#374151_55%,#4b5563_100%)]
+           "
       >
-        <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+        <div className="flex flex-col">
           <UnifiedTitle icon={<Cookie className="h-4 w-4" />} title={t("app.cookieConsentTitle")} subtitle={t("app.cookieConsentBody")} />
 
-          <div>
+          <div className="mt-auto flex justify-center pt-4">
             <Button id="cookieAccept" onClick={onAccept}>
               {t("app.cookieConsentAccept")}
             </Button>
           </div>
         </div>
-      </section>
+      </div>
     </div>
   );
 }
