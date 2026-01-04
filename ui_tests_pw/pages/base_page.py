@@ -4,6 +4,7 @@ Base page object with shared helpers.
 
 from __future__ import annotations
 import re
+import time
 
 from playwright.sync_api import Page, expect
 from django.utils import translation
@@ -11,6 +12,10 @@ from django.utils import translation
 from config import frontend_url
 from utils.theme import Theme, set_theme
 from utils.localization import set_locale, assert_locale_visible
+from utils.logger.logger import Logger
+
+
+log = Logger(__name__)
 
 
 class BasePage:
@@ -50,6 +55,17 @@ class BasePage:
             path (str): Relative path such as /login or /users.
         """
         self.page.goto(frontend_url(path), wait_until="load")
+
+    def wait_a_bit(self, timeout: int) -> None:
+        """
+        Hard-coded wait. Be careful with it, use it responsibly.
+
+        Args:
+            timeout (int): timeout >= 0
+        """
+        log.info(f"Waiting before starting the next step; timeout {timeout}")
+        _timeout = timeout if timeout >= 0 else 0
+        time.sleep(_timeout)
 
     def reload(self) -> None:
         """

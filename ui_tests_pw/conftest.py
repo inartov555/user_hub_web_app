@@ -441,3 +441,29 @@ def setup_create_users_by_suffix(suffix: str) -> None:
     email = f"{username}@test.com"
     password = "Ch@ngeme123"
     api_utils.create_user(username, email, password)
+
+
+@pytest.fixture(scope="function")
+def setup_cleanup_update_app_settings() -> None:
+    """
+    1. Get current App Settings and keep them in memory
+    2. Set short time settings for a test
+    3. Once cleanup part started, get preserved old App Settings and set them
+    """
+    log.info("Setup. Set App Settings for a test")
+    # if is_rotate is None:
+    #    raise ValueError("is_rotate param was not passed or set, but it's required")
+    api_utils = get_api_utils()
+    login_info = api_utils.api_login(DEFAULT_ADMIN_USERNAME, DEFAULT_ADMIN_PASSWORD)
+    access_token = login_info.get("access")
+    old_settings = api_utils.get_system_settings(access_token)
+
+    # Preparing payload and updating App Settings
+    # payload = { "JWT_RENEW_AT_SECONDS": 9, "IDLE_TIMEOUT_SECONDS": 5,
+    #            "ACCESS_TOKEN_LIFETIME": 13, "ROTATE_REFRESH_TOKENS": is_rotate }
+    # api_utils.update_system_settings(payload)
+    yield
+    log.info("Cleanup. Returning old App Settings' values")
+    login_info = api_utils.api_login(DEFAULT_ADMIN_USERNAME, DEFAULT_ADMIN_PASSWORD)
+    access_token = login_info.get("access")
+    api_utils.update_system_settings(access_token, old_settings)

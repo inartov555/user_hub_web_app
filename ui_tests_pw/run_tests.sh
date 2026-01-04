@@ -113,7 +113,7 @@ TEST_GREP=""
 # to run all tests, just set TEST_GREP="$TEST_GREP" (to preserve base settings)
 
 # TEST_GREP="$TEST_GREP -k 'test_base_demo or test_locale_demo'"
-TEST_GREP="$TEST_GREP -k 'test_admin_can_change_password_for_any_user or test_regular_user_can_change_password_for_themselves'"
+TEST_GREP="$TEST_GREP -k 'test_rotate_true_token_refreshed_indle_timeout_after'"
 
 docker compose run -e TEST_GREP="$TEST_GREP" --rm ui_tests_pw
 

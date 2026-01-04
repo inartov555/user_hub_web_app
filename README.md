@@ -27,6 +27,7 @@ This is a test website + automation framework
 - ✨ **Improved in `ui_tests_pw`:** Existing test structure, lite refactoring
 - ✨ **Improved in `users_app`:** Page styles such as background, etc.
 - 🆕 **Added in `ui_tests_pw`:** New tests to test_change_password_page.py
+- 🆕 **Added in `ui_tests_pw`:** New tests to test_settings_page.py
 
 ---
 

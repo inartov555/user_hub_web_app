@@ -236,7 +236,7 @@ class UsersAppApi(ApiJsonRequest):
 
     def api_login(self, username, password) -> dict:
         """
-        /api/v1/auth/jwt/create
+        POST /api/v1/auth/jwt/create
 
         Returns:
             dict, e.g. {"refresh":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9","access":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9"}
@@ -249,7 +249,7 @@ class UsersAppApi(ApiJsonRequest):
 
     def get_users(self, access: str, search: str = "", page_num: int = 1, page_size: int = 100, ordering: str = "id"):
         """
-        /api/v1/users
+        GET /api/v1/users
 
         Returns:
             dict
@@ -261,23 +261,9 @@ class UsersAppApi(ApiJsonRequest):
                                      headers=self.get_authorization_token_dict(access))
         return response
 
-    def bulk_user_delete(self, access: str, user_id_list: list) -> dict:
-        """
-        /api/v1/users/bulk-delete/
-
-        Returns:
-            dict, {"deleted": $number}
-        """
-        payload = {"ids": user_id_list}
-        response = self.make_request("post",
-                                     "/api/v1/users/bulk-delete/",
-                                     payload=payload,
-                                     headers=self.get_authorization_token_dict(access))
-        return response
-
     def create_user(self, username: str, email: str, password: str) -> dict:
         """
-        /api/v1/auth/users/
+        POST /api/v1/auth/users/
 
         Returns:
             dict
@@ -286,4 +272,45 @@ class UsersAppApi(ApiJsonRequest):
         response = self.make_request("post",
                                      "/api/v1/auth/users/",
                                      payload=payload)
+        return response
+
+    def get_system_settings(self, access: str) -> dict:
+        """
+        GET /api/v1/system/settings/
+
+        Returns:
+            dict, example:
+                    { "JWT_RENEW_AT_SECONDS": 9999,
+                      "IDLE_TIMEOUT_SECONDS": 9999,
+                      "ACCESS_TOKEN_LIFETIME": 9999,
+                      "ROTATE_REFRESH_TOKENS": true }
+        """
+        response = self.make_request("get",
+                                     "/api/v1/system/settings/",
+                                     payload={},
+                                     headers=self.get_authorization_token_dict(access))
+        return response
+
+    def update_system_settings(self, access: str, payload: dict) -> dict:
+        """
+        PUT /api/v1/system/settings/
+
+        Args:
+            payload (dict): example:
+                                { "JWT_RENEW_AT_SECONDS": 9999,
+                                  "IDLE_TIMEOUT_SECONDS": 9999,
+                                  "ACCESS_TOKEN_LIFETIME": 9999,
+                                  "ROTATE_REFRESH_TOKENS": true }
+
+        Returns:
+            dict, example:
+                    { "JWT_RENEW_AT_SECONDS": 9999,
+                      "IDLE_TIMEOUT_SECONDS": 9999,
+                      "ACCESS_TOKEN_LIFETIME": 9999,
+                      "ROTATE_REFRESH_TOKENS": true }
+        """
+        response = self.make_request("put",
+                                     "/api/v1/system/settings/",
+                                     payload=payload,
+                                     headers=self.get_authorization_token_dict(access))
         return response

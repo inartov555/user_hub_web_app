@@ -12,7 +12,6 @@ Non-test methods that start from _* are state dependent.
 from __future__ import annotations
 import random
 import string
-import time
 
 import pytest
 from playwright.sync_api import Page
@@ -129,7 +128,7 @@ def _helper_users_table_page_admin_user(page: Page, ui_theme_param: Theme, ui_lo
     users_table_page.search_and_wait_for_results("mi")
     users_table_page.check_rows.nth(0).click()
     # The delete user button does not have time to change the styles before take a screenshot
-    time.sleep(FIXED_TIME_TO_WAIT)
+    users_table_page.wait_a_bit(FIXED_TIME_TO_WAIT)
     # Screenshot -> Admin user -> Users Table page -> Multi column sort on
     take_a_screenshot(page)
 
@@ -214,7 +213,7 @@ def _helper_profile_view_page_regular_user(page: Page, ui_theme_param: Theme, ui
     profile_view_page.click_profile_tab()
     profile_view_page.assert_profile_basics_visible()
     # The tab does not have time to change the styles before take a screenshot
-    time.sleep(FIXED_TIME_TO_WAIT)
+    profile_view_page.wait_a_bit(FIXED_TIME_TO_WAIT)
     # Screenshot -> Regular User -> Profile View Page
     take_a_screenshot(page)
 
@@ -260,7 +259,7 @@ def _helper_user_stats_page_admin_user(page: Page, ui_theme_param: Theme, ui_loc
     stats_page.click_additional_user_stats_tab()
     stats_page.assert_loaded()
     # The tab does not have time to change styles before taking a screenshot
-    time.sleep(FIXED_TIME_TO_WAIT)
+    stats_page.wait_a_bit(FIXED_TIME_TO_WAIT)
     # Screenshot -> Admin User -> User Stats Page
     take_a_screenshot(page)
 
@@ -276,7 +275,7 @@ def _helper_app_settings_page_admin_user(page: Page, ui_theme_param: Theme, ui_l
     app_settings_page.click_additional_app_settings_tab()
     app_settings_page.assert_loaded()
     # The tab does not have time to change styles before taking a screenshot
-    time.sleep(FIXED_TIME_TO_WAIT)
+    app_settings_page.wait_a_bit(FIXED_TIME_TO_WAIT)
     # Screenshot -> Admin User -> App Settings Page
     take_a_screenshot(page)
     # Let's check the error validation
@@ -298,7 +297,7 @@ def _helper_excel_import_page_admin_user(page: Page, ui_theme_param: Theme, ui_l
     excel_import_page.click_additional_excel_import_tab()
     excel_import_page.assert_loaded()
     # The tab does not have time to change styles before taking a screenshot
-    time.sleep(FIXED_TIME_TO_WAIT)
+    excel_import_page.wait_a_bit(FIXED_TIME_TO_WAIT)
     # Screenshot -> Admin User -> Excel Import Page
     take_a_screenshot(page)
     # Let's check error case
