@@ -1,7 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
+/* */
 /* App background: subtle gradient + noise */
 body {
   @apply bg-gradient-to-b from-slate-50 to-slate-100 text-slate-900;
