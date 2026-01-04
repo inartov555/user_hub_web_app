@@ -53,13 +53,13 @@ fi
 
 # chromium chrome msedge firefox webkit
 
-# Read browser parameter from pytest.ini and pass the value to Docker to install on needed browser.
+# Read browser parameter from pytest.ini and pass the value to Docker to install on the needed browser.
 # If parameter is not present, then default value is taken - 'chromium'.
 readFromPyestIni() {
   # Input parameters:
   # 	1. pytest.ini file path
-  # 	2. Section in the pytest.ini file, e.g. pytest
-  #	3. Parameter name, in this case 'browser'
+  # 	2. Section in the pytest.ini file, e.g., pytest
+  #	3. Parameter name, in this case, 'browser'
   local ini_file1="$1" section1="$2" key1="$3"
   awk -F'=' -v section="$section1" -v key="$key1" '
     $0 ~ "^[[:space:]]*\\[" section "\\][[:space:]]*$" { in_section=1; next }
@@ -79,7 +79,7 @@ readFromPyestIni() {
 if BROWSER="$(readFromPyestIni $INI_CONFIG_FILE pytest browser)"; then
   if [ -z $BROWSER ]; then
     echo "browser addopt found, but it's empty, so taking default value - chromium"
-    # Default value when empty parameter found
+    # Default value when an empty parameter is found
     BROWSER="chromium"
   else
     echo "Found browser addopt: '$BROWSER'"
