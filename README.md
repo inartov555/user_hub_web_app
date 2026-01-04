@@ -22,9 +22,9 @@ This is a test website + automation framework
 
 ## 📌 Changelog v1.5 vs. v1.4
 
-- 🛠️ **Fixed in `users_app`:** In Progress
+- 🛠️ **Fixed in `ui_tests_pw`:** Safari: white text on the white background in the select element was displayed when dark theme was on
 - ✨ **Improved in `ui_tests_pw`:** Smart browser install (only selected one instead of all to preserve the time)
-- ✨ **Improved in `ui_tests_pw`:** test_login_page.py, test_signup_page.py, test_change_password_page.py, test_profile*.py, and other tests
+- ✨ **Improved in `ui_tests_pw`:** Existing test structure, lite refactoring
 - 🆕 **Added in `users_app`:** In Progress
 
 ---

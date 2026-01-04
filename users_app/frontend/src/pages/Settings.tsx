@@ -83,6 +83,8 @@ export default function Settings() {
                 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500
                 dark:bg-slate-900 dark:text-slate-100 dark:placeholder-slate-500
                 dark:border-slate-700
+                text-slate-900 dark:text-slate-100 dark:[color-scheme:dark]
+                dark:[&>option]:bg-slate-900 dark:[&>option]:text-slate-100
               "
               value={form.ROTATE_REFRESH_TOKENS ? "true" : "false"}
               onChange={(e) => {

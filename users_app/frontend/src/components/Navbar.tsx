@@ -157,6 +157,8 @@ export default function Navbar() {
               id="locale"
               className="
                 border border-slate-300 dark:border-slate-700 rounded bg-white dark:bg-slate-900 px-2 py-1 text-sm
+                text-slate-900 dark:text-slate-100 dark:[color-scheme:dark]
+                dark:[&>option]:bg-slate-900 dark:[&>option]:text-slate-100
               "
               value={locale}
               onChange={(e) => {
