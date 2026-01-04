@@ -26,7 +26,7 @@ from rest_framework.views import exception_handler
 from rest_framework_simplejwt.exceptions import InvalidToken, TokenError
 
 
-# A small catalog to map common DRF exception classes to the error codes & i18n keys
+# Mapping common DRF exception classes to the error codes & i18n keys
 EXC_MAP = {
     exceptions.NotAuthenticated: ("auth.not_authenticated",
                                   "errors.auth.not_authenticated",
