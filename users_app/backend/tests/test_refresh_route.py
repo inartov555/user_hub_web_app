@@ -14,7 +14,7 @@ class RefreshRouteTest(SimpleTestCase):
     """
     def test_refresh_resolves_to_runtime_view(self):
         """
-        Test if refresh resolves to runtime view
+        Test if refresh resolves to the runtime view
         """
         match = resolve("/api/v1/auth/jwt/refresh/")
         self.assertEqual(match.func.view_class, RuntimeAwareTokenRefreshView)
