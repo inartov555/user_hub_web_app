@@ -17,6 +17,7 @@ import time
 import pytest
 from playwright.sync_api import Page
 
+from core.constants import LocaleConsts, ThemeConsts
 from conftest import take_a_screenshot
 from pages.login_page import LoginPage
 from pages.signup_page import SignupPage
@@ -322,20 +323,20 @@ def test_base_demo(page: Page,
 
 
 @pytest.mark.demo
-@pytest.mark.parametrize("ui_theme_param", ["light"])
+@pytest.mark.parametrize("ui_theme_param", [ThemeConsts.LIGHT])
 def test_locale_demo(page: Page, ui_theme_param: Theme) -> None:
     """
     Locale DEMO test to run multiple pages and take screenshots
     """
-    _helper_login_page(page, ui_theme_param, "et-EE")
-    _helper_signup_page(page, ui_theme_param, "fi-FI")
-    _helper_reset_password_page(page, ui_theme_param, "en-US")
-    _helper_users_table_page_admin_user(page, ui_theme_param, "uk-UA")
-    _helper_user_delete_page(page, ui_theme_param, "cs-CZ")
+    _helper_login_page(page, ui_theme_param, LocaleConsts.ESTONIAN)
+    _helper_signup_page(page, ui_theme_param, LocaleConsts.FINNISH)
+    _helper_reset_password_page(page, ui_theme_param, LocaleConsts.ENGLISH_US)
+    _helper_users_table_page_admin_user(page, ui_theme_param, LocaleConsts.UKRAINIAN)
+    _helper_user_delete_page(page, ui_theme_param, LocaleConsts.CZECH)
     # _helper_change_password_page(page, ui_theme_param, ui_locale_param)
     # _helper_users_table_page_regular_user(page, ui_theme_param, ui_locale_param)
     # _helper_profile_view_page_regular_user(page, ui_theme_param, ui_locale_param)
     # _helper_profile_edit_page_regular_user(page, ui_theme_param, ui_locale_param)
     # _helper_user_stats_page_admin_user(page, ui_theme_param, ui_locale_param)
-    _helper_app_settings_page_admin_user(page, ui_theme_param, "pl-PL")
-    _helper_excel_import_page_admin_user(page, ui_theme_param, "es-ES")
+    _helper_app_settings_page_admin_user(page, ui_theme_param, LocaleConsts.POLISH)
+    _helper_excel_import_page_admin_user(page, ui_theme_param, LocaleConsts.SPANISH)
