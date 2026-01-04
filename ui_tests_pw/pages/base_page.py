@@ -124,7 +124,6 @@ class BasePage:
         self.page.wait_for_url(re.compile(r".*/login$"))
         expect(self.page).to_have_url(re.compile(r".*/login$"))
         expect(self.username).to_be_visible()
-        self.assert_login_page_is_displayed()
 
     def click_profile_tab(self) -> None:
         """
