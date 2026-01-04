@@ -176,60 +176,6 @@ class UsersTablePage(BasePage):
         for step in transition_steps[(cur_sort_order, _sort_order)]:
             click_until(step)
 
-        """
-        if cur_sort_order == "default" and _sort_order == "asc":
-            # Click to get ascending order
-            _next_expected_sort_loc_str = "svg.lucide-arrow-up"
-            sorted_column_header_loc.click()
-            next_expected_sort_order = sorted_column_header_loc.locator(_next_expected_sort_loc_str)
-            expect(next_expected_sort_order).to_be_visible()
-        elif cur_sort_order == "default" and _sort_order == "desc":
-            # Click to get ascending order
-            _next_expected_sort_loc_str = "svg.lucide-arrow-up"
-            sorted_column_header_loc.click()
-            next_expected_sort_order = sorted_column_header_loc.locator(_next_expected_sort_loc_str)
-            expect(next_expected_sort_order).to_be_visible()
-            # Click to get desceing order
-            _next_expected_sort_loc_str = "svg.lucide-arrow-down"
-            sorted_column_header_loc.click()
-            next_expected_sort_order = sorted_column_header_loc.locator(_next_expected_sort_loc_str)
-            expect(next_expected_sort_order).to_be_visible()
-        elif cur_sort_order == "asc" and _sort_order == "default":
-            # Click to get descending order
-            _next_expected_sort_loc_str = "svg.lucide-arrow-down"
-            sorted_column_header_loc.click()
-            next_expected_sort_order = sorted_column_header_loc.locator(_next_expected_sort_loc_str)
-            expect(next_expected_sort_order).to_be_visible()
-            # Click to get default order
-            _next_expected_sort_loc_str = "svg.lucide-arrow-up-down"
-            sorted_column_header_loc.click()
-            next_expected_sort_order = sorted_column_header_loc.locator(_next_expected_sort_loc_str)
-            expect(next_expected_sort_order).to_be_visible()
-        elif cur_sort_order == "asc" and _sort_order == "desc":
-            # Click to get desceing order
-            _next_expected_sort_loc_str = "svg.lucide-arrow-down"
-            sorted_column_header_loc.click()
-            next_expected_sort_order = sorted_column_header_loc.locator(_next_expected_sort_loc_str)
-            expect(next_expected_sort_order).to_be_visible()
-        elif cur_sort_order == "desc" and _sort_order == "default":
-            # Click to get default order
-            _next_expected_sort_loc_str = "svg.lucide-arrow-up-down"
-            sorted_column_header_loc.click()
-            next_expected_sort_order = sorted_column_header_loc.locator(_next_expected_sort_loc_str)
-            expect(next_expected_sort_order).to_be_visible()
-        elif cur_sort_order == "desc" and _sort_order == "asc":
-            # Click to get default order
-            _next_expected_sort_loc_str = "svg.lucide-arrow-up-down"
-            sorted_column_header_loc.click()
-            next_expected_sort_order = sorted_column_header_loc.locator(_next_expected_sort_loc_str)
-            expect(next_expected_sort_order).to_be_visible()
-            # Click to get ascending order
-            _next_expected_sort_loc_str = "svg.lucide-arrow-up"
-            sorted_column_header_loc.click()
-            next_expected_sort_order = sorted_column_header_loc.locator(_next_expected_sort_loc_str)
-            expect(next_expected_sort_order).to_be_visible()
-        """
-
     def assert_column_sorting(self, column: str, sort_order: str) -> None:
         """
         Assert that the passed sort order for the passed column is actually applied on UI.
