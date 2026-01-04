@@ -31,8 +31,10 @@ class SignupPage(BasePage):
         Open the signup page.
         """
         self.goto("/signup")
+        self.page.wait_for_url(re.compile(r".*/signup$"))
+        expect(self.page).to_have_url(re.compile(r".*/signup$"))
 
-    def fill_form(self, username: str, email: str, password: str) -> None:
+    def fill_form(self, email: str, username: str, password: str) -> None:
         """
         Fill the signup form fields.
         """
@@ -40,22 +42,22 @@ class SignupPage(BasePage):
         self.email.fill(email)
         self.password.fill(password)
 
-    def submit_credentials_success(self, username: str, email: str, password: str) -> None:
+    def submit_credentials_success(self, email: str, username: str, password: str) -> None:
         """
         Expected: Successful user creation.
         Submitting the input credentials and waiting for the /login page
         """
-        self.fill_form(username, email, password)
+        self.fill_form(email, username, password)
         self.save.click()
         self.page.wait_for_url(re.compile(r".*/login$"))
         expect(self.page).to_have_url(re.compile(r".*/login$"))
 
-    def submit_credentials_error(self, username: str, email: str, password: str) -> None:
+    def submit_credentials_error(self, email: str, username: str, password: str) -> None:
         """
         Expected: Failed user creation.
         Submitting the input credentials and waiting for the error message on the /signup page
         """
-        self.fill_form(username, email, password)
+        self.fill_form(email, username, password)
         self.save.click()
         self.page.wait_for_url(re.compile(r".*/signup$"))
         expect(self.page).to_have_url(re.compile(r".*/signup$"))

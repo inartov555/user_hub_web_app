@@ -1,11 +1,18 @@
 """
 DEMO tests.
 Non-test methods that start from _* are state dependent.
+
+   1. test_base_demo
+      Base DEMO test to run multiple pages and take screenshots
+
+   2. test_locale_demo
+      Locale DEMO test to run multiple pages and take screenshots
 """
 
 from __future__ import annotations
 import random
 import string
+import time
 
 import pytest
 from playwright.sync_api import Page
@@ -116,6 +123,7 @@ def _helper_users_table_page_admin_user(page: Page, ui_theme_param: Theme, ui_lo
     users_table_page.assert_column_sorting("lastname", "desc")
     users_table_page.search_and_wait_for_results("mi")
     users_table_page.check_rows.nth(0).click()
+    time.sleep(0.3)  # the delete user button does not have time to change the styles before take a screenshot
     # Screenshot -> Admin user -> Users Table page -> Multi column sort on
     take_a_screenshot(page)
 
@@ -199,6 +207,7 @@ def _helper_profile_view_page_regular_user(page: Page, ui_theme_param: Theme, ui
     profile_view_page.ensure_locale(ui_locale_param)
     profile_view_page.click_profile_tab()
     profile_view_page.assert_profile_basics_visible()
+    time.sleep(0.3)  # the delete user button does not have time to change the styles before take a screenshot
     # Screenshot -> Regular User -> Profile View Page
     take_a_screenshot(page)
 
@@ -243,6 +252,7 @@ def _helper_user_stats_page_admin_user(page: Page, ui_theme_param: Theme, ui_loc
     stats_page = StatsPage(page)
     stats_page.click_additional_user_stats_tab()
     stats_page.assert_loaded()
+    time.sleep(0.3)  # the tab does not have time to change styles before taking a screenshot
     # Screenshot -> Admin User -> User Stats Page
     take_a_screenshot(page)
 
@@ -277,6 +287,7 @@ def _helper_excel_import_page_admin_user(page: Page, ui_theme_param: Theme, ui_l
     excel_import_page.ensure_locale(ui_locale_param)
     excel_import_page.click_additional_excel_import_tab()
     excel_import_page.assert_loaded()
+    time.sleep(0.3)  # the tab does not have time to change styles before taking a screenshot
     # Screenshot -> Admin User -> Excel Import Page
     take_a_screenshot(page)
     # Let's check error case
@@ -289,9 +300,6 @@ def _helper_excel_import_page_admin_user(page: Page, ui_theme_param: Theme, ui_l
 @pytest.mark.demo
 @pytest.mark.parametrize("ui_theme_param", ["light", "dark"])
 @pytest.mark.parametrize("ui_locale_param", ["en-US"])
-# @pytest.mark.parametrize("ui_locale_param", ["en-US", "uk-UA", "et-EE", "fi-FI", "cs-CZ", "pl-PL", "es-ES"])
-# @pytest.mark.parametrize("ui_theme_param", ["light"])
-# @pytest.mark.usefixtures("cleanup_set_default_theme_and_locale")
 def test_base_demo(page: Page,
                    ui_theme_param: Theme,
                    ui_locale_param: str) -> None:
@@ -314,9 +322,6 @@ def test_base_demo(page: Page,
 
 @pytest.mark.demo
 @pytest.mark.parametrize("ui_theme_param", ["light"])
-# @pytest.mark.parametrize("ui_locale_param", ["en-US", "uk-UA", "et-EE", "fi-FI", "cs-CZ", "pl-PL", "es-ES"])
-# @pytest.mark.parametrize("ui_theme_param", ["light"])
-# @pytest.mark.usefixtures("cleanup_set_default_theme_and_locale")
 def test_locale_demo(page: Page, ui_theme_param: Theme) -> None:
     """
     Locale DEMO test to run multiple pages and take screenshots

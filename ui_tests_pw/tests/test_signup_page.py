@@ -55,7 +55,7 @@ def test_signup_with_random_username(page: Page,
     username = f"ui-test-{suffix}"
     email = f"{username}@test.com"
     password = "changeme123"
-    signup_page.fill_form(username, email, password)
+    signup_page.fill_form(email, username, password)
     signup_page.save.click()
     # The user is redirected to the Login page after successful user creation
     page.wait_for_url(re.compile(r".*/login$"))

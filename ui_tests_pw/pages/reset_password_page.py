@@ -30,6 +30,8 @@ class ResetPasswordPage(BasePage):
         Open the reset password page.
         """
         self.goto("/reset-password")
+        self.page.wait_for_url(re.compile(r".*/reset-password$"))
+        expect(self.page).to_have_url(re.compile(r".*/reset-password$"))
 
     def request_reset(self, email: str) -> None:
         """
