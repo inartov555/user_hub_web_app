@@ -75,12 +75,28 @@ export default function App() {
       {/* Background */}
       <div aria-hidden className="pointer-events-none absolute inset-0">
         {/* base gradient */}
-        <div className="absolute inset-0 bg-gradient-to-br from-slate-100 via-slate-50/70 to-indigo-50/60 dark:from-slate-950 dark:via-slate-900/80 dark:to-indigo-950/80" />
+        <div className="
+               absolute inset-0 bg-gradient-to-br from-slate-100 via-slate-50/70 to-indigo-50/60
+               dark:from-slate-950 dark:via-slate-900/80 dark:to-indigo-950/80
+             "
+        />
 
         {/* soft blobs */}
-        <div className="absolute -top-32 -left-32 h-[520px] w-[520px] rounded-full bg-indigo-300/20 blur-3xl dark:bg-indigo-500/10" />
-        <div className="absolute -bottom-40 -right-40 h-[560px] w-[560px] rounded-full bg-fuchsia-300/16 blur-3xl dark:bg-fuchsia-500/08" />
-        <div className="absolute top-1/3 left-1/2 h-[420px] w-[420px] -translate-x-1/2 rounded-full bg-sky-300/14 blur-3xl dark:bg-sky-500/08" />
+        <div className="
+               absolute -top-32 -left-32 h-[520px] w-[520px] rounded-full bg-indigo-300/20 blur-3xl
+               dark:bg-indigo-500/10
+             "
+        />
+        <div className="
+               absolute -bottom-40 -right-40 h-[560px] w-[560px] rounded-full bg-fuchsia-300/16 blur-3xl
+               dark:bg-fuchsia-500/08
+             "
+        />
+        <div className="
+               absolute top-1/3 left-1/2 h-[420px] w-[420px] -translate-x-1/2 rounded-full bg-sky-300/14 blur-3xl
+               dark:bg-sky-500/08
+             "
+        />
 
         {/* subtle grid */}
         <div
@@ -90,7 +106,10 @@ export default function App() {
         />
 
         {/* vignette */}
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-slate-900/6 dark:to-black/20" />
+        <div className="
+               absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-slate-900/6 dark:to-black/20
+             "
+        />
       </div>
 
       {/* Content */}

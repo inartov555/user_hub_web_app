@@ -83,7 +83,9 @@ export default function CookieConsent() {
            "
       >
         <div className="flex flex-col">
-          <UnifiedTitle icon={<Cookie className="h-4 w-4" />} title={t("app.cookieConsentTitle")} subtitle={t("app.cookieConsentBody")} />
+          <UnifiedTitle icon={<Cookie className="h-4 w-4" />}
+                        title={t("app.cookieConsentTitle")}
+                        subtitle={t("app.cookieConsentBody")} />
 
           <div className="mt-auto flex justify-center pt-4">
             <Button id="cookieAccept" onClick={onAccept}>
