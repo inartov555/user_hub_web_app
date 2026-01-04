@@ -1,6 +1,5 @@
 """
 WSGI server
-aasdf
 """
 
 import os
