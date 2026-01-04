@@ -9,8 +9,6 @@ from playwright.sync_api import Page
 
 from core.constants import LocaleConsts, ThemeConsts
 from pages.login_page import LoginPage
-from utils.theme import Theme, set_theme
-from utils.localization import set_locale
 from config import (
     DEFAULT_ADMIN_USERNAME,
     DEFAULT_ADMIN_PASSWORD,

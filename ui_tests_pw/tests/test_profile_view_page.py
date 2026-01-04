@@ -5,7 +5,6 @@ Tests for the Profile view page.
 from __future__ import annotations
 
 import pytest
-from playwright.sync_api import Page, expect
 
 from core.constants import LocaleConsts, ThemeConsts
 from pages.profile_view_page import ProfileViewPage
@@ -42,8 +41,7 @@ def test_profile_view_renders_for_admin(profile_view_page_admin: ProfileViewPage
 
 
 @pytest.mark.regular_user
-def test_profile_view_has_edit_link(page: Page,
-                                    profile_view_page_regular: ProfileViewPage) -> None:
+def test_profile_view_has_edit_link(profile_view_page_regular: ProfileViewPage) -> None:
     """
     Profile view page should link to the edit profile form.
     """

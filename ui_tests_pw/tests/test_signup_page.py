@@ -11,8 +11,6 @@ from core.constants import LocaleConsts, ThemeConsts
 from pages.signup_page import SignupPage
 from pages.login_page import LoginPage
 from pages.users_table_page import UsersTablePage
-from utils.theme import Theme, set_theme
-from utils.localization import set_locale
 
 
 @pytest.mark.theme
