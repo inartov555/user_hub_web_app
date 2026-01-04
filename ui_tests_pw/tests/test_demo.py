@@ -41,6 +41,7 @@ def _helper_login_page(page: Page, ui_theme_param: Theme, ui_locale_param: str) 
     # and then the theme changed, and page reloaded after that
     login_page.remove_cookie_consent_popup_from_dom()
     login_page.ensure_theme(ui_theme_param)
+    login_page.ensure_locale(ui_locale_param)
     login_page.reload()
     # Screenshot -> Cookie consent pop-up
     take_a_screenshot(page)
@@ -58,6 +59,8 @@ def _helper_signup_page(page: Page, ui_theme_param: Theme, ui_locale_param: str)
     This is a helper function that takes screenshots on the Sign up page (Success/Error cases)
     """
     login_page = LoginPage(page)
+    login_page.ensure_theme(ui_theme_param)
+    login_page.ensure_locale(ui_locale_param)
     login_page.click_create_account_link()
     # Screenshot -> Signup page
     take_a_screenshot(page)
@@ -74,6 +77,8 @@ def _helper_reset_password_page(page: Page, ui_theme_param: Theme, ui_locale_par
     This is a helper function that takes screenshots on the Reset Password page (Success/Error cases)
     """
     login_page = LoginPage(page)
+    login_page.ensure_theme(ui_theme_param)
+    login_page.ensure_locale(ui_locale_param)
     # Now, let's open Forgot Password page
     login_page.click_forgot_password_link()
     # Screenshot -> Forgot Password page -> Email input
@@ -99,6 +104,8 @@ def _helper_users_table_page_admin_user(page: Page, ui_theme_param: Theme, ui_lo
     This is a helper function that takes screenshots on the Users Table page (table, controls)
     """
     login_page = LoginPage(page)
+    login_page.ensure_theme(ui_theme_param)
+    login_page.ensure_locale(ui_locale_param)
     # Now, let's login as Admin user to get to the Users Table page
     login_page.submit_credentials_success(DEFAULT_ADMIN_USERNAME, DEFAULT_ADMIN_PASSWORD)
     # Let's set multi-column sorting (First Name - ascending, Last Name - descending)
@@ -118,6 +125,8 @@ def _helper_user_delete_page(page: Page, ui_theme_param: Theme, ui_locale_param:
     This is a helper function that takes screenshots on the User Delete page (Success/Error cases)
     """
     users_table_page = UsersTablePage(page)
+    users_table_page.ensure_theme(ui_theme_param)
+    users_table_page.ensure_locale(ui_locale_param)
     # Now, let's see the user deletion page
     users_table_page.delete_users_btn.click()
     user_delete_page = UserDeleteConfirmPage(page)
@@ -139,6 +148,8 @@ def _helper_change_password_page(page: Page, ui_theme_param: Theme, ui_locale_pa
     This is a helper function that takes screenshots on the Change Password page (Success/Error cases)
     """
     users_table_page = UsersTablePage(page)
+    users_table_page.ensure_theme(ui_theme_param)
+    users_table_page.ensure_locale(ui_locale_param)
     # Let's click the Change Password button
     users_table_page.search_and_wait_for_results("mi")
     # Let's select the 1st user for changing the password
@@ -159,6 +170,8 @@ def _helper_users_table_page_regular_user(page: Page, ui_theme_param: Theme, ui_
     This is a helper function that takes screenshots on the Users Table page (table, controls)
     """
     login_page = LoginPage(page)
+    login_page.ensure_theme(ui_theme_param)
+    login_page.ensure_locale(ui_locale_param)
     users_table_page = UsersTablePage(page)
     # Let's log in to the website as a regular user
     users_table_page.click_logout_and_wait_for_login_page()
@@ -182,6 +195,8 @@ def _helper_profile_view_page_regular_user(page: Page, ui_theme_param: Theme, ui
     """
     # Let's go to the Profile tab
     profile_view_page = ProfileViewPage(page)
+    profile_view_page.ensure_theme(ui_theme_param)
+    profile_view_page.ensure_locale(ui_locale_param)
     profile_view_page.click_profile_tab()
     profile_view_page.assert_profile_basics_visible()
     # Screenshot -> Regular User -> Profile View Page
@@ -193,6 +208,8 @@ def _helper_profile_edit_page_regular_user(page: Page, ui_theme_param: Theme, ui
     This is a helper function that takes screenshots on the Profile Edit page (Success/Error cases)
     """
     profile_view_page = ProfileViewPage(page)
+    profile_view_page.ensure_theme(ui_theme_param)
+    profile_view_page.ensure_locale(ui_locale_param)
     # Now, let's see the Profile Edit page
     profile_view_page.click_edit_button()
     profile_edit_page = ProfileEditPage(page)
@@ -216,6 +233,8 @@ def _helper_user_stats_page_admin_user(page: Page, ui_theme_param: Theme, ui_loc
     This is a helper function that takes screenshots on the User Stats page
     """
     login_page = LoginPage(page)
+    login_page.ensure_theme(ui_theme_param)
+    login_page.ensure_locale(ui_locale_param)
     profile_edit_page = ProfileEditPage(page)
     # Let's log in to the website as Admin user
     profile_edit_page.click_logout_and_wait_for_login_page()
@@ -234,6 +253,8 @@ def _helper_app_settings_page_admin_user(page: Page, ui_theme_param: Theme, ui_l
     """
     # Now, let's go to the Additional -> App Settings tab
     app_settings_page = SettingsPage(page)
+    app_settings_page.ensure_theme(ui_theme_param)
+    app_settings_page.ensure_locale(ui_locale_param)
     app_settings_page.click_additional_app_settings_tab()
     app_settings_page.assert_loaded()
     # Screenshot -> Admin User -> App Settings Page
@@ -252,6 +273,8 @@ def _helper_excel_import_page_admin_user(page: Page, ui_theme_param: Theme, ui_l
     """
     # Now, let's go to the Additional -> Excel Import tab
     excel_import_page = ExcelImportPage(page)
+    excel_import_page.ensure_theme(ui_theme_param)
+    excel_import_page.ensure_locale(ui_locale_param)
     excel_import_page.click_additional_excel_import_tab()
     excel_import_page.assert_loaded()
     # Screenshot -> Admin User -> Excel Import Page
@@ -271,7 +294,7 @@ def _helper_excel_import_page_admin_user(page: Page, ui_theme_param: Theme, ui_l
 # @pytest.mark.usefixtures("cleanup_set_default_theme_and_locale")
 def test_base_demo(page: Page,
                    ui_theme_param: Theme,
-                   ui_locale_param: str) -> None:  # pylint: disable=too-many-statements
+                   ui_locale_param: str) -> None:
     """
     Base DEMO test to run multiple pages and take screenshots
     """
@@ -294,7 +317,7 @@ def test_base_demo(page: Page,
 # @pytest.mark.parametrize("ui_locale_param", ["en-US", "uk-UA", "et-EE", "fi-FI", "cs-CZ", "pl-PL", "es-ES"])
 # @pytest.mark.parametrize("ui_theme_param", ["light"])
 # @pytest.mark.usefixtures("cleanup_set_default_theme_and_locale")
-def test_locale_demo(page: Page, ui_theme_param: Theme) -> None:  # pylint: disable=too-many-statements
+def test_locale_demo(page: Page, ui_theme_param: Theme) -> None:
     """
     Locale DEMO test to run multiple pages and take screenshots
     """
