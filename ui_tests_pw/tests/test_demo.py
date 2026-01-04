@@ -154,8 +154,8 @@ def test_base_demo(page: Page,
     take_a_screenshot(page)
 
     # Now, let's see the Profile Edit page
+    profile_view_page.click_edit_button()
     profile_edit_page = ProfileEditPage(page)
-    profile_edit_page.click_edit_button()
     profile_edit_page.assert_loaded()
     # Screenshot -> Regular User -> Profile Edit Page
     take_a_screenshot(page)
