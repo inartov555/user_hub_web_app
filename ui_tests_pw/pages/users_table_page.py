@@ -120,9 +120,9 @@ class UsersTablePage(BasePage):
         # lucide lucide-arrow-up-down h-4 w-4 opacity-40 = default
         if "lucide-arrow-up " in svg_class_attr:
             return "asc"
-        elif "lucide-arrow-down " in svg_class_attr:
+        if "lucide-arrow-down " in svg_class_attr:
             return "desc"
-        elif "lucide-arrow-up-down " in svg_class_attr:
+        if "lucide-arrow-up-down " in svg_class_attr:
             return "default"
         return None  # most likely, changed styles
 
@@ -142,6 +142,36 @@ class UsersTablePage(BasePage):
         cur_sort_order = self.get_current_column_sort_order(_column)
         sorted_column_header_loc = self.page.locator(self.sortable_columl_header_str.format(_column))
 
+        icon_by_order = {
+            "asc": "svg.lucide-arrow-up",
+            "desc": "svg.lucide-arrow-down",
+            "default": "svg.lucide-arrow-up-down",
+        }
+
+        def click_until(expected: str) -> None:
+            """
+            Click column header once and assert the expected icon is visible.
+            """
+            sorted_column_header_loc.click()
+            expect(sorted_column_header_loc.locator(icon_by_order[expected])).to_be_visible()
+
+        if _sort_order == cur_sort_order:
+            log.warning("Current sort order already is set, no need to change it; "
+                        f"column {_column}; current {cur_sort_order}; expected {_sort_order}")
+
+        transition_steps = {
+            ("default", "asc"): ["asc"],
+            ("default", "desc"): ["asc", "desc"],
+            ("asc", "default"): ["desc", "default"],
+            ("asc", "desc"): ["desc"],
+            ("desc", "default"): ["default"],
+            ("desc", "asc"): ["default", "asc"],
+        }
+
+        for step in transition_steps[(cur_sort_order, _sort_order)]:
+            click_until(step)
+
+        """
         if cur_sort_order == "default" and _sort_order == "asc":
             # Click to get ascending order
             _next_expected_sort_loc_str = "svg.lucide-arrow-up"
@@ -193,9 +223,7 @@ class UsersTablePage(BasePage):
             sorted_column_header_loc.click()
             next_expected_sort_order = sorted_column_header_loc.locator(_next_expected_sort_loc_str)
             expect(next_expected_sort_order).to_be_visible()
-        else:
-            log.warning("Current sort order already is set, no need to change it; "
-                        f"column {_column}; current {cur_sort_order}; expected {_sort_order}")
+        """
 
     def assert_column_sorting(self, column: str, sort_order: str) -> None:
         """
