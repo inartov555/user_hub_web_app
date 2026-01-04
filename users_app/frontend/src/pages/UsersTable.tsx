@@ -450,6 +450,7 @@ export default function UsersTable(props: Props) {
   return (
     <Card className="w-full mx-auto dark:bg-slate-800 dark:text-slate-100 dark:border-slate-700">
       <CardHeader icon=<Users className="h-4 w-4" /> title={`${t("users.people")} (${totalCount})`} />
+      <hr className="my-3 mx-0 h-px border-0 bg-slate-300 dark:bg-slate-600" />
       <CardBody className="justify-end mt-2">
         <div className="flex w-full items-center justify-end gap-2">
           <Input

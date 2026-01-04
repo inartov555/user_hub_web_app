@@ -38,6 +38,7 @@ export default function ResetPassword() {
          "
     >
       <UnifiedTitle icon={<KeySquare className="h-4 w-4" />} title={t("resetPassword.resetPassword")} />
+      <hr className="my-3 mx-0 h-px border-0 bg-slate-300 dark:bg-slate-600" />
       {sent ? <p data-tag="resetPassInfoMsg">{t("resetPassword.checkEmailForResetLink")}</p> : (
         <form onSubmit={onSubmit} className="space-y-3">
           <FormInput placeholder="Email" id="email" value={email} onChange={e=>setEmail(e.target.value)} />

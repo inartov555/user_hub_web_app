@@ -95,6 +95,7 @@ export default function ExcelImportPanel() {
          "
     >
       <UnifiedTitle icon={<FileSpreadsheet className="h-4 w-4" />} title={t("excelImport.title")} />
+      <hr className="my-3 mx-0 h-px border-0 bg-slate-300 dark:bg-slate-600" />
       <p>
         <span>{t("excelImport.fileUploadMessage")} </span>
         <br/>

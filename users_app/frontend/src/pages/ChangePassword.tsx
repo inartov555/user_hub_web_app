@@ -56,6 +56,7 @@ export default function ChangePassword() {
          "
     >
       <UnifiedTitle icon={<KeyRound className="h-4 w-4" />} title={t("users.changePassword")} />
+      <hr className="my-3 mx-0 h-px border-0 bg-slate-300 dark:bg-slate-600" />
       <form onSubmit={onSubmit} className="space-y-3">
         <PasswordInput placeholder={t("changePassword.newPassword")}
                        id="password"

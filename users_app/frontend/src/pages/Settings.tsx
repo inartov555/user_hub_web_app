@@ -69,6 +69,7 @@ export default function Settings() {
                       title={t("appSettings.title")}
                       subtitle={t("appSettings.noteNewSessions")}
         />
+        <hr className="my-3 mx-0 h-px border-0 bg-slate-300 dark:bg-slate-600" />
         <form className="space-y-6" onSubmit={onSubmit}>
           <div className="space-y-1">
             {/* Rotate refresh tokens (controls visibility & value of renewAtSeconds) */}

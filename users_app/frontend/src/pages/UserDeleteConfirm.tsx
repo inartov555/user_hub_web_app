@@ -119,6 +119,7 @@ export default function UserDeleteConfirm() {
   return (
     <Card className="w-full mx-auto max-w-3xl dark:bg-slate-800 dark:text-slate-100 dark:border-slate-700">
       <CardHeader icon=<UserX className="h-4 w-4" /> title={t("userDeleteConfirm.confirmDelete")} />
+      <hr className="my-3 mx-0 h-px border-0 bg-slate-300 dark:bg-slate-600" />
       <CardBody className="space-y-4">
         <p className="text-sm text-slate-700 dark:text-slate-100">
           {t("userDeleteConfirm.youAboutToDelete")} <strong>{remainingUsers.length}</strong> {t("userDeleteConfirm.cannotBeUndone")}

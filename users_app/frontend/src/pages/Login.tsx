@@ -58,6 +58,7 @@ export default function Login() {
          "
     >
       <UnifiedTitle icon={<LogIn className="h-4 w-4" />} title={t("auth.login")} />
+      <hr className="my-3 mx-0 h-px border-0 bg-slate-300 dark:bg-slate-600" />
       <form onSubmit={onSubmit} className="space-y-3">
         <FormInput placeholder={t("signup.username")}
                    id="username" type="username" value={username} onChange={e=>setUsername(e.target.value)} />
