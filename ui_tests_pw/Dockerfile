@@ -1,5 +1,8 @@
 FROM mcr.microsoft.com/playwright/python:v1.57.0-jammy
 
+ARG PW_BROWSER=chromium
+ENV PW_BROWSER=${PW_BROWSER}
+
 # Saner Python & pip defaults
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
@@ -17,7 +20,7 @@ RUN apt-get update \
  && rm -rf /var/lib/apt/lists/*
 
 RUN python -m pip install --no-cache-dir playwright \
- && python -m playwright install --with-deps ${PW_BROWSER}
+ && python -m playwright install --with-deps $PW_BROWSER
 
 RUN chown -R pwuser:pwuser /tests
 USER pwuser

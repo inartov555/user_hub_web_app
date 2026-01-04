@@ -55,6 +55,6 @@ class ChangePasswordPage(BasePage):
         """
         Assert that Change Password page's key controls are loaded
         """
-        expect(self.password.to_be_visible()
-        expect(self.confirm_password.to_be_visible()
-        expect(self.submit.to_be_visible()
+        expect(self.password).to_be_visible()
+        expect(self.confirm_password).to_be_visible()
+        expect(self.submit).to_be_visible()
