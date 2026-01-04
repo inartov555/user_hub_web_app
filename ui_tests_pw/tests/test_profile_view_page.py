@@ -3,7 +3,6 @@ Tests for the Profile view page.
 """
 
 from __future__ import annotations
-import re
 
 import pytest
 from playwright.sync_api import Page, expect
@@ -48,6 +47,4 @@ def test_profile_view_has_edit_link(page: Page,
     """
     Profile view page should link to the edit profile form.
     """
-    profile_view_page_regular.edit_profile.click()
-    page.wait_for_url(re.compile(r".*/profile-edit$"))
-    expect(page).to_have_url(re.compile(r".*/profile-edit$"))
+    profile_view_page_regular.click_edit_button()

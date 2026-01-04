@@ -3,7 +3,6 @@ Tests for the User Delete Confirm page.
 """
 
 from __future__ import annotations
-import re
 
 import pytest
 from playwright.sync_api import Page, expect
@@ -54,11 +53,7 @@ def test_admin_can_navigate_to_delete_confirm(page: Page,
     expected = "Confirm deletion"
     confirm_page.assert_text_localization(ui_locale_param, actual, expected)
     # Now let's check deleting the user from UI
-    confirm_page.confirm_delete_top.click()
-    # Verifying that user is deleted
-    # User is redirected to the /users page after successful deletion
-    page.wait_for_url(re.compile(r".*/users$"))
-    expect(page).to_have_url(re.compile(r".*/users$"))
+    confirm_page.click_top_confirm_delete()
     # Verifying that the user is actually deleted
     admin_users_page.search_and_wait_for_results(username)
     expect(admin_users_page.check_rows).to_have_count(0)
@@ -85,10 +80,7 @@ def test_admin_can_cancel_delete_confirm(page: Page,
     admin_users_page.check_all_header.click()
     admin_users_page.delete_users_btn.click()
     confirm_page = UserDeleteConfirmPage(page)
-    confirm_page.cancel_top.click()
-    # Verifying that user is redirected to the /users page
-    page.wait_for_url(re.compile(r".*/users$"))
-    expect(page).to_have_url(re.compile(r".*/users$"))
+    confirm_page.click_top_cancel()
     # Verifying that the user actually exists
     admin_users_page.search_and_wait_for_results(username)
     expect(admin_users_page.check_rows).to_have_count(1)

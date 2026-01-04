@@ -3,10 +3,9 @@ Tests for the Change Password page.
 """
 
 from __future__ import annotations
-import re
 
 import pytest
-from playwright.sync_api import Page, expect
+from playwright.sync_api import Page
 
 from core.constants import LocaleConsts, ThemeConsts
 from pages.users_table_page import UsersTablePage
@@ -36,9 +35,8 @@ def test_admin_can_open_change_password_for_user(ui_theme_param: Theme,
     # Click first change-password button
     admin_users_page.change_password_btn.first.click()
     change_password_page = ChangePasswordPage(page)
-    # Verify that the change-password URI is opened
-    expect(page).to_have_url(re.compile(r".*/users/\d+/change-password$"))
-    page.wait_for_url(re.compile(r".*/users/\d+/change-password$"))
+    change_password_page.wait_for_change_password_page_to_load()
+    change_password_page.assert_change_password_is_loaded()
     # Verifying localization
     actual = change_password_page.page_title.text_content()
     expected = "Change password"

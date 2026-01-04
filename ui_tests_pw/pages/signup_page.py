@@ -49,8 +49,7 @@ class SignupPage(BasePage):
         """
         self.fill_form(email, username, password)
         self.save.click()
-        self.page.wait_for_url(re.compile(r".*/login$"))
-        expect(self.page).to_have_url(re.compile(r".*/login$"))
+        self.assert_login_page_is_displayed()
 
     def submit_credentials_error(self, email: str, username: str, password: str) -> None:
         """
@@ -68,11 +67,20 @@ class SignupPage(BasePage):
         Clicking the Sign in link on the Sign up page
         """
         self.login.click()
-        self.page.wait_for_url(re.compile(r".*/login$"))
-        expect(self.page).to_have_url(re.compile(r".*/login$"))
+        self.assert_login_page_is_displayed()
 
     def assert_error_visible(self) -> None:
         """
         Assert that an error message is visible after a failed signup attempt.
         """
         expect(self.error).to_be_visible()
+
+    def assert_sign_up_is_loaded(self):
+        """
+        Verifying that key controls are displayed on the Sign up page
+        """
+        expect(signup_page.username).to_be_visible()
+        expect(signup_page.email).to_be_visible()
+        expect(signup_page.password).to_be_visible()
+        expect(signup_page.save).to_be_visible()
+        expect(signup_page.login).to_be_visible()

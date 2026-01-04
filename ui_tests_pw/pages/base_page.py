@@ -105,7 +105,7 @@ class BasePage:
         self.page.wait_for_url(re.compile(r".*/users$"))
         expect(self.page).to_have_url(re.compile(r".*/users$"))
         # Wait for the login API call to succeed
-        with self.page.expect_response(re.compile(r".*/api/v1/users/\?page.*"), timeout=60000) as res:
+        with self.page.expect_response(re.compile(r".*/api/v1/users/\?page.*"), timeout=20000) as res:
             pass  # we just wait for the /users page to load
         assert res.value.ok, f"Login failed: {res.value.status}"
         # Additional checks for elements on the /users page

@@ -4,7 +4,6 @@ Tests for the Profile edit page.
 
 from __future__ import annotations
 import random
-import re
 
 import pytest
 from playwright.sync_api import Page, expect
@@ -41,8 +40,7 @@ def test_profile_edit_renders_and_can_save(profile_edit_page_regular: ProfileEdi
     profile_edit_page_regular.assert_text_localization(ui_locale_param, actual, expected)
     # Now let's check if data are saved
     profile_edit_page_regular.fill_basic_fields(edit_data.get("firstName"), edit_data.get("lastName"), edit_data.get("bio"))
-    profile_edit_page_regular.save.click()
-    page.wait_for_url(re.compile(r".*/profile-view$"))
+    profile_edit_page_regular.click_save_and_wait_profile_view()
     profile_view_page = ProfileViewPage(page)
     # Verifying if changed values have been applied and are displayed in the Preview Profile page
     full_name = "{} {}".format(edit_data.get("firstName"), edit_data.get("lastName"))  # pylint: disable=consider-using-f-string
@@ -56,6 +54,4 @@ def test_profile_edit_cancel_returns_to_profile_view(page: Page,
     """
     Cancel button should navigate back to profile view.
     """
-    profile_edit_page_regular.cancel.click()
-    page.wait_for_url(re.compile(r".*/profile-view$"))
-    expect(page).to_have_url(re.compile(r".*/profile-view$"))
+    profile_edit_page_regular.click_cancel_and_wait_profile_view()

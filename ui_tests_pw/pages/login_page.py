@@ -67,8 +67,7 @@ class LoginPage(BasePage):
         """
         self.fill_credentials(username, password)
         self.submit.click()
-        self.page.wait_for_url(re.compile(r".*/login$"))
-        expect(self.page).to_have_url(re.compile(r".*/login$"))
+        self.assert_login_page_is_displayed()
         self.assert_error_visible()
 
     def click_create_account_link(self) -> None:

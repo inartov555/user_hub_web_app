@@ -42,6 +42,22 @@ class ProfileEditPage(BasePage):
         self.last_name.fill(last_name)
         self.bio.fill(bio)
 
+    def click_save_and_wait_profile_view(self) -> None:
+        """
+        Click the Save button and wait for the Profile View page to load
+        """
+        self.save.click()
+        self.page.wait_for_url(re.compile(r".*/profile-view$"))
+        expect(self.page).to_have_url(re.compile(r".*/profile-view$"))
+
+    def click_cancel_and_wait_profile_view(self) -> None:
+        """
+        Click the Cancel button and wait for the Profile View page to load
+        """
+        self.cancel.click()
+        self.page.wait_for_url(re.compile(r".*/profile-view$"))
+        expect(self.page).to_have_url(re.compile(r".*/profile-view$"))
+
     def assert_loaded(self) -> None:
         """
         Assert that the profile edit form is loaded.

@@ -3,11 +3,11 @@ Tests for the Signup page.
 """
 
 from __future__ import annotations
-import re
 
 import pytest
-from playwright.sync_api import Page, expect
+from playwright.sync_api import Page
 
+from core.constants import LocaleConsts, ThemeConsts
 from pages.signup_page import SignupPage
 from pages.login_page import LoginPage
 from pages.users_table_page import UsersTablePage
@@ -17,21 +17,18 @@ from utils.localization import set_locale
 
 @pytest.mark.theme
 @pytest.mark.localization
-@pytest.mark.parametrize("ui_theme_param", ["light", "dark"])
-@pytest.mark.parametrize("ui_locale_param", ["en-US", "uk-UA", "et-EE", "fi-FI", "cs-CZ", "pl-PL", "es-ES"])
+@pytest.mark.parametrize("ui_theme_param", ThemeConsts.ALL_SUPPORTED_THEMES)
+@pytest.mark.parametrize("ui_locale_param", LocaleConsts.ALL_SUPPORTED_LOCALES)
 @pytest.mark.usefixtures("cleanup_set_default_theme_and_locale")
-def test_signup_page_renders(page: Page,
-                             signup_page: SignupPage,
+def test_signup_page_renders(signup_page: SignupPage,
                              ui_theme_param: Theme,
                              ui_locale_param: str) -> None:
     """
     Signup page should render in all supported test themes/locales.
     """
-    set_theme(page, ui_theme_param)
-    set_locale(page, ui_locale_param)
-    expect(signup_page.username).to_be_visible()
-    expect(signup_page.email).to_be_visible()
-    expect(signup_page.password).to_be_visible()
+    signup_page.ensure_theme(ui_theme_param)
+    signup_page.ensure_locale(ui_locale_param)
+    signup_page.assert_sign_up_is_loaded()
     # Verifying localization
     actual = signup_page.page_title.text_content()
     expected = "Sign up"
@@ -55,26 +52,17 @@ def test_signup_with_random_username(page: Page,
     username = f"ui-test-{suffix}"
     email = f"{username}@test.com"
     password = "changeme123"
-    signup_page.fill_form(email, username, password)
-    signup_page.save.click()
+    signup_page.submit_credentials_success(email, username, password)
     # The user is redirected to the Login page after successful user creation
-    page.wait_for_url(re.compile(r".*/login$"))
-    expect(page).to_have_url(re.compile(r".*/login$"))
     # Now, let's check if just created user can login
-    login_page.fill_credentials(username, password)
-    login_page.submit.click()
-    page.wait_for_url(re.compile(r".*/users$"))
-    expect(page).to_have_url(re.compile(r".*/users$"))
+    login_page.submit_credentials_success(username, password)
     users_table_page = UsersTablePage(page)
     # Verifying if username of just created user is contained in the greeting message
     users_table_page.assert_username_contained_in_greeting_message(username)
 
 
-def test_signup_link_back_to_login(page: Page,
-                                   signup_page: SignupPage) -> None:
+def test_signup_link_back_to_login(signup_page: SignupPage) -> None:
     """
     Signup page should link back to the login page.
     """
-    signup_page.login.click()
-    page.wait_for_url(re.compile(r".*/login$"))
-    expect(page).to_have_url(re.compile(r".*/login$"))
+    signup_page.click_sign_in_link()

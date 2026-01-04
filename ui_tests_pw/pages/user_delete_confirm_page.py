@@ -47,7 +47,16 @@ class UserDeleteConfirmPage(BasePage):
         Clicking top cancel button and waiting for the /users page to load
         """
         self.cancel_top.click()
-        self.wait_for_the_users_table_page_to_load()
+        page.wait_for_url(re.compile(r".*/users$"))
+        expect(page).to_have_url(re.compile(r".*/users$"))
+
+    def click_top_confirm_delete(self) -> None:
+        """
+        Clicking top confirm delete button and waiting for the /users page to load
+        """
+        self.confirm_delete_top.click()
+        page.wait_for_url(re.compile(r".*/users$"))
+        expect(page).to_have_url(re.compile(r".*/users$"))
 
     def assert_error_visible(self) -> None:
         """
