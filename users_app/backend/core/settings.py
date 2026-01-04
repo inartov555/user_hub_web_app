@@ -14,7 +14,7 @@ from django.utils import translation
 
 def env_tuple(name: str, default=()) -> tuple:
     """
-
+    Getting tuple value from list property
 
     Args:
         name (str): the property value in format (comma separated): one,two,three
