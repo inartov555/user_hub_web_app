@@ -87,6 +87,7 @@ user_hub_web_app/
 |   `-- locale/              # /cs_CZ/LC_MESSAGES/django.po, etc.
 |   `-- profiles/            # users, profiles, settings, import, stats
 |   `-- tests/               # unit tests
+|-- DEMO/                    # Demo *.gif files for light, dark themes and multi-locales
 |-- frontend/                # React + Vite SPA
 |   `-- public/              # logo.svg
 |   `-- src/

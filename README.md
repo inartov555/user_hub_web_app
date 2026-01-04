@@ -11,6 +11,7 @@ This is a test website + automation framework
 
 ## 📦 Releases
 
+- 🟨 **[v1.5](https://github.com/inartov555/user_hub_web_app/tree/stable_v1.5_jan_9_2025)** is in progress, it is not released yet
 - 🟩 **[v1.4](https://github.com/inartov555/user_hub_web_app/tree/stable_v1.4_jan_4_2026)** released on Jan-04-2026
 - 🟩 **[v1.3](https://github.com/inartov555/user_hub_web_app/tree/stable_v1.3_dec_28_2025)** released on Dec-28-2025
 - 🟩 **[v1.2](https://github.com/inartov555/user_hub_web_app/tree/stable_v1.2_dec_23_2025)** released on Dec-23-2025
@@ -18,6 +19,15 @@ This is a test website + automation framework
 - 🟩 **[v1](https://github.com/inartov555/user_hub_web_app/tree/stable_v1_nov_05_2025)** released on Nov-05-2025
 
 ---
+
+## 📌 Changelog v1.5 vs. v1.4
+
+- 🛠️ **Fixed in `users_app`:** In Progress
+- ✨ **Improved in `users_app`:** In Progress
+- 🆕 **Added in `users_app`:** In Progress
+
+---
+
 ## 📌 Changelog v1.4 vs. v1.3
 
 - 🛠️ **Fixed in `users_app`:** 200 users were selected max while more are available for selection to delete
