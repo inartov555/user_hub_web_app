@@ -5,7 +5,7 @@ interface ImportMetaEnv {
 interface ImportMeta {
   readonly env: ImportMetaEnv;
 }
-
+/* */
 /*
 // IMPORTANT: if you run via Docker Compose, "localhost:8000" is wrong from inside the frontend container.
 // Use the Compose service name (likely "backend") so it reaches Django in the other container.
