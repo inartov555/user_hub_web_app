@@ -4,6 +4,7 @@ DEMO tests
 
 from __future__ import annotations
 import re
+import random
 
 import pytest
 from playwright.sync_api import Page, expect
@@ -161,7 +162,10 @@ def test_base_demo(page: Page,
     take_a_screenshot(page)
     # Let's check error validation
     profile_edit_page.remove_maxlength_attribute_from_input_fields()
-    profile_edit_page.fill_basic_fields()
+    field_value_501_symb = "".join(random.choices(string.ascii_letters + string.digits, k=501))
+    profile_edit_page.fill_basic_fields(field_value_501_symb,
+                                        field_value_501_symb,
+                                        field_value_501_symb)
     profile_edit_page.save.click()
     profile_edit_page.assert_error_alert_shown()
     # Screenshot -> Regular User -> Profile Edit Page -> Error alert
