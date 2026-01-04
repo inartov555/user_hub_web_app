@@ -15,6 +15,7 @@ from config import (
     DEFAULT_REGULAR_USERNAME,
     DEFAULT_REGULAR_PASSWORD,
 )
+from utils.theme import Theme
 
 
 @pytest.mark.theme

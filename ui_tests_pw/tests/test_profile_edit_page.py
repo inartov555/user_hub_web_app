@@ -49,8 +49,7 @@ def test_profile_edit_renders_and_can_save(profile_edit_page_regular: ProfileEdi
 
 
 @pytest.mark.regular_user
-def test_profile_edit_cancel_returns_to_profile_view(page: Page,
-                                                     profile_edit_page_regular: ProfileEditPage) -> None:
+def test_profile_edit_cancel_returns_to_profile_view(profile_edit_page_regular: ProfileEditPage) -> None:
     """
     Cancel button should navigate back to profile view.
     """
