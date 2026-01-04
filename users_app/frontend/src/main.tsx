@@ -3,8 +3,9 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { QueryClientProvider } from "@tanstack/react-query";
-import { queryClient } from "./lib/queryClient";
 import "./styles.css";
+import { queryClient } from "./lib/queryClient";
+import ProtectedRoute from "./auth/ProtectedRoute";
 import App from "./App";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
@@ -17,7 +18,6 @@ import { useAuthStore } from "./auth/store";
 import ExcelImport from "./pages/ExcelImport";
 import ChangePassword from "./pages/ChangePassword";
 import UserDeleteConfirm from "./pages/UserDeleteConfirm";
-import ProtectedRoute from "./auth/ProtectedRoute";
 import Settings from "./pages/Settings";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
