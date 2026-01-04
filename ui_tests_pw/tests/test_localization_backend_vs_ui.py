@@ -4,8 +4,6 @@ Cross-check UI locale dropdown with Django backend configuration.
 
 from __future__ import annotations
 
-from playwright.sync_api import Page
-
 from core.constants import LocaleConsts, ThemeConsts
 from pages.login_page import LoginPage
 from utils.django_localization import get_backend_languages
