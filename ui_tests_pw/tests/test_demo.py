@@ -40,7 +40,7 @@ from config import (
 
 
 # Some elements do not have enough time to update styles before taking a screenshot
-fixed_time_to_wait = 0.2
+FIXED_TIME_TO_WAIT = 0.2
 
 
 def _helper_login_page(page: Page, ui_theme_param: Theme, ui_locale_param: str) -> None:
@@ -129,7 +129,7 @@ def _helper_users_table_page_admin_user(page: Page, ui_theme_param: Theme, ui_lo
     users_table_page.search_and_wait_for_results("mi")
     users_table_page.check_rows.nth(0).click()
     # The delete user button does not have time to change the styles before take a screenshot
-    time.sleep(fixed_time_to_wait)
+    time.sleep(FIXED_TIME_TO_WAIT)
     # Screenshot -> Admin user -> Users Table page -> Multi column sort on
     take_a_screenshot(page)
 
@@ -214,7 +214,7 @@ def _helper_profile_view_page_regular_user(page: Page, ui_theme_param: Theme, ui
     profile_view_page.click_profile_tab()
     profile_view_page.assert_profile_basics_visible()
     # The tab does not have time to change the styles before take a screenshot
-    time.sleep(fixed_time_to_wait)
+    time.sleep(FIXED_TIME_TO_WAIT)
     # Screenshot -> Regular User -> Profile View Page
     take_a_screenshot(page)
 
@@ -260,7 +260,7 @@ def _helper_user_stats_page_admin_user(page: Page, ui_theme_param: Theme, ui_loc
     stats_page.click_additional_user_stats_tab()
     stats_page.assert_loaded()
     # The tab does not have time to change styles before taking a screenshot
-    time.sleep(fixed_time_to_wait)
+    time.sleep(FIXED_TIME_TO_WAIT)
     # Screenshot -> Admin User -> User Stats Page
     take_a_screenshot(page)
 
@@ -276,7 +276,7 @@ def _helper_app_settings_page_admin_user(page: Page, ui_theme_param: Theme, ui_l
     app_settings_page.click_additional_app_settings_tab()
     app_settings_page.assert_loaded()
     # The tab does not have time to change styles before taking a screenshot
-    time.sleep(fixed_time_to_wait)
+    time.sleep(FIXED_TIME_TO_WAIT)
     # Screenshot -> Admin User -> App Settings Page
     take_a_screenshot(page)
     # Let's check the error validation
@@ -298,7 +298,7 @@ def _helper_excel_import_page_admin_user(page: Page, ui_theme_param: Theme, ui_l
     excel_import_page.click_additional_excel_import_tab()
     excel_import_page.assert_loaded()
     # The tab does not have time to change styles before taking a screenshot
-    time.sleep(fixed_time_to_wait)
+    time.sleep(FIXED_TIME_TO_WAIT)
     # Screenshot -> Admin User -> Excel Import Page
     take_a_screenshot(page)
     # Let's check error case
