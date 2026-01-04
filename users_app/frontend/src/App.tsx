@@ -6,7 +6,6 @@ import { useAuthStore } from "./auth/store";
 import { bootstrapAuth } from "./auth/bootstrap";
 import Navbar from "./components/Navbar";
 import CookieConsent from "./components/CookieConsent";
-/* */
 
 function AppShellHeartbeat() {
   useEffect(() => {
