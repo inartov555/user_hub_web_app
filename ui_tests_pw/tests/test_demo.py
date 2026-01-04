@@ -39,6 +39,10 @@ from config import (
 )
 
 
+# Some elements do not have enough time to update styles before taking a screenshot
+fixed_time_to_wait = 0.2
+
+
 def _helper_login_page(page: Page, ui_theme_param: Theme, ui_locale_param: str) -> None:
     """
     This is a helper function that takes screenshots on the Log in page (Success/Error cases)
@@ -124,7 +128,8 @@ def _helper_users_table_page_admin_user(page: Page, ui_theme_param: Theme, ui_lo
     users_table_page.assert_column_sorting("lastname", "desc")
     users_table_page.search_and_wait_for_results("mi")
     users_table_page.check_rows.nth(0).click()
-    time.sleep(0.3)  # the delete user button does not have time to change the styles before take a screenshot
+    # The delete user button does not have time to change the styles before take a screenshot
+    time.sleep(fixed_time_to_wait)
     # Screenshot -> Admin user -> Users Table page -> Multi column sort on
     take_a_screenshot(page)
 
@@ -208,7 +213,8 @@ def _helper_profile_view_page_regular_user(page: Page, ui_theme_param: Theme, ui
     profile_view_page.ensure_locale(ui_locale_param)
     profile_view_page.click_profile_tab()
     profile_view_page.assert_profile_basics_visible()
-    time.sleep(0.3)  # the delete user button does not have time to change the styles before take a screenshot
+    # The tab does not have time to change the styles before take a screenshot
+    time.sleep(fixed_time_to_wait)
     # Screenshot -> Regular User -> Profile View Page
     take_a_screenshot(page)
 
@@ -253,7 +259,8 @@ def _helper_user_stats_page_admin_user(page: Page, ui_theme_param: Theme, ui_loc
     stats_page = StatsPage(page)
     stats_page.click_additional_user_stats_tab()
     stats_page.assert_loaded()
-    time.sleep(0.3)  # the tab does not have time to change styles before taking a screenshot
+    # The tab does not have time to change styles before taking a screenshot
+    time.sleep(fixed_time_to_wait)
     # Screenshot -> Admin User -> User Stats Page
     take_a_screenshot(page)
 
@@ -268,7 +275,8 @@ def _helper_app_settings_page_admin_user(page: Page, ui_theme_param: Theme, ui_l
     app_settings_page.ensure_locale(ui_locale_param)
     app_settings_page.click_additional_app_settings_tab()
     app_settings_page.assert_loaded()
-    time.sleep(0.3)  # the tab does not have time to change styles before taking a screenshot
+    # The tab does not have time to change styles before taking a screenshot
+    time.sleep(fixed_time_to_wait)
     # Screenshot -> Admin User -> App Settings Page
     take_a_screenshot(page)
     # Let's check the error validation
@@ -289,7 +297,8 @@ def _helper_excel_import_page_admin_user(page: Page, ui_theme_param: Theme, ui_l
     excel_import_page.ensure_locale(ui_locale_param)
     excel_import_page.click_additional_excel_import_tab()
     excel_import_page.assert_loaded()
-    time.sleep(0.3)  # the tab does not have time to change styles before taking a screenshot
+    # The tab does not have time to change styles before taking a screenshot
+    time.sleep(fixed_time_to_wait)
     # Screenshot -> Admin User -> Excel Import Page
     take_a_screenshot(page)
     # Let's check error case
