@@ -21,7 +21,6 @@ export default function UnifiedTitle({
               shadow-sm
             "
           >
-            {/* Ensure icon inherits color/size nicely */}
             <span className="text-slate-700 dark:text-slate-200 [&>svg]:h-5 [&>svg]:w-5">
               {icon}
             </span>
@@ -51,7 +50,11 @@ export default function UnifiedTitle({
           </h2>
 
           {subtitle && (
-            <p data-tag="pageSubtitle" className="mt-2 max-w-prose text-sm sm:text-[0.95rem] leading-relaxed text-slate-600 dark:text-slate-300">
+            <p data-tag="
+                 pageSubtitle" className="mt-2 max-w-prose text-sm sm:text-[0.95rem] leading-relaxed
+                 text-slate-600 dark:text-slate-300
+               "
+            >
               {subtitle}
             </p>
           )}
@@ -59,7 +62,11 @@ export default function UnifiedTitle({
       </div>
 
       {/* Soft divider */}
-      <div className="mt-4 h-px w-full bg-gradient-to-r from-slate-200 via-slate-200/60 to-transparent dark:from-slate-700 dark:via-slate-700/60" />
+      <div className="
+             mt-4 h-px w-full bg-gradient-to-r from-slate-200 via-slate-200/60 to-transparent
+             dark:from-slate-700 dark:via-slate-700/60
+           "
+      />
     </div>
   );
 }

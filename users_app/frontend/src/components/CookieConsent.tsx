@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { Cookie } from "lucide-react";
 import Button from "./button";
+import UnifiedTitle from "../components/UnifiedTitle";
 
 const STORAGE_KEY = "cookie_consent_accepted_v1";
 const COOKIE_NAME = "cookie_consent";
@@ -52,7 +54,11 @@ export default function CookieConsent() {
   };
 
   return (
-    <div data-tag="cookieConsentContainer" className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-4">
+    <div data-tag="
+           cookieConsentContainer" className="fixed inset-0 z-50 flex items-end sm:items-center
+           justify-center p-4
+         "
+    >
       {/* Backdrop */}
       <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" aria-hidden="true" />
 
@@ -61,16 +67,13 @@ export default function CookieConsent() {
         role="dialog"
         aria-modal="true"
         aria-label="Cookie consent"
-        className="relative w-full max-w-xl rounded-2xl border border-slate-200 bg-white p-4 shadow-soft dark:bg-slate-900 dark:border-slate-700"
+        className="
+          relative w-full max-w-xl rounded-2xl border border-slate-200 bg-white p-4 shadow-soft
+          dark:bg-slate-900 dark:border-slate-700
+        "
       >
         <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
-          <div className="text-sm">
-            <div data-tag="cookieConsentTitle" className="font-semibold text-slate-900 dark:text-slate-100">{t("app.cookieConsentTitle")}</div>
-            <hr className="my-3 mx-0 h-px border-0 bg-slate-300 dark:bg-slate-600" />
-            <p data-tag="cookieConsentBody" className="mt-1 text-slate-700 dark:text-slate-200">
-              {t("app.cookieConsentBody")}
-            </p>
-          </div>
+          <UnifiedTitle icon={<Cookie className="h-4 w-4" />} title={t("app.cookieConsentTitle")} subtitle={t("app.cookieConsentBody")} />
 
           <div>
             <Button id="cookieAccept" onClick={onAccept}>
