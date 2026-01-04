@@ -29,6 +29,8 @@ class BasePage:
             page (Page): Playwright :class: Page instance.
         """
         self.page: Page = page
+        # Not logged in user
+        self.username = self.page.locator('#username')
         # Common controls
         self.logout = self.page.locator('#logout')
         # /users page after logging in
