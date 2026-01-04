@@ -152,8 +152,10 @@ class UsersTablePage(BasePage):
             """
             Click column header once and assert the expected icon is visible.
             """
-            sorted_column_header_loc.click()
-            expect(sorted_column_header_loc.locator(icon_by_order[expected])).to_be_visible()
+            # If not step, it means that sorting order already is in the expected state
+            if step:
+                sorted_column_header_loc.click()
+                expect(sorted_column_header_loc.locator(icon_by_order[expected])).to_be_visible()
 
         if _sort_order == cur_sort_order:
             log.warning("Current sort order already is set, no need to change it; "
@@ -166,6 +168,9 @@ class UsersTablePage(BasePage):
             ("asc", "desc"): ["desc"],
             ("desc", "default"): ["default"],
             ("desc", "asc"): ["default", "asc"],
+            ("default", "default"): [None],
+            ("asc", "asc"): [None],
+            ("desc", "desc"): [None],
         }
 
         for step in transition_steps[(cur_sort_order, _sort_order)]:
