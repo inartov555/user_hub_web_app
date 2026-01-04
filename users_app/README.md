@@ -154,10 +154,10 @@ user_hub_web_app/
 ## ▶️ DEMOs
 
 ### ▶️ Light Theme. Main pages
-![Light Theme. Main pages](https://github.com/inartov555/user_hub_web_app/blob/stable_v1.3_dec_28_2025/users_app/DEMO/Light%20Theme.%20Main%20pages.gif)
+![Light Theme. Main pages](https://github.com/inartov555/user_hub_web_app/blob/stable_v1.4_jan_4_2026/users_app/DEMO/Light%20Theme.%20Main%20pages.gif)
 
 ### ▶️ Dark Theme. Main pages
-![Dark Theme. Main pages](https://github.com/inartov555/user_hub_web_app/blob/stable_v1.3_dec_28_2025/users_app/DEMO/Dark%20Theme.%20Main%20pages.gif)
+![Dark Theme. Main pages](https://github.com/inartov555/user_hub_web_app/blob/stable_v1.4_jan_4_2026/users_app/DEMO/Dark%20Theme.%20Main%20pages.gif)
 
 ### ▶️ Localization
-![Localization](https://github.com/inartov555/user_hub_web_app/blob/stable_v1.3_dec_28_2025/users_app/DEMO/Localization.gif)
+![Localization](https://github.com/inartov555/user_hub_web_app/blob/stable_v1.4_jan_4_2026/users_app/DEMO/Localization.gif)
