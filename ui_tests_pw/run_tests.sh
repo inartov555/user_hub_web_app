@@ -60,41 +60,45 @@ readFromPyestIni() {
   # 	1. pytest.ini file path
   # 	2. Section in the pytest.ini file, e.g. pytest
   #	3. Parameter name, in this case 'browser'
-  awk -F'=' -v section="$2" -v key="$3" '
-    $0 ~ "^[[:space:]]*\\[" section "\\][[:space:]]*$" { in=1; next }
-    /^\[/ { in=0 }
-    in && $0 ~ "^[[:space:]]*" key "[[:space:]]*=" {
+  local ini_file1="$1" section1="$2" key1="$3"
+  awk -F'=' -v section="$section1" -v key="$key1" '
+    $0 ~ "^[[:space:]]*\\[" section "\\][[:space:]]*$" { in_section=1; next }
+    $0 ~ "^[[:space:]]*\\[.*\\][[:space:]]*$"          { in_section=0 }  # any other section
+    in_section && $0 ~ "^[[:space:]]*" key "[[:space:]]*=" {
       val=$2
       sub(/^[[:space:]]*/, "", val)
       sub(/[[:space:]]*([;#].*)?$/, "", val)
       print val
-      exit
+      found=1
+      exit 0
     }
-  ' "$1"
+    END { if (!found) exit 2 }
+  ' "$ini_file1"
 }
 
-if browser="$(readFromPyestIni '$INI_CONFIG_FILE' pytest browser)"; then
-  echo "Found addopts: $browser"
-  exit 0
-else
-  rc=$?
-  if [ "$rc" -eq 2 ]; then
-    echo "Parameter not found"
+if BROWSER="$(readFromPyestIni $INI_CONFIG_FILE pytest browser)"; then
+  if [ -z $BROWSER ]; then
+    echo "browser addopt found, but it's empty, so taking default value - chromium"
+    # Default value when empty parameter found
+    BROWSER="chromium"
   else
-    echo "Error reading ini (rc=$rc)"
+    echo "Found browser addopt: '$BROWSER'"
   fi
-  exit 0
+else
+  echo "browser addopt was not found, taking default value - chromium"
+  # Default value when parameter not found
+  BROWSER="chromium"
 fi
 
 echo "Building images..."
 case "$clear_cache" in
   true)
     echo "Cache will be cleared when starting the service"
-    docker compose build --build-arg PW_BROWSER=$PW_BROWSERS ui_tests_pw --no-cache
+    docker compose build --build-arg PW_BROWSER=$BROWSER ui_tests_pw --no-cache
     ;;
   *)
     echo "Cache will be preserved when starting the service"
-    docker compose build --build-arg PW_BROWSER=$PW_BROWSERS ui_tests_pw
+    docker compose build --build-arg PW_BROWSER=$BROWSER ui_tests_pw
 esac
 
 echo "Starting the tests..."

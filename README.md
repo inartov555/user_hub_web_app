@@ -23,7 +23,7 @@ This is a test website + automation framework
 ## 📌 Changelog v1.5 vs. v1.4
 
 - 🛠️ **Fixed in `users_app`:** In Progress
-- ✨ **Improved in `users_app`:** In Progress
+- ✨ **Improved in `ui_tests_pw`:** Smart browser install (only selected one instead of all to preserve the time)
 - 🆕 **Added in `users_app`:** In Progress
 
 ---
