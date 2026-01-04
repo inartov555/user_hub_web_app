@@ -25,7 +25,7 @@ This is a test website + automation framework
 - 🛠️ **Fixed in `ui_tests_pw`:** Safari: white text on the white background in the select element was displayed when the dark theme was on
 - ✨ **Improved in `ui_tests_pw`:** Smart browser install (only selected one instead of all to preserve time)
 - ✨ **Improved in `ui_tests_pw`:** Existing test structure, lite refactoring
-- ✨ **Improved in `users_app`:** Page styles
+- ✨ **Improved in `users_app`:** Page styles such as background, etc.
 - 🆕 **Added in `ui_tests_pw`:** New tests to test_change_password_page.py
 
 ---

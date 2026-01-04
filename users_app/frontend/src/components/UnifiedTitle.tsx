@@ -17,8 +17,7 @@ export default function UnifiedTitle({
             className="
               shrink-0 inline-flex h-10 w-10 items-center justify-center rounded-2xl
               bg-slate-900/5 dark:bg-slate-50/10
-              ring-1 ring-slate-900/10 dark:ring-slate-50/10
-              shadow-sm
+              ring-1 ring-slate-900/10 dark:ring-slate-50/10 shadow-sm
             "
           >
             <span className="text-slate-700 dark:text-slate-200 [&>svg]:h-5 [&>svg]:w-5">
@@ -50,9 +49,9 @@ export default function UnifiedTitle({
           </h2>
 
           {subtitle && (
-            <p data-tag="
-                 pageSubtitle" className="mt-2 max-w-prose text-sm sm:text-[0.95rem] leading-relaxed
-                 text-slate-600 dark:text-slate-300
+            <p data-tag="pageSubtitle" 
+               className="
+                 mt-2 max-w-prose text-sm sm:text-[0.95rem] leading-relaxed text-slate-600 dark:text-slate-300
                "
             >
               {subtitle}

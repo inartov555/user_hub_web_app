@@ -78,8 +78,8 @@ export default function CookieConsent() {
       {/* Dialog */}
       <div className="
              relative w-full max-w-xl rounded-2xl border p-4 shadow-lg border-slate-200/80
-             bg-[linear-gradient(135deg,#e2e8f0_0%,#cbd5e1_45%,#bfdbfe_100%)] dark:border-slate-700/70
-             dark:bg-[linear-gradient(135deg,#1f2937_0%,#374151_55%,#4b5563_100%)]
+             bg-gradient-to-br from-slate-100 via-slate-50/70 to-indigo-50/60 dark:from-slate-950
+             dark:via-slate-900/80 dark:to-indigo-950/80
            "
       >
         <div className="flex flex-col">
