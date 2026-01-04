@@ -159,9 +159,10 @@ def _helper_users_table_page_regular_user(page: Page, ui_theme_param: Theme, ui_
     """
     This is a helper function that takes screenshots on the Users Table page (table, controls)
     """
+    login_page = LoginPage(page)
     users_table_page = UsersTablePage(page)
     # Let's log in to the website as a regular user
-    change_password_page.click_logout_and_wait_for_login_page()
+    users_table_page.click_logout_and_wait_for_login_page()
     login_page.submit_credentials_success(DEFAULT_REGULAR_USERNAME, DEFAULT_REGULAR_PASSWORD)
     # Let's set some multi-column sorting
     users_table_page.change_column_sorting("username", "asc")
