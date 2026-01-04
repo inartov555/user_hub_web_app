@@ -1,6 +1,5 @@
 """
 Unit tests
-szsdf
 """
 
 from django.contrib.auth import get_user_model
