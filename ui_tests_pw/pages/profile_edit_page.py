@@ -3,6 +3,7 @@ Page object for the Profile edit page.
 """
 
 from __future__ import annotations
+import re
 
 from playwright.sync_api import expect, Page
 

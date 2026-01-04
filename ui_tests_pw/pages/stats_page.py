@@ -3,6 +3,7 @@ Page object for the Stats page.
 """
 
 from __future__ import annotations
+import re
 
 from playwright.sync_api import expect, Page
 

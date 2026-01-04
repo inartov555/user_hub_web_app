@@ -3,12 +3,11 @@ DEMO tests
 """
 
 from __future__ import annotations
-import re
 import random
 import string
 
 import pytest
-from playwright.sync_api import Page, expect
+from playwright.sync_api import Page
 
 from conftest import take_a_screenshot
 from pages.login_page import LoginPage
@@ -33,12 +32,12 @@ from config import (
 
 @pytest.mark.theme
 @pytest.mark.localization
-# @pytest.mark.parametrize("ui_theme_param", ["light", "dark"])
+@pytest.mark.parametrize("ui_theme_param", ["light", "dark"])
 # @pytest.mark.parametrize("ui_locale_param", ["en-US", "uk-UA", "et-EE", "fi-FI", "cs-CZ", "pl-PL", "es-ES"])
-@pytest.mark.parametrize("ui_theme_param", ["light"])
+# @pytest.mark.parametrize("ui_theme_param", ["light"])
 # @pytest.mark.usefixtures("cleanup_set_default_theme_and_locale")
 def test_base_demo(page: Page,
-                   ui_theme_param: Theme) -> None:
+                   ui_theme_param: Theme) -> None:  # pylint: disable=too-many-statements
     """
     Base DEMO test to run multiple pages and take screenshots
     """
@@ -103,7 +102,6 @@ def test_base_demo(page: Page,
     # Screenshot -> Admin user -> Users Table page -> Multi column sort on
     take_a_screenshot(page)
 
-    '''
     # Now, let's see the user deletion page
     users_table_page.delete_users_btn.click()
     user_delete_page = UserDeleteConfirmPage(page)
@@ -118,10 +116,10 @@ def test_base_demo(page: Page,
     take_a_screenshot(page)
     # Let's get back to the /users page
     user_delete_page.click_top_cancel()
-    '''
 
     # Let's click the Change Password button
-    # users_table_page.search_and_wait_for_results("mi")
+    users_table_page.search_and_wait_for_results("mi")
+    # Let's select the 1st user for changing the password
     users_table_page.change_password_btn.nth(0).click()
     # Screenshot -> Admin user -> Change Password page
     take_a_screenshot(page)
