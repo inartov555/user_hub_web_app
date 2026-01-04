@@ -79,8 +79,8 @@ class SignupPage(BasePage):
         """
         Verifying that key controls are displayed on the Sign up page
         """
-        expect(signup_page.username).to_be_visible()
-        expect(signup_page.email).to_be_visible()
-        expect(signup_page.password).to_be_visible()
-        expect(signup_page.save).to_be_visible()
-        expect(signup_page.login).to_be_visible()
+        expect(self.username).to_be_visible()
+        expect(self.email).to_be_visible()
+        expect(self.password).to_be_visible()
+        expect(self.save).to_be_visible()
+        expect(self.login).to_be_visible()

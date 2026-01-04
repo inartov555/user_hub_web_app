@@ -35,8 +35,8 @@ class ChangePasswordPage(BasePage):
         """
         Wait for the Change Password page to load
         """
-        expect(page).to_have_url(re.compile(r".*/users/\d+/change-password$"))
-        page.wait_for_url(re.compile(r".*/users/\d+/change-password$"))
+        expect(self.page).to_have_url(re.compile(r".*/users/\d+/change-password$"))
+        self.page.wait_for_url(re.compile(r".*/users/\d+/change-password$"))
 
     def fill_passwords(self, password: str, confirm: str) -> None:
         """
