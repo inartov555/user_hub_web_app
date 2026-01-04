@@ -30,16 +30,9 @@ from config import (
 )
 
 
-@pytest.mark.theme
-@pytest.mark.localization
-@pytest.mark.parametrize("ui_theme_param", ["light", "dark"])
-# @pytest.mark.parametrize("ui_locale_param", ["en-US", "uk-UA", "et-EE", "fi-FI", "cs-CZ", "pl-PL", "es-ES"])
-# @pytest.mark.parametrize("ui_theme_param", ["light"])
-# @pytest.mark.usefixtures("cleanup_set_default_theme_and_locale")
-def test_base_demo(page: Page,
-                   ui_theme_param: Theme) -> None:  # pylint: disable=too-many-statements
+def _helper_login_page(page: Page, ui_theme_param: Theme, ui_locale_param: str) -> None:
     """
-    Base DEMO test to run multiple pages and take screenshots
+    This is a helper function that takes screenshots on the Log in page (Success/Error cases)
     """
     login_page = LoginPage(page)
     login_page.open()
@@ -58,6 +51,11 @@ def test_base_demo(page: Page,
     # Screenshot -> Login page -> Error
     take_a_screenshot(page)
 
+
+def _helper_signup_page(page: Page, ui_theme_param: Theme, ui_locale_param: str) -> None:
+    """
+    This is a helper function that takes screenshots on the Sign up page (Success/Error cases)
+    """
     login_page.click_create_account_link()
     # Screenshot -> Signup page
     take_a_screenshot(page)
@@ -68,6 +66,11 @@ def test_base_demo(page: Page,
     # Getting back to the /login page
     signup_page.click_sign_in_link()
 
+
+def _helper_reset_password_page(page: Page, ui_theme_param: Theme, ui_locale_param: str) -> None:
+    """
+    This is a helper function that takes screenshots on the Reset Password page (Success/Error cases)
+    """
     # Now, let's open Forgot Password page
     login_page.click_forgot_password_link()
     # Screenshot -> Forgot Password page -> Email input
@@ -87,6 +90,11 @@ def test_base_demo(page: Page,
     # Let's get back to the Login page
     reset_password_page.click_sign_in_link()
 
+
+def _helper_users_table_page_admin_user(page: Page, ui_theme_param: Theme, ui_locale_param: str) -> None:
+    """
+    This is a helper function that takes screenshots on the Users Table page (table, controls)
+    """
     # Now, let's login as Admin user to get to the Users Table page
     login_page.submit_credentials_success(DEFAULT_ADMIN_USERNAME, DEFAULT_ADMIN_PASSWORD)
     # Let's set multi-column sorting (First Name - ascending, Last Name - descending)
@@ -102,6 +110,11 @@ def test_base_demo(page: Page,
     # Screenshot -> Admin user -> Users Table page -> Multi column sort on
     take_a_screenshot(page)
 
+
+def _helper_user_delete_page(page: Page, ui_theme_param: Theme, ui_locale_param: str) -> None:
+    """
+    This is a helper function that takes screenshots on the User Delete page (Success/Error cases)
+    """
     # Now, let's see the user deletion page
     users_table_page.delete_users_btn.click()
     user_delete_page = UserDeleteConfirmPage(page)
@@ -117,6 +130,11 @@ def test_base_demo(page: Page,
     # Let's get back to the /users page
     user_delete_page.click_top_cancel()
 
+
+def _helper_change_password_page(page: Page, ui_theme_param: Theme, ui_locale_param: str) -> None:
+    """
+    This is a helper function that takes screenshots on the Change Password page (Success/Error cases)
+    """
     # Let's click the Change Password button
     users_table_page.search_and_wait_for_results("mi")
     # Let's select the 1st user for changing the password
@@ -131,6 +149,11 @@ def test_base_demo(page: Page,
     # Screenshot -> Admin user -> Change Password page -> Error case
     take_a_screenshot(page)
 
+
+def _helper_users_table_page_regular_user(page: Page, ui_theme_param: Theme, ui_locale_param: str) -> None:
+    """
+    This is a helper function that takes screenshots on the Users Table page (table, controls)
+    """
     # Let's log in to the website as a regular user
     change_password_page.click_logout_and_wait_for_login_page()
     login_page.submit_credentials_success(DEFAULT_REGULAR_USERNAME, DEFAULT_REGULAR_PASSWORD)
@@ -146,6 +169,11 @@ def test_base_demo(page: Page,
     # Screenshot -> Regular User -> Users Table page -> Multi-colunn sort
     take_a_screenshot(page)
 
+
+def _helper_profile_view_page_regular_user(page: Page, ui_theme_param: Theme, ui_locale_param: str) -> None:
+    """
+    This is a helper function that takes screenshots on the Profile View page (Success/Error cases)
+    """
     # Let's go to the Profile tab
     profile_view_page = ProfileViewPage(page)
     profile_view_page.click_profile_tab()
@@ -153,6 +181,11 @@ def test_base_demo(page: Page,
     # Screenshot -> Regular User -> Profile View Page
     take_a_screenshot(page)
 
+
+def _helper_profile_edit_page_regular_user(page: Page, ui_theme_param: Theme, ui_locale_param: str) -> None:
+    """
+    This is a helper function that takes screenshots on the Profile Edit page (Success/Error cases)
+    """
     # Now, let's see the Profile Edit page
     profile_view_page.click_edit_button()
     profile_edit_page = ProfileEditPage(page)
@@ -170,6 +203,11 @@ def test_base_demo(page: Page,
     # Screenshot -> Regular User -> Profile Edit Page -> Error alert
     take_a_screenshot(page)
 
+
+def _helper_user_stats_page_admin_user(page: Page, ui_theme_param: Theme, ui_locale_param: str) -> None:
+    """
+    This is a helper function that takes screenshots on the User Stats page
+    """
     # Let's log in to the website as Admin user
     profile_edit_page.click_logout_and_wait_for_login_page()
     login_page.submit_credentials_success(DEFAULT_ADMIN_USERNAME, DEFAULT_ADMIN_PASSWORD)
@@ -180,6 +218,11 @@ def test_base_demo(page: Page,
     # Screenshot -> Admin User -> User Stats Page
     take_a_screenshot(page)
 
+
+def _helper_app_settings_page_admin_user(page: Page, ui_theme_param: Theme, ui_locale_param: str) -> None:
+    """
+    This is a helper function that takes screenshots on the App Settings page (Success/Error cases)
+    """
     # Now, let's go to the Additional -> App Settings tab
     app_settings_page = SettingsPage(page)
     app_settings_page.click_additional_app_settings_tab()
@@ -193,6 +236,11 @@ def test_base_demo(page: Page,
     # Screenshot -> Admin User -> App Settings Page -> Error case
     take_a_screenshot(page)
 
+
+def _helper_excel_import_page_admin_user(page: Page, ui_theme_param: Theme, ui_locale_param: str) -> None:
+    """
+    This is a helper function that takes screenshots on the Excel Import page (Success/Error cases)
+    """
     # Now, let's go to the Additional -> Excel Import tab
     excel_import_page = ExcelImportPage(page)
     excel_import_page.click_additional_excel_import_tab()
@@ -204,3 +252,30 @@ def test_base_demo(page: Page,
     excel_import_page.assert_error_alert_shown()
     # Screenshot -> Admin User -> Excel Import Page -> Error case
     take_a_screenshot(page)
+
+
+@pytest.mark.theme
+@pytest.mark.localization
+@pytest.mark.parametrize("ui_theme_param", ["light", "dark"])
+@pytest.mark.parametrize("ui_locale_param", ["en-US"])
+# @pytest.mark.parametrize("ui_locale_param", ["en-US", "uk-UA", "et-EE", "fi-FI", "cs-CZ", "pl-PL", "es-ES"])
+# @pytest.mark.parametrize("ui_theme_param", ["light"])
+# @pytest.mark.usefixtures("cleanup_set_default_theme_and_locale")
+def test_base_demo(page: Page,
+                   ui_theme_param: Theme,
+                   ui_locale_param: str) -> None:  # pylint: disable=too-many-statements
+    """
+    Base DEMO test to run multiple pages and take screenshots
+    """
+    _helper_login_page(page, ui_theme_param, ui_locale_param)
+    _helper_signup_page(page, ui_theme_param, ui_locale_param)
+    _helper_reset_password_page(page, ui_theme_param, ui_locale_param)
+    _helper_users_table_page_admin_user(page, ui_theme_param, ui_locale_param)
+    _helper_user_delete_page(page, ui_theme_param, ui_locale_param)
+    _helper_change_password_page(page, ui_theme_param, ui_locale_param)
+    _helper_users_table_page_regular_user(page, ui_theme_param, ui_locale_param)
+    _helper_profile_view_page_regular_user(page, ui_theme_param, ui_locale_param)
+    _helper_profile_edit_page_regular_user(page, ui_theme_param, ui_locale_param)
+    _helper_user_stats_page_admin_user(page, ui_theme_param, ui_locale_param)
+    _helper_app_settings_page_admin_user(page, ui_theme_param, ui_locale_param)
+    _helper_excel_import_page_admin_user(page, ui_theme_param, ui_locale_param)
