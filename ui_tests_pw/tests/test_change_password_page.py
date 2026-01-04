@@ -95,7 +95,9 @@ def test_admin_can_change_password_for_any_user(page: Page,
 @pytest.mark.parametrize("suffix", ["one"])
 @pytest.mark.usefixtures("setup_create_users_by_suffix")
 @pytest.mark.usefixtures("cleanup_delete_users_by_suffix")
-def test_regular_user_can_change_password_for_themselves(page: Page, suffix) -> None:
+def test_regular_user_can_change_password_for_themselves(page: Page,
+                                                         login_page: LoginPage,
+                                                         suffix) -> None:
     """
     Regular user should be able to change password for themselves
 
@@ -108,9 +110,6 @@ def test_regular_user_can_change_password_for_themselves(page: Page, suffix) -> 
     old_password = "Ch@ngeme123"
     new_password = "changeme123"
     # Login as a regular user with old password
-    login_page = LoginPage(page)
-    login_page.open()
-    login_page.accept_cookie_consent_if_present()
     login_page.submit_credentials_success(username, old_password)
     # Go to the Profile View page
     profile_view_page = ProfileViewPage(page)
@@ -118,6 +117,7 @@ def test_regular_user_can_change_password_for_themselves(page: Page, suffix) -> 
     # Click the Change Password button in the Profile View page
     profile_view_page.click_change_password_button()
     change_password_page = ChangePasswordPage(page)
+    # Let's change the password
     change_password_page.fill_passwords(new_password, new_password)
     change_password_page.submit.click()
     users_table_page = UsersTablePage(page)
