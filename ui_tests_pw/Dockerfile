@@ -8,9 +8,6 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
 WORKDIR /tests
 COPY . /tests
 
-# RUN apt-get update && apt-get install -y --no-install-recommends xvfb \
-#  && rm -rf /var/lib/apt/lists/*
-
 RUN apt-get update && apt-get install -y --no-install-recommends \
     python3 python3-pip python-is-python3 \
     && rm -rf /var/lib/apt/lists/*
@@ -20,7 +17,7 @@ RUN apt-get update \
  && rm -rf /var/lib/apt/lists/*
 
 RUN python -m pip install --no-cache-dir playwright \
- && python -m playwright install --with-deps chromium chrome msedge firefox webkit
+ && python -m playwright install --with-deps ${PW_BROWSER}
 
 RUN chown -R pwuser:pwuser /tests
 USER pwuser

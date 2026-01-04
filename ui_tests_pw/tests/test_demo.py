@@ -267,6 +267,7 @@ def _helper_app_settings_page_admin_user(page: Page, ui_theme_param: Theme, ui_l
     app_settings_page.ensure_locale(ui_locale_param)
     app_settings_page.click_additional_app_settings_tab()
     app_settings_page.assert_loaded()
+    time.sleep(0.3)  # the tab does not have time to change styles before taking a screenshot
     # Screenshot -> Admin User -> App Settings Page
     take_a_screenshot(page)
     # Let's check the error validation

@@ -51,15 +51,50 @@ if [ $? -ne 0 ]; then
   exit 1
 fi
 
+# chromium chrome msedge firefox webkit
+
+# Read browser parameter from pytest.ini and pass the value to Docker to install on needed browser.
+# If parameter is not present, then default value is taken - 'chromium'.
+readFromPyestIni() {
+  # Input parameters:
+  # 	1. pytest.ini file path
+  # 	2. Section in the pytest.ini file, e.g. pytest
+  #	3. Parameter name, in this case 'browser'
+  awk -F'=' -v section="$2" -v key="$3" '
+    $0 ~ "^[[:space:]]*\\[" section "\\][[:space:]]*$" { in=1; next }
+    /^\[/ { in=0 }
+    in && $0 ~ "^[[:space:]]*" key "[[:space:]]*=" {
+      val=$2
+      sub(/^[[:space:]]*/, "", val)
+      sub(/[[:space:]]*([;#].*)?$/, "", val)
+      print val
+      exit
+    }
+  ' "$1"
+}
+
+if browser="$(readFromPyestIni '$INI_CONFIG_FILE' pytest browser)"; then
+  echo "Found addopts: $browser"
+  exit 0
+else
+  rc=$?
+  if [ "$rc" -eq 2 ]; then
+    echo "Parameter not found"
+  else
+    echo "Error reading ini (rc=$rc)"
+  fi
+  exit 0
+fi
+
 echo "Building images..."
 case "$clear_cache" in
   true)
     echo "Cache will be cleared when starting the service"
-    docker compose build ui_tests_pw --no-cache
+    docker compose build --build-arg PW_BROWSER=$PW_BROWSERS ui_tests_pw --no-cache
     ;;
   *)
     echo "Cache will be preserved when starting the service"
-    docker compose build ui_tests_pw
+    docker compose build --build-arg PW_BROWSER=$PW_BROWSERS ui_tests_pw
 esac
 
 echo "Starting the tests..."
