@@ -34,7 +34,7 @@ def test_stats_page_renders_for_admin(user_stats_page: UsersTablePage,
 
 
 @pytest.mark.regular_user
-def test_stats_page_renders_for_regular_user(regular_users_page: UsersTablePage) -> None:
+def test_stats_page_not_rendered_for_regular_user(regular_users_page: UsersTablePage) -> None:
     """
     Regular user can NOT access the stats page.
     User Stats tab is located under Additional tab.

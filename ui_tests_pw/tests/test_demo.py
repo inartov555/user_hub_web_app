@@ -300,8 +300,8 @@ def _helper_excel_import_page_admin_user(page: Page, ui_theme_param: Theme, ui_l
 
 
 @pytest.mark.demo
-@pytest.mark.parametrize("ui_theme_param", ["light", "dark"])
-@pytest.mark.parametrize("ui_locale_param", ["en-US"])
+@pytest.mark.parametrize("ui_theme_param", [ThemeConsts.LIGHT, ThemeConsts.DARK])
+@pytest.mark.parametrize("ui_locale_param", [LocaleConsts.ENGLISH_US])
 def test_base_demo(page: Page,
                    ui_theme_param: Theme,
                    ui_locale_param: str) -> None:
@@ -333,10 +333,10 @@ def test_locale_demo(page: Page, ui_theme_param: Theme) -> None:
     _helper_reset_password_page(page, ui_theme_param, LocaleConsts.ENGLISH_US)
     _helper_users_table_page_admin_user(page, ui_theme_param, LocaleConsts.UKRAINIAN)
     _helper_user_delete_page(page, ui_theme_param, LocaleConsts.CZECH)
-    # _helper_change_password_page(page, ui_theme_param, ui_locale_param)
-    # _helper_users_table_page_regular_user(page, ui_theme_param, ui_locale_param)
-    # _helper_profile_view_page_regular_user(page, ui_theme_param, ui_locale_param)
-    # _helper_profile_edit_page_regular_user(page, ui_theme_param, ui_locale_param)
-    # _helper_user_stats_page_admin_user(page, ui_theme_param, ui_locale_param)
+    _helper_change_password_page(page, ui_theme_param, LocaleConsts.POLISH)
+    _helper_users_table_page_regular_user(page, ui_theme_param, LocaleConsts.ESTONIAN)
+    _helper_profile_view_page_regular_user(page, ui_theme_param, LocaleConsts.UKRAINIAN)
+    _helper_profile_edit_page_regular_user(page, ui_theme_param, LocaleConsts.CZECH)
+    _helper_user_stats_page_admin_user(page, ui_theme_param, LocaleConsts.SPANISH)
     _helper_app_settings_page_admin_user(page, ui_theme_param, LocaleConsts.POLISH)
     _helper_excel_import_page_admin_user(page, ui_theme_param, LocaleConsts.SPANISH)

@@ -50,3 +50,11 @@ class ProfileViewPage(BasePage):
         self.edit_profile.click()
         self.page.wait_for_url(re.compile(r".*/profile-edit$"))
         expect(self.page).to_have_url(re.compile(r".*/profile-edit$"))
+
+    def click_change_password_button(self) -> None:
+        """
+        Click Change Password button to enter the Change Password page
+        """
+        self.change_password.click()
+        self.page.wait_for_url(re.compile(r".*/users/\d+/change-password$"))
+        expect(self.page).to_have_url(re.compile(r".*/users/\d+/change-password$"))

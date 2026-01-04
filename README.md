@@ -25,7 +25,7 @@ This is a test website + automation framework
 - 🛠️ **Fixed in `ui_tests_pw`:** Safari: white text on the white background in the select element was displayed when the dark theme was on
 - ✨ **Improved in `ui_tests_pw`:** Smart browser install (only selected one instead of all to preserve time)
 - ✨ **Improved in `ui_tests_pw`:** Existing test structure, lite refactoring
-- 🆕 **Added in `users_app`:** In Progress
+- 🆕 **Added in `ui_tests_pw`:** New tests to test_change_password_page.py
 
 ---
 
@@ -48,7 +48,7 @@ This is a test website + automation framework
 - 🆕 **Added in `users_app`:** Icons to page titles
 - 🆕 **Added in `users_app`:** User ID column to the UserDeleteConfirm page
 - 🆕 **Added in `ui_tests_pw`:** Logging in as a just created user for `test_signup_with_random_username`
-- 🆕 **Added in `ui_tests_pw`:** New `test_base_demo` which walks all main pages and takes screenshots
+- 🆕 **Added in `ui_tests_pw`:** New `test_base_demo` & `test_locale_demo` which walks all main pages and takes screenshots
 
 ---
 
