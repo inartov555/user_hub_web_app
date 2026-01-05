@@ -61,7 +61,7 @@ export default function Navbar() {
     }
   }, [pathname, routeIsSecondRow, additionalOpen]);
 
-  // When opening "Additional", show row 2 and select its first tab (/stats)
+  // When opening "Additional", show the 2nd row and select its first tab (/stats)
   const onToggleAdditional = () => {
     setAdditionalOpen((prev) => {
       const next = !prev;

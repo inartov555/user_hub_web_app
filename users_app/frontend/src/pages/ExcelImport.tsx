@@ -152,30 +152,6 @@ export default function ExcelImportPanel() {
                 </ul>
               </>}
           />
-
-          {summary.errors?.length ? (
-            <div className="mt-3">
-              <div className="font-medium mb-1">Errors ({summary.errors.length})</div>
-              <div className="max-h-48 overflow-auto border rounded-xl">
-                <table className="w-full text-sm">
-                  <thead className="sticky top-0 bg-white dark:bg-slate-900">
-                    <tr>
-                      <th className="text-left p-2 border-b w-24">Row</th>
-                      <th className="text-left p-2 border-b">Message</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {summary.errors.map((e, idx) => (
-                      <tr key={idx} className="odd:bg-gray-50 dark:odd:bg-slate-800">
-                        <td className="p-2 border-b">{e.row}</td>
-                        <td className="p-2 border-b">{e.msg}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          ) : null}
         </>
       )}
     </div>

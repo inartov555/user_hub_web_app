@@ -144,7 +144,7 @@ export default function Settings() {
             min={1}
           />
           { error && <SimpleErrorMessage errorBackend={ error } /> }
-          { saved && <SimpleSuccessMessage block={{t("appSettings.saved")}} /> }
+          { saved && <SimpleSuccessMessage message={t("appSettings.saved")} /> }
           <div className="flex gap-3 items-center">
             <Button disabled={saving} type="submit">
               {saving ? t("appSettings.saving") : t("profileEdit.save")}
