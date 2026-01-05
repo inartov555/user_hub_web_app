@@ -11,7 +11,7 @@ from .base_page import BasePage
 
 class SignupPage(BasePage):
     """
-    Encapsulates the registration / signup page.
+    Encapsulates the registration/signup page.
     """
 
     def __init__(self, page: Page):
@@ -43,7 +43,7 @@ class SignupPage(BasePage):
     def submit_credentials_success(self, email: str, username: str, password: str) -> None:
         """
         Expected: Successful user creation.
-        Submitting the input credentials and waiting for the /login page
+        Submit the input credentials and wait for the /login page
         """
         self.fill_form(email, username, password)
         self.save.click()
@@ -52,7 +52,7 @@ class SignupPage(BasePage):
     def submit_credentials_error(self, email: str, username: str, password: str) -> None:
         """
         Expected: Failed user creation.
-        Submitting the input credentials and waiting for the error message on the /signup page
+        Submit the input credentials and wait for the error message on the /signup page
         """
         self.fill_form(email, username, password)
         self.save.click()
