@@ -1,5 +1,5 @@
 """
-Tests for the admin Settings page.
+Tests for the admin Settings page (admin only).
 """
 
 from __future__ import annotations

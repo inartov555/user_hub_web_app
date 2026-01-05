@@ -1,5 +1,5 @@
 """
-Tests for the User Delete Confirm page.
+Tests for the User Delete Confirm page (admin only).
 """
 
 from __future__ import annotations

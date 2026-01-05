@@ -30,6 +30,8 @@ class UserDeleteConfirmPage(BasePage):
         Open the confirm-delete page directly.
         """
         self.goto("/users/confirm-delete")
+        self.page.wait_for_url(re.compile(r".*/users/confirm-delete$"))
+        expect(self.page).to_have_url(re.compile(r".*/users/confirm-delete$"))
 
     def assert_confirm_delete_loaded(self) -> None:
         """

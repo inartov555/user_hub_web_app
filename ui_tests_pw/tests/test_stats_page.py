@@ -1,5 +1,5 @@
 """
-Tests for the Stats page.
+Tests for the Stats page (admin only).
 """
 
 from __future__ import annotations

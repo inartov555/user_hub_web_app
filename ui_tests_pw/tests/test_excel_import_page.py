@@ -68,7 +68,7 @@ def test_upload_a_correct_spreadsheet(page: Page,
 
     Username & email are created with this logic:
         username = f"ui-test-{suffix}-{num}"
-        email = f"{username}@test.com"
+        email = f"{username}-{num}@test.com"
         password = "Ch@ngeme123"
     """
     admin_excel_import_page.assert_loaded()
