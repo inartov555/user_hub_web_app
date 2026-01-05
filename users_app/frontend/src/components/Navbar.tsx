@@ -47,11 +47,6 @@ export default function Navbar() {
   const isUserStatsActive = pathname.startsWith("/stats");
   const isSettingsActive = pathname.startsWith("/settings");
   const isExcelImportActive = pathname.startsWith("/import-excel");
-  const isAdditionalActive = isUserStatsActive || isSettingsActive || isExcelImportActive;
-
-
-  // Treat multiple routes as active for one tab
-  const isProfileActive = pathname.startsWith("/profile-view") || pathname.startsWith("/profile-edit");
   // "Additional" tab logic
   const secondRowRoutes = ["/stats", "/settings", "/import-excel"];
   const routeIsSecondRow = secondRowRoutes.some((p) => pathname.startsWith(p));
@@ -103,14 +98,8 @@ export default function Navbar() {
                     to="/users"
                     className={({ isActive }) => tabCls(isActive && !isAdditionalActive)}
                   >
-                    {({ isUsersActive }) => {
-                      return (
-                        <>
-                          <span aria-hidden="true" className={indicatorCls(active)} />
-                          {t("nav.users")}
-                        </>
-                      );
-                    }}
+                    <span aria-hidden="true" className={indicatorCls(isUsersActive && !isAdditionalActive)} />
+                    {t("nav.users")}
                   </NavLink>
 
                   <NavLink
@@ -119,14 +108,7 @@ export default function Navbar() {
                     className={() => tabCls(isProfileActive && !isAdditionalActive)}
                   >
                     <span aria-hidden="true" className={indicatorCls(isProfileActive && !isAdditionalActive)} />
-                    {({ isProfileActive }) => {
-                      return (
-                        <>
-                          <span aria-hidden="true" className={indicatorCls(active)} />
-                          {t("nav.profile")}
-                        </>
-                      );
-                    }}
+                    {t("nav.profile")}
                   </NavLink>
 
                   {/* Additional tab (first row) — reveals row 2 */}
@@ -140,14 +122,7 @@ export default function Navbar() {
                       aria-controls="secondary-nav"
                     >
                       <span aria-hidden="true" className={indicatorCls(isAdditionalActive)} />
-                      {({ isAdditionalActive }) => {
-                        return (
-                          <>
-                            <span aria-hidden="true" className={indicatorCls(active)} />
-                            {t("nav.additional")}
-                          </>
-                        );
-                      }}
+                      {t("nav.additional")}
                     </button>
                   )}
                 </>
@@ -158,37 +133,16 @@ export default function Navbar() {
             {user?.is_staff && isAdditionalActive && (
               <nav id="secondary-nav" className="flex flex-wrap gap-2 md:gap-4">
                 <NavLink id="userStats" to="/stats" className={({ isActive }) => tabCls(isActive)}>
-                  <span aria-hidden="true" className={indicatorCls(isActive)} />
-                  {({ isUserStatsActive }) => {
-                    return (
-                      <>
-                        <span aria-hidden="true" className={indicatorCls(active)} />
-                          {t("nav.stats")}
-                      </>
-                    );
-                  }}
+                  <span aria-hidden="true" className={indicatorCls(isUserStatsActive)} />
+                  {t("nav.stats")}
                 </NavLink>
                 <NavLink id="settings" to="/settings" className={({ isActive }) => tabCls(isActive)}>
-                  <span aria-hidden="true" className={indicatorCls(isActive)} />
-                  {({ isSettingsActive }) => {
-                    return (
-                      <>
-                        <span aria-hidden="true" className={indicatorCls(active)} />
-                          {t("nav.settings")}
-                      </>
-                    );
-                  }}
+                  <span aria-hidden="true" className={indicatorCls(isSettingsActive)} />
+                  {t("nav.settings")}
                 </NavLink>
                 <NavLink id="excelImport" to="/import-excel" className={({ isActive }) => tabCls(isActive)}>
-                  <span aria-hidden="true" className={indicatorCls(isActive)} />
-                  {({ isExcelImportActive }) => {
-                    return (
-                      <>
-                        <span aria-hidden="true" className={indicatorCls(active)} />
-                          {t("nav.importFromExcel")}
-                      </>
-                    );
-                  }}
+                  <span aria-hidden="true" className={indicatorCls(isExcelImportActive)} />
+                  {t("nav.importFromExcel")}
                 </NavLink>
               </nav>
             )}
