@@ -38,7 +38,7 @@ def test_users_table_admin_theme_and_locale(ui_theme_param: Theme,
 @pytest.mark.regular_user
 def test_users_table_regular_user_has_restricted_controls(regular_users_page: UsersTablePage) -> None:
     """
-    Regular user should not see admin-only controls on the users table.
+    A regular user should not see admin-only controls on the users table.
     """
     regular_users_page.assert_admin_controls_hidden_for_regular_user()
 
@@ -56,7 +56,7 @@ def test_users_table_multi_column_sort_admin(admin_users_page: UsersTablePage) -
 @pytest.mark.sorting
 def test_users_table_clear_sort_resets_order(admin_users_page: UsersTablePage) -> None:
     """
-    Clear sort button should remove explicit multi-column sort labels.
+    The Clear sort button should remove explicit multi-column sort labels.
     """
     admin_users_page.sort_by_username_then_email()
     admin_users_page.clear_sort_btn.click()
