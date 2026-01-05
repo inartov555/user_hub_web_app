@@ -1,5 +1,5 @@
 """
-App config from ini config file
+App config from the pytest.ini config file
 """
 
 from dataclasses import dataclass
