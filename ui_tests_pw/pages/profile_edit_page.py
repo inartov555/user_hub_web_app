@@ -72,6 +72,6 @@ class ProfileEditPage(BasePage):
 
     def assert_error_alert_shown(self) -> None:
         """
-        Verify that the error alert is shown when, e.g. field length exceeded
+        Verify that the error alert is shown when, e.g., the field length exceeds
         """
         expect(self.error).to_be_visible()
