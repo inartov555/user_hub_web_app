@@ -47,6 +47,8 @@ class BasePage:
         self.excel_import_tab = self.page.locator('#excelImport')
         self.search_input = self.page.locator('#search')
 
+        self.cookie_consent_div = self.page.locator("div[data-tag='cookieConsentContainer']")
+
     def goto(self, path: str) -> None:
         """
         Open a relative path on the frontend.
@@ -143,11 +145,17 @@ class BasePage:
         """
         self.page.wait_for_url(re.compile(r".*/login$"))
         expect(self.page).to_have_url(re.compile(r".*/login$"))
-        expect(self.username).to_be_visible()
+
+    def click_users_tab(self) -> None:
+        """
+        Click the Users tab
+        """
+        self.users_tab.click()
+        self.wait_for_the_users_table_page_to_load()
 
     def click_profile_tab(self) -> None:
         """
-        Click Profile tab
+        Click the Profile tab
         """
         self.profile_tab.click()
         self.page.wait_for_url(re.compile(r".*/profile-view$"))
@@ -164,7 +172,7 @@ class BasePage:
 
     def click_additional_app_settings_tab(self) -> None:
         """
-        Click Additional -> App Settings tab
+        Click the Additional -> App Settings tab
         """
         self.additional_tab.click()
         self.app_settings_tab.click()
@@ -173,9 +181,29 @@ class BasePage:
 
     def click_additional_excel_import_tab(self) -> None:
         """
-        Click Additional -> Excel Import tab
+        Click the Additional -> Excel Import tab
         """
         self.additional_tab.click()
         self.excel_import_tab.click()
         self.page.wait_for_url(re.compile(r".*/import-excel$"))
         expect(self.page).to_have_url(re.compile(r".*/import-excel$"))
+
+    def accept_cookie_consent_if_present(self) -> None:
+        """
+        Handling the cookie consent overlay, if present
+        """
+        try:
+            self.cookie_consent_accept.wait_for(state="visible")
+        except TimeoutError:
+            return  # No cookie consent overlay
+        self.cookie_consent_accept.click()
+        expect(self.cookie_consent_accept).to_be_hidden()
+
+    def hide_cookie_consent_popup_in_dom(self) -> None:
+        """
+        Hide the cookie consent's whole div block in DOM by setting display: none.
+        It may be needed when e.g. changing theme and then reloading page to see that the pop-up
+        still can be applied.
+        """
+        self.cookie_consent_div.evaluate("el => el.style.display = 'none'")
+        expect(self.cookie_consent_div).not_to_be_visible()

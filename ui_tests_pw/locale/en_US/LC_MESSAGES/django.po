@@ -45,3 +45,9 @@ msgstr "Confirm deletion"
 
 msgid "People"
 msgstr "People"
+
+msgid "Import completed successfully"
+msgstr "Import completed successfully"
+
+msgid "Result"
+msgstr "Result"

@@ -48,9 +48,10 @@ def _helper_login_page(page: Page, ui_theme_param: Theme, ui_locale_param: str) 
     """
     login_page = LoginPage(page)
     login_page.open()
-    # To see the Cookie Consent overlay in different themens, the block needs to be removed from DOM
-    # and then the theme changed, and page reloaded after that
-    login_page.remove_cookie_consent_popup_from_dom()
+    # To see the Cookie Consent overlay in different themes and then the theme changed,
+    # let's set display: none for block. The page should be reloaded after that
+    # to see the cookie consent pop-up again.
+    login_page.hide_cookie_consent_popup_in_dom()
     login_page.ensure_theme(ui_theme_param)
     login_page.ensure_locale(ui_locale_param)
     login_page.reload()
@@ -125,6 +126,9 @@ def _helper_users_table_page_admin_user(page: Page, ui_theme_param: Theme, ui_lo
     users_table_page.change_column_sorting("lastname", "desc")
     users_table_page.assert_column_sorting("firstname", "asc")
     users_table_page.assert_column_sorting("lastname", "desc")
+    # Let's change the number of users per page to 10
+    users_table_page.change_number_of_users_per_page_control_top(50)
+    # Let's find a user and check it
     users_table_page.search_and_wait_for_results("mi")
     users_table_page.check_rows.nth(0).click()
     # The delete user button does not have time to change the styles before take a screenshot
@@ -299,8 +303,7 @@ def _helper_excel_import_page_admin_user(page: Page, ui_theme_param: Theme, ui_l
     # Screenshot -> Admin User -> Excel Import Page
     take_a_screenshot(page)
     # Let's check error case
-    excel_import_page.import_template_btn.click()
-    excel_import_page.assert_error_alert_shown()
+    excel_import_page.import_excel_file_error("")
     # Screenshot -> Admin User -> Excel Import Page -> Error case
     take_a_screenshot(page)
 

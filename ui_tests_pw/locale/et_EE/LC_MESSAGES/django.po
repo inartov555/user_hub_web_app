@@ -45,3 +45,9 @@ msgstr "Kinnita kustutamine"
 
 msgid "People"
 msgstr "Inimesed"
+
+msgid "Import completed successfully"
+msgstr "Import lõpetati edukalt"
+
+msgid "Result"
+msgstr "Tulemus"

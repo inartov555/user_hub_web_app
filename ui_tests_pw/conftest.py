@@ -393,14 +393,14 @@ def cleanup_delete_users_by_suffix(suffix: str) -> None:
     Delete users by passed suffix.
 
     Username & email are created with this logic:
-        username = f"ui-test-{suffix}"
-        email = f"{username}@test.com"
+        username_start = f"ui-test-{suffix}"
+        email_end = f"@test.com"
     """
     yield
     log.info("Cleanup. Deleting users created while running a test")
     api_utils = get_api_utils()
-    username = f"ui-test-{suffix}"
-    email = f"{username}@test.com"
+    username_start = f"ui-test-{suffix}"
+    email_end = "@test.com"
     login_info = api_utils.api_login(DEFAULT_ADMIN_USERNAME, DEFAULT_ADMIN_PASSWORD)
     access_token = login_info.get("access")
     users = api_utils.get_users(access=access_token, search=username)
@@ -408,7 +408,7 @@ def cleanup_delete_users_by_suffix(suffix: str) -> None:
     for user in users.get("results"):
         resp_email = user.get("email")
         resp_username = user.get("username")
-        if username == resp_username and email == resp_email:
+        if username_start in resp_username and email_end in resp_email:
             user_id_list.append(user.get("id"))
     if user_id_list:
         api_utils.bulk_user_delete(access_token, user_id_list)
@@ -451,18 +451,13 @@ def setup_cleanup_update_app_settings() -> None:
     3. Once cleanup part started, get preserved old App Settings and set them
     """
     log.info("Setup. Set App Settings for a test")
-    # if is_rotate is None:
-    #    raise ValueError("is_rotate param was not passed or set, but it's required")
     api_utils = get_api_utils()
     login_info = api_utils.api_login(DEFAULT_ADMIN_USERNAME, DEFAULT_ADMIN_PASSWORD)
     access_token = login_info.get("access")
     old_settings = api_utils.get_system_settings(access_token)
 
-    # Preparing payload and updating App Settings
-    # payload = { "JWT_RENEW_AT_SECONDS": 9, "IDLE_TIMEOUT_SECONDS": 5,
-    #            "ACCESS_TOKEN_LIFETIME": 13, "ROTATE_REFRESH_TOKENS": is_rotate }
-    # api_utils.update_system_settings(payload)
     yield
+
     log.info("Cleanup. Returning old App Settings' values")
     login_info = api_utils.api_login(DEFAULT_ADMIN_USERNAME, DEFAULT_ADMIN_PASSWORD)
     access_token = login_info.get("access")

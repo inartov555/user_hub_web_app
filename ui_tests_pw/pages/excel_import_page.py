@@ -65,6 +65,12 @@ class ExcelImportPage(BasePage):
         """
         expect(self.error).to_be_visible()
 
+    def assert_there_s_no_error(self) -> None:
+        """
+        Assert that there's no error after importing an excel spreadsheet
+        """
+        expect(self.error).not_to_be_visible()
+
     def assert_loaded(self) -> None:
         """
         Verify if Excel Import page is load and key elements are shown
@@ -72,3 +78,23 @@ class ExcelImportPage(BasePage):
         expect(self.import_template_btn).to_be_visible()
         expect(self.download_template_btn).to_be_visible()
         expect(self.input_file).to_be_visible()
+
+    def import_excel_file_success(self, file_to_import: str) -> None:
+        """
+        Select an Excel file -> Import -> Success
+        """
+        self.input_file.set_input_files(file_to_import)
+        self.import_template_btn.click()
+        # UI logic: button becomes disabled after clicking and before getting response
+        expect(self.import_template_btn).to_be_enabled()
+        self.assert_there_s_no_error()
+
+    def import_excel_file_error(self, file_to_import: str) -> None:
+        """
+        Select an Excel file -> Import -> Error
+        """
+        self.input_file.set_input_files(file_to_import)
+        self.import_template_btn.click()
+        # UI logic: button becomes disabled after clicking and before getting response
+        expect(self.import_template_btn).to_be_enabled()
+        self.assert_error_visible()

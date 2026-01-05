@@ -45,3 +45,9 @@ msgstr "Підтвердити видалення"
 
 msgid "People"
 msgstr "Люди"
+
+msgid "Import completed successfully"
+msgstr "Імпорт успішно завершено"
+
+msgid "Result"
+msgstr "Результат"

@@ -45,3 +45,9 @@ msgstr "Potwierdź usunięcie"
 
 msgid "People"
 msgstr "Osoby"
+
+msgid "Import completed successfully"
+msgstr "Import zakończony pomyślnie"
+
+msgid "Result"
+msgstr "Wynik"

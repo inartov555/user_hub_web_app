@@ -292,6 +292,8 @@ class UsersAppApi(ApiJsonRequest):
         """
         GET /api/v1/system/settings/
 
+        Only Admin user can call it.
+
         Returns:
             dict, example:
                     { "JWT_RENEW_AT_SECONDS": 9999,
@@ -308,6 +310,8 @@ class UsersAppApi(ApiJsonRequest):
     def update_system_settings(self, access: str, payload: dict) -> dict:
         """
         PUT /api/v1/system/settings/
+
+        Only Admin user can call it.
 
         Args:
             payload (dict): example:

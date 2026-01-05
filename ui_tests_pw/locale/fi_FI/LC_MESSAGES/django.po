@@ -45,3 +45,9 @@ msgstr "Vahvista poisto"
 
 msgid "People"
 msgstr "Henkilöt"
+
+msgid "Import completed successfully"
+msgstr "Tuonti valmistui onnistuneesti"
+
+msgid "Result"
+msgstr "Tulos"

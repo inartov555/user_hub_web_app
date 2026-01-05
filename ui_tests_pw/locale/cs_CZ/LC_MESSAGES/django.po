@@ -45,3 +45,9 @@ msgstr "Potvrdit smazání"
 
 msgid "People"
 msgstr "Lidé"
+
+msgid "Import completed successfully"
+msgstr "Import byl úspěšně dokončen"
+
+msgid "Result"
+msgstr "Výsledek"

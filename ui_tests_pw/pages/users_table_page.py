@@ -34,6 +34,9 @@ class UsersTablePage(BasePage):
         self.check_rows = self.page.locator('input[data-tag="check-a-row"]')
         self.sortable_columl_header_str = 'button[data-tag="sort-by-{}"]'
         self.change_password_header = self.page.locator('div[data-tag="changePasswordHeader"]')
+        # Pagination controls
+        self.rows_per_page_top = self.page.locator('#rowsPerPageTop')
+        self.rows_per_page_bottom = self.page.locator('#rowsPerPageBottom')
 
         # The list of all Change Password buttons
         self.change_password_btn = self.page.locator('button[data-tag="change-password"]')
@@ -195,3 +198,13 @@ class UsersTablePage(BasePage):
         if cur_sort_order != sort_order:
             raise AssertionError(f"{_column} column sort order does not match; actual {cur_sort_order}; "
                                  f"expected {_sort_order}")
+
+    def change_number_of_users_per_page_control_top(self, num: int) -> None:
+        """
+        Changing number of displayed users per page in the Users Table using
+        self.rows_per_page_top select control.
+
+        Args:
+            num (int): one of (5, 10, 20, 30, 50, 100, 200, 500, 1000, 2000)
+        """
+        self.rows_per_page_top.select_option(str(num))
