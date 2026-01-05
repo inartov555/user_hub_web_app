@@ -1,6 +1,5 @@
 """
 Global configuration for the UI automation framework.
-asdf
 
 This module centralizes configuration values so that tests and page objects
 can rely on a single source of truth for URLs, credentials, and timeouts.
