@@ -106,10 +106,10 @@ class BasePage:
         Check text localization
 
         Args:
-            ui_locale_param (str): e.g. en-US
+            ui_locale_param (str): e.g., en-US
             actual (str): actual text localization retrieved from UI element
             expected (str): expected text localization, provide the text code to retrieve the localization with Django
-            mode (str): one of (contans, strict)
+            mode (str): one of (contains, strict)
         """
         with translation.override(ui_locale_param.lower()):
             expected = translation.gettext(expected)
@@ -137,14 +137,14 @@ class BasePage:
 
     def click_logout_and_wait_for_login_page(self) -> None:
         """
-        Cross-page solution to logout in UI
+        Cross-page solution to log out in UI
         """
         self.logout.click()
         self.assert_login_page_is_displayed()
 
     def assert_login_page_is_displayed(self) -> None:
         """
-        Verify if Login page is displayed
+        Verify if the Login page is displayed
         """
         self.verify_login_page_uri_is_open()
 
@@ -199,51 +199,51 @@ class BasePage:
 
     def hide_cookie_consent_popup_in_dom(self) -> None:
         """
-        Hide the cookie consent's whole div block in DOM by setting display: none.
-        It may be needed when e.g. changing theme and then reloading page to see that the pop-up
-        still can be applied.
+        Hide the cookie consent's whole div block in the DOM by setting display: none.
+        It may be needed when, e.g., changing the theme and then reloading the page to see that the pop-up
+        can still be applied.
         """
         self.cookie_consent_div.evaluate("el => el.style.display = 'none'")
         expect(self.cookie_consent_div).not_to_be_visible()
 
     def verify_login_page_uri_is_open(self) -> None:
         """
-        Verify that page with /login URI is shown now
+        Verify that the page with the /login URI is shown now
         """
         self.page.wait_for_url(re.compile(r".*/login$"))
         expect(self.page).to_have_url(re.compile(r".*/login$"))
 
     def verify_sign_up_page_uri_is_open(self) -> None:
         """
-        Verify that page with /signup URI is shown now
+        Verify that the page with the /signup URI is shown now
         """
         self.page.wait_for_url(re.compile(r".*/signup$"))
         expect(self.page).to_have_url(re.compile(r".*/signup$"))
 
     def verify_reset_password_page_uri_is_open(self) -> None:
         """
-        Verify that page with /reset-password URI is shown now
+        Verify that the page with the /reset-password URI is shown now
         """
         self.page.wait_for_url(re.compile(r".*/reset-password$"))
         expect(self.page).to_have_url(re.compile(r".*/reset-password$"))
 
     def verify_users_table_page_uri_is_open(self) -> None:
         """
-        Verify that page with /users URI is shown now
+        Verify that the page with the /users URI is shown now
         """
         self.page.wait_for_url(re.compile(r".*/users$"))
         expect(self.page).to_have_url(re.compile(r".*/users$"))
 
     def verify_confirm_user_delete_page_uri_is_open(self) -> None:
         """
-        Verify that page with /users/confirm-delete URI is shown now
+        Verify that the page with the /users/confirm-delete URI is shown now
         """
         self.page.wait_for_url(re.compile(r".*/users/confirm-delete$"))
         expect(self.page).to_have_url(re.compile(r".*/users/confirm-delete$"))
 
     def verify_profile_view_page_uri_is_open(self) -> None:
         """
-        Verify that page with /profile-view URI is shown now
+        Verify that the page with the /profile-view URI is shown now
         """
         self.page.wait_for_url(re.compile(r".*/profile-view$"))
         expect(self.page).to_have_url(re.compile(r".*/profile-view$"))
@@ -257,28 +257,28 @@ class BasePage:
 
     def verify_profile_edit_page_uri_is_open(self) -> None:
         """
-        Verify that page with /profile-edit URI is shown now
+        Verify that the page with the /profile-edit URI is shown now
         """
         self.page.wait_for_url(re.compile(r".*/profile-edit$"))
         expect(self.page).to_have_url(re.compile(r".*/profile-edit$"))
 
     def verify_user_stats_page_uri_is_open(self) -> None:
         """
-        Verify that page with /stats URI is shown now
+        Verify that the page with the /stats URI is shown now
         """
         self.page.wait_for_url(re.compile(r".*/stats$"))
         expect(self.page).to_have_url(re.compile(r".*/stats$"))
 
     def verify_app_settings_page_uri_is_open(self) -> None:
         """
-        Verify that page with /settings URI is shown now
+        Verify that the page with the /settings URI is shown now
         """
         self.page.wait_for_url(re.compile(r".*/settings$"))
         expect(self.page).to_have_url(re.compile(r".*/settings$"))
 
     def verify_excel_import_page_uri_is_open(self) -> None:
         """
-        Verify that page with /import-excel URI is shown now
+        Verify that the page with the /import-excel URI is shown now
         """
         self.page.wait_for_url(re.compile(r".*/import-excel$"))
         expect(self.page).to_have_url(re.compile(r".*/import-excel$"))
