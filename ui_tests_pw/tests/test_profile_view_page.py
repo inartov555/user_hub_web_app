@@ -21,7 +21,7 @@ def test_profile_view_renders_for_regular_user(profile_view_page_regular: Profil
                                                ui_theme_param: Theme,
                                                ui_locale_param: str) -> None:
     """
-    Regular user should be able to see their own profile under different themes/locales.
+    A regular user should be able to see their own profile under different themes/locales.
     """
     profile_view_page_regular.ensure_theme(ui_theme_param)
     profile_view_page_regular.ensure_locale(ui_locale_param)
@@ -43,6 +43,6 @@ def test_profile_view_renders_for_admin(profile_view_page_admin: ProfileViewPage
 @pytest.mark.regular_user
 def test_profile_view_has_edit_link(profile_view_page_regular: ProfileViewPage) -> None:
     """
-    Profile view page should link to the edit profile form.
+    The Profile View page should link to the edit profile form.
     """
     profile_view_page_regular.click_edit_button()
