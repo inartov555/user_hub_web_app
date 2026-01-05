@@ -387,31 +387,67 @@ def user_stats_page_fixture(logged_in_admin: Page) -> StatsPage:
     return user_stats_page
 
 
+def delete_users_by_suffix_via_api(suffix: str,
+                                   compare: str = "contains",
+                                   mode: str = "username") -> None:
+    """
+    Delete users by passed suffix, if found.
+
+    Args:
+        suffix (str): part of the username/email/first name/last name depending on compare
+        compare (str): one of (strict, contains)
+        mode (str): one of (username, email, first_name, last_name)
+    """
+    _suffix_lower = suffix.lower()
+    _compare_lower = compare.lower()
+    _mode_lower = mode.lower()
+    api_utils = get_api_utils()
+    login_info = api_utils.api_login(DEFAULT_ADMIN_USERNAME, DEFAULT_ADMIN_PASSWORD)
+    access_token = login_info.get("access")
+    users = api_utils.get_users(access=access_token, search=_suffix_lower)
+
+    def _compare(_suffix: str, _value_to_compare: str, _compare: str) -> bool:
+        """
+        Returns:
+            bool, if the match happened
+        """
+        value_lower = _value_to_compare.lower() if _value_to_compare else ""
+        if _compare == "strict" and _suffix == value_lower or \
+           _compare == "contains" and _suffix in value_lower:
+            return True
+        return False
+
+    user_id_list = []
+    for user in users.get("results"):
+        value_to_pass = ""
+        if _mode_lower == "email":
+            value_to_pass = user.get("email")
+        elif _mode_lower == "username":
+            value_to_pass = user.get("username")
+        elif _mode_lower == "firstname":
+            value_to_pass = user.get("firstName")
+        elif _mode_lower == "lastname":
+            value_to_pass = user.get("lastName")
+        compare_result = _compare(_suffix_lower, value_to_pass, _compare_lower)
+        if compare_result:
+            user_id_list.append(user.get("id"))
+    if user_id_list:
+        api_utils.bulk_user_delete(access_token, user_id_list)
+
+
 @pytest.fixture(scope="function")
 def cleanup_delete_users_by_suffix(suffix: str) -> None:
     """
-    Delete users by passed suffix.
+    Delete users by passed suffix, if found.
 
     Username & email are created with this logic:
         username_start = f"ui-test-{suffix}"
         email_end = f"@test.com"
     """
     yield
+
     log.info("Cleanup. Deleting users created while running a test")
-    api_utils = get_api_utils()
-    username_start = f"ui-test-{suffix}"
-    email_end = "@test.com"
-    login_info = api_utils.api_login(DEFAULT_ADMIN_USERNAME, DEFAULT_ADMIN_PASSWORD)
-    access_token = login_info.get("access")
-    users = api_utils.get_users(access=access_token, search=username_start)
-    user_id_list = []
-    for user in users.get("results"):
-        resp_email = user.get("email")
-        resp_username = user.get("username")
-        if username_start in resp_username and email_end in resp_email:
-            user_id_list.append(user.get("id"))
-    if user_id_list:
-        api_utils.bulk_user_delete(access_token, user_id_list)
+    delete_users_by_suffix_via_api(suffix, "contains", "username")
 
 
 @pytest.fixture(scope="function")
@@ -420,6 +456,7 @@ def cleanup_set_default_theme_and_locale(page: Page) -> None:
     Cleanup. Default theme is ThemeConsts.LIGHT and default locale is LocaleConsts.ENGLISH_US.
     """
     yield
+
     log.info("Cleanup. Defaulting to light theme and en-US locale")
     set_theme(page, ThemeConsts.LIGHT)
     set_locale(page, LocaleConsts.ENGLISH_US)

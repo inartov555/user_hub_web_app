@@ -239,7 +239,8 @@ class UsersAppApi(ApiJsonRequest):
         POST /api/v1/auth/jwt/create
 
         Returns:
-            dict, e.g. {"refresh":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9","access":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9"}
+            dict, e.g. {"refresh":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
+                        "access":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9"}
         """
         payload = {"username": username, "password": password}
         response = self.make_request("post",
@@ -247,7 +248,12 @@ class UsersAppApi(ApiJsonRequest):
                                      payload=payload)
         return response
 
-    def get_users(self, access: str, search: str = "", page_num: int = 1, page_size: int = 100, ordering: str = "id"):
+    def get_users(self,
+                  access: str,
+                  search: str = "",
+                  page_num: int = 1,
+                  page_size: int = 1000000,
+                  ordering: str = "id"):
         """
         GET /api/v1/users
 
