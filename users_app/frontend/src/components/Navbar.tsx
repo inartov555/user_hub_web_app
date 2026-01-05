@@ -40,7 +40,7 @@ export default function Navbar() {
   ].join(" ");
   const indicatorCls = (active: boolean) =>
     active
-      ? "absolute -bottom-1 left-1/2 h-[3px] w-10 -translate-x-1/2 rounded-full bg-gradient-to-r from-brand-500 via-fuchsia-500 to-sky-500"
+      ? "absolute -bottom-1 left-1/2 h-[3px] w-10 -translate-x-1/2 rounded-full bg-gradient-to-r from-brand-500/70 via-fuchsia-500/60 to-sky-500/60"
       : "absolute -bottom-1 left-1/2 h-[3px] w-6 -translate-x-1/2 rounded-full bg-transparent";
   const isUsersActive = pathname.startsWith("/users");
   const isProfileActive = pathname.startsWith("/profile-view") || pathname.startsWith("/profile-edit");
