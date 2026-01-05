@@ -5,7 +5,7 @@ Tests for the Excel import page (admin-only).
 from __future__ import annotations
 
 import pytest
-from playwright.sync_api import expect
+from playwright.sync_api import expect, Page
 
 from core.constants import LocaleConsts, ThemeConsts
 from pages.excel_import_page import ExcelImportPage

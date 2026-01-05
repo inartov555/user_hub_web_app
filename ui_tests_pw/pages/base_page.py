@@ -47,6 +47,10 @@ class BasePage:
         self.excel_import_tab = self.page.locator('#excelImport')
         self.search_input = self.page.locator('#search')
 
+        # Cookie consent pop-up related elements
+        self.cookie_consent_title = self.page.locator("div[data-tag='cookieConsentTitle']")
+        self.cookie_consent_body = self.page.locator("p[data-tag='cookieConsentBody']")
+        self.cookie_consent_accept = self.page.locator("#cookieAccept")
         self.cookie_consent_div = self.page.locator("div[data-tag='cookieConsentContainer']")
 
     def goto(self, path: str) -> None:

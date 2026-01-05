@@ -403,7 +403,7 @@ def cleanup_delete_users_by_suffix(suffix: str) -> None:
     email_end = "@test.com"
     login_info = api_utils.api_login(DEFAULT_ADMIN_USERNAME, DEFAULT_ADMIN_PASSWORD)
     access_token = login_info.get("access")
-    users = api_utils.get_users(access=access_token, search=username)
+    users = api_utils.get_users(access=access_token, search=username_start)
     user_id_list = []
     for user in users.get("results"):
         resp_email = user.get("email")

@@ -97,4 +97,4 @@ class ExcelImportPage(BasePage):
         self.import_template_btn.click()
         # UI logic: button becomes disabled after clicking and before getting response
         expect(self.import_template_btn).to_be_enabled()
-        self.assert_error_visible()
+        self.assert_error_alert_shown()

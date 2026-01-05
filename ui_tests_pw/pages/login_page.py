@@ -24,10 +24,6 @@ class LoginPage(BasePage):
         self.submit = self.page.locator("form button[type='submit']")
         self.error = self.page.locator("div[data-tag='simpleErrorMessage'] p")
 
-        self.cookie_consent_title = self.page.locator("div[data-tag='cookieConsentTitle']")
-        self.cookie_consent_body = self.page.locator("p[data-tag='cookieConsentBody']")
-        self.cookie_consent_accept = self.page.locator("#cookieAccept")
-
         self.signup = self.page.locator("a[href='/signup']")
         self.forgot_password = self.page.locator("a[href='/reset-password']")
 
