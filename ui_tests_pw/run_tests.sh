@@ -104,16 +104,19 @@ esac
 echo "Starting the tests..."
 TEST_GREP=""
 
-# TEST_GREP="$TEST_GREP --reruns 2 --reruns-delay 2"
+TEST_GREP="$TEST_GREP --reruns 2 --reruns-delay 2"
 
-# Uncomment if you need tests to be run in parallel
+# Uncomment if you need tests to be run in parallel (set number or auto).
+# Note: there are some tests that change settings, so you can run tests in parallel only when
+#       you disable them (settings are applied globally, not for a particular user, also
+#       excel tests, they work with users which are saved/deleted from the same database)
 # TEST_GREP="$TEST_GREP -n auto"
 
 # If you need to run particular test(s), then set it as shown in the line below (TEST_GREP);
 # to run all tests, just set TEST_GREP="$TEST_GREP" (to preserve base settings)
 
-TEST_GREP="$TEST_GREP -k 'test_base_demo or test_locale_demo'"
-# TEST_GREP="$TEST_GREP -k 'test_upload_a_correct_spreadsheet'"
+# TEST_GREP="$TEST_GREP -k 'test_base_demo or test_locale_demo'"
+# TEST_GREP="$TEST_GREP -m 'not longrun'"
 
 docker compose run -e TEST_GREP="$TEST_GREP" --rm ui_tests_pw
 

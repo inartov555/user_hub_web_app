@@ -127,7 +127,7 @@ def _helper_users_table_page_admin_user(page: Page, ui_theme_param: Theme, ui_lo
     users_table_page.assert_column_sorting("firstname", "asc")
     users_table_page.assert_column_sorting("lastname", "desc")
     # Let's change the number of users per page to 10
-    users_table_page.change_number_of_users_per_page_control_top(50)
+    users_table_page.change_number_of_users_per_page_control_top(10)
     # Let's find a user and check it
     users_table_page.search_and_wait_for_results("mi")
     users_table_page.check_rows.nth(0).click()

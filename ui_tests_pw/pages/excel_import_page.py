@@ -83,7 +83,8 @@ class ExcelImportPage(BasePage):
         """
         Select an Excel file -> Import -> Success
         """
-        self.input_file.set_input_files(file_to_import)
+        if file_to_import:
+            self.input_file.set_input_files(file_to_import)
         self.import_template_btn.click()
         # UI logic: button becomes disabled after clicking and before getting response
         expect(self.import_template_btn).to_be_enabled()
@@ -93,7 +94,8 @@ class ExcelImportPage(BasePage):
         """
         Select an Excel file -> Import -> Error
         """
-        self.input_file.set_input_files(file_to_import)
+        if file_to_import:
+            self.input_file.set_input_files(file_to_import)
         self.import_template_btn.click()
         # UI logic: button becomes disabled after clicking and before getting response
         expect(self.import_template_btn).to_be_enabled()
