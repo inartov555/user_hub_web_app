@@ -52,7 +52,7 @@ def test_login_invalid_credentials_show_error(login_page: LoginPage,
 @pytest.mark.regular_user
 def test_regular_user_can_login_and_redirects_to_users(login_page: LoginPage) -> None:
     """
-    Regular test user should be able to log in and land on /users.
+    A regular test user should be able to log in and land on /users.
     """
     login_page.submit_credentials_success(DEFAULT_REGULAR_USERNAME, DEFAULT_REGULAR_PASSWORD)
 
@@ -69,7 +69,7 @@ def test_admin_can_login_and_see_users_nav(login_page: LoginPage) -> None:
 def test_login_links_to_signup_and_reset_password(login_page: LoginPage,
                                                   page: Page) -> None:
     """
-    Login page should expose links to signup and reset-password pages.
+    The Login page should expose links to the Signup and Reset Password pages.
     """
     # Case: /signup page is opened after clicking Sign Up
     login_page.click_create_account_link()
