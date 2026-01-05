@@ -43,21 +43,21 @@ class UserDeleteConfirmPage(BasePage):
 
     def click_top_cancel(self) -> None:
         """
-        Clicking top cancel button and waiting for the /users page to load
+        Clicking the top cancel button and waiting for the /users page to load
         """
         self.cancel_top.click()
         self.verify_users_table_page_uri_is_open()
 
     def click_top_confirm_delete_success(self) -> None:
         """
-        Clicking top confirm delete button and waiting for the /users page to load
+        Clicking the top confirm delete button and waiting for the /users page to load
         """
         self.confirm_delete_top.click()
         self.verify_users_table_page_uri_is_open()
 
     def click_top_confirm_delete_error(self) -> None:
         """
-        Clicking top confirm delete button and ending up on the Confirm Delete page with error
+        Clicking the top confirm delete button and ending up on the Confirm Delete page with an error
         """
         self.confirm_delete_top.click()
         self.assert_confirm_delete_loaded()
