@@ -349,11 +349,12 @@ def _helper_excel_import_page_admin_user(page: Page, ui_theme_param: Theme, ui_l
 def test_base_demo(page: Page,
                    ui_theme_param: Theme,
                    ui_locale_param: str,
-                   suffix: str,
-                   rotate_refresh_token: bool,
-                   renew_at_sec: int,
-                   idle_timeout_sec: int,
-                   access_token_lifetime: int) -> None:
+                   suffix: str,  # pylint: disable=unused-argument
+                   rotate_refresh_token: bool,  # pylint: disable=unused-argument
+                   renew_at_sec: int,  # pylint: disable=unused-argument
+                   idle_timeout_sec: int,  # pylint: disable=unused-argument
+                   access_token_lifetime: int,  # pylint: disable=unused-argument
+                  ) -> None:
     """
     Base DEMO test to run multiple pages and take screenshots
     """
@@ -405,11 +406,12 @@ def test_base_demo(page: Page,
 @pytest.mark.usefixtures("cleanup_delete_users_by_suffix")
 def test_locale_demo(page: Page,
                      ui_theme_param: Theme,
-                     suffix: str,
-                     rotate_refresh_token: bool,
-                     renew_at_sec: int,
-                     idle_timeout_sec: int,
-                     access_token_lifetime: int) -> None:
+                     suffix: str,  # pylint: disable=unused-argument
+                     rotate_refresh_token: bool,  # pylint: disable=unused-argument
+                     renew_at_sec: int,  # pylint: disable=unused-argument
+                     idle_timeout_sec: int,  # pylint: disable=unused-argument
+                     access_token_lifetime: int,  # pylint: disable=unused-argument
+                    ) -> None:
     """
     Locale DEMO test to run multiple pages and take screenshots
     """
