@@ -76,7 +76,7 @@
     "created": "Created:",
     "updated": "Updated:",
     "result": "Result",
-    "importSuccessful": "Import completed successfully.",
+    "importSuccessful": "Import completed successfully",
     "selectedFile": "Selected:",
     "excelImportFailure": "Excel upload failure:",
     "templateDownloadFailed": "Failed to download template:"

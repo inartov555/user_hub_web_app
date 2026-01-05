@@ -121,7 +121,7 @@ export default function ExcelImportPanel() {
 
         {error && <SimpleErrorMessage errorBackend={error} />}
         <div className="flex gap-2">
-          <Button id="importTemplate" type="submit">
+          <Button id="importTemplate" disabled={submitting} type="submit">
             {submitting ? t("excelImport.uploading") : t("excelImport.startImport")}
           </Button>
 
