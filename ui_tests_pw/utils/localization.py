@@ -10,7 +10,7 @@ from playwright.sync_api import Page
 
 def set_locale(page: Page, locale_code: str) -> None:
     """
-    Set the current UI locale via the navbar dropdown.
+    Set the current UI locale via the navigation bar's dropdown.
 
     Args:
         page (Page): Playwright page instance.
