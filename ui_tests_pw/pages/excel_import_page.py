@@ -60,19 +60,19 @@ class ExcelImportPage(BasePage):
 
     def assert_error_alert_shown(self) -> None:
         """
-        Verify that error message is shown
+        Verify that the error message is shown
         """
         expect(self.error).to_be_visible()
 
     def assert_there_s_no_error(self) -> None:
         """
-        Assert that there's no error after importing an excel spreadsheet
+        Assert that there's no error after importing an Excel spreadsheet
         """
         expect(self.error).not_to_be_visible()
 
     def assert_loaded(self) -> None:
         """
-        Verify if Excel Import page is load and key elements are shown
+        Verify if the Excel Import page is loaded and key elements are shown
         """
         expect(self.import_template_btn).to_be_visible()
         expect(self.download_template_btn).to_be_visible()
