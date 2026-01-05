@@ -57,10 +57,10 @@ def test_settings_page_not_accessible_for_regular_user(regular_users_page: Users
 @pytest.mark.usefixtures("setup_cleanup_update_app_settings")
 def test_rotate_false_inactivity_timeout(page: Page,
                                          settings_page: SettingsPage,
-                                         rotate_refresh_token,
-                                         renew_at_sec,  # pylint: disable=unused-argument
-                                         idle_timeout_sec,
-                                         access_token_lifetime) -> None:
+                                         rotate_refresh_token: bool,
+                                         renew_at_sec: int,  # pylint: disable=unused-argument
+                                         idle_timeout_sec: int,
+                                         access_token_lifetime: int) -> None:
     """
     1. ROTATE_REFRESH_TOKENS is False
     2. User logs in and just waits for idle timeout (no actions on UI or API)
@@ -91,10 +91,10 @@ def test_rotate_false_inactivity_timeout(page: Page,
 @pytest.mark.usefixtures("setup_cleanup_update_app_settings")
 def test_rotate_false_token_lifetime(page: Page,
                                      settings_page: SettingsPage,
-                                     rotate_refresh_token,
-                                     renew_at_sec,  # pylint: disable=unused-argument
-                                     idle_timeout_sec,
-                                     access_token_lifetime) -> None:
+                                     rotate_refresh_token: bool,
+                                     renew_at_sec: int,  # pylint: disable=unused-argument
+                                     idle_timeout_sec: int,
+                                     access_token_lifetime: int) -> None:
     """
     1. ROTATE_REFRESH_TOKENS is False
     2. User makes some actions, e.g., opens tabs, etc., for (access_token_lifetime) seconds
@@ -126,10 +126,10 @@ def test_rotate_false_token_lifetime(page: Page,
 @pytest.mark.usefixtures("setup_cleanup_update_app_settings")
 def test_rotate_true_inactivity_timeout(page: Page,
                                         settings_page: SettingsPage,
-                                        rotate_refresh_token,
-                                        renew_at_sec,
-                                        idle_timeout_sec,
-                                        access_token_lifetime) -> None:
+                                        rotate_refresh_token: bool,
+                                        renew_at_sec: int,
+                                        idle_timeout_sec: int,
+                                        access_token_lifetime: int) -> None:
     """
     1. ROTATE_REFRESH_TOKENS is True
     2. User logs in and just waits for idle timeout (no actions on UI or API)
@@ -160,10 +160,10 @@ def test_rotate_true_inactivity_timeout(page: Page,
 @pytest.mark.usefixtures("setup_cleanup_update_app_settings")
 def test_rotate_true_token_refreshed(page: Page,
                                      settings_page: SettingsPage,
-                                     rotate_refresh_token,
-                                     renew_at_sec,
-                                     idle_timeout_sec,
-                                     access_token_lifetime) -> None:
+                                     rotate_refresh_token: bool,
+                                     renew_at_sec: int,
+                                     idle_timeout_sec: int,
+                                     access_token_lifetime: int) -> None:
     """
     1. ROTATE_REFRESH_TOKENS is True
     2. User makes some actions, e.g., opens tabs, etc., for (access_token_lifetime + 5) seconds
@@ -195,10 +195,10 @@ def test_rotate_true_token_refreshed(page: Page,
 @pytest.mark.usefixtures("setup_cleanup_update_app_settings")
 def test_rotate_true_token_refreshed_indle_timeout_after(page: Page,
                                                          settings_page: SettingsPage,
-                                                         rotate_refresh_token,
-                                                         renew_at_sec,
-                                                         idle_timeout_sec,
-                                                         access_token_lifetime) -> None:
+                                                         rotate_refresh_token: bool,
+                                                         renew_at_sec: int,
+                                                         idle_timeout_sec: int,
+                                                         access_token_lifetime: int) -> None:
     """
     1. ROTATE_REFRESH_TOKENS is True
     2. User makes some actions, e.g., opens tabs, etc., for (access_token_lifetime + 5) seconds

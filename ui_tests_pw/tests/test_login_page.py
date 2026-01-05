@@ -38,7 +38,7 @@ def test_login_page_renders_in_theme_and_locale(login_page: LoginPage,
     login_page.assert_text_localization(ui_locale_param, actual, expected)
 
 
-@pytest.mark.parametrize("username,password",
+@pytest.mark.parametrize("username, password",
                          [("invalid", "invalid"), (DEFAULT_ADMIN_USERNAME, "wrongpw")])
 def test_login_invalid_credentials_show_error(login_page: LoginPage,
                                               username: str,

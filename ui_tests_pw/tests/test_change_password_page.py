@@ -25,8 +25,7 @@ from utils.theme import Theme
 def test_admin_can_open_change_password_for_user(ui_theme_param: Theme,
                                                  ui_locale_param: str,
                                                  page: Page,
-                                                 admin_users_page: UsersTablePage
-                                                ) -> None:
+                                                 admin_users_page: UsersTablePage) -> None:
     """
     Admin should be able to navigate to the change-password page for a user.
     """
@@ -60,8 +59,7 @@ def test_regular_user_cannot_change_other_users_password(regular_users_page: Use
 @pytest.mark.usefixtures("cleanup_delete_users_by_suffix")
 def test_admin_can_change_password_for_any_user(page: Page,
                                                 admin_users_page: UsersTablePage,
-                                                suffix,
-                                               ) -> None:
+                                                suffix: str) -> None:
     """
     Admin should be able to change password for any user.
 
@@ -97,7 +95,7 @@ def test_admin_can_change_password_for_any_user(page: Page,
 @pytest.mark.usefixtures("cleanup_delete_users_by_suffix")
 def test_regular_user_can_change_password_for_themselves(page: Page,
                                                          login_page: LoginPage,
-                                                         suffix) -> None:
+                                                         suffix: str) -> None:
     """
     Regular user should be able to change password for themselves
 

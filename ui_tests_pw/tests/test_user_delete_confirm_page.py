@@ -26,8 +26,7 @@ def test_admin_can_navigate_to_delete_confirm(page: Page,
                                               admin_users_page: UsersTablePage,
                                               ui_locale_param: str,
                                               ui_theme_param: Theme,
-                                              suffix,
-                                             ) -> None:
+                                              suffix: str) -> None:
     """
     Admin should be able to select users and reach the delete-confirm page.
 
@@ -45,7 +44,7 @@ def test_admin_can_navigate_to_delete_confirm(page: Page,
     # Now, let's check the users for further deletion
     admin_users_page.check_all_header.click()
     # Verifying that the Confirm deletion page is shown after pressing the Delete Selected button
-    admin_users_page.delete_users_btn.click()
+    admin_users_page.click_delete_users_and_wait_confirm_delete_page()
     confirm_page = UserDeleteConfirmPage(page)
     confirm_page.assert_confirm_delete_loaded()
     # Verifying localization
@@ -53,7 +52,7 @@ def test_admin_can_navigate_to_delete_confirm(page: Page,
     expected = "Confirm deletion"
     confirm_page.assert_text_localization(ui_locale_param, actual, expected)
     # Now let's check deleting the user from UI
-    confirm_page.click_top_confirm_delete()
+    confirm_page.click_top_confirm_delete_success()
     # Verifying that the user is actually deleted
     admin_users_page.search_and_wait_for_results(username)
     expect(admin_users_page.check_rows).to_have_count(0)
@@ -65,10 +64,9 @@ def test_admin_can_navigate_to_delete_confirm(page: Page,
 @pytest.mark.usefixtures("cleanup_delete_users_by_suffix")
 def test_admin_can_cancel_delete_confirm(page: Page,
                                          admin_users_page: UsersTablePage,
-                                         suffix,
-                                        ) -> None:
+                                         suffix: str) -> None:
     """
-    Cancel button on delete-confirm page should navigate back to /users.
+    Cancel button on delete-confirm page should navigate back to the Users Table page.
 
     Username & email are created with this logic:
         username = f"ui-test-{suffix}"
@@ -78,7 +76,7 @@ def test_admin_can_cancel_delete_confirm(page: Page,
     username = f"ui-test-{suffix}"
     admin_users_page.search_and_wait_for_results(username)
     admin_users_page.check_all_header.click()
-    admin_users_page.delete_users_btn.click()
+    admin_users_page.click_delete_users_and_wait_confirm_delete_page()
     confirm_page = UserDeleteConfirmPage(page)
     confirm_page.click_top_cancel()
     # Verifying that the user actually exists

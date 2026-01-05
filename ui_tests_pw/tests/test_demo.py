@@ -17,7 +17,7 @@ import pytest
 from playwright.sync_api import Page
 
 from core.constants import LocaleConsts, ThemeConsts
-from conftest import take_a_screenshot
+from conftest import take_a_screenshot, delete_users_by_suffix_via_api
 from pages.login_page import LoginPage
 from pages.signup_page import SignupPage
 from pages.reset_password_page import ResetPasswordPage
@@ -30,6 +30,7 @@ from pages.stats_page import StatsPage
 from pages.settings_page import SettingsPage
 from pages.excel_import_page import ExcelImportPage
 from utils.theme import Theme
+from utils.auth import get_api_utils
 from config import (
     DEFAULT_ADMIN_USERNAME,
     DEFAULT_ADMIN_PASSWORD,
@@ -128,12 +129,23 @@ def _helper_users_table_page_admin_user(page: Page, ui_theme_param: Theme, ui_lo
     users_table_page.assert_column_sorting("lastname", "desc")
     # Let's change the number of users per page to 10
     users_table_page.change_number_of_users_per_page_control_top(10)
-    # Let's find a user and check it
-    users_table_page.search_and_wait_for_results("mi")
-    users_table_page.check_rows.nth(0).click()
-    # The delete user button does not have time to change the styles before take a screenshot
+    # The table does not have time to change the styles before take a screenshot
     users_table_page.wait_a_bit(FIXED_TIME_TO_WAIT)
     # Screenshot -> Admin user -> Users Table page -> Multi column sort on
+    take_a_screenshot(page)
+    # Let's create a user which will be deleted right before confirming deletion
+    api_utils = get_api_utils()
+    username = "aaa-admin-wild-watermelon"
+    email = f"{username}@delete.com"
+    password = "Ch@ngeme123"
+    api_utils.create_user(username, email, password)
+    users_table_page.search_and_wait_for_results("admin")
+    # There are supposed to be 2 users: admin and just created one
+    users_table_page.check_rows.nth(0).click()
+    users_table_page.check_rows.nth(1).click()
+    # The item checking does not have time to change the styles before take a screenshot
+    users_table_page.wait_a_bit(FIXED_TIME_TO_WAIT)
+    # Screenshot -> Admin user -> Users Table page -> Checked users
     take_a_screenshot(page)
 
 
@@ -141,19 +153,22 @@ def _helper_user_delete_page(page: Page, ui_theme_param: Theme, ui_locale_param:
     """
     This is a helper function that takes screenshots on the User Delete page (Success/Error cases)
     """
+    username = "aaa-admin-wild-watermelon"
+    email = f"{username}@delete.com"
+    # Now, let's set locale and theme for the User Delete Confirm page
     users_table_page = UsersTablePage(page)
     users_table_page.ensure_theme(ui_theme_param)
     users_table_page.ensure_locale(ui_locale_param)
     # Now, let's see the user deletion page
-    users_table_page.delete_users_btn.click()
+    users_table_page.click_delete_users_and_wait_confirm_delete_page()
     user_delete_page = UserDeleteConfirmPage(page)
     user_delete_page.assert_confirm_delete_loaded()
     # Screenshot -> Admin user -> User Delete Confirm page -> List of users to delete
     take_a_screenshot(page)
-    # Let's see if User Delete Confirm page shows error messages, if error happened
-    user_delete_page.confirm_delete_top.click()
-    user_delete_page.assert_confirm_delete_loaded()
-    user_delete_page.assert_error_visible()
+    # Let's delete previously created via API user
+    delete_users_by_suffix_via_api(email, "strict", "email")
+    # Let's see if User Delete Confirm page shows error messages (it's supposed to show an error)
+    user_delete_page.click_top_confirm_delete_error()
     # Screenshot -> Admin user -> User Delete Confirm page -> List of users to delete
     take_a_screenshot(page)
     # Let's get back to the /users page
@@ -284,6 +299,10 @@ def _helper_app_settings_page_admin_user(page: Page, ui_theme_param: Theme, ui_l
     app_settings_page.wait_a_bit(FIXED_TIME_TO_WAIT)
     # Screenshot -> Admin User -> App Settings Page
     take_a_screenshot(page)
+    # Let's check successful settings save
+    app_settings_page.change_values_save_success(False, 222, 222, 222)
+    # Screenshot -> Admin User -> App Settings Page -> Success
+    take_a_screenshot(page)
     # Let's check the error validation
     app_settings_page.change_values_save_error(True, 13, 13, 13)
     # Screenshot -> Admin User -> App Settings Page -> Error case
@@ -304,50 +323,129 @@ def _helper_excel_import_page_admin_user(page: Page, ui_theme_param: Theme, ui_l
     excel_import_page.wait_a_bit(FIXED_TIME_TO_WAIT)
     # Screenshot -> Admin User -> Excel Import Page
     take_a_screenshot(page)
-    # Let's check error case
+    # Let's check the success case
+    excel_import_page.import_excel_file_success("test_data/import_template_test_50_users.xlsx")
+    # Let's check the success message title
+    actual = excel_import_page.success_title.text_content()
+    expected = "Result"
+    excel_import_page.assert_text_localization(ui_locale_param, actual, expected)
+    # Screenshot -> Admin User -> Excel Import Page -> Success
+    take_a_screenshot(page)
+    # Let's check the error validation
     excel_import_page.import_excel_file_error("")
     # Screenshot -> Admin User -> Excel Import Page -> Error case
     take_a_screenshot(page)
 
 
 @pytest.mark.demo
-@pytest.mark.parametrize("ui_theme_param", [ThemeConsts.LIGHT, ThemeConsts.DARK])
+@pytest.mark.parametrize("ui_theme_param", ThemeConsts.ALL_SUPPORTED_THEMES)
 @pytest.mark.parametrize("ui_locale_param", [LocaleConsts.ENGLISH_US])
+@pytest.mark.parametrize("suffix", ["watermelon"])
+@pytest.mark.parametrize(
+    "rotate_refresh_token, renew_at_sec, idle_timeout_sec, access_token_lifetime",
+    [(True, 900, 900, 900)])
+@pytest.mark.usefixtures("setup_cleanup_update_app_settings")
+@pytest.mark.usefixtures("cleanup_delete_users_by_suffix")
 def test_base_demo(page: Page,
                    ui_theme_param: Theme,
-                   ui_locale_param: str) -> None:
+                   ui_locale_param: str,
+                   suffix: str,
+                   rotate_refresh_token: bool,
+                   renew_at_sec: int,
+                   idle_timeout_sec: int,
+                   access_token_lifetime: int) -> None:
     """
     Base DEMO test to run multiple pages and take screenshots
     """
-    _helper_login_page(page, ui_theme_param, ui_locale_param)
-    _helper_signup_page(page, ui_theme_param, ui_locale_param)
-    _helper_reset_password_page(page, ui_theme_param, ui_locale_param)
-    _helper_users_table_page_admin_user(page, ui_theme_param, ui_locale_param)
-    _helper_user_delete_page(page, ui_theme_param, ui_locale_param)
-    _helper_change_password_page(page, ui_theme_param, ui_locale_param)
-    _helper_users_table_page_regular_user(page, ui_theme_param, ui_locale_param)
-    _helper_profile_view_page_regular_user(page, ui_theme_param, ui_locale_param)
-    _helper_profile_edit_page_regular_user(page, ui_theme_param, ui_locale_param)
-    _helper_user_stats_page_admin_user(page, ui_theme_param, ui_locale_param)
-    _helper_app_settings_page_admin_user(page, ui_theme_param, ui_locale_param)
-    _helper_excel_import_page_admin_user(page, ui_theme_param, ui_locale_param)
+    _helper_login_page(page,
+                       ui_theme_param,
+                       ui_locale_param)
+    _helper_signup_page(page,
+                        ui_theme_param,
+                        ui_locale_param)
+    _helper_reset_password_page(page,
+                                ui_theme_param,
+                                ui_locale_param)
+    _helper_users_table_page_admin_user(page,
+                                        ui_theme_param,
+                                        ui_locale_param)
+    _helper_user_delete_page(page,
+                             ui_theme_param,
+                             ui_locale_param)
+    _helper_change_password_page(page,
+                                 ui_theme_param,
+                                 ui_locale_param)
+    _helper_users_table_page_regular_user(page,
+                                          ui_theme_param,
+                                          ui_locale_param)
+    _helper_profile_view_page_regular_user(page,
+                                           ui_theme_param,
+                                           ui_locale_param)
+    _helper_profile_edit_page_regular_user(page,
+                                           ui_theme_param,
+                                           ui_locale_param)
+    _helper_user_stats_page_admin_user(page,
+                                       ui_theme_param,
+                                       ui_locale_param)
+    _helper_app_settings_page_admin_user(page,
+                                         ui_theme_param,
+                                         ui_locale_param)
+    _helper_excel_import_page_admin_user(page,
+                                         ui_theme_param,
+                                         ui_locale_param)
 
 
 @pytest.mark.demo
 @pytest.mark.parametrize("ui_theme_param", [ThemeConsts.LIGHT])
-def test_locale_demo(page: Page, ui_theme_param: Theme) -> None:
+@pytest.mark.parametrize("suffix", ["watermelon"])
+@pytest.mark.parametrize(
+    "rotate_refresh_token, renew_at_sec, idle_timeout_sec, access_token_lifetime",
+    [(True, 900, 900, 900)])
+@pytest.mark.usefixtures("setup_cleanup_update_app_settings")
+@pytest.mark.usefixtures("cleanup_delete_users_by_suffix")
+def test_locale_demo(page: Page,
+                     ui_theme_param: Theme,
+                     suffix: str,
+                     rotate_refresh_token: bool,
+                     renew_at_sec: int,
+                     idle_timeout_sec: int,
+                     access_token_lifetime: int) -> None:
     """
     Locale DEMO test to run multiple pages and take screenshots
     """
-    _helper_login_page(page, ui_theme_param, LocaleConsts.ESTONIAN)
-    _helper_signup_page(page, ui_theme_param, LocaleConsts.FINNISH)
-    _helper_reset_password_page(page, ui_theme_param, LocaleConsts.ENGLISH_US)
-    _helper_users_table_page_admin_user(page, ui_theme_param, LocaleConsts.UKRAINIAN)
-    _helper_user_delete_page(page, ui_theme_param, LocaleConsts.CZECH)
-    _helper_change_password_page(page, ui_theme_param, LocaleConsts.POLISH)
-    _helper_users_table_page_regular_user(page, ui_theme_param, LocaleConsts.ESTONIAN)
-    _helper_profile_view_page_regular_user(page, ui_theme_param, LocaleConsts.UKRAINIAN)
-    _helper_profile_edit_page_regular_user(page, ui_theme_param, LocaleConsts.CZECH)
-    _helper_user_stats_page_admin_user(page, ui_theme_param, LocaleConsts.SPANISH)
-    _helper_app_settings_page_admin_user(page, ui_theme_param, LocaleConsts.POLISH)
-    _helper_excel_import_page_admin_user(page, ui_theme_param, LocaleConsts.SPANISH)
+    _helper_login_page(page,
+                       ui_theme_param,
+                       LocaleConsts.ESTONIAN)
+    _helper_signup_page(page,
+                        ui_theme_param,
+                        LocaleConsts.FINNISH)
+    _helper_reset_password_page(page,
+                                ui_theme_param,
+                                LocaleConsts.ENGLISH_US)
+    _helper_users_table_page_admin_user(page,
+                                        ui_theme_param,
+                                        LocaleConsts.UKRAINIAN)
+    _helper_user_delete_page(page,
+                             ui_theme_param,
+                             LocaleConsts.CZECH)
+    _helper_change_password_page(page,
+                                 ui_theme_param,
+                                 LocaleConsts.POLISH)
+    _helper_users_table_page_regular_user(page,
+                                          ui_theme_param,
+                                          LocaleConsts.ESTONIAN)
+    _helper_profile_view_page_regular_user(page,
+                                           ui_theme_param,
+                                           LocaleConsts.UKRAINIAN)
+    _helper_profile_edit_page_regular_user(page,
+                                           ui_theme_param,
+                                           LocaleConsts.CZECH)
+    _helper_user_stats_page_admin_user(page,
+                                       ui_theme_param,
+                                       LocaleConsts.SPANISH)
+    _helper_app_settings_page_admin_user(page,
+                                         ui_theme_param,
+                                         LocaleConsts.POLISH)
+    _helper_excel_import_page_admin_user(page,
+                                         ui_theme_param,
+                                         LocaleConsts.SPANISH)
