@@ -2,7 +2,7 @@
 Global configuration for the UI automation framework.
 
 This module centralizes configuration values so that tests and page objects
-can rely on a single source of truth for URLs, credentials and timeouts.
+can rely on a single source of truth for URLs, credentials, and timeouts.
 """
 
 from __future__ import annotations
@@ -27,7 +27,7 @@ def frontend_url(path: str = "/") -> str:
     Build a full frontend URL for the given path.
 
     Args:
-        path: Relative path, e.g. "/login" or "users".
+        path: Relative path, e.g., "/login" or "users".
 
     Returns:
         str, fully-qualified URL combining UI_BASE_URL, UI_BASE_PORT and the path.
