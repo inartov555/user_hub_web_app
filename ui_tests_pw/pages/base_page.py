@@ -250,7 +250,7 @@ class BasePage:
 
     def verify_change_password_page_uri_is_open(self) -> None:
         """
-        Verify that page with /users/\d+/change-password URI is shown now
+        Verify that page with /users/${userId}/change-password URI is shown now
         """
         self.page.wait_for_url(re.compile(r".*/users/\d+/change-password$"))
         expect(self.page).to_have_url(re.compile(r".*/users/\d+/change-password$"))
