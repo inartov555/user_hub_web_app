@@ -6,11 +6,6 @@ type ErrorAlertProps = {
   title?: React.ReactNode;
 };
 
-type SimpleErrorMessageProps = {
-  errorUi?: string;
-  errorBackend?: string | null;
-};
-
 function splitLines(raw: unknown): string[] {
   // Split by '\n', preserving spaces, tabs
   const normalized = String(raw ?? "")
@@ -33,7 +28,7 @@ export default function ErrorAlert({ message, title }: ErrorAlertProps) {
       className="rounded-xl border border-red-200 bg-red-50 text-red-800
                  dark:border-red-900/50 dark:bg-red-900/20 dark:text-red-200 p-4"
     >
-      <AlertTriangle className="h-4 w-4 mb-2" />
+      <AlertTriangle className="h-6 w-6 mb-2 mt-2" />
       {title ? <div className="font-semibold mb-2">{title}</div> : null}
       <ul className="space-y-1">
         {lines.map((line, i) => (
@@ -47,7 +42,7 @@ export default function ErrorAlert({ message, title }: ErrorAlertProps) {
   );
 }
 
-export function SimpleErrorMessage({ errorUi, errorBackend }: SimpleErrorMessageProps) {
+export function SimpleErrorMessage({ errorUi, errorBackend }: { errorUi?: string, errorBackend?: string | null; } ) {
   /*
    * errorUi (string): this one describes UI error, e.g., auth.loginFailed
    * errorBackend (string): backend error
@@ -62,8 +57,52 @@ export function SimpleErrorMessage({ errorUi, errorBackend }: SimpleErrorMessage
            dark:border-rose-500/25 dark:bg-rose-950/20 dark:text-rose-200
          "
     >
-      <AlertTriangle className="h-4 w-4 mb-2" />
-      <p className="text-red-600 text-sm whitespace-pre-line">{text}</p>
+      <AlertTriangle className="h-6 w-6 mb-2 mt-2" />
+      <p className="text-red-600 text-sm whitespace-pre-line ml-2">{text}</p>
+    </div>
+  );
+}
+
+export function SimpleSuccessMessage({ message, block }: { message?: string; block?: React.ReactElement; }) {
+  /*
+   * It maybe either message or block, or both
+   */
+  if (!message && !block) return null;
+
+  return (
+    <div
+      data-tag="simpleSuccessMessage"
+      className="
+        rounded-xl border border-emerald-200/60 bg-emerald-50/40 px-3 py-2
+        backdrop-blur-sm text-sm text-emerald-800 whitespace-pre-line
+        dark:border-emerald-400/25 dark:bg-emerald-950/20 dark:text-emerald-100
+      "
+    >
+      <CheckCircle className="h-6 w-6 mb-2 mt-2" />
+      { message && <p className="whitespace-pre-line ml-2">{message}</p> }
+      <div className="ml-2">{ block }</div>
+    </div>
+  );
+}
+
+export function SimpleInfoMessage({ message, block }: { message?: string; block?: React.ReactElement; }) {
+  /*
+   * It maybe either message or block, or both
+   */
+  if (!message && !block) return null;
+
+  return (
+    <div
+      data-tag="simpleInfoMessage"
+      className="
+        rounded-xl border border-sky-200/60 bg-sky-50/40 px-3 py-2
+        backdrop-blur-sm text-sm text-sky-800 whitespace-pre-line
+        dark:border-sky-400/25 dark:bg-sky-950/20 dark:text-sky-200
+      "
+    >
+      <Info className="h-6 w-6 mb-2 mt-2" />
+      { message && <p className="whitespace-pre-line ml-2">{message}</p> }
+      <div className="ml-2">{ block }</div>
     </div>
   );
 }

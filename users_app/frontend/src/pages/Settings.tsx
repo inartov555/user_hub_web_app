@@ -6,7 +6,7 @@ import { useAuthStore } from "../auth/store";
 import { extractApiError } from "../lib/httpErrors";
 import Button from "../components/button";
 import UnifiedTitle from "../components/UnifiedTitle";
-import { SimpleErrorMessage } from "../components/Alerts";
+import { SimpleErrorMessage, SimpleSuccessMessage } from "../components/Alerts";
 
 export default function Settings() {
   const { t } = useTranslation();
@@ -143,12 +143,12 @@ export default function Settings() {
             }}
             min={1}
           />
-          {error && <SimpleErrorMessage errorBackend={ error } />}
+          { error && <SimpleErrorMessage errorBackend={ error } /> }
+          { saved && <SimpleSuccessMessage block={<span className="text-green-600 text-sm">{t("appSettings.saved")}</span>} /> }
           <div className="flex gap-3 items-center">
             <Button disabled={saving} type="submit">
               {saving ? t("appSettings.saving") : t("profileEdit.save")}
             </Button>
-            {saved && <span className="text-green-600 text-sm">{t("appSettings.saved")}</span>}
           </div>
         </form>
       </div>

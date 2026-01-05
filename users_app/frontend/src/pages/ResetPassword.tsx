@@ -7,7 +7,7 @@ import { extractApiError } from "../lib/httpErrors";
 import FormInput from "../components/FormInput";
 import Button from "../components/button";
 import UnifiedTitle from "../components/UnifiedTitle";
-import { SimpleErrorMessage } from "../components/Alerts";
+import { SimpleErrorMessage, SimpleInfoMessage } from "../components/Alerts";
 
 export default function ResetPassword() {
   const { t, i18n } = useTranslation();
@@ -38,7 +38,7 @@ export default function ResetPassword() {
          "
     >
       <UnifiedTitle icon={<KeySquare className="h-4 w-4" />} title={t("resetPassword.resetPassword")} />
-      {sent ? <p data-tag="resetPassInfoMsg">{t("resetPassword.checkEmailForResetLink")}</p> : (
+      {sent ? <SimpleInfoMessage message={t("resetPassword.checkEmailForResetLink")} /> : (
         <form onSubmit={onSubmit} className="space-y-3">
           <FormInput placeholder="Email" id="email" value={email} onChange={e=>setEmail(e.target.value)} />
           {error && <SimpleErrorMessage errorBackend={error} />}

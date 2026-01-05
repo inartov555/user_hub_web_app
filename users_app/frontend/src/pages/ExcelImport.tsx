@@ -7,7 +7,7 @@ import { useAuthStore } from "../auth/store";
 import { Input } from "../components/input";
 import Button from "../components/button";
 import UnifiedTitle from "../components/UnifiedTitle";
-import { SimpleErrorMessage } from "../components/Alerts";
+import { SimpleErrorMessage, SimpleSuccessMessage } from "../components/Alerts";
 
 export default function ExcelImportPanel() {
   const { t } = useTranslation();
@@ -138,19 +138,20 @@ export default function ExcelImportPanel() {
         </div>
       </form>
 
-      {message && (
-        <div className="mt-4 text-sm p-2 rounded-xl border bg-gray-50 dark:bg-slate-800 dark:text-slate-100 dark:border-slate-700">{message}</div>
-      )}
-
       {summary && (
-        <div className="mt-4 p-3 rounded-2xl border bg-white
-                dark:bg-slate-800 dark:border-slate-700">
-          <div data-tag="resultSuccessTitle" className="font-medium mb-2">{t("excelImport.result")}</div>
-          <ul data-tag="resultSuccessBody" className="text-sm space-y-1">
-            <li>{t("excelImport.processed")} <span className="font-semibold">{summary.processed}</span></li>
-            <li>{t("excelImport.created")} <span className="font-semibold">{summary.created}</span></li>
-            <li>{t("excelImport.updated")} <span className="font-semibold">{summary.updated}</span></li>
-          </ul>
+        <>
+          <SimpleSuccessMessage
+            message={message}
+            block={
+              <>
+                <div data-tag="resultSuccessTitle" className="font-medium mb-2 mt-2">{t("excelImport.result")}</div>
+                <ul data-tag="resultSuccessBody" className="text-sm space-y-1">
+                  <li>{t("excelImport.processed")} <span className="font-semibold">{summary.processed}</span></li>
+                  <li>{t("excelImport.created")} <span className="font-semibold">{summary.created}</span></li>
+                  <li>{t("excelImport.updated")} <span className="font-semibold">{summary.updated}</span></li>
+                </ul>
+              </>}
+          />
 
           {summary.errors?.length ? (
             <div className="mt-3">
@@ -175,7 +176,7 @@ export default function ExcelImportPanel() {
               </div>
             </div>
           ) : null}
-        </div>
+        </>
       )}
     </div>
   );
