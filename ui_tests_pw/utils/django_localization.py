@@ -15,7 +15,7 @@ from core.constants import LocaleConsts
 
 
 # Ensure the Django project (backend) is importable.
-# Defafult path is provided for Docker.
+# Default path is provided for Docker.
 BACKEND_PATH = os.environ.get("COPIED_PROJECT_PATH", "/tests")
 if BACKEND_PATH not in sys.path:
     sys.path.insert(0, BACKEND_PATH)
