@@ -33,5 +33,5 @@ class StatsPage(BasePage):
         """
         expect(self.page_title).to_be_visible()
         expect(self.online_user_list.first).to_be_visible()
-        # Depending on tests run before, there may be 1 or 2, or even more users online
+        # Depending on tests run before, there may be 1 or even more online users
         assert self.online_user_list.count() >= 1
