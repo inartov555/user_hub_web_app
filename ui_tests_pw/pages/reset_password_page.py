@@ -40,7 +40,7 @@ class ResetPasswordPage(BasePage):
 
     def assert_info_message(self) -> None:
         """
-        Assert that reset password info message is visible.
+        Assert that the reset password info message is visible.
         """
         expect(self.reset_pswd_info_msg).to_be_visible()
 
