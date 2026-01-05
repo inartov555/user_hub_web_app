@@ -23,17 +23,5 @@
             "filename": "debug.log",
             "encoding": "utf8"
         }
-    },
-    "loggers": {
-            "utaf": {
-                "level": "DEBUG",
-                "handlers": ["debug_file_handler"],
-                "propagate": false
-            }
-        },
-     "root": {
-        "level": "DEBUG",
-        "handlers": ["debug_file_handler"],
-        "formatter": "simple"
     }
 }
