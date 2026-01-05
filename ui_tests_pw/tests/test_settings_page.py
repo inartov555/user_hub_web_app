@@ -42,8 +42,8 @@ def test_settings_page_renders_for_admin(settings_page: SettingsPage,
 @pytest.mark.regular_user
 def test_settings_page_not_accessible_for_regular_user(regular_users_page: UsersTablePage) -> None:
     """
-    Regular user should not be able to access the settings page.
-    Settings tab is located under Additional tab.
+    A regular user should not be able to access the settings page.
+    The Settings tab is located under the Additional tab.
     """
     # Navbar Additional tab is staff-only.
     expect(regular_users_page.addtional_tab).to_have_count(0)
@@ -63,23 +63,23 @@ def test_rotate_false_inactivity_timeout(page: Page,
                                          access_token_lifetime: int) -> None:
     """
     1. ROTATE_REFRESH_TOKENS is False
-    2. User logs in and just waits for idle timeout (no actions on UI or API)
-    3. Once token is invalidated due to inactivity timeout, the Login page should be displayed
+    2. User logs in and just waits for the idle timeout (no actions on UI or API)
+    3. Once the token is invalidated due to inactivity timeout, the Login page should be displayed
     """
-    # Verifying if App Settings page is actually shown
+    # Verifying if the App Settings page is actually shown
     settings_page.assert_loaded()
     # Setting values to App Settings in UI
     settings_page.change_values_save_success(rotate_refresh_token,
                                              renew_at_sec,
                                              idle_timeout_sec,
                                              access_token_lifetime)
-    # Now, logout and re-login is required for new settings to be applied
+    # Now, logging out and relogging in is required for the new settings to be applied
     settings_page.click_logout_and_wait_for_login_page()
     LoginPage(page).submit_credentials_success(DEFAULT_ADMIN_USERNAME, DEFAULT_ADMIN_PASSWORD)
     # Now let's just wait for (idle_timeout_sec + 1) seconds to invalidate user session
     settings_page.wait_a_bit(idle_timeout_sec + 1)
     settings_page.reload()
-    # Verifying if the Login page is shown (it means user session has been invalidated)
+    # Verifying if the Login page is shown (it means the user session has been invalidated)
     settings_page.assert_login_page_is_displayed()
 
 
@@ -100,21 +100,21 @@ def test_rotate_false_token_lifetime(page: Page,
     2. User makes some actions, e.g., opens tabs, etc., for (access_token_lifetime) seconds
     3. After that time session should be invalidated
     """
-    # Verifying if App Settings page is actually shown
+    # Verifying if the App Settings page is actually shown
     settings_page.assert_loaded()
     # Setting values to App Settings in UI
     settings_page.change_values_save_success(rotate_refresh_token,
                                              renew_at_sec,
                                              idle_timeout_sec,
                                              access_token_lifetime)
-    # Now, logout and re-login is required for new settings to be applied
+    # Now, logging out and re-logging in is required for the new settings to be applied
     settings_page.click_logout_and_wait_for_login_page()
     LoginPage(page).submit_credentials_success(DEFAULT_ADMIN_USERNAME, DEFAULT_ADMIN_PASSWORD)
     # Now let's refresh the Users Table page for (access_token_lifetime) seconds
     for _ in range(access_token_lifetime):
         settings_page.wait_a_bit(1)
         settings_page.reload()  # reloading Users Table page (it got displayed after re-logging in)
-    # Verifying if the Login page is shown (it means user session has been invalidated)
+    # Verifying if the Login page is shown (it means the user session has been invalidated)
     settings_page.assert_login_page_is_displayed()
 
 
@@ -132,23 +132,23 @@ def test_rotate_true_inactivity_timeout(page: Page,
                                         access_token_lifetime: int) -> None:
     """
     1. ROTATE_REFRESH_TOKENS is True
-    2. User logs in and just waits for idle timeout (no actions on UI or API)
-    3. Once token is invalidated due to inactivity timeout, the Login page should be displayed
+    2. User logs in and just waits for the idle timeout (no actions on UI or API)
+    3. Once the token is invalidated due to inactivity timeout, the Login page should be displayed
     """
-    # Verifying if App Settings page is actually shown
+    # Verifying if the App Settings page is actually shown
     settings_page.assert_loaded()
     # Setting values to App Settings in UI
     settings_page.change_values_save_success(rotate_refresh_token,
                                              renew_at_sec,
                                              idle_timeout_sec,
                                              access_token_lifetime)
-    # Now, logout and re-login is required for new settings to be applied
+    # Now, logging out and re-logging in is required for the new settings to be applied
     settings_page.click_logout_and_wait_for_login_page()
     LoginPage(page).submit_credentials_success(DEFAULT_ADMIN_USERNAME, DEFAULT_ADMIN_PASSWORD)
     # Now let's just wait for (idle_timeout_sec + 1) seconds to invalidate user session
     settings_page.wait_a_bit(idle_timeout_sec + 1)
     settings_page.reload()
-    # Verifying if the Login page is shown (it means user session has been invalidated)
+    # Verifying if the Login page is shown (it means the user session has been invalidated)
     settings_page.assert_login_page_is_displayed()
 
 
@@ -169,21 +169,21 @@ def test_rotate_true_token_refreshed(page: Page,
     2. User makes some actions, e.g., opens tabs, etc., for (access_token_lifetime + 5) seconds
     3. The token should be refreshed
     """
-    # Verifying if App Settings page is actually shown
+    # Verifying if the App Settings page is actually shown
     settings_page.assert_loaded()
     # Setting values to App Settings in UI
     settings_page.change_values_save_success(rotate_refresh_token,
                                              renew_at_sec,
                                              idle_timeout_sec,
                                              access_token_lifetime)
-    # Now, logout and re-login is required for new settings to be applied
+    # Now, logging out and relogging in is required for the new settings to be applied
     settings_page.click_logout_and_wait_for_login_page()
     LoginPage(page).submit_credentials_success(DEFAULT_ADMIN_USERNAME, DEFAULT_ADMIN_PASSWORD)
     # Now let's refresh the Users Table page for (access_token_lifetime + 5) seconds
     for _ in range(access_token_lifetime + 5):
         settings_page.wait_a_bit(1)
         settings_page.reload()  # reloading Users Table page (it got displayed after re-logging in)
-    # Verifying if the Users Table page still shown and user session kept alive
+    # Verifying if the Users Table page is still shown and the user session kept alive
     settings_page.wait_for_the_users_table_page_to_load()
 
 
@@ -203,27 +203,27 @@ def test_rotate_true_token_refreshed_indle_timeout_after(page: Page,
     1. ROTATE_REFRESH_TOKENS is True
     2. User makes some actions, e.g., opens tabs, etc., for (access_token_lifetime + 5) seconds
     3. The token should be refreshed
-    4. Then user does not make any action on UI or API for idle_timeout_sec
-    5. When idle_timeout_sec of inactivity time elapsed, user session should be invalidated
+    4. Then the user does not make any action on UI or API for idle_timeout_sec
+    5. When the idle_timeout_sec of inactivity time has elapsed, the user session should be invalidated
     """
-    # Verifying if App Settings page is actually shown
+    # Verifying if the App Settings page is actually shown
     settings_page.assert_loaded()
     # Setting values to App Settings in UI
     settings_page.change_values_save_success(rotate_refresh_token,
                                              renew_at_sec,
                                              idle_timeout_sec,
                                              access_token_lifetime)
-    # Now, logout and re-login is required for new settings to be applied
+    # Now, logging out and re-logging in is required for the new settings to be applied
     settings_page.click_logout_and_wait_for_login_page()
     LoginPage(page).submit_credentials_success(DEFAULT_ADMIN_USERNAME, DEFAULT_ADMIN_PASSWORD)
     # Now let's refresh the Users Table page for (access_token_lifetime + 5) seconds
     for _ in range(access_token_lifetime + 5):
         settings_page.wait_a_bit(1)
         settings_page.reload()  # reloading Users Table page (it got displayed after re-logging in)
-    # Verifying if the Users Table page still shown and user session kept alive
+    # Verifying if the Users Table page is still shown and the user session kept alive
     settings_page.wait_for_the_users_table_page_to_load()
     # Now let's just wait for (idle_timeout_sec + 1) seconds to invalidate user session
     settings_page.wait_a_bit(idle_timeout_sec + 1)
     settings_page.reload()
-    # Verifying if the Login page is shown (it means user session has been invalidated)
+    # Verifying if the Login page is shown (it means the user session has been invalidated)
     settings_page.assert_login_page_is_displayed()
