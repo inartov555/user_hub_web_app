@@ -109,7 +109,7 @@ def test_rotate_false_token_lifetime(page: Page,
     settings_page.click_logout_and_wait_for_login_page()
     LoginPage(page).submit_credentials_success(DEFAULT_ADMIN_USERNAME, DEFAULT_ADMIN_PASSWORD)
     # Now let's refresh the Users Table page for (access_token_lifetime) seconds
-    for index in range(access_token_lifetime):
+    for _ in range(access_token_lifetime):
         settings_page.wait_a_bit(1)
         settings_page.reload()  # reloading Users Table page (it got displayed after re-logging in)
     # Verifying if the Login page is shown (it means user session has been invalidated)
@@ -176,7 +176,7 @@ def test_rotate_true_token_refreshed(page: Page,
     settings_page.click_logout_and_wait_for_login_page()
     LoginPage(page).submit_credentials_success(DEFAULT_ADMIN_USERNAME, DEFAULT_ADMIN_PASSWORD)
     # Now let's refresh the Users Table page for (access_token_lifetime + 5) seconds
-    for index in range(access_token_lifetime + 5):
+    for _ in range(access_token_lifetime + 5):
         settings_page.wait_a_bit(1)
         settings_page.reload()  # reloading Users Table page (it got displayed after re-logging in)
     # Verifying if the Users Table page still shown and user session kept alive
