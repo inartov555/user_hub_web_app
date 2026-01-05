@@ -60,7 +60,7 @@ def ensure_regular_user() -> None:
     The assignment mentions that test1 is created after deploying
     the website. To make tests robust, this helper:
     1. Tries to log in as test1.
-    2. If login fails (e.g. user not yet created), it creates the user via
+    2. If login fails (e.g., user not yet created), it creates the user via
        the Djoser registration endpoint.
     """
     log.info("Ensuring the regular user exists and creating it, if not present")
