@@ -15,13 +15,41 @@ export default function Navbar() {
   const { pathname } = useLocation();
   const { user, logout, accessToken } = useAuthStore();
   const navigate = useNavigate();
+
   // Unified tab styles
-  const tabCls = (isActive: boolean) =>
-  `px-3 py-1 rounded-lg transition-colors border ${
-    isActive
-      ? "bg-slate-900 text-white border-slate-900 shadow-soft"
-      : "bg-white/60 text-slate-700 border-slate-200 hover:bg-white shadow-soft"
-  }`;
+  const tabCls = (active: boolean) =>
+  [
+    "relative inline-flex items-center justify-center",
+    "px-3 py-1.5 md:px-3.5 md:py-2",
+    "rounded-2xl text-sm font-semibold tracking-tight",
+    "transition-all duration-200",
+    "focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-2",
+    active
+      ? [
+          "text-slate-900 dark:text-slate-50",
+          "bg-white/80 dark:bg-slate-900/60",
+          "shadow-soft ring-1 ring-slate-900/10 dark:ring-white/10",
+          "backdrop-blur",
+        ].join(" ")
+      : [
+          "text-slate-600 dark:text-slate-200/80",
+          "hover:text-slate-900 dark:hover:text-slate-50",
+          "hover:bg-white/60 dark:hover:bg-slate-900/40",
+          "hover:shadow-sm",
+        ].join(" "),
+  ].join(" ");
+  const indicatorCls = (active: boolean) =>
+    active
+      ? "absolute -bottom-1 left-1/2 h-[3px] w-10 -translate-x-1/2 rounded-full bg-gradient-to-r from-brand-500 via-fuchsia-500 to-sky-500"
+      : "absolute -bottom-1 left-1/2 h-[3px] w-6 -translate-x-1/2 rounded-full bg-transparent";
+  const isUsersActive = pathname.startsWith("/users");
+  const isProfileActive = pathname.startsWith("/profile-view") || pathname.startsWith("/profile-edit");
+  const isUserStatsActive = pathname.startsWith("/stats");
+  const isSettingsActive = pathname.startsWith("/settings");
+  const isExcelImportActive = pathname.startsWith("/import-excel");
+  const isAdditionalActive = isUserStatsActive || isSettingsActive || isExcelImportActive;
+
+
   // Treat multiple routes as active for one tab
   const isProfileActive = pathname.startsWith("/profile-view") || pathname.startsWith("/profile-edit");
   // "Additional" tab logic
@@ -75,7 +103,14 @@ export default function Navbar() {
                     to="/users"
                     className={({ isActive }) => tabCls(isActive && !isAdditionalActive)}
                   >
-                    {t("nav.users")}
+                    {({ isUsersActive }) => {
+                      return (
+                        <>
+                          <span aria-hidden="true" className={indicatorCls(active)} />
+                          {t("nav.users")}
+                        </>
+                      );
+                    }}
                   </NavLink>
 
                   <NavLink
@@ -83,7 +118,15 @@ export default function Navbar() {
                     to="/profile-view"
                     className={() => tabCls(isProfileActive && !isAdditionalActive)}
                   >
-                    {t("nav.profile")}
+                    <span aria-hidden="true" className={indicatorCls(isProfileActive && !isAdditionalActive)} />
+                    {({ isProfileActive }) => {
+                      return (
+                        <>
+                          <span aria-hidden="true" className={indicatorCls(active)} />
+                          {t("nav.profile")}
+                        </>
+                      );
+                    }}
                   </NavLink>
 
                   {/* Additional tab (first row) — reveals row 2 */}
@@ -96,7 +139,15 @@ export default function Navbar() {
                       aria-expanded={isAdditionalActive}
                       aria-controls="secondary-nav"
                     >
-                      {t("nav.additional")}
+                      <span aria-hidden="true" className={indicatorCls(isAdditionalActive)} />
+                      {({ isAdditionalActive }) => {
+                        return (
+                          <>
+                            <span aria-hidden="true" className={indicatorCls(active)} />
+                            {t("nav.additional")}
+                          </>
+                        );
+                      }}
                     </button>
                   )}
                 </>
@@ -107,13 +158,37 @@ export default function Navbar() {
             {user?.is_staff && isAdditionalActive && (
               <nav id="secondary-nav" className="flex flex-wrap gap-2 md:gap-4">
                 <NavLink id="userStats" to="/stats" className={({ isActive }) => tabCls(isActive)}>
-                  {t("nav.stats")}
+                  <span aria-hidden="true" className={indicatorCls(isActive)} />
+                  {({ isUserStatsActive }) => {
+                    return (
+                      <>
+                        <span aria-hidden="true" className={indicatorCls(active)} />
+                          {t("nav.stats")}
+                      </>
+                    );
+                  }}
                 </NavLink>
                 <NavLink id="settings" to="/settings" className={({ isActive }) => tabCls(isActive)}>
-                  {t("nav.settings")}
+                  <span aria-hidden="true" className={indicatorCls(isActive)} />
+                  {({ isSettingsActive }) => {
+                    return (
+                      <>
+                        <span aria-hidden="true" className={indicatorCls(active)} />
+                          {t("nav.settings")}
+                      </>
+                    );
+                  }}
                 </NavLink>
                 <NavLink id="excelImport" to="/import-excel" className={({ isActive }) => tabCls(isActive)}>
-                  {t("nav.importFromExcel")}
+                  <span aria-hidden="true" className={indicatorCls(isActive)} />
+                  {({ isExcelImportActive }) => {
+                    return (
+                      <>
+                        <span aria-hidden="true" className={indicatorCls(active)} />
+                          {t("nav.importFromExcel")}
+                      </>
+                    );
+                  }}
                 </NavLink>
               </nav>
             )}
