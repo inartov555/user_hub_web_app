@@ -3,7 +3,6 @@ Page object for the User Delete Confirm page.
 """
 
 from __future__ import annotations
-import re
 
 from playwright.sync_api import expect, Page
 
@@ -30,15 +29,13 @@ class UserDeleteConfirmPage(BasePage):
         Open the confirm-delete page directly.
         """
         self.goto("/users/confirm-delete")
-        self.page.wait_for_url(re.compile(r".*/users/confirm-delete$"))
-        expect(self.page).to_have_url(re.compile(r".*/users/confirm-delete$"))
+        self.verify_confirm_user_delete_page_uri_is_open()
 
     def assert_confirm_delete_loaded(self) -> None:
         """
         Assert that the confirmation UI is visible.
         """
-        self.page.wait_for_url(re.compile(r".*/users/confirm-delete$"))
-        expect(self.page).to_have_url(re.compile(r".*/users/confirm-delete$"))
+        self.verify_confirm_user_delete_page_uri_is_open()
         expect(self.confirm_delete_top).to_be_visible()
         expect(self.confirm_delete_bottom).to_be_visible()
         expect(self.cancel_top).to_be_visible()
@@ -49,16 +46,22 @@ class UserDeleteConfirmPage(BasePage):
         Clicking top cancel button and waiting for the /users page to load
         """
         self.cancel_top.click()
-        self.page.wait_for_url(re.compile(r".*/users$"))
-        expect(self.page).to_have_url(re.compile(r".*/users$"))
+        self.verify_users_table_page_uri_is_open()
 
-    def click_top_confirm_delete(self) -> None:
+    def click_top_confirm_delete_success(self) -> None:
         """
         Clicking top confirm delete button and waiting for the /users page to load
         """
         self.confirm_delete_top.click()
-        self.page.wait_for_url(re.compile(r".*/users$"))
-        expect(self.page).to_have_url(re.compile(r".*/users$"))
+        self.verify_users_table_page_uri_is_open()
+
+    def click_top_confirm_delete_error(self) -> None:
+        """
+        Clicking top confirm delete button and ending up on the Confirm Delete page with error
+        """
+        self.confirm_delete_top.click()
+        self.assert_confirm_delete_loaded()
+        self.assert_error_visible()
 
     def assert_error_visible(self) -> None:
         """

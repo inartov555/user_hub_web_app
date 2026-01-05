@@ -3,7 +3,6 @@ Page object for the Profile view page.
 """
 
 from __future__ import annotations
-import re
 
 from playwright.sync_api import expect, Page
 
@@ -32,8 +31,7 @@ class ProfileViewPage(BasePage):
         Open the profile view page.
         """
         self.goto("/profile-view")
-        self.page.wait_for_url(re.compile(r".*/profile-view$"))
-        expect(self.page).to_have_url(re.compile(r".*/profile-view$"))
+        self.verify_profile_view_page_uri_is_open()
 
     def assert_profile_basics_visible(self) -> None:
         """
@@ -48,13 +46,11 @@ class ProfileViewPage(BasePage):
         Click Edit button to enter the Profile Edit page
         """
         self.edit_profile.click()
-        self.page.wait_for_url(re.compile(r".*/profile-edit$"))
-        expect(self.page).to_have_url(re.compile(r".*/profile-edit$"))
+        self.verify_profile_edit_page_uri_is_open()
 
     def click_change_password_button(self) -> None:
         """
         Click Change Password button to enter the Change Password page
         """
         self.change_password.click()
-        self.page.wait_for_url(re.compile(r".*/users/\d+/change-password$"))
-        expect(self.page).to_have_url(re.compile(r".*/users/\d+/change-password$"))
+        self.verify_change_password_page_uri_is_open()

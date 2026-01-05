@@ -3,7 +3,6 @@ Page object for the Login page.
 """
 
 from __future__ import annotations
-import re
 
 from playwright.sync_api import expect, Page
 
@@ -48,7 +47,7 @@ class LoginPage(BasePage):
     def submit_credentials_success(self, username: str, password: str) -> None:
         """
         Expected: Successful login.
-        Submitting the input credentials and waiting for the /users page
+        Submitting the input credentials and waiting for the Users Table page
         """
         self.fill_credentials(username, password)
         self.submit.click()
@@ -57,7 +56,7 @@ class LoginPage(BasePage):
     def submit_credentials_error(self, username: str, password: str) -> None:
         """
         Expected: Failed login.
-        Submitting the input credentials and waiting for the error message on the /login page
+        Submitting the input credentials and waiting for the error message on the Login page
         """
         self.fill_credentials(username, password)
         self.submit.click()
@@ -69,16 +68,14 @@ class LoginPage(BasePage):
         Clicking the Create account link on the Login page
         """
         self.signup.click()
-        self.page.wait_for_url(re.compile(r".*/signup$"))
-        expect(self.page).to_have_url(re.compile(r".*/signup$"))
+        self.verify_sign_up_page_uri_is_open()
 
     def click_forgot_password_link(self) -> None:
         """
         Clicking the Forgot password? link on the Login page
         """
         self.forgot_password.click()
-        self.page.wait_for_url(re.compile(r".*/reset-password$"))
-        expect(self.page).to_have_url(re.compile(r".*/reset-password$"))
+        self.verify_reset_password_page_uri_is_open()
 
     def assert_error_visible(self) -> None:
         """

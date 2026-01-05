@@ -3,7 +3,6 @@ Page object for the Change Password page.
 """
 
 from __future__ import annotations
-import re
 
 from playwright.sync_api import expect, Page
 
@@ -35,8 +34,7 @@ class ChangePasswordPage(BasePage):
         """
         Wait for the Change Password page to load
         """
-        self.page.wait_for_url(re.compile(r".*/users/\d+/change-password$"))
-        expect(self.page).to_have_url(re.compile(r".*/users/\d+/change-password$"))
+        self.verify_change_password_page_uri_is_open()
 
     def fill_passwords(self, password: str, confirm: str) -> None:
         """

@@ -50,6 +50,7 @@ class UsersTablePage(BasePage):
         Open the users table page.
         """
         self.goto("/users")
+        self.wait_for_the_users_table_page_to_load()
 
     def search_and_wait_for_results(self, text: str) -> None:
         """
@@ -208,3 +209,10 @@ class UsersTablePage(BasePage):
             num (int): one of (5, 10, 20, 30, 50, 100, 200, 500, 1000, 2000)
         """
         self.rows_per_page_top.select_option(str(num))
+
+    def click_delete_users_and_wait_confirm_delete_page(self) -> None:
+        """
+        Click delete users button
+        """
+        self.delete_users_btn.click()
+        self.verify_confirm_user_delete_page_uri_is_open()

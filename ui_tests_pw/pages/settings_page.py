@@ -3,7 +3,6 @@ Page object for the admin Settings page.
 """
 
 from __future__ import annotations
-import re
 
 from playwright.sync_api import expect, Page
 
@@ -31,8 +30,7 @@ class SettingsPage(BasePage):
         Open the settings page.
         """
         self.goto("/settings")
-        self.page.wait_for_url(re.compile(r".*/settings$"))
-        expect(self.page).to_have_url(re.compile(r".*/settings$"))
+        self.verify_app_settings_page_uri_is_open()
 
     def change_values_save_success(self,
                                    rotate_refresh_token: bool,
@@ -42,13 +40,15 @@ class SettingsPage(BasePage):
         """
         Enter values -> Save -> Success
         """
-        cur_value = self.rotate_refresh_token.input_value()
         self.set_refresh_token_rotation(rotate_refresh_token)
-        if cur_value != "true":
-            # This param is shown on UI only if self.rotate_refresh_token is set to true
-            self.change_renew_token_at_seconds(renew_at_sec)
         self.change_idle_timeout(idle_timeout_sec)
         self.change_access_token_lifetime(access_token_lifetime)
+        # Consider UI logic: 70% of access_token_lifetime is set to renew_at_sec automatically
+        # after setting access_token_lifetime, so update renew_at_sec after changing
+        # access_token_lifetime
+        if rotate_refresh_token:
+            # This param is shown on UI only if self.rotate_refresh_token is set to true
+            self.change_renew_token_at_seconds(renew_at_sec)
         self.save.click()
         # UI logic: button becomes disabled after clicking and before getting response
         expect(self.save).to_be_enabled()
@@ -62,14 +62,13 @@ class SettingsPage(BasePage):
         """
         Enter values -> Save -> Error
         """
-        cur_value = self.rotate_refresh_token.input_value()
         self.set_refresh_token_rotation(rotate_refresh_token)
         self.change_idle_timeout(idle_timeout_sec)
         self.change_access_token_lifetime(access_token_lifetime)
         # Consider UI logic: 70% of access_token_lifetime is set to renew_at_sec automatically
         # after setting access_token_lifetime, so update renew_at_sec after changing
         # access_token_lifetime
-        if cur_value != "true":
+        if rotate_refresh_token:
             # This param is shown on UI only if self.rotate_refresh_token is set to true
             self.change_renew_token_at_seconds(renew_at_sec)
         self.save.click()

@@ -3,7 +3,6 @@ Page object for the Signup page.
 """
 
 from __future__ import annotations
-import re
 
 from playwright.sync_api import Page, expect
 
@@ -31,8 +30,7 @@ class SignupPage(BasePage):
         Open the signup page.
         """
         self.goto("/signup")
-        self.page.wait_for_url(re.compile(r".*/signup$"))
-        expect(self.page).to_have_url(re.compile(r".*/signup$"))
+        self.verify_sign_up_page_uri_is_open()
 
     def fill_form(self, email: str, username: str, password: str) -> None:
         """
@@ -58,8 +56,7 @@ class SignupPage(BasePage):
         """
         self.fill_form(email, username, password)
         self.save.click()
-        self.page.wait_for_url(re.compile(r".*/signup$"))
-        expect(self.page).to_have_url(re.compile(r".*/signup$"))
+        self.verify_sign_up_page_uri_is_open()
         self.assert_error_visible()
 
     def click_sign_in_link(self) -> None:
@@ -75,7 +72,7 @@ class SignupPage(BasePage):
         """
         expect(self.error).to_be_visible()
 
-    def assert_sign_up_is_loaded(self):
+    def assert_sign_up_is_loaded(self) -> None:
         """
         Verifying that key controls are displayed on the Sign up page
         """

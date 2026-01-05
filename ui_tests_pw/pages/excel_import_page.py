@@ -3,7 +3,6 @@ Page object for the Excel import page (admin-only).
 """
 
 from __future__ import annotations
-import re
 
 from playwright.sync_api import expect, Page, Download
 
@@ -31,8 +30,7 @@ class ExcelImportPage(BasePage):
         Open the Excel import page.
         """
         self.goto("/import-excel")
-        self.page.wait_for_url(re.compile(r".*/import-excel$"))
-        expect(self.page).to_have_url(re.compile(r".*/import-excel$"))
+        self.verify_excel_import_page_uri_is_open()
 
     def download_template(self) -> Download:
         """

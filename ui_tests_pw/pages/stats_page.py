@@ -3,7 +3,6 @@ Page object for the Stats page.
 """
 
 from __future__ import annotations
-import re
 
 from playwright.sync_api import expect, Page
 
@@ -26,8 +25,7 @@ class StatsPage(BasePage):
         Open the stats page.
         """
         self.goto("/stats")
-        self.page.wait_for_url(re.compile(r".*/stats$"))
-        expect(self.page).to_have_url(re.compile(r".*/stats$"))
+        self.verify_user_stats_page_uri_is_open()
 
     def assert_loaded(self) -> None:
         """

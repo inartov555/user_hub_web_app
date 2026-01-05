@@ -3,7 +3,6 @@ Page object for the Profile edit page.
 """
 
 from __future__ import annotations
-import re
 
 from playwright.sync_api import expect, Page
 
@@ -31,8 +30,7 @@ class ProfileEditPage(BasePage):
         Open the profile edit page.
         """
         self.goto("/profile-edit")
-        self.page.wait_for_url(re.compile(r".*/profile-edit$"))
-        expect(self.page).to_have_url(re.compile(r".*/profile-edit$"))
+        self.verify_profile_edit_page_uri_is_open()
 
     def fill_basic_fields(self, first_name: str, last_name: str, bio: str) -> None:
         """
@@ -47,16 +45,14 @@ class ProfileEditPage(BasePage):
         Click the Save button and wait for the Profile View page to load
         """
         self.save.click()
-        self.page.wait_for_url(re.compile(r".*/profile-view$"))
-        expect(self.page).to_have_url(re.compile(r".*/profile-view$"))
+        self.verify_profile_view_page_uri_is_open()
 
     def click_cancel_and_wait_profile_view(self) -> None:
         """
         Click the Cancel button and wait for the Profile View page to load
         """
         self.cancel.click()
-        self.page.wait_for_url(re.compile(r".*/profile-view$"))
-        expect(self.page).to_have_url(re.compile(r".*/profile-view$"))
+        self.verify_profile_view_page_uri_is_open()
 
     def assert_loaded(self) -> None:
         """
