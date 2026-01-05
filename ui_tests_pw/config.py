@@ -30,7 +30,7 @@ def frontend_url(path: str = "/") -> str:
         path: Relative path, e.g., "/login" or "users".
 
     Returns:
-        str, fully-qualified URL combining UI_BASE_URL, UI_BASE_PORT and the path.
+        str, fully-qualified URL combining UI_BASE_URL, UI_BASE_PORT, and the path.
     """
     trimmed = path if path.startswith("/") else f"/{path}"
     return f"{UI_BASE_URL}:{UI_BASE_PORT}{trimmed}"
