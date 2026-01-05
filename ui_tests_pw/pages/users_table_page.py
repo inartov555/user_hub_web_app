@@ -16,7 +16,7 @@ log = Logger(__name__)
 
 class UsersTablePage(BasePage):
     """
-    Encapsulates the Users table view and its sorting / filtering actions.
+    Encapsulates the Users table view and its sorting/filtering actions.
     """
 
     def __init__(self, page: Page):
@@ -30,7 +30,7 @@ class UsersTablePage(BasePage):
         self.delete_users_btn = self.page.locator("#deleteUsers")
 
         self.check_all_header = self.page.locator('input[data-tag="check-all-rows"]')
-        # This locator returs all checkboxes (NON-header ones) for the current page
+        # This locator returns all checkboxes (NON-header ones) for the current page
         self.check_rows = self.page.locator('input[data-tag="check-a-row"]')
         self.sortable_columl_header_str = 'button[data-tag="sort-by-{}"]'
         self.change_password_header = self.page.locator('div[data-tag="changePasswordHeader"]')
@@ -54,7 +54,7 @@ class UsersTablePage(BasePage):
 
     def search_and_wait_for_results(self, text: str) -> None:
         """
-        Typing text to search and waiting while Users Table finishes refreshing data
+        Typing text to search and waiting while the Users Table finishes refreshing data
         """
         expect(self.search_input).to_be_visible()
         self.search_input.fill(text)
@@ -62,7 +62,7 @@ class UsersTablePage(BasePage):
 
     def wait_till_users_table_update_finished(self) -> None:
         """
-        There's isUpdating element's text shown while Users Table data is refreshed
+        There is an updated element's text shown while the Users Table data is refreshed
         """
         self.is_updating_top.wait_for(state="detached", timeout=30000)
 
@@ -93,20 +93,20 @@ class UsersTablePage(BasePage):
         Assert that admin-only controls are hidden for a regular user.
         """
         expect(self.delete_users_btn).not_to_be_visible()
-        # No header-level checkbox for regular user.
+        # No header-level checkbox for regular users.
         expect(self.check_all_header).to_have_count(0)
         expect(self.change_password_header).to_have_count(0)
 
     def assert_username_contained_in_greeting_message(self, text: str) -> List[str]:
         """
-        Assert that username is contained in the greeting message
+        Assert that the username is contained in the greeting message
         """
         expect(self.greeting_mes).to_contain_text(text)
 
     def get_current_column_sort_order(self, column: str) -> str:
         """
-        Get current column sort order.
-        svg contains arrow-down/arrow-up/arrow-up-down in the className attribute.
+        Get the current column sort order.
+        SVG contains arrow-down/arrow-up/arrow-up-down in the className attribute.
 
         Args:
             column (str): one of (username, email, firstname, lastname)
@@ -132,7 +132,7 @@ class UsersTablePage(BasePage):
 
     def change_column_sorting(self, column: str, sort_order: str) -> None:
         """
-        Assert that username is contained in the greeting message.
+        Assert that the username is contained in the greeting message.
 
         Args:
             column (str): one of (username, email, firstname, lastname)
@@ -154,9 +154,9 @@ class UsersTablePage(BasePage):
 
         def click_until(expected: str) -> None:
             """
-            Click column header once and assert the expected icon is visible.
+            Click the column header once and assert the expected icon is visible.
             """
-            # If not step, it means that sorting order already is in the expected state
+            # If not step, it means that the sorting order is already in the expected state
             if step:
                 sorted_column_header_loc.click()
                 expect(sorted_column_header_loc.locator(icon_by_order[expected])).to_be_visible()
@@ -182,8 +182,8 @@ class UsersTablePage(BasePage):
 
     def assert_column_sorting(self, column: str, sort_order: str) -> None:
         """
-        Assert that the passed sort order for the passed column is actually applied on UI.
-        svg contains arrow-down/arrow-up/arrow-up-down in the className attribute.
+        Assert that the passed sort order for the passed column is actually applied on the UI.
+        SVG contains arrow-down/arrow-up/arrow-up-down in the className attribute.
 
         Args:
             column (str): one of (username, email, firstname, lastname)
@@ -202,7 +202,7 @@ class UsersTablePage(BasePage):
 
     def change_number_of_users_per_page_control_top(self, num: int) -> None:
         """
-        Changing number of displayed users per page in the Users Table using
+        Changing the number of displayed users per page in the Users Table using
         self.rows_per_page_top select control.
 
         Args:
@@ -212,7 +212,7 @@ class UsersTablePage(BasePage):
 
     def click_delete_users_and_wait_confirm_delete_page(self) -> None:
         """
-        Click delete users button
+        Click the Delete Users button
         """
         self.delete_users_btn.click()
         self.verify_confirm_user_delete_page_uri_is_open()
