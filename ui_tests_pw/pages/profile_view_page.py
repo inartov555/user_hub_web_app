@@ -43,14 +43,14 @@ class ProfileViewPage(BasePage):
 
     def click_edit_button(self) -> None:
         """
-        Click Edit button to enter the Profile Edit page
+        Click the Edit button to enter the Profile Edit page
         """
         self.edit_profile.click()
         self.verify_profile_edit_page_uri_is_open()
 
     def click_change_password_button(self) -> None:
         """
-        Click Change Password button to enter the Change Password page
+        Click the Change Password button to enter the Change Password page
         """
         self.change_password.click()
         self.verify_change_password_page_uri_is_open()
