@@ -19,6 +19,7 @@ RUN apt-get update \
  && apt-get install -y --no-install-recommends gettext gosu \
  && rm -rf /var/lib/apt/lists/*
 
+# PW_BROWSER is set in the run_test.sh file
 RUN python -m pip install --no-cache-dir playwright \
  && python -m playwright install --with-deps $PW_BROWSER
 
@@ -52,4 +53,5 @@ RUN sh -c 'set -eu; \
     ls -l "$MO"; \
   done'
 
+# TEST_GREP is set in the run_test.sh file
 CMD bash -lc "python -m pytest -v --tb=short -s --html='$HOST_ARTIFACTS/test_report_$(date +%Y-%m-%d_%H-%M-%S).html' $TEST_GREP"
