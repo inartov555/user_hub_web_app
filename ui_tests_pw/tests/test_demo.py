@@ -202,6 +202,8 @@ def _helper_users_table_page_regular_user(page: Page, ui_theme_param: Theme, ui_
     users_table_page.assert_column_sorting("email", "desc")
     users_table_page.assert_column_sorting("firstname", "asc")
     users_table_page.assert_column_sorting("lastname", "desc")
+    # Let's change the number of users per page to 10
+    users_table_page.change_number_of_users_per_page_control_top(10)
     # Screenshot -> Regular User -> Users Table page -> Multi-colunn sort
     take_a_screenshot(page)
 
