@@ -32,6 +32,8 @@ class LoginPage(BasePage):
         self.forgot_password = self.page.locator("a[href='/reset-password']")
 
         self.cookie_consent_div = self.page.locator("div[data-tag='cookieConsentContainer']")
+        self.cookie_consent_backdrop1 = self.page.locator("div[data-tag='cookieConsentBackdrop1']")
+        self.cookie_consent_backdrop2 = self.page.locator("div[data-tag='cookieConsentBackdrop2']")
 
     def open(self) -> None:
         """
@@ -107,4 +109,20 @@ class LoginPage(BasePage):
         """
         Remove cookie consent's whole div block from DOM
         """
-        self.cookie_consent_div.evaluate("el => el.remove()")
+        # self.page.add_init_script("""
+        #  () => {
+        #    localStorage.setItem("cookie_consent_accepted_v1", "1");
+        #    document.cookie = "cookie_consent=accepted; Path=/; SameSite=Lax";
+        #  }
+        # """)
+        # self.reload()
+
+        self.cookie_consent_div.evaluate("el => el.style.display = 'none'")
+        expect(self.cookie_consent_div).not_to_be_visible()
+
+        # if self.cookie_consent_div.count() > 0:
+        #    self.cookie_consent_div.evaluate("el => el.remove()")
+        # if self.cookie_consent_backdrop1.count() > 0:
+        #    self.cookie_consent_backdrop1.evaluate("el => el.remove()")
+        # if self.cookie_consent_backdrop2.count() > 0:
+        #    self.cookie_consent_backdrop2.evaluate("el => el.remove()")

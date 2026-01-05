@@ -52,7 +52,7 @@ def test_settings_page_not_accessible_for_regular_user(regular_users_page: Users
 @pytest.mark.admin
 @pytest.mark.parametrize(
     "rotate_refresh_token, renew_at_sec, idle_timeout_sec, access_token_lifetime",
-    [(False, 69, 65, 73)])
+    [(False, 64, 60, 68)])
 @pytest.mark.usefixtures("setup_cleanup_update_app_settings")
 def test_rotate_false_inactivity_timeout(page: Page,
                                          settings_page: SettingsPage,
@@ -85,7 +85,7 @@ def test_rotate_false_inactivity_timeout(page: Page,
 @pytest.mark.admin
 @pytest.mark.parametrize(
     "rotate_refresh_token, renew_at_sec, idle_timeout_sec, access_token_lifetime",
-    [(False, 69, 65, 73)])
+    [(False, 64, 60, 68)])
 @pytest.mark.usefixtures("setup_cleanup_update_app_settings")
 def test_rotate_false_token_lifetime(page: Page,
                                      settings_page: SettingsPage,
@@ -119,7 +119,7 @@ def test_rotate_false_token_lifetime(page: Page,
 @pytest.mark.admin
 @pytest.mark.parametrize(
     "rotate_refresh_token, renew_at_sec, idle_timeout_sec, access_token_lifetime",
-    [(True, 69, 65, 73)])
+    [(True, 64, 60, 68)])
 @pytest.mark.usefixtures("setup_cleanup_update_app_settings")
 def test_rotate_true_inactivity_timeout(page: Page,
                                         settings_page: SettingsPage,
@@ -152,7 +152,7 @@ def test_rotate_true_inactivity_timeout(page: Page,
 @pytest.mark.admin
 @pytest.mark.parametrize(
     "rotate_refresh_token, renew_at_sec, idle_timeout_sec, access_token_lifetime",
-    [(True, 69, 65, 73)])
+    [(True, 64, 60, 68)])
 @pytest.mark.usefixtures("setup_cleanup_update_app_settings")
 def test_rotate_true_token_refreshed(page: Page,
                                      settings_page: SettingsPage,
@@ -186,7 +186,7 @@ def test_rotate_true_token_refreshed(page: Page,
 @pytest.mark.admin
 @pytest.mark.parametrize(
     "rotate_refresh_token, renew_at_sec, idle_timeout_sec, access_token_lifetime",
-    [(True, 69, 65, 73)])
+    [(True, 64, 60, 68)])
 @pytest.mark.usefixtures("setup_cleanup_update_app_settings")
 def test_rotate_true_token_refreshed_indle_timeout_after(page: Page,
                                                          settings_page: SettingsPage,

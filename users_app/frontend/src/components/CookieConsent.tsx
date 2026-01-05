@@ -54,10 +54,8 @@ export default function CookieConsent() {
   };
 
   return (
-    <div data-tag="
-           cookieConsentContainer" className="fixed inset-0 z-50 flex items-end sm:items-center
-           justify-center p-4
-         "
+    <div data-tag="cookieConsentContainer" 
+         className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-4"
     >
       {/* Backdrop */}
       <div
@@ -66,17 +64,18 @@ export default function CookieConsent() {
         "
         aria-hidden="true"
       />
-      <div
-        className="
-          pointer-events-none absolute inset-0 opacity-[0.08]
-          [background-image:radial-gradient(circle_at_1px_1px,white_1px,transparent_0)]
-          [background-size:18px_18px]
-        "
-        aria-hidden="true"
+      <div data-tag="cookieConsentBackdrop1"
+           className="
+             pointer-events-none absolute inset-0 opacity-[0.08]
+             [background-image:radial-gradient(circle_at_1px_1px,white_1px,transparent_0)]
+             [background-size:18px_18px]
+           "
+           aria-hidden="true"
       />
 
       {/* Dialog */}
-      <div className="
+      <div data-tag="cookieConsentBackdrop2"
+           className="
              relative w-full max-w-xl rounded-2xl border p-4 shadow-lg border-slate-200/80
              bg-gradient-to-br from-slate-100 via-slate-50/70 to-indigo-50/60 dark:from-slate-950
              dark:via-slate-900/80 dark:to-indigo-950/80
