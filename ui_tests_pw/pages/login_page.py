@@ -35,7 +35,7 @@ class LoginPage(BasePage):
 
     def fill_credentials(self, username: str, password: str) -> None:
         """
-        Fill the username and password fields.
+        Fill in the username and password fields.
 
         Args:
             username: Username to type into the form.
@@ -47,7 +47,7 @@ class LoginPage(BasePage):
     def submit_credentials_success(self, username: str, password: str) -> None:
         """
         Expected: Successful login.
-        Submitting the input credentials and waiting for the Users Table page
+        Submit the input credentials and wait for the Users Table page
         """
         self.fill_credentials(username, password)
         self.submit.click()
@@ -56,7 +56,7 @@ class LoginPage(BasePage):
     def submit_credentials_error(self, username: str, password: str) -> None:
         """
         Expected: Failed login.
-        Submitting the input credentials and waiting for the error message on the Login page
+        Submit the input credentials and wait for the error message on the Login page
         """
         self.fill_credentials(username, password)
         self.submit.click()
