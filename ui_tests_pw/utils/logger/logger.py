@@ -21,7 +21,7 @@ class Logger:
         """
         Wrapper over logging class that initializes a logger with the config in 'tools/logger/logging.json'.
         To modify default log level edit in 'tools/logger/logging.json' the parameter json['handlers']['console']['info']
-        Logging path is LOG_PATH if defined, else the project root directory.
+        
 
         Args:
             logger_name (str): although any name can be used, it's recommended to use __name__ python variable
