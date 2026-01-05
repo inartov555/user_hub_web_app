@@ -7,7 +7,7 @@ import { extractApiError } from "../lib/httpErrors";
 import FormInput from "../components/FormInput";
 import Button from "../components/button";
 import UnifiedTitle from "../components/UnifiedTitle";
-import { SimpleErrorMessage } from "../components/ErrorAlert";
+import { SimpleErrorMessage } from "../components/Alerts";
 
 export default function ResetPassword() {
   const { t, i18n } = useTranslation();

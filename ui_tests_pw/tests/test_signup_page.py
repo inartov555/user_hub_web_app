@@ -34,7 +34,7 @@ def test_signup_page_renders(signup_page: SignupPage,
     signup_page.assert_text_localization(ui_locale_param, actual, expected)
 
 
-@pytest.mark.parametrize("suffix", ["one", "two", "three"])
+@pytest.mark.parametrize("suffix", ["oak", "viburnum", "spruce"])
 @pytest.mark.usefixtures("cleanup_delete_users_by_suffix")
 def test_signup_with_random_username(page: Page,
                                      signup_page: SignupPage,

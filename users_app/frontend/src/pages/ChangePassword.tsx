@@ -9,7 +9,7 @@ import FormInput from "../components/FormInput";
 import Button from "../components/button";
 import PasswordInput from "../components/PasswordInput";
 import UnifiedTitle from "../components/UnifiedTitle";
-import { SimpleErrorMessage } from "../components/ErrorAlert";
+import { SimpleErrorMessage } from "../components/Alerts";
 
 export default function ChangePassword() {
   const { t, i18n } = useTranslation();

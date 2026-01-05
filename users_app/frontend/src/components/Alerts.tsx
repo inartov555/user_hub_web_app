@@ -1,4 +1,5 @@
 import * as React from "react";
+import { AlertTriangle, CheckCircle, Info } from "lucide-react";
 
 type ErrorAlertProps = {
   message?: unknown;
@@ -32,6 +33,7 @@ export default function ErrorAlert({ message, title }: ErrorAlertProps) {
       className="rounded-xl border border-red-200 bg-red-50 text-red-800
                  dark:border-red-900/50 dark:bg-red-900/20 dark:text-red-200 p-4"
     >
+      <AlertTriangle className="h-4 w-4 mb-2" />
       {title ? <div className="font-semibold mb-2">{title}</div> : null}
       <ul className="space-y-1">
         {lines.map((line, i) => (
@@ -53,7 +55,14 @@ export function SimpleErrorMessage({ errorUi, errorBackend }: SimpleErrorMessage
   if (!errorBackend) return null;
   const text = [errorUi, errorBackend].filter(Boolean).join(" ");
   return (
-    <div data-tag="simpleErrorMessage" className="text-sm text-red-600 whitespace-pre-line">
+    <div data-tag="simpleErrorMessage"
+         className="
+           rounded-xl border border-rose-200/60 bg-rose-50/40 px-3 py-2
+           backdrop-blur-sm text-sm text-rose-700 whitespace-pre-line
+           dark:border-rose-500/25 dark:bg-rose-950/20 dark:text-rose-200
+         "
+    >
+      <AlertTriangle className="h-4 w-4 mb-2" />
       <p className="text-red-600 text-sm whitespace-pre-line">{text}</p>
     </div>
   );

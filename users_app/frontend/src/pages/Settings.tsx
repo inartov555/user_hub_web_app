@@ -6,7 +6,7 @@ import { useAuthStore } from "../auth/store";
 import { extractApiError } from "../lib/httpErrors";
 import Button from "../components/button";
 import UnifiedTitle from "../components/UnifiedTitle";
-import { SimpleErrorMessage } from "../components/ErrorAlert";
+import { SimpleErrorMessage } from "../components/Alerts";
 
 export default function Settings() {
   const { t } = useTranslation();

@@ -18,7 +18,7 @@ from utils.theme import Theme
 @pytest.mark.localization
 @pytest.mark.parametrize("ui_theme_param", ThemeConsts.ALL_SUPPORTED_THEMES)
 @pytest.mark.parametrize("ui_locale_param", LocaleConsts.ALL_SUPPORTED_LOCALES)
-@pytest.mark.parametrize("suffix", ["one"])
+@pytest.mark.parametrize("suffix", ["tomato"])
 @pytest.mark.usefixtures("setup_create_users_by_suffix")
 @pytest.mark.usefixtures("cleanup_delete_users_by_suffix")
 @pytest.mark.usefixtures("cleanup_set_default_theme_and_locale")
@@ -59,7 +59,7 @@ def test_admin_can_navigate_to_delete_confirm(page: Page,
 
 
 @pytest.mark.admin
-@pytest.mark.parametrize("suffix", ["one"])
+@pytest.mark.parametrize("suffix", ["potato"])
 @pytest.mark.usefixtures("setup_create_users_by_suffix")
 @pytest.mark.usefixtures("cleanup_delete_users_by_suffix")
 def test_admin_can_cancel_delete_confirm(page: Page,

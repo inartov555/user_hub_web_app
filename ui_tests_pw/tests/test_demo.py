@@ -153,6 +153,7 @@ def _helper_user_delete_page(page: Page, ui_theme_param: Theme, ui_locale_param:
     """
     This is a helper function that takes screenshots on the User Delete page (Success/Error cases)
     """
+    # User creation is made in _helper_users_table_page_admin_user()
     username = "aaa-admin-wild-watermelon"
     email = f"{username}@delete.com"
     # Now, let's set locale and theme for the User Delete Confirm page

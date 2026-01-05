@@ -6,7 +6,7 @@ import { api } from "../lib/axios";
 import { extractApiError } from "../lib/httpErrors";
 import { useAuthStore } from "../auth/store";
 import Button from "../components/button";
-import ErrorAlert from "../components/ErrorAlert";
+import ErrorAlert from "../components/Alerts";
 import UnifiedTitle from "../components/UnifiedTitle";
 
 type ProfileUser = {

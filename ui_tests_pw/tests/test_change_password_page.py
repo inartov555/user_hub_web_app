@@ -54,7 +54,7 @@ def test_regular_user_cannot_change_other_users_password(regular_users_page: Use
 
 
 @pytest.mark.admin
-@pytest.mark.parametrize("suffix", ["one"])
+@pytest.mark.parametrize("suffix", ["birch"])
 @pytest.mark.usefixtures("setup_create_users_by_suffix")
 @pytest.mark.usefixtures("cleanup_delete_users_by_suffix")
 def test_admin_can_change_password_for_any_user(page: Page,

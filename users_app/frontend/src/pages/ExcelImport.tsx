@@ -7,7 +7,7 @@ import { useAuthStore } from "../auth/store";
 import { Input } from "../components/input";
 import Button from "../components/button";
 import UnifiedTitle from "../components/UnifiedTitle";
-import { SimpleErrorMessage } from "../components/ErrorAlert";
+import { SimpleErrorMessage } from "../components/Alerts";
 
 export default function ExcelImportPanel() {
   const { t } = useTranslation();

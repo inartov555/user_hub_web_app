@@ -9,7 +9,7 @@ import { useAuthStore } from "../auth/store";
 import { Card, CardHeader, CardBody } from "../components/card";
 import Button from "../components/button";
 import PasswordInput from "../components/PasswordInput";
-import { SimpleErrorMessage } from "../components/ErrorAlert";
+import { SimpleErrorMessage } from "../components/Alerts";
 
 type User = {
   id: number;

@@ -8,7 +8,7 @@ import { useAuthStore } from "../auth/store";
 import FormInput from "../components/FormInput";
 import { Input } from "../components/input";
 import Button from "../components/button";
-import ErrorAlert from "../components/ErrorAlert";
+import ErrorAlert from "../components/Alerts";
 import UnifiedTitle from "../components/UnifiedTitle";
 
 type ProfileUser = {
