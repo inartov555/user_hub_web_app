@@ -120,12 +120,11 @@ class BasePage:
             # strict
             assert expected == actual, err_msg
 
-    def wait_for_the_users_table_page_to_load(self):
+    def wait_for_the_users_table_page_to_load(self) -> None:
         """
         Cross-page solution to wait for the Users Table page to show
         """
-        self.page.wait_for_url(re.compile(r".*/users$"))
-        expect(self.page).to_have_url(re.compile(r".*/users$"))
+        self.verify_users_table_page_uri_is_open()
 
         # Wait for the login API call to succeed
         # with self.page.expect_response(re.compile(r".*/api/v1/users/\?page.*"), timeout=20000) as res:
@@ -136,7 +135,7 @@ class BasePage:
         self.users_tab.wait_for(state="visible")
         self.search_input.wait_for(state="visible")
 
-    def click_logout_and_wait_for_login_page(self):
+    def click_logout_and_wait_for_login_page(self) -> None:
         """
         Cross-page solution to logout in UI
         """
@@ -147,8 +146,7 @@ class BasePage:
         """
         Verify if Login page is displayed
         """
-        self.page.wait_for_url(re.compile(r".*/login$"))
-        expect(self.page).to_have_url(re.compile(r".*/login$"))
+        self.verify_login_page_uri_is_open()
 
     def click_users_tab(self) -> None:
         """
@@ -162,8 +160,7 @@ class BasePage:
         Click the Profile tab
         """
         self.profile_tab.click()
-        self.page.wait_for_url(re.compile(r".*/profile-view$"))
-        expect(self.page).to_have_url(re.compile(r".*/profile-view$"))
+        self.verify_profile_view_page_uri_is_open()
 
     def click_additional_user_stats_tab(self) -> None:
         """
@@ -171,8 +168,7 @@ class BasePage:
         """
         self.additional_tab.click()
         self.users_stats_tab.click()
-        self.page.wait_for_url(re.compile(r".*/stats$"))
-        expect(self.page).to_have_url(re.compile(r".*/stats$"))
+        self.verify_user_stats_page_uri_is_open()
 
     def click_additional_app_settings_tab(self) -> None:
         """
@@ -180,8 +176,7 @@ class BasePage:
         """
         self.additional_tab.click()
         self.app_settings_tab.click()
-        self.page.wait_for_url(re.compile(r".*/settings$"))
-        expect(self.page).to_have_url(re.compile(r".*/settings$"))
+        self.verify_app_settings_page_uri_is_open()
 
     def click_additional_excel_import_tab(self) -> None:
         """
@@ -189,8 +184,7 @@ class BasePage:
         """
         self.additional_tab.click()
         self.excel_import_tab.click()
-        self.page.wait_for_url(re.compile(r".*/import-excel$"))
-        expect(self.page).to_have_url(re.compile(r".*/import-excel$"))
+        self.verify_excel_import_page_uri_is_open()
 
     def accept_cookie_consent_if_present(self) -> None:
         """
@@ -211,3 +205,80 @@ class BasePage:
         """
         self.cookie_consent_div.evaluate("el => el.style.display = 'none'")
         expect(self.cookie_consent_div).not_to_be_visible()
+
+    def verify_login_page_uri_is_open(self) -> None:
+        """
+        Verify that page with /login URI is shown now
+        """
+        self.page.wait_for_url(re.compile(r".*/login$"))
+        expect(self.page).to_have_url(re.compile(r".*/login$"))
+
+    def verify_sign_up_page_uri_is_open(self) -> None:
+        """
+        Verify that page with /signup URI is shown now
+        """
+        self.page.wait_for_url(re.compile(r".*/signup$"))
+        expect(self.page).to_have_url(re.compile(r".*/signup$"))
+
+    def verify_reset_password_page_uri_is_open(self) -> None:
+        """
+        Verify that page with /reset-password URI is shown now
+        """
+        self.page.wait_for_url(re.compile(r".*/reset-password$"))
+        expect(self.page).to_have_url(re.compile(r".*/reset-password$"))
+
+    def verify_users_table_page_uri_is_open(self) -> None:
+        """
+        Verify that page with /users URI is shown now
+        """
+        self.page.wait_for_url(re.compile(r".*/users$"))
+        expect(self.page).to_have_url(re.compile(r".*/users$"))
+
+    def verify_confirm_user_delete_page_uri_is_open(self) -> None:
+        """
+        Verify that page with /users/confirm-delete URI is shown now
+        """
+        self.page.wait_for_url(re.compile(r".*/users/confirm-delete$"))
+        expect(self.page).to_have_url(re.compile(r".*/users/confirm-delete$"))
+
+    def verify_profile_view_page_uri_is_open(self) -> None:
+        """
+        Verify that page with /profile-view URI is shown now
+        """
+        self.page.wait_for_url(re.compile(r".*/profile-view$"))
+        expect(self.page).to_have_url(re.compile(r".*/profile-view$"))
+
+    def verify_change_password_page_uri_is_open(self) -> None:
+        """
+        Verify that page with /users/\d+/change-password URI is shown now
+        """
+        self.page.wait_for_url(re.compile(r".*/users/\d+/change-password$"))
+        expect(self.page).to_have_url(re.compile(r".*/users/\d+/change-password$"))
+
+    def verify_profile_edit_page_uri_is_open(self) -> None:
+        """
+        Verify that page with /profile-edit URI is shown now
+        """
+        self.page.wait_for_url(re.compile(r".*/profile-edit$"))
+        expect(self.page).to_have_url(re.compile(r".*/profile-edit$"))
+
+    def verify_user_stats_page_uri_is_open(self) -> None:
+        """
+        Verify that page with /stats URI is shown now
+        """
+        self.page.wait_for_url(re.compile(r".*/stats$"))
+        expect(self.page).to_have_url(re.compile(r".*/stats$"))
+
+    def verify_app_settings_page_uri_is_open(self) -> None:
+        """
+        Verify that page with /settings URI is shown now
+        """
+        self.page.wait_for_url(re.compile(r".*/settings$"))
+        expect(self.page).to_have_url(re.compile(r".*/settings$"))
+
+    def verify_excel_import_page_uri_is_open(self) -> None:
+        """
+        Verify that page with /import-excel URI is shown now
+        """
+        self.page.wait_for_url(re.compile(r".*/import-excel$"))
+        expect(self.page).to_have_url(re.compile(r".*/import-excel$"))
