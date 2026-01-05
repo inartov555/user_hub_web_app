@@ -64,7 +64,7 @@ class ProfileEditPage(BasePage):
 
     def remove_maxlength_attribute_from_input_fields(self) -> None:
         """
-        Remove maxlength attribute from the input fields for further error validation
+        Remove the maxlength attribute from the input fields for further error validation
         """
         self.first_name.evaluate("node => node.removeAttribute('maxlength')")
         self.last_name.evaluate("node => node.removeAttribute('maxlength')")
@@ -72,6 +72,6 @@ class ProfileEditPage(BasePage):
 
     def assert_error_alert_shown(self) -> None:
         """
-        Verify that error alert is shown when e.g. field length exceeded
+        Verify that the error alert is shown when, e.g. field length exceeded
         """
         expect(self.error).to_be_visible()
