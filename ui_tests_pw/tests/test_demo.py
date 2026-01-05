@@ -279,9 +279,7 @@ def _helper_app_settings_page_admin_user(page: Page, ui_theme_param: Theme, ui_l
     # Screenshot -> Admin User -> App Settings Page
     take_a_screenshot(page)
     # Let's check the error validation
-    app_settings_page.change_idle_timeout(1234567890)
-    app_settings_page.save.click()
-    app_settings_page.assert_error_visible()
+    app_settings_page.change_values_save_error(True, 13, 13, 13)
     # Screenshot -> Admin User -> App Settings Page -> Error case
     take_a_screenshot(page)
 

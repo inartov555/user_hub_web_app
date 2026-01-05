@@ -5,7 +5,7 @@ Tests for the admin Settings page.
 from __future__ import annotations
 
 import pytest
-from playwright.sync_api import expect
+from playwright.sync_api import expect, Page
 
 from config import (
     DEFAULT_ADMIN_USERNAME,
@@ -16,7 +16,6 @@ from pages.settings_page import SettingsPage
 from pages.users_table_page import UsersTablePage
 from pages.login_page import LoginPage
 from utils.theme import Theme
-from utils.auth import get_api_utils
 
 
 @pytest.mark.admin
@@ -89,11 +88,11 @@ def test_rotate_false_inactivity_timeout(page: Page,
     [(False, 69, 65, 73)])
 @pytest.mark.usefixtures("setup_cleanup_update_app_settings")
 def test_rotate_false_token_lifetime(page: Page,
-                                         settings_page: SettingsPage,
-                                         rotate_refresh_token,
-                                         renew_at_sec,  # pylint: disable=unused-argument
-                                         idle_timeout_sec,
-                                         access_token_lifetime) -> None:
+                                     settings_page: SettingsPage,
+                                     rotate_refresh_token,
+                                     renew_at_sec,  # pylint: disable=unused-argument
+                                     idle_timeout_sec,
+                                     access_token_lifetime) -> None:
     """
     1. ROTATE_REFRESH_TOKENS is False
     2. User makes some actions, e.g., opens tabs, etc., for (access_token_lifetime) seconds
@@ -123,11 +122,11 @@ def test_rotate_false_token_lifetime(page: Page,
     [(True, 69, 65, 73)])
 @pytest.mark.usefixtures("setup_cleanup_update_app_settings")
 def test_rotate_true_inactivity_timeout(page: Page,
-                                         settings_page: SettingsPage,
-                                         rotate_refresh_token,
-                                         renew_at_sec,
-                                         idle_timeout_sec,
-                                         access_token_lifetime) -> None:
+                                        settings_page: SettingsPage,
+                                        rotate_refresh_token,
+                                        renew_at_sec,
+                                        idle_timeout_sec,
+                                        access_token_lifetime) -> None:
     """
     1. ROTATE_REFRESH_TOKENS is True
     2. User logs in and just waits for idle timeout (no actions on UI or API)
@@ -156,11 +155,11 @@ def test_rotate_true_inactivity_timeout(page: Page,
     [(True, 69, 65, 73)])
 @pytest.mark.usefixtures("setup_cleanup_update_app_settings")
 def test_rotate_true_token_refreshed(page: Page,
-                                         settings_page: SettingsPage,
-                                         rotate_refresh_token,
-                                         renew_at_sec,
-                                         idle_timeout_sec,
-                                         access_token_lifetime) -> None:
+                                     settings_page: SettingsPage,
+                                     rotate_refresh_token,
+                                     renew_at_sec,
+                                     idle_timeout_sec,
+                                     access_token_lifetime) -> None:
     """
     1. ROTATE_REFRESH_TOKENS is True
     2. User makes some actions, e.g., opens tabs, etc., for (access_token_lifetime + 5) seconds
@@ -213,7 +212,7 @@ def test_rotate_true_token_refreshed_indle_timeout_after(page: Page,
     settings_page.click_logout_and_wait_for_login_page()
     LoginPage(page).submit_credentials_success(DEFAULT_ADMIN_USERNAME, DEFAULT_ADMIN_PASSWORD)
     # Now let's refresh the Users Table page for (access_token_lifetime + 5) seconds
-    for index in range(access_token_lifetime + 5):
+    for _ in range(access_token_lifetime + 5):
         settings_page.wait_a_bit(1)
         settings_page.reload()  # reloading Users Table page (it got displayed after re-logging in)
     # Verifying if the Users Table page still shown and user session kept alive
