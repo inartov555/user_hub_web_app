@@ -78,8 +78,8 @@
     "result": "Wynik",
     "importSuccessful": "Import zakończony pomyślnie",
     "selectedFile": "Wybrano:",
-    "excelImportFailure": "Błąd przesyłania pliku Excel:",
-    "templateDownloadFailed": "Nie udało się pobrać szablonu:"
+    "excelImportFailure": "Błąd przesyłania pliku Excel",
+    "templateDownloadFailed": "Nie udało się pobrać szablonu"
   },
   "profileEdit": {
     "editProfile": "Edytuj profil",

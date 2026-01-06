@@ -78,8 +78,8 @@
     "result": "Result",
     "importSuccessful": "Import completed successfully",
     "selectedFile": "Selected:",
-    "excelImportFailure": "Excel upload failure:",
-    "templateDownloadFailed": "Failed to download template:"
+    "excelImportFailure": "Excel upload failure",
+    "templateDownloadFailed": "Failed to download template"
   },
   "profileEdit": {
     "editProfile": "Edit profile",
