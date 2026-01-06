@@ -80,7 +80,7 @@ export default function Navbar() {
     >
       {/* 3-column grid: Left (logo) | Middle (two tab rows) | Right (user/lang) */}
       <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-[auto_1fr_auto] items-start gap-3 p-3"
-           style={{ maxWidth: "1352px" }}
+           style={{ maxWidth: "1360px" }}
       >
         {/* Left: app title */}
         <div className="justify-self-start">
