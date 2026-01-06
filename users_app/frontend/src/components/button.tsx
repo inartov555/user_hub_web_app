@@ -20,7 +20,7 @@ export default function Button({
     {
       primary:
         "text-white shadow-soft " +
-        "bg-gradient-to-r from-brand-600/80 via-fuchsia-600/60 to-indigo-600/60 " +
+        "bg-gradient-to-r from-brand-600/85 to-indigo-600/60 " +
         "hover:brightness-[1.015] hover:shadow-card " +
         "active:translate-y-[0.5px] active:brightness-[0.985] " +
         "ring-1 ring-white/8",
