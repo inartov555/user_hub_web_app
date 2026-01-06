@@ -9,10 +9,11 @@ from django.http import HttpResponse
 from django.contrib.auth import get_user_model
 from django.utils import translation
 import pandas as pd
-from rest_framework import permissions, status
+from rest_framework import permissions
 from rest_framework.views import APIView
 from rest_framework.parsers import MultiPartParser
 from rest_framework.response import Response
+from rest_framework.exceptions import ValidationError
 
 from ..models.profile import Profile
 from ..serializers.user_serializer import UserSerializer
@@ -103,8 +104,9 @@ class ExcelUploadView(APIView):
         user_model = get_user_model()
         file = request.FILES.get("file")
         if not file:
-            return Response({"detail": translation.gettext("No file provided")},
-                            status=status.HTTP_400_BAD_REQUEST)
+            raise ValidationError(
+                {"file_input": translation.gettext("No file provided")}
+            )
         df = pd.read_excel(file)
         created, updated, processed = 0, 0, 0
         for _, row in df.iterrows():
