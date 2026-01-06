@@ -79,13 +79,15 @@ export default function Navbar() {
             "
     >
       {/* 3-column grid: Left (logo) | Middle (two tab rows) | Right (user/lang) */}
-      <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-[auto_1fr_auto] items-start gap-3 p-3">
+      <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-[auto_1fr_auto] items-start gap-3 p-3"
+           style={{ maxWidth: "1352px" }}
+      >
         {/* Left: app title */}
         <div className="justify-self-start">
-          {/* <Brand title={t("app.title")} /> */}
+          <Brand title={t("app.title")} />
           {/* Localization for the Brand component is disabled, for now */}
           {/* Localized text takes more place and all tabs become messed up */}
-          <Brand />
+          {/* <Brand title="Users App" /> */}
         </div>
 
         {/* Middle: TWO ROWS, left-aligned; row 2 starts exactly under row 1 */}
@@ -156,6 +158,7 @@ export default function Navbar() {
         <div className="flex items-center gap-3 justify-self-end">
           {user && (
             <>
+              {/* Greeting message */}
               <div className="
                      bg-gray-200 border rounded-full px-2 py-1 text-sm flex items-center gap-2 dark:bg-slate-900
                      dark:text-slate-100 dark:placeholder-slate-500 dark:border-slate-700
@@ -168,6 +171,7 @@ export default function Navbar() {
                   {t("app.hiUser", { username: user.username })}
                 </span>
               </div>
+
               <Button
                 id="logout"
                 onClick={() => {
