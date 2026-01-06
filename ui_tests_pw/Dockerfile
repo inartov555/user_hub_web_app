@@ -20,8 +20,15 @@ RUN apt-get update \
  && rm -rf /var/lib/apt/lists/*
 
 # PW_BROWSER is set in the run_test.sh file
-RUN python -m pip install --no-cache-dir playwright \
- && python -m playwright install --with-deps $PW_BROWSER
+# Install branded browser channels only when requested (msedge/chrome)
+RUN set -eux; \
+  if [ "$PW_BROWSER" = "msedge" ] || [ "$PW_BROWSER" = "chrome" ]; then \
+    for i in 1 2 3; do \
+        apt-get update && python -m playwright install --with-deps "$PW_BROWSER" && break; \
+      echo "Retry $i failed, retrying..."; sleep 5; \
+    done; \
+    rm -rf /var/lib/apt/lists/*; \
+  fi
 
 RUN chown -R pwuser:pwuser /tests
 USER pwuser
