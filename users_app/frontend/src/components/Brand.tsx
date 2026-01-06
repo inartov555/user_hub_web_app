@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 
-export default function Brand({ title }: { title: string }) {
+export default function Brand({ title }: { title?: string }) {
   return (
     <Link
       data-tag="brandInfo"

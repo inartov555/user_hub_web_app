@@ -82,7 +82,10 @@ export default function Navbar() {
       <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-[auto_1fr_auto] items-start gap-3 p-3">
         {/* Left: app title */}
         <div className="justify-self-start">
-          <Brand title={t("app.title")} />
+          {/* <Brand title={t("app.title")} /> */}
+          {/* Localization for the Brand component is disabled, for now */}
+          {/* Localized text takes more place and all tabs become messed up */}
+          <Brand />
         </div>
 
         {/* Middle: TWO ROWS, left-aligned; row 2 starts exactly under row 1 */}
