@@ -53,12 +53,12 @@ export function SimpleErrorMessage({ errorUi, errorBackend }: { errorUi?: string
     <div data-tag="simpleErrorMessage"
          className="
            rounded-xl border border-rose-200/60 bg-rose-50/40 px-3 py-2
-           backdrop-blur-sm text-sm text-rose-700 whitespace-pre-line
-           dark:border-rose-500/25 dark:bg-rose-950/20 dark:text-rose-200
+           backdrop-blur-sm text-sm text-rose-600 whitespace-pre-line
+           dark:border-rose-500/25 dark:bg-rose-950/20 dark:text-rose-300
          "
     >
-      <AlertTriangle className="h-6 w-6 mb-2 mt-2" />
-      <p className="text-red-600 text-sm whitespace-pre-line ml-2">{text}</p>
+      <AlertTriangle className="h-6 w-6 mb-2 mt-2 text-rose-600 dark:text-rose-300" />
+      <p className="whitespace-pre-line ml-2">{text}</p>
     </div>
   );
 }

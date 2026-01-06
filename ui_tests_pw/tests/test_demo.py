@@ -78,7 +78,7 @@ def _helper_signup_page(page: Page, ui_theme_param: Theme, ui_locale_param: str)
     # Screenshot -> Signup page
     take_a_screenshot(page)
     signup_page = SignupPage(page)
-    signup_page.submit_credentials_error("invalid", "", "invalid")
+    signup_page.submit_credentials_error("mail", "", "mail")
     # Screenshot -> Signup page -> Error
     take_a_screenshot(page)
     # Getting back to the /login page
