@@ -27,14 +27,14 @@
     "signin": "Iniciar sesión",
     "forgotPassword": "¿Olvidaste tu contraseña?",
     "createAccount": "Crear cuenta",
-    "loginFailed": "Error al iniciar sesión: {{message}}"
+    "loginFailed": "Error al iniciar sesión"
   },
   "signup": {
     "title": "Registrarse",
     "email": "Correo electrónico",
     "username": "Nombre de usuario",
     "password": "Contraseña",
-    "signupFailed": "Error de registro: {{message}}"
+    "signupFailed": "Error de registro"
   },
   "users": {
     "title": "Usuarios",

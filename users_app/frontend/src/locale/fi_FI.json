@@ -27,14 +27,14 @@
     "signin": "Kirjaudu sisään",
     "forgotPassword": "Unohditko salasanan?",
     "createAccount": "Luo tili",
-    "loginFailed": "Kirjautuminen epäonnistui: {{message}}"
+    "loginFailed": "Kirjautuminen epäonnistui"
   },
   "signup": {
     "title": "Rekisteröidy",
     "email": "Sähköposti",
     "username": "Käyttäjänimi",
     "password": "Salasana",
-    "signupFailed": "Rekisteröinti epäonnistui: {{message}}"
+    "signupFailed": "Rekisteröinti epäonnistui"
   },
   "users": {
     "title": "Käyttäjät",

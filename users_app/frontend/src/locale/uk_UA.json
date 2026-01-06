@@ -27,14 +27,14 @@
     "signin": "Увійти",
     "forgotPassword": "Забули пароль?",
     "createAccount": "Створити обліковий запис",
-    "loginFailed": "Не вдалося увійти: {{message}}"
+    "loginFailed": "Не вдалося увійти"
   },
   "signup": {
     "title": "Зареєструватися",
     "email": "Електронна пошта",
     "username": "Ім’я користувача",
     "password": "Пароль",
-    "signupFailed": "Реєстрація не вдалася: {{message}}"
+    "signupFailed": "Реєстрація не вдалася"
   },
   "users": {
     "title": "Користувачі",

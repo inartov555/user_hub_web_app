@@ -112,7 +112,12 @@ def _helper_reset_password_page(page: Page, ui_theme_param: Theme, ui_locale_par
     reset_password_page.click_sign_in_link()
 
 
-def _helper_users_table_page_admin_user(page: Page, ui_theme_param: Theme, ui_locale_param: str) -> None:
+def _helper_users_table_page_admin_user(page: Page,
+                                        ui_theme_param: Theme,
+                                        ui_locale_param: str,
+                                        username: str,
+                                        email: str,
+                                        password: str) -> None:
     """
     This is a helper function that takes screenshots on the Users Table page (table, controls)
     """
@@ -135,9 +140,6 @@ def _helper_users_table_page_admin_user(page: Page, ui_theme_param: Theme, ui_lo
     take_a_screenshot(page)
     # Let's create a user which will be deleted right before confirming deletion
     api_utils = get_api_utils()
-    username = "aaa-admin-wild-watermelon"
-    email = f"{username}@delete.com"
-    password = "Ch@ngeme123"
     api_utils.create_user(username, email, password)
     users_table_page.search_and_wait_for_results("admin")
     # There are supposed to be 2 users: admin and just created one
@@ -149,13 +151,14 @@ def _helper_users_table_page_admin_user(page: Page, ui_theme_param: Theme, ui_lo
     take_a_screenshot(page)
 
 
-def _helper_user_delete_page(page: Page, ui_theme_param: Theme, ui_locale_param: str) -> None:
+def _helper_user_delete_page(page: Page,
+                             ui_theme_param: Theme,
+                             ui_locale_param: str,
+                             username: str,
+                             email: str) -> None:
     """
     This is a helper function that takes screenshots on the User Delete page (Success/Error cases)
     """
-    # User creation is made in _helper_users_table_page_admin_user()
-    username = "admin-wild-watermelon"
-    email = f"{username}@delete-after-test.com"
     # Now, let's set locale and theme for the User Delete Confirm page
     users_table_page = UsersTablePage(page)
     users_table_page.ensure_theme(ui_theme_param)
@@ -359,6 +362,10 @@ def test_base_demo(page: Page,
     """
     Base DEMO test to run multiple pages and take screenshots
     """
+    username = "admin-wild-watermelon"
+    email = f"{username}@delete-after-testing.com"
+    password = "Ch@ngeme123"
+
     _helper_login_page(page,
                        ui_theme_param,
                        ui_locale_param)
@@ -370,10 +377,15 @@ def test_base_demo(page: Page,
                                 ui_locale_param)
     _helper_users_table_page_admin_user(page,
                                         ui_theme_param,
-                                        ui_locale_param)
+                                        ui_locale_param,
+                                        username,
+                                        email,
+                                        password)
     _helper_user_delete_page(page,
                              ui_theme_param,
-                             ui_locale_param)
+                             ui_locale_param,
+                             username,
+                             email)
     _helper_change_password_page(page,
                                  ui_theme_param,
                                  ui_locale_param)
@@ -416,6 +428,10 @@ def test_locale_demo(page: Page,
     """
     Locale DEMO test to run multiple pages and take screenshots
     """
+    username = "admin-wild-watermelon"
+    email = f"{username}@delete-after-testing.com"
+    password = "Ch@ngeme123"
+
     _helper_login_page(page,
                        ui_theme_param,
                        LocaleConsts.ESTONIAN)
@@ -427,10 +443,15 @@ def test_locale_demo(page: Page,
                                 LocaleConsts.ENGLISH_US)
     _helper_users_table_page_admin_user(page,
                                         ui_theme_param,
-                                        LocaleConsts.UKRAINIAN)
+                                        LocaleConsts.UKRAINIAN,
+                                        username,
+                                        email,
+                                        password)
     _helper_user_delete_page(page,
                              ui_theme_param,
-                             LocaleConsts.CZECH)
+                             LocaleConsts.CZECH,
+                             username,
+                             email)
     _helper_change_password_page(page,
                                  ui_theme_param,
                                  LocaleConsts.POLISH)

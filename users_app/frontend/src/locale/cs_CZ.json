@@ -27,14 +27,14 @@
     "signin": "Přihlásit se",
     "forgotPassword": "Zapomněli jste heslo?",
     "createAccount": "Vytvořit účet",
-    "loginFailed": "Přihlášení se nezdařilo: {{message}}"
+    "loginFailed": "Přihlášení se nezdařilo"
   },
   "signup": {
     "title": "Zaregistrovat se",
     "email": "E-mail",
     "username": "Uživatelské jméno",
     "password": "Heslo",
-    "signupFailed": "Registrace se nezdařila: {{message}}"
+    "signupFailed": "Registrace se nezdařila"
   },
   "users": {
     "title": "Uživatelé",

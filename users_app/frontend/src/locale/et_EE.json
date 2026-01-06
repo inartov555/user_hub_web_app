@@ -27,14 +27,14 @@
     "signin": "Logi sisse",
     "forgotPassword": "Unustasid parooli?",
     "createAccount": "Loo konto",
-    "loginFailed": "Sisselogimine ebaõnnestus: {{message}}"
+    "loginFailed": "Sisselogimine ebaõnnestus"
   },
   "signup": {
     "title": "Registreeru",
     "email": "E-post",
     "username": "Kasutajanimi",
     "password": "Parool",
-    "signupFailed": "Registreerimine ebaõnnestus: {{message}}"
+    "signupFailed": "Registreerimine ebaõnnestus"
   },
   "users": {
     "title": "Kasutajad",

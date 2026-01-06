@@ -45,7 +45,7 @@ function getArrayFromString(stringValue: string, arrayToAppend: Array<string>, i
 } 
 
 export function extractApiError(err: unknown, t?: TFunction): { message: string; fields?: Record<string,string[]> } {
-  const fallback = { message: "\n" + authErrorMessage("httpError.fallBack", t) };
+  const fallback = { message: authErrorMessage("httpError.fallBack", t) };
   let status: number | undefined;
   let data: unknown;
   const NBSP = "\u00A0";
@@ -58,7 +58,7 @@ export function extractApiError(err: unknown, t?: TFunction): { message: string;
     data = ax.response?.data;
     // Network/timeout: Axios error without a response object
     if (!ax.response) {
-      return { message: "\n" + authErrorMessage("httpError.networkError", t) };
+      return { message: authErrorMessage("httpError.networkError", t) };
     }
   } else if (isRecord(err)) {
     // cases: thrown AxiosResponse, or a custom error wrapper
@@ -74,7 +74,7 @@ export function extractApiError(err: unknown, t?: TFunction): { message: string;
   if (!data) {
     return {
       message:
-        "\n" + authErrorMessage("httpError.serverError", t) +
+        authErrorMessage("httpError.serverError", t) +
         (status ? ` (${status}).` : ""),
     };
   }
@@ -84,7 +84,6 @@ export function extractApiError(err: unknown, t?: TFunction): { message: string;
     // {"message": "A server error occurred.", "detail":"Cannot delete current user."}
     let mes_det_arr: string[] = [];
     if (typeof (data as any).message === "string") {
-      mes_det_arr.push("\n")
       mes_det_arr.push((data as any).message);
     }
 
@@ -141,7 +140,6 @@ export function extractApiError(err: unknown, t?: TFunction): { message: string;
     let err_mes_det_arr: string[] = [];
     const errorObj = isRecord((data as any).error) ? (data as any).error : null;
     if (errorObj && typeof (errorObj as any).message === "string") {
-      err_mes_det_arr.push("\n")
       err_mes_det_arr.push((errorObj as any).message);
     }
 

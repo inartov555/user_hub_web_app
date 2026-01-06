@@ -27,14 +27,14 @@
     "signin": "Sign in",
     "forgotPassword": "Forgot password?",
     "createAccount": "Create account",
-    "loginFailed": "Login failed: {{message}}"
+    "loginFailed": "Login failed"
   },
   "signup": {
     "title": "Sign up",
     "email": "Email",
     "username": "Username",
     "password": "Password",
-    "signupFailed": "Sign-up failed: {{message}}"
+    "signupFailed": "Sign-up failed"
   },
   "users": {
     "title": "Users",
@@ -128,7 +128,8 @@
   "resetPassword": {
     "resetPassword": "Reset password",
     "checkEmailForResetLink": "Check the console email backend for the password reset link. Note: emails aren’t actually being sent right now.",
-    "sendResetEmail": "Send reset email"
+    "sendResetEmail": "Send reset email",
+    "resetPasswordFailed": "Password reset failed"
   },
   "appSettings": {
     "loadError": "An error occurred while loading app settings.",

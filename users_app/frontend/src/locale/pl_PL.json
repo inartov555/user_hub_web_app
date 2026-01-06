@@ -27,14 +27,14 @@
     "signin": "Zaloguj się",
     "forgotPassword": "Nie pamiętasz hasła?",
     "createAccount": "Utwórz konto",
-    "loginFailed": "Logowanie nie powiodło się: {{message}}"
+    "loginFailed": "Logowanie nie powiodło się"
   },
   "signup": {
     "title": "Zarejestruj się",
     "email": "E-mail",
     "username": "Nazwa użytkownika",
     "password": "Hasło",
-    "signupFailed": "Rejestracja nie powiodła się: {{message}}"
+    "signupFailed": "Rejestracja nie powiodła się"
   },
   "users": {
     "title": "Użytkownicy",

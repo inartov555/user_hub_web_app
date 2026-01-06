@@ -42,7 +42,8 @@ export default function ResetPassword() {
       {sent ? <SimpleInfoMessage message={t("resetPassword.checkEmailForResetLink")} /> : (
         <form onSubmit={onSubmit} className="space-y-3">
           <FormInput placeholder="Email" id="email" value={email} onChange={e=>setEmail(e.target.value)} />
-          {error && <SimpleErrorMessage errorBackend={error} />}
+          {/* {error && <SimpleErrorMessage errorBackend={error} />} */}
+          {error && (<SimpleErrorMessage errorUi={t("resetPassword.resetPasswordFailed")} errorBackend={error} />)}
           <div id="recoverEmail" className="mt-2 flex justify-center">
             <Button type="submit">{t("resetPassword.sendResetEmail")}</Button>
           </div>

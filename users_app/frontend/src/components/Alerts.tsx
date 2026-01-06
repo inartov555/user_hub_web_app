@@ -47,8 +47,8 @@ export function SimpleErrorMessage({ errorUi, errorBackend }: { errorUi?: string
    * errorUi (string): this one describes UI error, e.g., auth.loginFailed
    * errorBackend (string): backend error
    */
-  if (!errorBackend) return null;
-  const text = [errorUi, errorBackend].filter(Boolean).join(" ");
+  if (!errorUi && !errorBackend) return null;
+  // const text = [errorUi, errorBackend].filter(Boolean).join(" ");
   return (
     <div data-tag="simpleErrorMessage"
          className="
@@ -57,8 +57,12 @@ export function SimpleErrorMessage({ errorUi, errorBackend }: { errorUi?: string
            dark:border-rose-500/25 dark:bg-rose-950/20 dark:text-rose-300
          "
     >
-      <AlertTriangle className="h-6 w-6 mb-2 mt-2 text-rose-600 dark:text-rose-300" />
-      <p className="whitespace-pre-line ml-2">{text}</p>
+      <div className="mt-4 mb-2 text-sm flex">
+        <AlertTriangle className="h-6 w-6 text-rose-600 dark:text-rose-300" />
+        {errorUi && <span className="ml-4 mt-1">{errorUi}</span>}
+      </div>
+      {/* <p className="whitespace-pre-line ml-2">{text}</p> */}
+      {errorBackend && <span>{errorBackend}</span>}
     </div>
   );
 }
@@ -78,8 +82,8 @@ export function SimpleSuccessMessage({ message, block }: { message?: string; blo
         dark:border-emerald-400/25 dark:bg-emerald-950/20 dark:text-emerald-100
       "
     >
-      <CheckCircle className="h-6 w-6 mb-2 mt-2" />
-      { message && <p className="whitespace-pre-line ml-2">{message}</p> }
+      <CheckCircle className="h-6 w-6 mb-2 mt-2 text-emerald-800 dark:text-emerald-100" />
+      { message && <span>{message}</span> }
       <div className="ml-2">{ block }</div>
     </div>
   );
@@ -100,8 +104,8 @@ export function SimpleInfoMessage({ message, block }: { message?: string; block?
         dark:border-sky-400/25 dark:bg-sky-950/20 dark:text-sky-200
       "
     >
-      <Info className="h-6 w-6 mb-2 mt-2" />
-      { message && <p className="whitespace-pre-line ml-2">{message}</p> }
+      <Info className="h-6 w-6 mb-2 mt-2 text-sky-800 dark:text-sky-200" />
+      { message && <span>{message}</span> }
       <div className="ml-2">{ block }</div>
     </div>
   );

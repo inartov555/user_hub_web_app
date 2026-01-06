@@ -64,7 +64,8 @@ export default function Login() {
                    id="username" type="username" value={username} onChange={e=>setUsername(e.target.value)} />
         <PasswordInput placeholder={t("signup.password")}
                        id="password" value={password} onChange={e=>setPassword(e.target.value)} />
-        {error && <SimpleErrorMessage errorBackend={t("signup.signupFailed", { message: error })} />}
+        {/* {error && <SimpleErrorMessage errorBackend={t("signup.signupFailed", { message: error })} />} */}
+        {error && (<SimpleErrorMessage errorUi={t("auth.loginFailed")} errorBackend={t("", error)} />)}
         <div className="mt-2 flex justify-center">
           <Button type="submit">{t("auth.signin")}</Button>
         </div>
