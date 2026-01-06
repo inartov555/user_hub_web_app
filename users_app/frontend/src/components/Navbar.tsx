@@ -85,9 +85,6 @@ export default function Navbar() {
         {/* Left: app title */}
         <div className="justify-self-start">
           <Brand title={t("app.title")} />
-          {/* Localization for the Brand component is disabled, for now */}
-          {/* Localized text takes more place and all tabs become messed up */}
-          {/* <Brand title="Users App" /> */}
         </div>
 
         {/* Middle: TWO ROWS, left-aligned; row 2 starts exactly under row 1 */}
@@ -159,15 +156,31 @@ export default function Navbar() {
           {user && (
             <>
               {/* Greeting message */}
-              <div className="
-                     bg-gray-200 border rounded-full px-2 py-1 text-sm flex items-center gap-2 dark:bg-slate-900
-                     dark:text-slate-100 dark:placeholder-slate-500 dark:border-slate-700
-                   "
+              <div
+                className="
+                  min-w-0 inline-flex items-center gap-2 rounded-full px-3 py-2 text-sm
+                  border border-slate-200/70 bg-white/70 shadow-soft backdrop-blur
+                  text-slate-800
+                  dark:border-slate-700/70 dark:bg-slate-900/50 dark:text-slate-100
+                "
               >
-                <span data-tag="greeting-icon" className="text-sm">
+                <span
+                  data-tag="greeting-icon"
+                  className="
+                    inline-flex h-8 w-8 items-center justify-center rounded-full
+                    bg-gradient-to-br from-brand-600/80 to-indigo-600/60
+                    text-white shadow-sm ring-1 ring-white/12
+                    shrink-0
+                  "
+                >
                   <MessageCircle className="h-4 w-4" />
                 </span>
-                <span id="greeting" className="text-sm">
+
+                <span
+                  id="greeting"
+                  className="min-w-0 truncate"
+                  title={t("app.hiUser", { username: user.username })}
+                >
                   {t("app.hiUser", { username: user.username })}
                 </span>
               </div>
