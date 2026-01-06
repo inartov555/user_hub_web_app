@@ -20,7 +20,7 @@ class ResetPasswordPage(BasePage):
         self.page_title = self.page.locator("h2")
         self.email = self.page.locator("#email")
         self.submit = self.page.locator("form button[type='submit']")
-        self.reset_pswd_info_msg = self.page.locator("p[data-tag='resetPassInfoMsg']")
+        self.reset_pswd_info_msg = self.page.locator("div[data-tag='simpleInfoMessage']")
         self.error = self.page.locator("div[data-tag='simpleErrorMessage'] p")
         self.login = self.page.locator("a[href='/login']")
 
