@@ -39,7 +39,7 @@ export default function ProfileView() {
     let alive = true;
     (async () => {
       try {
-        const resp = await api.get<Profile>("/me/profile/yo");
+        const resp = await api.get<Profile>("/me/profile/");
         if (!alive) return;
         const p = resp.data;
         setProfile(p);
@@ -47,7 +47,7 @@ export default function ProfileView() {
         setLoading(false);
       } catch (err: any) {
         const parsed = extractApiError(err as unknown);
-        setError(t("profileEdit.profileLoadError") + "\n" + parsed.message);
+        setError(parsed.message);
         setLoading(false);
         if (!alive) return;
       }
@@ -58,7 +58,7 @@ export default function ProfileView() {
   }, []);
 
   if (loading) return <div className="card p-4">{t("users.loading")}</div>;
-  if (error) return <SimpleErrorMessage errorUi={t("profileView.viewFailed")} errorBackend={error} />;
+  if (error) return <SimpleErrorMessage errorUi={t("profileEdit.profileLoadError")} errorBackend={error} />;
 
   if (!profile)
     return (

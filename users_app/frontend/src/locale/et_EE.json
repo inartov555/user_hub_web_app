@@ -90,7 +90,6 @@
   },
   "profileView": {
     "noProfileFound": "Profiili ei leitud.",
-    "viewFailed": "Profiili üksikasjade kuvamine ebaõnnestus",
     "createEditProfile": "Loo / muuda profiili",
     "profile": "Profiil",
     "yourPersonalDetails": "Sinu isikuandmed",

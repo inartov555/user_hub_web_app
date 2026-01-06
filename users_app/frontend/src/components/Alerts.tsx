@@ -1,53 +1,6 @@
 import * as React from "react";
 import { AlertTriangle, CheckCircle, Info } from "lucide-react";
 
-type ErrorAlertProps = {
-  message?: unknown;
-  title?: React.ReactNode;
-};
-
-function splitLines(raw: unknown): string[] {
-  // Split by '\n', preserving spaces, tabs
-  const normalized = String(raw ?? "")
-    .replace(/\u00A0/g, " ")  // NBSP -> space
-    .replace(/\\n/g, "\n");   // literal "\n" -> real newline
-  return normalized
-    .split(/\r?\n/)           // split by newline
-    .map(s => s.replace(/\t/g, "    ").trimEnd()) // keep spaces; expand tabs if you want
-    .filter(line => line.length > 0);
-}
-
-/*
- * It's better to use SimpleErrorMessage
- */
-export default function ErrorAlert({ message, title }: ErrorAlertProps) {
-  const lines = splitLines(message);
-  if (!lines.length) return null;
-
-  return (
-    <div
-      data-tag="errorAlert"
-      role="alert"
-      className="rounded-xl border border-red-200 bg-red-50 text-rose-600
-                 dark:border-red-900/50 dark:bg-red-900/20 dark:text-rose-300 p-4"
-    >
-      <div className="mt-4 mb-2 text-sm flex">
-        <AlertTriangle className="h-6 w-6 text-rose-600 dark:text-rose-300" />
-        {/* {title ? <div className="font-semibold mb-2">{title}</div> : null} */}
-        <div className="font-semibold mb-2">This error alert block is deprecated, use SimpleErrorMessage</div>
-      </div>
-      <ul className="space-y-1">
-        {lines.map((line, i) => (
-          <li key={i} className="flex items-start gap-2">
-            <span className="select-none mt-[2px]"></span>
-            <span>{line}</span>
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
-}
-
 export function SimpleErrorMessage({ errorUi, errorBackend }: { errorUi?: string, errorBackend?: string | null; } ) {
   /*
    * errorUi (string): this one describes UI error, e.g., auth.loginFailed

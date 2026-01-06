@@ -90,7 +90,6 @@
   },
   "profileView": {
     "noProfileFound": "Nie znaleziono profilu.",
-    "viewFailed": "Nie udało się wyświetlić szczegółów profilu",
     "createEditProfile": "Utwórz / edytuj profil",
     "profile": "Profil",
     "yourPersonalDetails": "Twoje dane osobowe",

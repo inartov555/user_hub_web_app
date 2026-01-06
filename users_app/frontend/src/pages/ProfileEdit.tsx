@@ -39,6 +39,7 @@ export default function ProfileEdit() {
   const [bio, setBio] = useState("");
   const [avatarFile, setAvatarFile] = useState<File | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [isFailedToSave, setIsFailedToSave] = useState<boolean | null>(null);
 
   useEffect(() => {
     let alive = true;
@@ -55,7 +56,8 @@ export default function ProfileEdit() {
         setLoading(false);
       } catch (err: any) {
         const parsed = extractApiError(err as unknown);
-        setError(t("profileEdit.profileLoadError") + "\n" + parsed.message);
+        setError(parsed.message);
+        setLoading(false);
         if (!alive) return;
       }
     })();
@@ -80,11 +82,13 @@ export default function ProfileEdit() {
     } catch (err: any) {
       const parsed = extractApiError(err as unknown);
       setError(parsed.message);
+      setIsFailedToSave(true);
     }
   }
 
   if (loading) return <div className="card p-4">{t("users.loading")}</div>;
-  if (error) return <SimpleErrorMessage errorUi={t("profileEdit.saveFailed")} errorBackend={error} />;
+  if (error && isFailedToSave) return <SimpleErrorMessage errorUi={t("profileEdit.saveFailed")} errorBackend={error} />;
+  if (error && !isFailedToSave) return <SimpleErrorMessage errorUi={t("profileEdit.profileLoadError")} errorBackend={error} />;
   if (!data) return <div className="card p-4">{t("users.loading")}</div>;
 
   const mediaBase = (import.meta.env.VITE_API_URL ?? "http://localhost:8000/api/v1").replace(/\/api\/v1$/, "");
