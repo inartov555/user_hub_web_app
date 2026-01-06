@@ -61,7 +61,7 @@ export function SimpleInfoMessage({ message, block }: { message?: string; block?
       className="
         rounded-xl border border-sky-200/60 bg-sky-50/40 px-3 py-2
         backdrop-blur-sm text-sm text-sky-800 whitespace-pre-line
-        dark:border-sky-400/25 dark:bg-sky-950/20 dark:text-sky-200
+        dark:border-sky-400/25 dark:bg-sky-950/20 dark:text-sky-200 mb-2
       "
     >
       <div className="mt-4 mb-2 text-sm flex">

@@ -6,7 +6,7 @@ import { useAuthStore } from "../auth/store";
 import { extractApiError } from "../lib/httpErrors";
 import Button from "../components/button";
 import UnifiedTitle from "../components/UnifiedTitle";
-import { SimpleErrorMessage, SimpleSuccessMessage } from "../components/Alerts";
+import { SimpleErrorMessage, SimpleSuccessMessage, SimpleInfoMessage } from "../components/Alerts";
 
 export default function Settings() {
   const { t } = useTranslation();
@@ -50,7 +50,7 @@ export default function Settings() {
       setTimeout(() => setSaved(false), 2000);
     } catch (err: any) {
       const parsed = extractApiError(err as unknown);
-      setError(`${t("appSettings.saveError")} ${parsed.message}`);
+      setError(`${parsed.message}`);
     } finally {
       setSaving(false);
       await fetchRuntimeAuth(); // let's store the fresh settings values
@@ -67,8 +67,8 @@ export default function Settings() {
       <div className="max-w-3xl mx-auto p-4">
         <UnifiedTitle icon={<SettingsIcon className="h-4 w-4" />}
                       title={t("appSettings.title")}
-                      subtitle={t("appSettings.noteNewSessions")}
         />
+        <SimpleInfoMessage message={t("appSettings.noteNewSessions")} />
         <form className="space-y-6" onSubmit={onSubmit}>
           <div className="space-y-1">
             {/* Rotate refresh tokens (controls visibility & value of renewAtSeconds) */}
@@ -143,7 +143,7 @@ export default function Settings() {
             }}
             min={1}
           />
-          { error && <SimpleErrorMessage errorBackend={ error } /> }
+          { error && <SimpleErrorMessage errorUi={t("appSettings.saveError")} errorBackend={ error } /> }
           { saved && <SimpleSuccessMessage message={t("appSettings.saved")} /> }
           <div className="flex gap-3 items-center">
             <Button disabled={saving} type="submit">
