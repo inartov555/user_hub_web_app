@@ -90,6 +90,7 @@
   },
   "profileView": {
     "noProfileFound": "Profiilia ei löytynyt.",
+    "viewFailed": "Profiilin tietojen näyttäminen epäonnistui",
     "createEditProfile": "Luo / muokkaa profiilia",
     "profile": "Profiili",
     "yourPersonalDetails": "Henkilötietosi",

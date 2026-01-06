@@ -6,7 +6,7 @@ import { api } from "../lib/axios";
 import { extractApiError } from "../lib/httpErrors";
 import { useAuthStore } from "../auth/store";
 import Button from "../components/button";
-import ErrorAlert from "../components/Alerts";
+import { SimpleErrorMessage } from "../components/Alerts";
 import UnifiedTitle from "../components/UnifiedTitle";
 
 type ProfileUser = {
@@ -39,7 +39,7 @@ export default function ProfileView() {
     let alive = true;
     (async () => {
       try {
-        const resp = await api.get<Profile>("/me/profile/");
+        const resp = await api.get<Profile>("/me/profile/yo");
         if (!alive) return;
         const p = resp.data;
         setProfile(p);
@@ -48,6 +48,7 @@ export default function ProfileView() {
       } catch (err: any) {
         const parsed = extractApiError(err as unknown);
         setError(t("profileEdit.profileLoadError") + "\n" + parsed.message);
+        setLoading(false);
         if (!alive) return;
       }
     })();
@@ -57,7 +58,7 @@ export default function ProfileView() {
   }, []);
 
   if (loading) return <div className="card p-4">{t("users.loading")}</div>;
-  if (error) return <ErrorAlert message={error} />;
+  if (error) return <SimpleErrorMessage errorUi={t("profileView.viewFailed")} errorBackend={error} />;
 
   if (!profile)
     return (
@@ -117,7 +118,7 @@ export default function ProfileView() {
           <Field id="bio" label={t("excelImport.bio")} value={String(profile?.bio ?? "—")} />
         </div>
 
-        {error && <ErrorAlert message={error} />}
+        {error && (<SimpleErrorMessage errorUi={t("profileView.viewFailed")} errorBackend={error} />)}
         <div className="flex gap-2">
           <Button id="editProfile" onClick={() => navigate("/profile-edit")}>
             {t("profileView.editProfile")}

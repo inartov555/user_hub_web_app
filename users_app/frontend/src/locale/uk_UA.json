@@ -90,6 +90,7 @@
   },
   "profileView": {
     "noProfileFound": "Профіль не знайдено.",
+    "viewFailed": "Не вдалося показати деталі профілю",
     "createEditProfile": "Створити / редагувати профіль",
     "profile": "Профіль",
     "yourPersonalDetails": "Ваші особисті дані",

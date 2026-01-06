@@ -90,6 +90,7 @@
   },
   "profileView": {
     "noProfileFound": "Profil nenalezen.",
+    "viewFailed": "Nepodařilo se zobrazit podrobnosti profilu",
     "createEditProfile": "Vytvořit / upravit profil",
     "profile": "Profil",
     "yourPersonalDetails": "Vaše osobní údaje",
