@@ -119,7 +119,27 @@ export default function ExcelImportPanel() {
           <div className="text-sm text-gray-600 dark:text-slate-300 mt-1">{t("excelImport.selectedFile")} {file.name}</div>
         )}
 
+        {/* Error message */}
         {error && <SimpleErrorMessage errorBackend={error} />}
+
+        {/* Success message */}
+        {summary && (
+          <>
+            <SimpleSuccessMessage
+              message={message}
+              block={
+                <>
+                  <div data-tag="resultSuccessTitle" className="font-medium mb-2 mt-2">{t("excelImport.result")}</div>
+                  <ul data-tag="resultSuccessBody" className="text-sm space-y-1">
+                    <li>{t("excelImport.processed")} <span className="font-semibold">{summary.processed}</span></li>
+                    <li>{t("excelImport.created")} <span className="font-semibold">{summary.created}</span></li>
+                    <li>{t("excelImport.updated")} <span className="font-semibold">{summary.updated}</span></li>
+                  </ul>
+                </>}
+            />
+          </>
+        )}
+
         <div className="flex gap-2">
           <Button id="importTemplate" disabled={submitting} type="submit">
             {submitting ? t("excelImport.uploading") : t("excelImport.startImport")}
@@ -137,23 +157,6 @@ export default function ExcelImportPanel() {
           )}
         </div>
       </form>
-
-      {summary && (
-        <>
-          <SimpleSuccessMessage
-            message={message}
-            block={
-              <>
-                <div data-tag="resultSuccessTitle" className="font-medium mb-2 mt-2">{t("excelImport.result")}</div>
-                <ul data-tag="resultSuccessBody" className="text-sm space-y-1">
-                  <li>{t("excelImport.processed")} <span className="font-semibold">{summary.processed}</span></li>
-                  <li>{t("excelImport.created")} <span className="font-semibold">{summary.created}</span></li>
-                  <li>{t("excelImport.updated")} <span className="font-semibold">{summary.updated}</span></li>
-                </ul>
-              </>}
-          />
-        </>
-      )}
     </div>
   );
 }

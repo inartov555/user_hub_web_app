@@ -41,7 +41,7 @@ export function SimpleSuccessMessage({ message, block }: { message?: string; blo
       "
     >
       <div className="mt-4 mb-2 text-sm flex">
-        <CheckCircle className="h-6 w-6 mb-2 mt-2 text-emerald-800 dark:text-emerald-100" />
+        <CheckCircle className="h-6 w-6 mb-2 text-emerald-800 dark:text-emerald-100" />
         { message && <span className="ml-2 mt-1">{message}</span> }
       </div>
       <div className="ml-2">{ block }</div>
@@ -65,7 +65,7 @@ export function SimpleInfoMessage({ message, block }: { message?: string; block?
       "
     >
       <div className="mt-4 mb-2 text-sm flex">
-        <Info className="h-6 w-6 mb-2 mt-2 text-sky-800 dark:text-sky-200" />
+        <Info className="h-6 w-6 text-sky-800 dark:text-sky-200" />
         { message && <span className="ml-2 mt-1">{message}</span> }
       </div>
       <div className="ml-2">{ block }</div>
