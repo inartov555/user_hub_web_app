@@ -108,10 +108,9 @@
     "saving": "Guardando…"
   },
   "userDeleteConfirm": {
-    "bulkDeleteFailed": "La eliminación masiva de usuarios falló:",
-    "singleDeleteFailed": "La eliminación usuario por usuario (usuario individual) falló:",
+    "bulkDeleteFailed": "La eliminación masiva de usuarios falló",
     "failedToDelete": "No se pudo eliminar",
-    "failedToDeleteSelectedUsers": "No se pudieron eliminar los usuarios seleccionados:",
+    "failedToDeleteSelectedUsers": "No se pudieron eliminar los usuarios seleccionados",
     "confirmDelete": "Confirmar eliminación",
     "youAboutToDelete": "Estás a punto de eliminar permanentemente",
     "cannotBeUndone": "usuario(s). Esta acción no se puede deshacer.",
@@ -128,7 +127,8 @@
   "resetPassword": {
     "resetPassword": "Restablecer contraseña",
     "checkEmailForResetLink": "Consulta en la consola del backend de correo el enlace para restablecer la contraseña. Nota: los correos electrónicos no se están enviando ahora mismo.",
-    "sendResetEmail": "Enviar correo de restablecimiento"
+    "sendResetEmail": "Enviar correo de restablecimiento",
+    "resetPasswordFailed": "El restablecimiento de la contraseña falló"
   },
   "appSettings": {
     "loadError": "Se produjo un error al cargar la configuración de la aplicación",

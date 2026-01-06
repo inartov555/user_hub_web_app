@@ -44,36 +44,46 @@ export default function UserDeleteConfirm() {
 
     setLoading(true);
     setError(null);
-    try {
-      // Bulk user deletion
-      const bulk = await api.post("/users/bulk-delete/", { ids }, { validateStatus: () => true });
 
-      // Uncomment this block to have additional user deletion one by one
-      if (bulk.status < 200 || bulk.status >= 300) {
-        const parsed = extractApiError(bulk);
-        setError(prev => (prev ? `${prev}` : "") + `${t("userDeleteConfirm.failedToDeleteSelectedUsers")}\n\n`);
-        setError(prev => (prev ? `${prev}` : "") + `${t("userDeleteConfirm.bulkDeleteFailed")} ${parsed.message}\n\n`);
-        // Fallback (on-by-one user deletion)
-        const results = await Promise.allSettled(
-          ids.map((id) => api.delete(`/users/${id}/delete-user/`, { validateStatus: () => true }))
-        );
+    // Bulk user deletion
+    const bulk = await api.post("/users/bulk-delete/", { ids }, { validateStatus: () => true });
 
-        const failed = results.filter(
-	      (res1) => res1.status === "rejected" || (res1.status === "fulfilled" && res1.value.status > 204)
-        );
+    // Uncomment this block to have additional user deletion one by one
+    if (bulk.status < 200 || bulk.status >= 300) {
+      const parsed = extractApiError(bulk);
+      setError(prev => (prev ? `${prev}` : "") + `${t("userDeleteConfirm.bulkDeleteFailed")}\n ${parsed.message}\n\n`);
+      // Fallback (on-by-one user deletion)
+      const results = await Promise.allSettled(
+        ids.map((id) => api.delete(`/users/${id}/delete-user/`, { validateStatus: () => true }))
+      );
 
-        if (failed.length) {
-          const failedReqUsers: User[] = [];
+      const failed = results.filter(
+        (res1) => res1.status === "rejected" || (res1.status === "fulfilled" && res1.value.status > 204)
+      );
 
-          setError(prev => (prev ? `${prev}` : "") + `${t("userDeleteConfirm.singleDeleteFailed")}\n`);
-          setError(prev => (prev ? `${prev}` : "") + `${t("userDeleteConfirm.failedToDelete")} ${failed.length} ${t("users.of")} ${ids.length} ${t("users.title")}.\n`);
+      if (failed.length) {
+        const failedReqUsers: User[] = [];
 
-          for (let idx = 0; idx < results.length; idx++) {
-            const id = ids[idx];
-            const res = results[idx];
+        setError(prev => (prev ? `${prev}` : "") + `${t("userDeleteConfirm.failedToDelete")} ${failed.length} ${t("users.of")} ${ids.length} ${t("users.title")}\n`);
 
-            if (res.status === "rejected") {
-              const parsed = extractApiError(res.reason);
+        for (let idx = 0; idx < results.length; idx++) {
+          const id = ids[idx];
+          const res = results[idx];
+
+          if (res.status === "rejected") {
+            const parsed = extractApiError(res.reason);
+            const msg = (parsed?.message ?? "").trim();
+            if (msg) setError(prev => (prev ? `${prev}` : "") + `${id}: ${msg}\n`);
+            for (const _user of users) {
+              if (_user.id === id) {
+                failedReqUsers.push(_user);
+              }
+            }
+          } else {
+            // res.value.status > 204
+            const resp = res.value;
+            if (resp.status > 204) {
+              const parsed = extractApiError(resp);
               const msg = (parsed?.message ?? "").trim();
               if (msg) setError(prev => (prev ? `${prev}` : "") + `${id}: ${msg}\n`);
               for (const _user of users) {
@@ -81,35 +91,17 @@ export default function UserDeleteConfirm() {
                   failedReqUsers.push(_user);
                 }
               }
-            } else {
-              // res.value.status > 204
-              const resp = res.value;
-              if (resp.status > 204) {
-                const parsed = extractApiError(resp);
-                const msg = (parsed?.message ?? "").trim();
-                if (msg) setError(prev => (prev ? `${prev}` : "") + `${id}: ${msg}\n`);
-                for (const _user of users) {
-                  if (_user.id === id) {
-                    failedReqUsers.push(_user);
-                  }
-                }
-              }
             }
           }
-          setRemainingUsers(failedReqUsers);
         }
+        setRemainingUsers(failedReqUsers);
       }
-      else {
-        await qc.invalidateQueries({ queryKey: ["users"] });
-        navigate("/users", { replace: true });
-      }
-    } catch (erro: any) {
-      const parsed = extractApiError(erro);
-      setError(prev => "This is a debug message to check");
-      setError(prev => (prev ? `${prev}` : "") + `\n${t("userDeleteConfirm.failedToDeleteSelectedUsers")} ${parsed.message}`);
-    } finally {
-      setLoading(false);
     }
+    else {
+      await qc.invalidateQueries({ queryKey: ["users"] });
+      navigate("/users", { replace: true });
+    }
+    setLoading(false);
   };
 
   const handleCancel = () => navigate("/users");
@@ -250,7 +242,7 @@ export default function UserDeleteConfirm() {
           </table>
         </div>
 
-        {error && <SimpleErrorMessage errorBackend={error} />}
+        {error && <SimpleErrorMessage errorUi={t("userDeleteConfirm.failedToDeleteSelectedUsers")} errorBackend={error} />}
 
         {/* Bottom button pair */}
         <div className="flex gap-2">

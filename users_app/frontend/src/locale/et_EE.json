@@ -108,10 +108,9 @@
     "saving": "Salvestamine…"
   },
   "userDeleteConfirm": {
-    "bulkDeleteFailed": "Kasutajate hulgikustutamine ebaõnnestus:",
-    "singleDeleteFailed": "Kustutamine kasutaja kaupa (üksik kasutaja) ebaõnnestus:",
+    "bulkDeleteFailed": "Kasutajate hulgikustutamine ebaõnnestus",
     "failedToDelete": "Kustutamine ebaõnnestus",
-    "failedToDeleteSelectedUsers": "Valitud kasutajate kustutamine ebaõnnestus:",
+    "failedToDeleteSelectedUsers": "Valitud kasutajate kustutamine ebaõnnestus",
     "confirmDelete": "Kinnita kustutamine",
     "youAboutToDelete": "Oled jäädavalt kustutamas",
     "cannotBeUndone": "kasutaja(id). Seda toimingut ei saa tagasi võtta.",
@@ -128,7 +127,8 @@
   "resetPassword": {
     "resetPassword": "Lähtesta parool",
     "checkEmailForResetLink": "Kontrolli parooli lähtestamise linki konsooli e-posti taustteenusest. Märkus: e-kirju praegu tegelikult ei saadeta.",
-    "sendResetEmail": "Saada parooli lähtestamise e-kiri"
+    "sendResetEmail": "Saada parooli lähtestamise e-kiri",
+    "resetPasswordFailed": "Parooli lähtestamine ebaõnnestus"
   },
   "appSettings": {
     "loadError": "Rakenduse sätete laadimisel tekkis viga",

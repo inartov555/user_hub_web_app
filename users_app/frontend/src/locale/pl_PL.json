@@ -108,10 +108,9 @@
     "saving": "Zapisywanie…"
   },
   "userDeleteConfirm": {
-    "bulkDeleteFailed": "Masowe usuwanie użytkowników nie powiodło się:",
-    "singleDeleteFailed": "Usuwanie użytkowników po jednym (pojedynczo) nie powiodło się:",
+    "bulkDeleteFailed": "Masowe usuwanie użytkowników nie powiodło się",
     "failedToDelete": "Nie udało się usunąć",
-    "failedToDeleteSelectedUsers": "Nie udało się usunąć wybranych użytkowników:",
+    "failedToDeleteSelectedUsers": "Nie udało się usunąć wybranych użytkowników",
     "confirmDelete": "Potwierdź usunięcie",
     "youAboutToDelete": "Zamierzasz trwale usunąć",
     "cannotBeUndone": "użytkownika(-ów). Tej operacji nie można cofnąć.",
@@ -128,7 +127,8 @@
   "resetPassword": {
     "resetPassword": "Zresetuj hasło",
     "checkEmailForResetLink": "Sprawdź w konsolowym backendzie e-mail link do resetowania hasła. Uwaga: wiadomości e-mail nie są teraz faktycznie wysyłane.",
-    "sendResetEmail": "Wyślij e-mail resetujący hasło"
+    "sendResetEmail": "Wyślij e-mail resetujący hasło",
+    "resetPasswordFailed": "Resetowanie hasła nie powiodło się"
   },
   "appSettings": {
     "loadError": "Wystąpił błąd podczas wczytywania ustawień aplikacji",

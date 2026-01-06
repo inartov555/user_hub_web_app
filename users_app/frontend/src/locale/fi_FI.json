@@ -108,10 +108,9 @@
     "saving": "Tallennetaan…"
   },
   "userDeleteConfirm": {
-    "bulkDeleteFailed": "Käyttäjien massapoisto epäonnistui:",
-    "singleDeleteFailed": "Poisto käyttäjä kerrallaan (yksittäinen käyttäjä) epäonnistui:",
+    "bulkDeleteFailed": "Käyttäjien massapoisto epäonnistui",
     "failedToDelete": "Poisto epäonnistui",
-    "failedToDeleteSelectedUsers": "Valittujen käyttäjien poisto epäonnistui:",
+    "failedToDeleteSelectedUsers": "Valittujen käyttäjien poisto epäonnistui",
     "confirmDelete": "Vahvista poisto",
     "youAboutToDelete": "Olet poistamassa pysyvästi",
     "cannotBeUndone": "käyttäjä(ä). Toimintoa ei voi perua.",
@@ -128,7 +127,8 @@
   "resetPassword": {
     "resetPassword": "Nollaa salasana",
     "checkEmailForResetLink": "Tarkista salasanan palautuslinkki konsolin sähköpostitaustapalvelusta. Huom: sähköposteja ei tällä hetkellä oikeasti lähetetä.",
-    "sendResetEmail": "Lähetä salasanan palautusviesti"
+    "sendResetEmail": "Lähetä salasanan palautusviesti",
+    "resetPasswordFailed": "Salasanan palautus epäonnistui"
   },
   "appSettings": {
     "loadError": "Sovelluksen asetusten lataamisessa tapahtui virhe",

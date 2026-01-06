@@ -108,10 +108,9 @@
     "saving": "Saving…"
   },
   "userDeleteConfirm": {
-    "bulkDeleteFailed": "Bulk user delete failed:",
-    "singleDeleteFailed": "User by user (single user) delete failed:",
+    "bulkDeleteFailed": "Bulk user delete failed",
     "failedToDelete": "Failed to delete",
-    "failedToDeleteSelectedUsers": "Failed to delete selected users:",
+    "failedToDeleteSelectedUsers": "Failed to delete selected users",
     "confirmDelete": "Confirm deletion",
     "youAboutToDelete": "You are about to permanently delete",
     "cannotBeUndone": "user(s). This action cannot be undone.",

@@ -120,22 +120,22 @@ export function extractApiError(err: unknown, t?: TFunction): { message: string;
     /*
        Example:
 
-       {
-         "error": {
-           "code": "common.server_error",
-           "message": "A server error occurred.",
-           "i18n_key": "errors.common.server_error",
-           "details": {
-             "password": [
-               "The password is too similar to the username.",
-               "This password is too short. It must contain at least 8 characters.",
-               "This password is too common."
-             ]
-           },
-           "lang": "en-us"
-         }
-       }
-     */
+      {
+        "error": {
+          "code": "common.server_error",
+          "message": "A server error occurred.",
+          "i18n_key": "errors.common.server_error",
+          "details": {
+            "password": [
+              "The password is too similar to the username.",
+              "This password is too short. It must contain at least 8 characters.",
+              "This password is too common."
+            ]
+          },
+          "lang": "en-us"
+        }
+      }
+    */
 
     let err_mes_det_arr: string[] = [];
     const errorObj = isRecord((data as any).error) ? (data as any).error : null;

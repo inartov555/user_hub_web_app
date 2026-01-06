@@ -108,10 +108,9 @@
     "saving": "Ukládání…"
   },
   "userDeleteConfirm": {
-    "bulkDeleteFailed": "Hromadné mazání uživatelů se nezdařilo:",
-    "singleDeleteFailed": "Mazání uživatelů po jednom (jednotlivý uživatel) se nezdařilo:",
+    "bulkDeleteFailed": "Hromadné mazání uživatelů se nezdařilo",
     "failedToDelete": "Mazání se nezdařilo",
-    "failedToDeleteSelectedUsers": "Mazání vybraných uživatelů se nezdařilo:",
+    "failedToDeleteSelectedUsers": "Mazání vybraných uživatelů se nezdařilo",
     "confirmDelete": "Potvrdit smazání",
     "youAboutToDelete": "Chystáte se trvale smazat",
     "cannotBeUndone": "uživatele. Tuto akci nelze vrátit zpět.",
@@ -128,7 +127,8 @@
   "resetPassword": {
     "resetPassword": "Obnovit heslo",
     "checkEmailForResetLink": "Zkontrolujte v konzolovém e-mailovém backendu odkaz na resetování hesla. Poznámka: e-maily se v tuto chvíli ve skutečnosti neodesílají.",
-    "sendResetEmail": "Odeslat e-mail pro obnovení hesla"
+    "sendResetEmail": "Odeslat e-mail pro obnovení hesla",
+    "resetPasswordFailed": "Obnovení hesla se nezdařilo"
   },
   "appSettings": {
     "loadError": "Při načítání nastavení aplikace došlo k chybě",

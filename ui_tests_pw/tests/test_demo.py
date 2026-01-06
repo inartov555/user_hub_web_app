@@ -154,7 +154,6 @@ def _helper_users_table_page_admin_user(page: Page,
 def _helper_user_delete_page(page: Page,
                              ui_theme_param: Theme,
                              ui_locale_param: str,
-                             username: str,
                              email: str) -> None:
     """
     This is a helper function that takes screenshots on the User Delete page (Success/Error cases)
@@ -384,7 +383,6 @@ def test_base_demo(page: Page,
     _helper_user_delete_page(page,
                              ui_theme_param,
                              ui_locale_param,
-                             username,
                              email)
     _helper_change_password_page(page,
                                  ui_theme_param,
@@ -450,7 +448,6 @@ def test_locale_demo(page: Page,
     _helper_user_delete_page(page,
                              ui_theme_param,
                              LocaleConsts.CZECH,
-                             username,
                              email)
     _helper_change_password_page(page,
                                  ui_theme_param,

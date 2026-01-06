@@ -59,7 +59,7 @@ export function SimpleErrorMessage({ errorUi, errorBackend }: { errorUi?: string
     >
       <div className="mt-4 mb-2 text-sm flex">
         <AlertTriangle className="h-6 w-6 text-rose-600 dark:text-rose-300" />
-        {errorUi && <span className="ml-4 mt-1">{errorUi}</span>}
+        {errorUi && <span className="ml-2 mt-1">{errorUi}</span>}
       </div>
       {/* <p className="whitespace-pre-line ml-2">{text}</p> */}
       {errorBackend && <span>{errorBackend}</span>}
