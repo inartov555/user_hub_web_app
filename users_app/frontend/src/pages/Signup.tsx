@@ -9,6 +9,7 @@ import Button from "../components/button";
 import PasswordInput from "../components/PasswordInput";
 import UnifiedTitle from "../components/UnifiedTitle";
 import { SimpleErrorMessage } from "../components/Alerts";
+import CustomLink from "../components/CustomLink";
 
 export default function Signup() {
   const { t } = useTranslation();
@@ -49,15 +50,7 @@ export default function Signup() {
         </div>
       </form>
       <div className="mt-4 text-sm flex justify-between">
-        <Link
-          className="
-            inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 underline underline-offset-4 decoration-2
-            transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 rounded-md
-          "
-          to="/login"
-        >
-          {t("auth.signin")}
-        </Link>
+        <CustomLink title={t("auth.signin")} linkTo="/login" />
       </div>
     </div>
   );

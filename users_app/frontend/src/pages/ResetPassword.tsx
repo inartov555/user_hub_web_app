@@ -8,6 +8,7 @@ import FormInput from "../components/FormInput";
 import Button from "../components/button";
 import UnifiedTitle from "../components/UnifiedTitle";
 import { SimpleErrorMessage, SimpleInfoMessage } from "../components/Alerts";
+import CustomLink from "../components/CustomLink";
 
 export default function ResetPassword() {
   const { t, i18n } = useTranslation();
@@ -48,13 +49,7 @@ export default function ResetPassword() {
         </form>
       )}
       <div className="mt-4 text-sm flex justify-between">
-        <Link
-          className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 underline underline-offset-4 decoration-2
-             transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 rounded-md"
-          to="/login"
-        >
-          {t("auth.signin")}
-        </Link>
+        <CustomLink title={t("auth.signin")} linkTo="/login" />
       </div>
     </div>
   );
