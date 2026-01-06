@@ -89,7 +89,6 @@
     "saveFailed": "No se pudo guardar."
   },
   "profileView": {
-    "pViewError": "Error: {{message}}",
     "noProfileFound": "No se encontró el perfil.",
     "createEditProfile": "Crear / editar perfil",
     "profile": "Perfil",

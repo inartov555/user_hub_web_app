@@ -89,7 +89,6 @@
     "saveFailed": "Не вдалося зберегти."
   },
   "profileView": {
-    "pViewError": "Помилка: {{message}}",
     "noProfileFound": "Профіль не знайдено.",
     "createEditProfile": "Створити / редагувати профіль",
     "profile": "Профіль",

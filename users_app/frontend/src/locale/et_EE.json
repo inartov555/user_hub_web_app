@@ -89,7 +89,6 @@
     "saveFailed": "Salvestamine ebaõnnestus."
   },
   "profileView": {
-    "pViewError": "Viga: {{message}}",
     "noProfileFound": "Profiili ei leitud.",
     "createEditProfile": "Loo / muuda profiili",
     "profile": "Profiil",

@@ -89,7 +89,6 @@
     "saveFailed": "Tallennus epäonnistui."
   },
   "profileView": {
-    "pViewError": "Virhe: {{message}}",
     "noProfileFound": "Profiilia ei löytynyt.",
     "createEditProfile": "Luo / muokkaa profiilia",
     "profile": "Profiili",

@@ -105,7 +105,7 @@ export default function ExcelImportPanel() {
         <span>{t("excelImport.bio")}</span>.
       </p>
 
-      <form onSubmit={onSubmit} className="space-y-3 mb-4">
+      <form onSubmit={onSubmit} className="space-y-3">
         <Input
           key={inputKey}
           ref={inputRef}

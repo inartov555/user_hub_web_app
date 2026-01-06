@@ -89,7 +89,6 @@
     "saveFailed": "Uložení se nezdařilo."
   },
   "profileView": {
-    "pViewError": "Chyba: {{message}}",
     "noProfileFound": "Profil nenalezen.",
     "createEditProfile": "Vytvořit / upravit profil",
     "profile": "Profil",

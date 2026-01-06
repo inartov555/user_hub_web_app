@@ -118,7 +118,7 @@ export function extractApiError(err: unknown, t?: TFunction): { message: string;
     }
 
     /*
-       Example:
+      Example:
 
       {
         "error": {

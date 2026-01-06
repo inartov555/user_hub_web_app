@@ -52,6 +52,7 @@ export default function UserDeleteConfirm() {
     if (bulk.status < 200 || bulk.status >= 300) {
       const parsed = extractApiError(bulk);
       setError(prev => (prev ? `${prev}` : "") + `${t("userDeleteConfirm.bulkDeleteFailed")}\n ${parsed.message}\n\n`);
+
       // Fallback (on-by-one user deletion)
       const results = await Promise.allSettled(
         ids.map((id) => api.delete(`/users/${id}/delete-user/`, { validateStatus: () => true }))

@@ -17,6 +17,9 @@ function splitLines(raw: unknown): string[] {
     .filter(line => line.length > 0);
 }
 
+/*
+ * It's better to use SimpleErrorMessage
+ */
 export default function ErrorAlert({ message, title }: ErrorAlertProps) {
   const lines = splitLines(message);
   if (!lines.length) return null;
@@ -25,11 +28,13 @@ export default function ErrorAlert({ message, title }: ErrorAlertProps) {
     <div
       data-tag="errorAlert"
       role="alert"
-      className="rounded-xl border border-red-200 bg-red-50 text-red-800
-                 dark:border-red-900/50 dark:bg-red-900/20 dark:text-red-200 p-4"
+      className="rounded-xl border border-red-200 bg-red-50 text-rose-600
+                 dark:border-red-900/50 dark:bg-red-900/20 dark:text-rose-300 p-4"
     >
-      <AlertTriangle className="h-6 w-6 mb-2 mt-2" />
-      {title ? <div className="font-semibold mb-2">{title}</div> : null}
+      <div className="mt-4 mb-2 text-sm flex">
+        <AlertTriangle className="h-6 w-6 text-rose-600 dark:text-rose-300" />
+        {title ? <div className="font-semibold mb-2">{title}</div> : null}
+      </div>
       <ul className="space-y-1">
         {lines.map((line, i) => (
           <li key={i} className="flex items-start gap-2">
@@ -61,15 +66,14 @@ export function SimpleErrorMessage({ errorUi, errorBackend }: { errorUi?: string
         <AlertTriangle className="h-6 w-6 text-rose-600 dark:text-rose-300" />
         {errorUi && <span className="ml-2 mt-1">{errorUi}</span>}
       </div>
-      {/* <p className="whitespace-pre-line ml-2">{text}</p> */}
-      {errorBackend && <span>{errorBackend}</span>}
+      <div className="ml-2">{errorBackend && <span>{errorBackend}</span>}</div>
     </div>
   );
 }
 
 export function SimpleSuccessMessage({ message, block }: { message?: string; block?: React.ReactElement; }) {
   /*
-   * It maybe either message or block, or both
+   * It maybe either message or HTML block, or both
    */
   if (!message && !block) return null;
 
@@ -82,8 +86,10 @@ export function SimpleSuccessMessage({ message, block }: { message?: string; blo
         dark:border-emerald-400/25 dark:bg-emerald-950/20 dark:text-emerald-100
       "
     >
-      <CheckCircle className="h-6 w-6 mb-2 mt-2 text-emerald-800 dark:text-emerald-100" />
-      { message && <span>{message}</span> }
+      <div className="mt-4 mb-2 text-sm flex">
+        <CheckCircle className="h-6 w-6 mb-2 mt-2 text-emerald-800 dark:text-emerald-100" />
+        { message && <span>{message}</span> }
+      </div>
       <div className="ml-2">{ block }</div>
     </div>
   );
@@ -91,7 +97,7 @@ export function SimpleSuccessMessage({ message, block }: { message?: string; blo
 
 export function SimpleInfoMessage({ message, block }: { message?: string; block?: React.ReactElement; }) {
   /*
-   * It maybe either message or block, or both
+   * It maybe either message or HTML block, or both
    */
   if (!message && !block) return null;
 
@@ -104,8 +110,10 @@ export function SimpleInfoMessage({ message, block }: { message?: string; block?
         dark:border-sky-400/25 dark:bg-sky-950/20 dark:text-sky-200
       "
     >
-      <Info className="h-6 w-6 mb-2 mt-2 text-sky-800 dark:text-sky-200" />
-      { message && <span>{message}</span> }
+      <div className="mt-4 mb-2 text-sm flex">
+        <Info className="h-6 w-6 mb-2 mt-2 text-sky-800 dark:text-sky-200" />
+        { message && <span>{message}</span> }
+      </div>
       <div className="ml-2">{ block }</div>
     </div>
   );

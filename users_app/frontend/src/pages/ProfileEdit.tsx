@@ -8,7 +8,7 @@ import { useAuthStore } from "../auth/store";
 import FormInput from "../components/FormInput";
 import { Input } from "../components/input";
 import Button from "../components/button";
-import ErrorAlert from "../components/Alerts";
+import { SimpleErrorMessage } from "../components/Alerts";
 import UnifiedTitle from "../components/UnifiedTitle";
 
 type ProfileUser = {
@@ -79,13 +79,12 @@ export default function ProfileEdit() {
       navigate("/profile-view");
     } catch (err: any) {
       const parsed = extractApiError(err as unknown);
-      setError(t("profileEdit.saveFailed") + "\n" + parsed.message);
+      setError(parsed.message);
     }
   }
 
-  // if (error) return <div className="card p-4 text-red-600">{error}</div>; // not pretty error displaying
   if (loading) return <div className="card p-4">{t("users.loading")}</div>;
-  if (error) return <ErrorAlert message={error} />;
+  if (error) return <SimpleErrorMessage errorUi={t("profileEdit.saveFailed")} errorBackend={error} />;
   if (!data) return <div className="card p-4">{t("users.loading")}</div>;
 
   const mediaBase = (import.meta.env.VITE_API_URL ?? "http://localhost:8000/api/v1").replace(/\/api\/v1$/, "");

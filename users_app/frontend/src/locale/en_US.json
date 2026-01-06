@@ -89,7 +89,6 @@
     "saveFailed": "Failed to save"
   },
   "profileView": {
-    "pViewError": "Error: {{message}}",
     "noProfileFound": "No profile found.",
     "createEditProfile": "Create or edit profile",
     "profile": "Profile",
