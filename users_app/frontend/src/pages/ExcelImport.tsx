@@ -7,7 +7,7 @@ import { useAuthStore } from "../auth/store";
 import { Input } from "../components/input";
 import Button from "../components/button";
 import UnifiedTitle from "../components/UnifiedTitle";
-import { SimpleErrorMessage, SimpleSuccessMessage } from "../components/Alerts";
+import { SimpleErrorMessage, SimpleSuccessMessage, SimpleInfoMessage } from "../components/Alerts";
 
 export default function ExcelImportPanel() {
   const { t } = useTranslation();
@@ -107,15 +107,18 @@ export default function ExcelImportPanel() {
          "
     >
       <UnifiedTitle icon={<FileSpreadsheet className="h-4 w-4" />} title={t("excelImport.title")} />
-      <p className="mb-4 max-w-prose text-sm sm:text-[0.95rem] leading-relaxed text-slate-600 dark:text-slate-300">
-        <span>{t("excelImport.fileUploadMessage")} </span>
-        <br/>
-        <span>{t("signup.email")} | </span>
-        <span>{t("signup.username")} | </span>
-        <span>{t("users.firstName")} | </span>
-        <span>{t("users.lastName")} | </span>
-        <span>{t("excelImport.bio")}</span>.
-      </p>
+      <SimpleInfoMessage
+        message={t("excelImport.fileUploadMessage")}
+        block={
+          <>
+            <span>{t("signup.email")} | </span>
+            <span>{t("signup.username")} | </span>
+            <span>{t("users.firstName")} | </span>
+            <span>{t("users.lastName")} | </span>
+            <span>{t("excelImport.bio")}</span>
+          </>
+        }
+      />
 
       <form onSubmit={onSubmit} className="space-y-3">
         <Input
