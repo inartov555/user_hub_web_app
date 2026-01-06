@@ -78,8 +78,8 @@
     "result": "Resultado",
     "importSuccessful": "La importación finalizó correctamente",
     "selectedFile": "Seleccionado:",
-    "excelImportFailure": "Error al cargar el archivo de Excel",
-    "templateDownloadFailed": "Error al descargar la plantilla"
+    "excelImportFailure": "Error al cargar el archivo de Excel:",
+    "templateDownloadFailed": "Error al descargar la plantilla:"
   },
   "profileEdit": {
     "editProfile": "Editar perfil",

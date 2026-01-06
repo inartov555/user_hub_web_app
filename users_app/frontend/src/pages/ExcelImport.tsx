@@ -24,8 +24,6 @@ export default function ExcelImportPanel() {
   const [inputKey, setInputKey] = useState(0);
   const { accessToken } = useAuthStore();
   const [error, setError] = useState<string | null>(null);
-  const [isImportFailed, setIsImportFailed] = useState<boolean | false>(null);
-  const [isDownloadFailed, setIsDownloadFailed] = useState<boolean | false>(null);
 
   const onFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setMessage(null);
@@ -55,18 +53,14 @@ export default function ExcelImportPanel() {
       setSummary(payload?.result ?? payload);
       setMessage(t("excelImport.importSuccessful"));
 
-      // Reset the input for the next upload (without interfering with current display)
+      // Reset the input for the *next* upload (without interfering with current display)
       setFile(null);
       setInputKey((k) => k + 1);
       // Clearing the error message in case of successful import
       setError("");
-      setIsImportFailed(false);
-      setIsDownloadFailed(false);
     } catch (err: any) {
       const parsed = extractApiError(err as unknown);
-      setError(`${parsed.message}`);
-      setIsImportFailed(true);
-      setIsDownloadFailed(false);
+      setError(`${t("excelImport.excelImportFailure")} ${parsed.message}`);
     } finally {
       setSubmitting(false);
     }
@@ -88,15 +82,9 @@ export default function ExcelImportPanel() {
       a.click();
       a.remove();
       window.URL.revokeObjectURL(url);
-      // Clearing the error message in case of successful download
-      setError("");
-      setIsImportFailed(false);
-      setIsDownloadFailed(false);
     } catch (err) {
       const parsed = extractApiError(err as unknown);
-      setError(`${parsed.message}`);
-      setIsImportFailed(false);
-      setIsDownloadFailed(true);
+      setError(`${t("excelImport.templateDownloadFailed")} ${parsed.message}`);
     }
   }
 
@@ -131,15 +119,14 @@ export default function ExcelImportPanel() {
           <div className="text-sm text-gray-600 dark:text-slate-300 mt-1">{t("excelImport.selectedFile")} {file.name}</div>
         )}
 
-        {/* Error messages */}
-        {isImportFailed && <SimpleErrorMessage errorUi={t("excelImport.excelImportFailure")} errorBackend={error} />}
-        {isDownloadFailed && <SimpleErrorMessage errorUi={t("excelImport.templateDownloadFailed")} errorBackend={error} />}
+        {/* Error message */}
+        {error && <SimpleErrorMessage errorBackend={error} />}
 
         {/* Success message */}
         {summary && (
           <>
             <SimpleSuccessMessage
-              message={t("excelImport.importSuccessful")}
+              message={message}
               block={
                 <>
                   <div data-tag="resultSuccessTitle" className="font-medium mb-2 mt-2">{t("excelImport.result")}</div>
