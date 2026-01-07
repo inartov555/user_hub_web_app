@@ -91,11 +91,12 @@ export default function ProfileView() {
            dark:bg-slate-900/50 dark:border-slate-700/70 dark:text-slate-100 dark:ring-white/5
          "
     >
-      <div aria-hidden className="
-           pointer-events-none absolute inset-x-0 top-0 h-24
-           bg-gradient-to-b from-brand-500/10 via-indigo-500/6 to-transparent
-           dark:from-brand-400/12 dark:via-indigo-400/8
-         "
+      <div aria-hidden
+           className="
+             pointer-events-none absolute inset-x-0 top-0 h-24
+             bg-gradient-to-b from-brand-500/10 via-indigo-500/6 to-transparent
+             dark:from-brand-400/12 dark:via-indigo-400/8
+           "
       />
       {/* Left: Avatar */}
       <div className="relative grid grid-cols-1 md:grid-cols-3 gap-6">
