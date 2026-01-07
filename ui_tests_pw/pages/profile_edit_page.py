@@ -82,8 +82,8 @@ class ProfileEditPage(BasePage):
         after saving and entering the Profile Edit page again.
 
         Examples for src_attr:
-            - default avatar = r".*placehold.co/\d+x\d+\?text=.*"
-            - some uploaded picture = rf".*/media/avatars/user_\d+/.*{Path(avatar_path).suffix}"
+            - default avatar = r".*placehold.co/\\d+x\\d+\\?text=.*"
+            - some uploaded picture = rf".*/media/avatars/user_\\d+/.*{Path(avatar_path).suffix}"
         """
         expect(self.profile_avatar_image).to_have_attribute("src", re.compile(src_attr))
 
@@ -92,7 +92,7 @@ class ProfileEditPage(BasePage):
         Assert that the passed avatar is not in the Profile Edit page.
 
         Examples for src_attr:
-            - default avatar = r".*placehold.co/\d+x\d+\?text=.*"
-            - some uploaded picture = rf".*/media/avatars/user_\d+/.*{Path(avatar_path).suffix}"
+            - default avatar = r".*placehold.co/\\d+x\\d+\\?text=.*"
+            - some uploaded picture = rf".*/media/avatars/user_\\d+/.*{Path(avatar_path).suffix}"
         """
         expect(self.profile_avatar_image).not_to_have_attribute("src", re.compile(src_attr))
