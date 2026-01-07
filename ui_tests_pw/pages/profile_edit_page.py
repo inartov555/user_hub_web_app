@@ -12,7 +12,7 @@ from .base_page import BasePage
 
 class ProfileEditPage(BasePage):
     """
-    Page object for the Profile edit page.
+    Encapsulates the profile edit form.
     """
 
     def __init__(self, page: Page):
