@@ -144,7 +144,7 @@ user_hub_web_app/
 ## 🛡️ Security & auth behaviour
 
 - Strong password validation with Django validators
-- JWTs are stored in memory on the client to reduce XSS persistence risk (no http‑only cookies)
+- JWTs are stored in memory on the client to reduce XSS persistence risk (no HTTP-only cookies)
 - CORS locked down with `django-cors-headers`
 - **Boot‑ID enforcement**: when the backend restarts, stale JWTs are invalidated; the frontend silently re‑auths/refreshes when possible
 - Excel import and serializers include strict validation & error reporting
@@ -154,10 +154,10 @@ user_hub_web_app/
 ## ▶️ DEMOs
 
 ### ▶️ Light Theme. Main pages
-![Light Theme. Main pages](https://github.com/inartov555/user_hub_web_app/blob/stable_v1.1_dec_19_2025/users_app/DEMO/Light%20Theme.%20Main%20pages.gif)
+![Light Theme. Main pages](./users_app/DEMO/Light%20Theme.%20Main%20pages.gif)
 
 ### ▶️ Dark Theme. Main pages
-![Dark Theme. Main pages](https://github.com/inartov555/user_hub_web_app/blob/stable_v1.1_dec_19_2025/users_app/DEMO/Dark%20Theme.%20Main%20pages.gif)
+![Dark Theme. Main pages](./users_app/DEMO/Dark%20Theme.%20Main%20pages.gif)
 
 ### ▶️ Localization
-![Localization](https://github.com/inartov555/user_hub_web_app/blob/stable_v1.1_dec_19_2025/users_app/DEMO/Localization.gif)
+![Localization](./users_app/DEMO/Localization.gif)
