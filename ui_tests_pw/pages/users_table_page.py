@@ -119,9 +119,6 @@ class UsersTablePage(BasePage):
             raise ValueError(f"Current value of the column param ({column}) is not correct")
         sorted_column_header_loc = self.page.locator(self.sortable_columl_header_str.format(_column))
         svg_class_attr = sorted_column_header_loc.locator("svg").get_attribute("class")
-        # lucide lucide-arrow-up h-4 w-4 = ascending
-        # lucide lucide-arrow-down h-4 w-4 = descending
-        # lucide lucide-arrow-up-down h-4 w-4 opacity-40 = default
         if "lucide-arrow-up " in svg_class_attr:
             return "asc"
         if "lucide-arrow-down " in svg_class_attr:

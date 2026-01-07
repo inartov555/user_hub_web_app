@@ -40,6 +40,7 @@ class BasePage:
         self.logout = self.page.locator('#logout')
         self.error_msg = self.page.locator("div[data-tag='simpleErrorMessage']")
         self.info_msg = self.page.locator("div[data-tag='simpleInfoMessage']")
+        self.success_msg = self.page.locator("div[data-tag='simpleSuccessMessage']")
         # /users page after logging in
         self.users_tab = self.page.locator('#users')
         self.profile_tab = self.page.locator('#profile')
@@ -302,3 +303,9 @@ class BasePage:
         Assert that an info message is shown
         """
         expect(self.info_msg).to_be_visible()
+
+    def assert_success_message(self) -> None:
+        """
+        Assert that a success message is shown
+        """
+        expect(self.success_msg).to_be_visible()

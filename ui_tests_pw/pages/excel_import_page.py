@@ -75,6 +75,7 @@ class ExcelImportPage(BasePage):
         # UI logic: button becomes disabled after clicking and before getting response
         expect(self.import_template_btn).to_be_enabled()
         self.assert_there_s_no_error()
+        self.assert_success_message()
 
     def import_excel_file_error(self, file_to_import: str) -> None:
         """

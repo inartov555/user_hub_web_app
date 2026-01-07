@@ -166,7 +166,8 @@ def _helper_user_delete_page(page: Page,
     user_delete_page.assert_confirm_delete_loaded()
     # Screenshot -> Admin user -> User Delete Confirm page -> List of users to delete
     take_a_screenshot(page)
-    # Let's delete previously created via API user
+    # Let's delete previously created via API user, so the delete operation on UI will show these
+    # as failed during deletion since they are not pesent at the momen of UI deletion
     delete_users_by_suffix_via_api("admin-excel-watermelon-11@test.com", "strict", "email")
     delete_users_by_suffix_via_api("admin-excel-watermelon-13@test.com", "strict", "email")
     delete_users_by_suffix_via_api("admin-excel-watermelon-14@test.com", "strict", "email")
