@@ -83,7 +83,7 @@
   },
   "profileEdit": {
     "editProfile": "Upravit profil",
-    "profileLoadError": "Načtení profilu se nezdařilo.",
+    "profileLoadError": "Načtení profilu se nezdařilo",
     "save": "Uložit",
     "profileAvatar": "Profilová fotka",
     "saveFailed": "Uložení se nezdařilo."
@@ -99,9 +99,7 @@
     "changePassword": "Změnit heslo"
   },
   "changePassword": {
-    "atLeast8Chars": "Heslo musí mít alespoň 8 znaků.",
-    "notMatch": "Hesla se neshodují.",
-    "setPasswordFailed": "Nastavení hesla se nezdařilo.",
+    "setPasswordFailed": "Nastavení hesla se nezdařilo",
     "newPassword": "Nové heslo",
     "confirmPassword": "Potvrdit heslo",
     "saving": "Ukládání…"

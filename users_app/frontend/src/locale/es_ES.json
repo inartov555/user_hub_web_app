@@ -83,7 +83,7 @@
   },
   "profileEdit": {
     "editProfile": "Editar perfil",
-    "profileLoadError": "No se pudo cargar el perfil.",
+    "profileLoadError": "No se pudo cargar el perfil",
     "save": "Guardar",
     "profileAvatar": "Foto de perfil",
     "saveFailed": "No se pudo guardar."
@@ -99,9 +99,7 @@
     "changePassword": "Cambiar contraseña"
   },
   "changePassword": {
-    "atLeast8Chars": "La contraseña debe tener al menos 8 caracteres.",
-    "notMatch": "Las contraseñas no coinciden.",
-    "setPasswordFailed": "No se pudo establecer la contraseña.",
+    "setPasswordFailed": "No se pudo establecer la contraseña",
     "newPassword": "Nueva contraseña",
     "confirmPassword": "Confirmar contraseña",
     "saving": "Guardando…"

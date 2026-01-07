@@ -83,7 +83,7 @@
   },
   "profileEdit": {
     "editProfile": "Edytuj profil",
-    "profileLoadError": "Nie udało się wczytać profilu.",
+    "profileLoadError": "Nie udało się wczytać profilu",
     "save": "Zapisz",
     "profileAvatar": "Zdjęcie profilowe",
     "saveFailed": "Nie udało się zapisać."
@@ -99,9 +99,7 @@
     "changePassword": "Zmień hasło"
   },
   "changePassword": {
-    "atLeast8Chars": "Hasło musi mieć co najmniej 8 znaków.",
-    "notMatch": "Hasła nie są zgodne.",
-    "setPasswordFailed": "Ustawienie hasła nie powiodło się.",
+    "setPasswordFailed": "Ustawienie hasła nie powiodło się",
     "newPassword": "Nowe hasło",
     "confirmPassword": "Potwierdź hasło",
     "saving": "Zapisywanie…"

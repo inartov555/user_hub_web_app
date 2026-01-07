@@ -83,7 +83,7 @@
   },
   "profileEdit": {
     "editProfile": "Edit profile",
-    "profileLoadError": "Failed to load profile.",
+    "profileLoadError": "Failed to load profile",
     "save": "Save",
     "profileAvatar": "Profile avatar",
     "saveFailed": "Failed to save"
@@ -99,9 +99,7 @@
     "changePassword": "Change password"
   },
   "changePassword": {
-    "atLeast8Chars": "Password must be at least 8 characters.",
-    "notMatch": "Passwords do not match.",
-    "setPasswordFailed": "Failed to set password.",
+    "setPasswordFailed": "Failed to set password",
     "newPassword": "New password",
     "confirmPassword": "Confirm password",
     "saving": "Saving…"

@@ -83,7 +83,7 @@
   },
   "profileEdit": {
     "editProfile": "Muuda profiili",
-    "profileLoadError": "Profiili laadimine ebaõnnestus.",
+    "profileLoadError": "Profiili laadimine ebaõnnestus",
     "save": "Salvesta",
     "profileAvatar": "Profiilipilt",
     "saveFailed": "Salvestamine ebaõnnestus."
@@ -99,9 +99,7 @@
     "changePassword": "Muuda parooli"
   },
   "changePassword": {
-    "atLeast8Chars": "Parool peab olema vähemalt 8 tähemärki.",
-    "notMatch": "Paroolid ei kattu.",
-    "setPasswordFailed": "Parooli seadmine ebaõnnestus.",
+    "setPasswordFailed": "Parooli seadmine ebaõnnestus",
     "newPassword": "Uus parool",
     "confirmPassword": "Kinnita parool",
     "saving": "Salvestamine…"

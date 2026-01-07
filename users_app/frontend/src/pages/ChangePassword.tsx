@@ -28,17 +28,6 @@ export default function ChangePassword() {
     e.preventDefault();
     setError(null);
 
-    /*
-    if (!password || password.length < 8) {
-      setError(t("changePassword.atLeast8Chars"));
-      return;
-    }
-    if (password !== confirmPassword) {
-      setError(t("changePassword.notMatch"));
-      return;
-    }
-    */
-
     try {
       setSaving(true);
       await api.post(`/users/${id}/set-password/`, { password, "confirm_password": confirmPassword });

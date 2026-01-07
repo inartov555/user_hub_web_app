@@ -73,6 +73,7 @@ export default function ProfileView() {
   const mediaBase = (import.meta.env.VITE_API_URL ?? "http://localhost:8000/api/v1").replace(/\/api\/v1$/, "");
   const fullName =
     [profile.user?.first_name, profile.user?.last_name].filter(Boolean).join(" ") || "—";
+  const bioField = profile?.bio || "—";
 
   const initials =
     (profile.user?.first_name?.[0] || "") + (profile.user?.last_name?.[0] || "");
@@ -115,7 +116,7 @@ export default function ProfileView() {
         </div>
 
         <div>
-          <Field id="bio" label={t("excelImport.bio")} value={String(profile?.bio ?? "—")} />
+          <Field id="bio" label={t("excelImport.bio")} value={bioField} />
         </div>
 
         {error && (<SimpleErrorMessage errorUi={t("profileView.viewFailed")} errorBackend={error} />)}

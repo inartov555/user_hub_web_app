@@ -83,7 +83,7 @@
   },
   "profileEdit": {
     "editProfile": "Muokkaa profiilia",
-    "profileLoadError": "Profiilin lataaminen epäonnistui.",
+    "profileLoadError": "Profiilin lataaminen epäonnistui",
     "save": "Tallenna",
     "profileAvatar": "Profiilikuva",
     "saveFailed": "Tallennus epäonnistui."
@@ -99,9 +99,7 @@
     "changePassword": "Vaihda salasana"
   },
   "changePassword": {
-    "atLeast8Chars": "Salasanan on oltava vähintään 8 merkkiä.",
-    "notMatch": "Salasanat eivät täsmää.",
-    "setPasswordFailed": "Salasanan asettaminen epäonnistui.",
+    "setPasswordFailed": "Salasanan asettaminen epäonnistui",
     "newPassword": "Uusi salasana",
     "confirmPassword": "Vahvista salasana",
     "saving": "Tallennetaan…"
