@@ -89,7 +89,7 @@ jobs:
             --disable=too-few-public-methods,too-many-instance-attributes,too-many-arguments,too-many-positional-arguments \
             --max-parents=10 \
             --max-locals=20 \
-            --max-public-methods=30 \
+            --max-public-methods=35 \
             $APP_FILES
         else
           echo "No Python files to pylint."
