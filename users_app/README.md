@@ -6,7 +6,7 @@
 
 ## 💡 Users App
 
-- A production‑grade example app with a **Django REST Framework (DRF)** backend and a **React + Vite + TypeScript** SPA frontend.
+- A production‑grade example app with a Django REST Framework (DRF) backend and a React + Vite + TypeScript SPA frontend.
 - It demonstrates JWT auth with runtime tuning, profile management, Excel import, online-user stats, i18n, and a clean Tailwind UI.
 - Created on Oct-10-2025
 
@@ -38,7 +38,7 @@
 #
 #     !!! Clearing Docker data (ALL Docker images, Docker network settings, etc.), and restarting the Docker service
 #   - $3 - true - clearing all docker data (network, images, etc.)
-#          false - docker starts with new data
+#          false - Docker starts with new data
 #          default = false
 ```
 
@@ -137,6 +137,7 @@ user_hub_web_app/
 | GET    | `/api/v1/system/runtime-auth/`         | Read runtime‑computed auth config |
 | POST   | `/api/v1/auth/jwt/create`              | Obtain access/refresh (Djoser) |
 | POST   | `/api/v1/auth/jwt/refresh/`            | Refresh access (runtime‑aware) |
+| POST   | `/api/v1/auth/jwt/logout`              | Invalidate access token when user logs out on UI/API |
 | GET    | `/api/v1/schema/`                      | OpenAPI schema |
 | GET    | `/api/v1/docs/`                        | Swagger UI |
 
