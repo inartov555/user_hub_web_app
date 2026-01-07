@@ -6,7 +6,7 @@
 ## 🧰 Stack
 
 - **Python** + **Pytest**
-- **Playwright** (Chromium, Firefox, WebKit)
+- **Playwright** (Chromium, Chrome, MS Edge, Firefox, WebKit, Safari)
 - **Django backend** (the existing app) – used as the system under test, including its i18n setup
 - **Docker / docker-compose** – one stack for Django (for localization tests) + Playwright tests
 - **Page Object Model (POM)** – one page-object class per UI page
@@ -46,15 +46,18 @@
 
 - UI-centric tests that exercise the real Django REST backend and React SPA.
 - One POM per logical page:
-  - Login, Signup, Reset password
-  - Users table
-  - Profile view/edit
+  - Login,
+  - Signup,
+  - Reset Password
+  - Users Table
+  - Profile View
+  - Profile Edit
   - Settings
-  - Stats
-  - Excel import
-  - Change password
-  - User delete confirm
-- For each page at least one scenario is covered when the suite is executed:
+  - User Stats
+  - Excel Import
+  - Change Password
+  - User Delete Confirm
+- For each page, at least one scenario is covered when the suite is executed:
   - Dark/light theme behavior
   - Localization (English + at least one non-English locale)
   - Access control for:
