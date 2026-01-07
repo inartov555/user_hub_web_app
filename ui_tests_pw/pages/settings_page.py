@@ -23,6 +23,7 @@ class SettingsPage(BasePage):
         self.idle_timeout_sec = self.page.locator("#idleTimeoutSeconds")
         self.access_token_lifetime = self.page.locator("#accessTokenLifetime")
         self.save = self.page.locator("form button[type='submit']")
+        self.error = self.page.locator("div[data-tag='simpleErrorMessage'] p")
 
     def open(self) -> None:
         """
@@ -113,3 +114,15 @@ class SettingsPage(BasePage):
         Set a new value for the ACCESS_TOKEN_LIFETIME param
         """
         self.access_token_lifetime.fill(str(int(value)))
+
+    def assert_error_visible(self) -> None:
+        """
+        Assert that an error message is visible after a failed App Settings save attempt.
+        """
+        expect(self.error).to_be_visible()
+
+    def assert_there_s_no_error(self) -> None:
+        """
+        Assert that there's no error after saving App Settings
+        """
+        expect(self.error).not_to_be_visible()
