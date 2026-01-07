@@ -1,9 +1,9 @@
 ## ℹ️ Info
 
-- ✅ **Users App - Stable version #1.1:** [./users_app](./users_app)
-- ℹ️ More info related to the Users App: [./users_app/README.md](./README.md)
-- ✅ **UI tests - Stable version #1.1:** [./ui_tests_pw](./ui_tests_pw)
-- ℹ️ More info related to the UI tests: [./ui_tests_pw/README.md](./ui_tests_pw/README.md)
+- ✅ [**Users App - Stable version #1.1**](./users_app)
+- ℹ️ [More info related to the Users App](./README.md)
+- ✅ [**UI tests - Stable version #1.1**](./ui_tests_pw)
+- ℹ️ [More info related to the UI tests](./ui_tests_pw/README.md)
 
 - `users_app` created on Oct-10-2025
 - `ui_tests_pw` created on Nov-05-2025
