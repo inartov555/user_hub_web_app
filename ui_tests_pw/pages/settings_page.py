@@ -22,7 +22,7 @@ class SettingsPage(BasePage):
         self.renew_at_sec = self.page.locator("#renewAtSeconds")
         self.idle_timeout_sec = self.page.locator("#idleTimeoutSeconds")
         self.access_token_lifetime = self.page.locator("#accessTokenLifetime")
-        self.save = self.page.locator("form button[type='submit']")
+        self.save = self.page.locator("form div button[type='submit']")
 
     def open(self) -> None:
         """
@@ -48,6 +48,7 @@ class SettingsPage(BasePage):
         if rotate_refresh_token:
             # This param is shown on UI only if self.rotate_refresh_token is set to true
             self.change_renew_token_at_seconds(renew_at_sec)
+        self.save.focus()
         self.save.click()
         # UI logic: button becomes disabled after clicking and before getting a response
         expect(self.save).to_be_enabled()
@@ -70,6 +71,7 @@ class SettingsPage(BasePage):
         if rotate_refresh_token:
             # This param is shown on UI only if self.rotate_refresh_token is set to true
             self.change_renew_token_at_seconds(renew_at_sec)
+        self.save.focus()
         self.save.click()
         # UI logic: button becomes disabled after clicking and before getting a response
         expect(self.save).to_be_enabled()
