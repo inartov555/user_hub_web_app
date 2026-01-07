@@ -20,10 +20,8 @@ from utils.theme import Theme
 @pytest.mark.theme
 @pytest.mark.localization
 @pytest.mark.admin
-# @pytest.mark.parametrize("ui_theme_param", ThemeConsts.ALL_SUPPORTED_THEMES)
-# @pytest.mark.parametrize("ui_locale_param", LocaleConsts.ALL_SUPPORTED_LOCALES)
-@pytest.mark.parametrize("ui_theme_param", ["light"])
-@pytest.mark.parametrize("ui_locale_param", ["en-US"])
+@pytest.mark.parametrize("ui_theme_param", ThemeConsts.ALL_SUPPORTED_THEMES)
+@pytest.mark.parametrize("ui_locale_param", LocaleConsts.ALL_SUPPORTED_LOCALES)
 @pytest.mark.usefixtures("cleanup_set_default_theme_and_locale")
 def test_profile_edit_renders_and_can_save(profile_edit_page_regular: ProfileEditPage,
                                            page: Page,
@@ -35,7 +33,7 @@ def test_profile_edit_renders_and_can_save(profile_edit_page_regular: ProfileEdi
     rand_num = random.randint(0, 1000)
     avatars = list(Path("test_data/avatars/").glob("*.*"))
     avatar_path = str(random.choice(avatars))
-    edit_data = {"firstName": f"UI_{rand_num}", 
+    edit_data = {"firstName": f"UI_{rand_num}",
                  "lastName": f"Tester_{rand_num}",
                  "bio": f"Bio from automated test._{rand_num}"}
 
@@ -54,8 +52,8 @@ def test_profile_edit_renders_and_can_save(profile_edit_page_regular: ProfileEdi
     profile_edit_page_regular.click_save_and_wait_profile_view()
     profile_view_page = ProfileViewPage(page)
 
-    default_avatar = "https://placehold.co/160x160?text=.*"
-    src_to_check = f".*/media/avatars/user_\d+/.*{Path(avatar_path).suffix}"
+    default_avatar = r".*placehold.co/\\d+x\\d+\\?text=.*"
+    src_to_check = rf".*/media/avatars/user_\\d+/.*{Path(avatar_path).suffix}"
     profile_view_page.assert_avatar_in_profile_view(src_to_check)
     profile_view_page.assert_avatar_not_in_profile_view(default_avatar)
 
@@ -100,13 +98,13 @@ def test_new_avatar_picture_shown_after_uploading_a_picture(login_page: LoginPag
     username = f"ui-test-{suffix}"
     password = "Ch@ngeme123"
     # Deafult avatar before setting any picture
-    default_avatar = "https://placehold.co/160x160?text=.*"
+    default_avatar = r".*placehold.co/\\d+x\\d+\\?text=.*"
     rand_num = random.randint(0, 999)
     avatars = list(Path("test_data/avatars/").glob("*.*"))
     avatar_path = str(random.choice(avatars))
     # The file extenion is preserved when saved, but the name itself changes
-    src_to_check = f".*/media/avatars/user_\d+/.*{Path(avatar_path).suffix}"
-    edit_data = {"firstName": f"Tester {rand_num}", 
+    src_to_check = rf".*/media/avatars/user_\\d+/.*{Path(avatar_path).suffix}"
+    edit_data = {"firstName": f"Tester {rand_num}",
                  "lastName": f"UI_{rand_num}",
                  "bio": f"The bio from the automated test._{rand_num}"}
 
@@ -119,7 +117,7 @@ def test_new_avatar_picture_shown_after_uploading_a_picture(login_page: LoginPag
     profile_view_page.click_edit_button()
 
     profile_edit_page = ProfileEditPage(page)
-    profile_edit_page.assert_avatar_in_profile_view(default_avatar)
+    profile_edit_page.assert_avatar_in_profile_edit(default_avatar)
     # Now, let's set a new avatar
     profile_edit_page.fill_basic_fields(edit_data.get("firstName"),
                                         edit_data.get("lastName"),
