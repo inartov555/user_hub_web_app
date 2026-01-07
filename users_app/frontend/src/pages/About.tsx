@@ -13,7 +13,10 @@ export default function About() {
   return (
     <Card className="max-w-xl mx-auto">
       <UnifiedTitle icon={<LayoutTemplate className="h-4 w-4" />} title={t("about.aboutWebsite")} />
-      <SimpleInfoMessage message={t("about.infoAboutWebsite")} />
+      <SimpleInfoMessage
+        message={`${t("about.createdBy")} Iurii Nartov`}
+        block={<span>{t("about.infoAboutWebsite")}</span>}
+      />
       {!user && (
         <div className="mt-4 text-sm flex justify-between">
           <CustomLink title={t("auth.createAccount")} linkTo="/signup" />

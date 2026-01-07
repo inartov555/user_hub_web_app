@@ -21,6 +21,11 @@
     "importFromExcel": "Import z Excelu",
     "logout": "Odhlásit se"
   },
+  "about": {
+    "aboutWebsite": "O webu",
+    "infoAboutWebsite": "Ukázková aplikace na úrovni produkčního nasazení s backendem v Django REST Framework a frontendem jako SPA v React + Vite + TypeScript. Předvádí JWT autentizaci s laděním za běhu, správu profilu, import z Excelu, statistiky online uživatelů, i18n a čisté UI v Tailwindu.",
+    "createdBy": "Vytvořil:"
+  },
   "auth": {
     "login": "Přihlásit se",
     "forgotPassword": "Zapomněli jste heslo?",

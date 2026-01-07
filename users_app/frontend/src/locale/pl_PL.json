@@ -21,6 +21,11 @@
     "importFromExcel": "Importuj z Excela",
     "logout": "Wyloguj się"
   },
+  "about": {
+    "aboutWebsite": "O stronie",
+    "infoAboutWebsite": "Produkcyjnej jakości aplikacja przykładowa z backendem w Django REST Framework oraz frontendem jako SPA w React + Vite + TypeScript. Prezentuje uwierzytelnianie JWT z dostrajaniem w czasie działania, zarządzanie profilem, import z Excela, statystyki użytkowników online, i18n oraz przejrzysty interfejs w Tailwind.",
+    "createdBy": "Utworzone przez:"
+  },
   "auth": {
     "login": "Zaloguj się",
     "forgotPassword": "Nie pamiętasz hasła?",

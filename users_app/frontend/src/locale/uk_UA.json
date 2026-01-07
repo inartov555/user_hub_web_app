@@ -21,6 +21,11 @@
     "importFromExcel": "Імпорт з Excel",
     "logout": "Вийти"
   },
+  "about": {
+    "aboutWebsite": "Про сайт",
+    "infoAboutWebsite": "Приклад застосунку продакшн-рівня з бекендом на Django REST Framework і фронтендом SPA на React + Vite + TypeScript. Демонструє JWT-автентифікацію з налаштуванням у runtime, керування профілем, імпорт з Excel, статистику онлайн-користувачів, i18n та охайний UI на Tailwind.",
+    "createdBy": "Створено:"
+  },
   "auth": {
     "login": "Увійти",
     "forgotPassword": "Забули пароль?",

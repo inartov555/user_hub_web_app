@@ -21,6 +21,11 @@
     "importFromExcel": "Tuo Excelistä",
     "logout": "Kirjaudu ulos"
   },
+  "about": {
+    "aboutWebsite": "Tietoa sivustosta",
+    "infoAboutWebsite": "Tuotantotasoinen esimerkkisovellus, jossa backend on toteutettu Django REST Frameworkilla ja frontend on React + Vite + TypeScript -SPA. Se esittelee JWT-todennuksen ajonaikaisella hienosäädöllä, profiilien hallinnan, Excel-tuonnin, online-käyttäjätilastot, i18n-tuen sekä selkeän Tailwind-käyttöliittymän.",
+    "createdBy": "Tekijä:"
+  },
   "auth": {
     "login": "Kirjaudu sisään",
     "forgotPassword": "Unohditko salasanan?",

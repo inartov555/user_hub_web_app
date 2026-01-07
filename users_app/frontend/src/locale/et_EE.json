@@ -21,6 +21,11 @@
     "importFromExcel": "Impordi Excelist",
     "logout": "Logi välja"
   },
+  "about": {
+    "aboutWebsite": "Veebisaidist",
+    "infoAboutWebsite": "Tootmiskõlbulik näidisrakendus Django REST Frameworki backend’iga ja React + Vite + TypeScript SPA-frontendiga. See demonstreerib JWT autentimist jooksva seadistusega, profiilihaldust, Exceli importi, veebis kasutajate statistikat, i18n-i ning puhast Tailwindi UI-d.",
+    "createdBy": "Loonud:"
+  },
   "auth": {
     "login": "Logi sisse",
     "forgotPassword": "Unustasid parooli?",
