@@ -139,7 +139,7 @@ def _helper_users_table_page_admin_user(page: Page,
     api_utils = get_api_utils()
     login_info = api_utils.api_login(DEFAULT_ADMIN_USERNAME, DEFAULT_ADMIN_PASSWORD)
     access_token = login_info.get("access")
-    api_utils.import_excel_spreadsheet(access_token, "test_data/import_template_test_20_users.xlsx")
+    api_utils.import_excel_spreadsheet(access_token, "test_data/test_data/import_template_test_20_users.xlsx")
     # Now, let's search for just imported users on UI
     users_table_page.search_and_wait_for_results("admin")
     # There are supposed to be 2 users: admin and just created one
