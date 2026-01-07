@@ -21,7 +21,6 @@ class LoginPage(BasePage):
         self.username = self.page.locator("#username")
         self.password = self.page.locator("#password")
         self.submit = self.page.locator("form button[type='submit']")
-        self.error = self.page.locator("div[data-tag='simpleErrorMessage'] p")
 
         self.signup = self.page.locator("a[href='/signup']")
         self.forgot_password = self.page.locator("a[href='/reset-password']")
@@ -76,9 +75,3 @@ class LoginPage(BasePage):
         """
         self.forgot_password.click()
         self.verify_reset_password_page_uri_is_open()
-
-    def assert_error_visible(self) -> None:
-        """
-        Assert that an error message is visible after a failed login attempt.
-        """
-        expect(self.error).to_be_visible()

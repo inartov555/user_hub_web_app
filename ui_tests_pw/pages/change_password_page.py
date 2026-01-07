@@ -21,7 +21,6 @@ class ChangePasswordPage(BasePage):
         self.password = self.page.locator("#password")
         self.confirm_password = self.page.locator("#confirmPassword")
         self.submit = self.page.locator("form button[type='submit']")
-        self.error = self.page.locator("div[data-tag='simpleErrorMessage'] p")
 
     def open_for_user(self, user_id: int) -> None:
         """
@@ -42,12 +41,6 @@ class ChangePasswordPage(BasePage):
         """
         self.password.fill(password)
         self.confirm_password.fill(confirm)
-
-    def assert_error_visible(self) -> None:
-        """
-        Assert that an error message is visible after a failed Change Password page.
-        """
-        expect(self.error).to_be_visible()
 
     def assert_change_password_is_loaded(self) -> None:
         """
