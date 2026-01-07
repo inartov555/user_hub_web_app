@@ -32,6 +32,7 @@ This is a test website + automation framework
 - 🆕 **Added in `ui_tests_pw`:** New tests to test_change_password_page.py
 - 🆕 **Added in `ui_tests_pw`:** New tests to test_settings_page.py
 - 🆕 **Added in `ui_tests_pw`:** New tests to test_excel_import_page.py
+- 🆕 **Added in `ui_tests_pw`:** New tests to test_stats_page.py
 
 ---
 
