@@ -52,8 +52,8 @@ def test_profile_edit_renders_and_can_save(profile_edit_page_regular: ProfileEdi
     profile_edit_page_regular.click_save_and_wait_profile_view()
     profile_view_page = ProfileViewPage(page)
 
-    default_avatar = r".*placehold.co/\\d+x\\d+\\?text=.*"
-    src_to_check = rf".*/media/avatars/user_\\d+/.*{Path(avatar_path).suffix}"
+    default_avatar = r".*placehold.co/\d+x\d+\?text=.*"  # pylint: disable=anomalous-backslash-in-string
+    src_to_check = rf".*/media/avatars/user_\d+/.*{Path(avatar_path).suffix}"  # pylint: disable=anomalous-backslash-in-string
     profile_view_page.assert_avatar_in_profile_view(src_to_check)
     profile_view_page.assert_avatar_not_in_profile_view(default_avatar)
 
@@ -98,12 +98,12 @@ def test_new_avatar_picture_shown_after_uploading_a_picture(login_page: LoginPag
     username = f"ui-test-{suffix}"
     password = "Ch@ngeme123"
     # Deafult avatar before setting any picture
-    default_avatar = r".*placehold.co/\\d+x\\d+\\?text=.*"
+    default_avatar = r".*placehold.co/\d+x\d+\?text=.*"  # pylint: disable=anomalous-backslash-in-string
     rand_num = random.randint(0, 999)
     avatars = list(Path("test_data/avatars/").glob("*.*"))
     avatar_path = str(random.choice(avatars))
     # The file extenion is preserved when saved, but the name itself changes
-    src_to_check = rf".*/media/avatars/user_\\d+/.*{Path(avatar_path).suffix}"
+    src_to_check = rf".*/media/avatars/user_\d+/.*{Path(avatar_path).suffix}"  # pylint: disable=anomalous-backslash-in-string
     edit_data = {"firstName": f"Tester {rand_num}",
                  "lastName": f"UI_{rand_num}",
                  "bio": f"The bio from the automated test._{rand_num}"}
