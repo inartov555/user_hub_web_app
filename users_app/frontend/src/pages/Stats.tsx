@@ -27,6 +27,8 @@ export default function Stats() {
       >
         {(data ?? []).map((usr: any) => {
           const initials = (usr.username?.[0] ?? "U").toUpperCase();
+          const fullName = [usr.firstName, usr.lastName].filter(Boolean).join(" ").trim();
+          const tooltip = fullName || usr.email || initials;
           return (
             <li key={usr.id} className="flex items-center justify-between gap-3 p-3">
               <div className="min-w-0 flex items-center gap-3">
@@ -39,7 +41,7 @@ export default function Stats() {
                   {initials}
                 </div>
 
-                <div className="min-w-0">
+                <div className="min-w-0" title={tooltip}>
                   <div className="truncate font-semibold text-slate-900 dark:text-slate-50">
                     {usr.username}
                   </div>
