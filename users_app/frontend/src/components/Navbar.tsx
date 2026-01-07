@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { NavLink, Link, useLocation, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { MessageCircle } from "lucide-react";
+import { api } from "../lib/axios";
+import { extractApiError } from "../lib/httpErrors";
 import { useAuthStore } from "../auth/store";
 import i18n from "../lib/i18n";
 import { LocaleFlag } from "../components/LocaleFlag";
@@ -187,8 +189,16 @@ export default function Navbar() {
 
               <Button
                 id="logout"
-                onClick={() => {
+                onClick={async () => {
                   logout();
+                  try {
+                    await api.post("/auth/jwt/logout/");
+                  } catch (err: any) {
+                    const parsed = extractApiError(err as unknown);
+                    // setError(`${parsed.message}`);
+                    console.log("Raw error: " + err)
+                    console.log("Parsed error: " + parsed.message)
+                  }
                   navigate("/login");
                 }}
               >

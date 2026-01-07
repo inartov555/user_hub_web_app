@@ -10,6 +10,7 @@ from .views.excel_upload_view import ExcelUploadView
 from .views.me_profile_view import MeProfileView
 from .views.online_users_view import OnlineUsersView
 from .views.users_view_set import UsersViewSet
+from .views.logout_view import LogoutView
 from .views.settings_view import SettingsView
 from .views.runtime_auth_view import runtime_auth_config
 from .views.runtime_aware_token_refresh_view import RuntimeAwareTokenRefreshView
@@ -26,4 +27,5 @@ urlpatterns = [
     path("system/settings/", SettingsView.as_view(), name="system-settings"),
     path("system/runtime-auth/", runtime_auth_config, name="runtime-auth-config"),
     path("auth/jwt/refresh/", RuntimeAwareTokenRefreshView.as_view(), name="token_refresh"),
+    path("auth/jwt/logout/", LogoutView.as_view(), name="jwt-logout"),
 ]

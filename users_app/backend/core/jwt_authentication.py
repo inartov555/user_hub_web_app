@@ -2,8 +2,6 @@
 DRF authentication class that:
   - Extracts access token only from the Authorization: Bearer header
   - Sets request.user / request.auth when valid
-  - Does not refresh via cookies; clients call the refresh API explicitly
-  - Optionally flags near-expiry (JWT_RENEW_AT_SECONDS), but does not set cookies
 """
 
 from __future__ import annotations
@@ -11,8 +9,10 @@ from types import SimpleNamespace
 from typing import Optional
 import logging
 from datetime import datetime, timezone
+import time
 
 from django.contrib.auth import get_user_model
+from django.core.cache import cache
 from rest_framework.authentication import BaseAuthentication, get_authorization_header
 from rest_framework.exceptions import AuthenticationFailed, ValidationError
 from rest_framework_simplejwt.tokens import AccessToken
@@ -81,7 +81,7 @@ class JWTAuthentication(BaseAuthentication):
 
     def _get_access_from_request(self, request) -> Optional[str]:
         """
-        Read `Authorization: Bearer <access>` from headers. No cookies.
+        Read Authorization: Bearer <access> from headers. No cookies.
         Accepts any case for "Bearer"; ignores malformed headers.
         """
         auth = get_authorization_header(request)
@@ -116,3 +116,20 @@ class JWTAuthentication(BaseAuthentication):
             return None
         now_ts = int(datetime.now(timezone.utc).timestamp())
         return max(0, exp_ts - now_ts)
+
+
+class JWTAuthenticationWithDenylist(JWTAuthentication):
+    """
+    Blacklisting tokens
+    """
+    def get_validated_token(self, raw_token):
+        """
+        Get valid token and raise error if it's blacklisted
+        """
+        token = super().get_validated_token(raw_token)
+        print("\n\n\n\n !!! JWTAuthenticationWithDenylist !!! \n\n\n\n")
+        jti = token.get("jti")
+        if jti and cache.get(f"{BLACKLIST_PREFIX}{jti}"):
+            raise AuthenticationFailed("Token is blacklisted", code="token_not_valid")
+
+        return token
