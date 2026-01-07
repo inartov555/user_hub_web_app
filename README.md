@@ -175,7 +175,7 @@ cd frontend && npm run test
 ## 🛡️ Security & auth behaviour
 
 - Strong password validation with Django validators
-- JWTs are stored in memory on the client to reduce XSS persistence risk (no http‑only cookies)
+- JWTs are stored in memory on the client to reduce XSS persistence risk (no HTTP-only cookies)
 - CORS locked down with `django-cors-headers`
 - **Boot‑ID enforcement**: when the backend restarts, stale JWTs are invalidated; the frontend silently re‑auths/refreshes when possible
 - Excel import and serializers include strict validation & error reporting
@@ -185,10 +185,10 @@ cd frontend && npm run test
 ## ▶️ DEMOs
 
 ### ▶️ Light Theme. Main pages
-![Light Theme. Main pages](https://github.com/inartov555/user_hub_web_app/blob/stable_v1_nov_05_2025/DEMO/Light%20Theme.%20Main%20pages.gif)
+![Light Theme. Main pages](.DEMO/Light%20Theme.%20Main%20pages.gif)
 
 ### ▶️ Dark Theme. Main pages
-![Dark Theme. Main pages](https://github.com/inartov555/user_hub_web_app/blob/stable_v1_nov_05_2025/DEMO/Dark%20Theme.%20Main%20pages.gif)
+![Dark Theme. Main pages](.DEMO/Dark%20Theme.%20Main%20pages.gif)
 
 ### ▶️ Localization
-![Localization](https://github.com/inartov555/user_hub_web_app/blob/stable_v1_nov_05_2025/DEMO/Localization.gif)
+![Localization](.DEMO/Localization.gif)
