@@ -379,3 +379,42 @@ class UsersAppApi(ApiJsonRequest):
             multipart=multipart
         )
         return response
+
+    def get_profile_details(self, access: str) -> dict:
+        """
+        PUT /api/v1/auth/users/me/
+
+        Only logged in user can call it.
+
+        Returns:
+            dict, example:
+                    {
+                      "id": 121,
+                      "username": "test1",
+                      "email": "test1@test.com",
+                      "first_name": "string",
+                      "last_name": "string",
+                      "date_joined": "2026-01-07T09:03:07.050Z",
+                      "is_active": true,
+                      "is_staff": false,
+                      "is_superuser": false
+                    }
+        """
+        response = self.make_request("get",
+                                     "/api/v1/auth/users/me/",
+                                     headers=self.get_authorization_token_dict(access))
+        return response
+
+    def create_user_and_login(self, username: str, email: str, password: str) -> dict:
+        """
+        1. Create user
+        2. Log in as a just created user
+        3. Return login info like access token
+
+        Returns:
+            dict, e.g. {"refresh":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
+                        "access":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9"}
+        """
+        self.create_user(username, email, password)
+        login_info = self.api_login(username, password)
+        return login_info
