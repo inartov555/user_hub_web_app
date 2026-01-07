@@ -9,7 +9,6 @@ from types import SimpleNamespace
 from typing import Optional
 import logging
 from datetime import datetime, timezone
-import time
 
 from django.contrib.auth import get_user_model
 from django.core.cache import cache
@@ -20,6 +19,7 @@ from rest_framework_simplejwt.exceptions import TokenError, InvalidToken
 
 
 logger = logging.getLogger(__name__)
+BLACKLIST_PREFIX = "jwt:bl:"
 
 
 class JWTAuthentication(BaseAuthentication):
@@ -116,6 +116,11 @@ class JWTAuthentication(BaseAuthentication):
             return None
         now_ts = int(datetime.now(timezone.utc).timestamp())
         return max(0, exp_ts - now_ts)
+
+    def get_validated_token(self, raw_token):  # pylint: disable=unused-argument
+        # Not used in this class
+        pass
+        
 
 
 class JWTAuthenticationWithDenylist(JWTAuthentication):
