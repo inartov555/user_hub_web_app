@@ -81,8 +81,9 @@ class ProfileEditPage(BasePage):
         Note: avatar being set while editing will be applied
         after saving and entering the Profile Edit page again.
 
-        Example for the default avatar = ".*placehold.co/\d+x\d+\?text=.*"
-        Example for a some uploaded picture = f".*/media/avatars/user_\d+/.*{Path(avatar_path).suffix}"
+        Examples for src_attr:
+            - default avatar = r".*placehold.co/\d+x\d+\?text=.*"
+            - some uploaded picture = rf".*/media/avatars/user_\d+/.*{Path(avatar_path).suffix}"
         """
         expect(self.profile_avatar_image).to_have_attribute("src", re.compile(src_attr))
 
@@ -90,7 +91,8 @@ class ProfileEditPage(BasePage):
         """
         Assert that the passed avatar is not in the Profile Edit page.
 
-        Example for the default avatar = ".*placehold.co/\d+x\d+\?text=.*"
-        Example for a some uploaded picture = f".*/media/avatars/user_\d+/.*{Path(avatar_path).suffix}"
+        Examples for src_attr:
+            - default avatar = r".*placehold.co/\d+x\d+\?text=.*"
+            - some uploaded picture = rf".*/media/avatars/user_\d+/.*{Path(avatar_path).suffix}"
         """
         expect(self.profile_avatar_image).not_to_have_attribute("src", re.compile(src_attr))
