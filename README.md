@@ -28,6 +28,7 @@ This is a test website + automation framework
 - ✨ **Improved in `ui_tests_pw`:** Smart browser install (only selected one instead of all supported to preserve time)
 - ✨ **Improved in `ui_tests_pw`:** Existing test structure, lite refactoring
 - ✨ **Improved in `users_app`:** Page styles such as background, etc.
+- ✨ **Improved in `users_app`:** Localization (removed unused, updated existing, localized not localized text)
 - 🆕 **Added in `ui_tests_pw`:** New tests to test_change_password_page.py
 - 🆕 **Added in `ui_tests_pw`:** New tests to test_settings_page.py
 - 🆕 **Added in `ui_tests_pw`:** New tests to test_excel_import_page.py

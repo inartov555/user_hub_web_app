@@ -19,12 +19,10 @@
     "additional": "Додатковий",
     "settings": "Налаштування застосунку",
     "importFromExcel": "Імпорт з Excel",
-    "login": "Вхід",
     "logout": "Вийти"
   },
   "auth": {
     "login": "Увійти",
-    "signin": "Увійти",
     "forgotPassword": "Забули пароль?",
     "createAccount": "Створити обліковий запис",
     "loginFailed": "Не вдалося увійти"

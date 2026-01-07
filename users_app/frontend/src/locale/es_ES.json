@@ -19,12 +19,10 @@
     "additional": "Adicional",
     "settings": "Configuración de la aplicación",
     "importFromExcel": "Importar desde Excel",
-    "login": "Iniciar sesión",
     "logout": "Cerrar sesión"
   },
   "auth": {
     "login": "Iniciar sesión",
-    "signin": "Iniciar sesión",
     "forgotPassword": "¿Olvidaste tu contraseña?",
     "createAccount": "Crear cuenta",
     "loginFailed": "Error al iniciar sesión"

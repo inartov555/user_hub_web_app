@@ -19,12 +19,10 @@
     "additional": "Dodatkowy",
     "settings": "Ustawienia aplikacji",
     "importFromExcel": "Importuj z Excela",
-    "login": "Zaloguj się",
     "logout": "Wyloguj się"
   },
   "auth": {
     "login": "Zaloguj się",
-    "signin": "Zaloguj się",
     "forgotPassword": "Nie pamiętasz hasła?",
     "createAccount": "Utwórz konto",
     "loginFailed": "Logowanie nie powiodło się"

@@ -19,12 +19,10 @@
     "additional": "Täiendav",
     "settings": "Rakenduse sätted",
     "importFromExcel": "Impordi Excelist",
-    "login": "Sisselogimine",
     "logout": "Logi välja"
   },
   "auth": {
     "login": "Logi sisse",
-    "signin": "Logi sisse",
     "forgotPassword": "Unustasid parooli?",
     "createAccount": "Loo konto",
     "loginFailed": "Sisselogimine ebaõnnestus"

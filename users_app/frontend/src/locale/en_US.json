@@ -19,12 +19,10 @@
     "additional": "Additional",
     "settings": "App Settings",
     "importFromExcel": "Import from Excel",
-    "login": "Login",
     "logout": "Logout"
   },
   "auth": {
     "login": "Log in",
-    "signin": "Sign in",
     "forgotPassword": "Forgot password?",
     "createAccount": "Create account",
     "loginFailed": "Login failed"

@@ -49,7 +49,7 @@ export default function ResetPassword() {
         </form>
       )}
       <div className="mt-4 text-sm flex justify-between">
-        <CustomLink title={t("auth.signin")} linkTo="/login" />
+        <CustomLink title={t("auth.login")} linkTo="/login" />
       </div>
     </div>
   );

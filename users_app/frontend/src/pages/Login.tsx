@@ -66,7 +66,7 @@ export default function Login() {
                        id="password" value={password} onChange={e=>setPassword(e.target.value)} />
         {error && (<SimpleErrorMessage errorUi={t("auth.loginFailed")} errorBackend={error} />)}
         <div className="mt-2 flex justify-center">
-          <Button type="submit">{t("auth.signin")}</Button>
+          <Button type="submit">{t("auth.login")}</Button>
         </div>
       </form>
       <div className="mt-4 text-sm flex justify-between">

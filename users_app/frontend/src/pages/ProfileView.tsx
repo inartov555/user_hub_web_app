@@ -136,26 +136,35 @@ export default function ProfileView() {
 }
 
 /* UI helpers */
-function Label({ children }: { children: React.ReactNode }) {
-  return <div className="text-xs font-medium text-slate-500">{children}</div>;
-}
-function Field({ label, value, id }: { label: string; value: string; id: string; }) {
+
+function Field({ label, value, id }: { label: string; value: string; id: string }) {
   return (
-    <div>
-      <Label>{label}</Label>
-      <div id={id}
-           style={{ overflowWrap: "anywhere", wordBreak: "break-word", whiteSpace: "pre-wrap" }}
-           className="
-             w-full rounded-xl px-3 py-2
-             bg-white text-slate-900 placeholder-slate-500
-             border border-slate-300
-             focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500
-             dark:bg-slate-900 dark:text-slate-100 dark:placeholder-slate-500
-             dark:border-slate-700
-           "
+    <div className="space-y-1.5">
+      <label className="text-slate-700 dark:text-slate-200">{label}</label>
+
+      <div
+        id={id}
+        style={{ overflowWrap: "anywhere", wordBreak: "break-word", whiteSpace: "pre-wrap" }}
+        className="
+          relative w-full rounded-xl px-3 py-2
+          border border-slate-200/80 bg-gradient-to-b from-white to-slate-50/60
+          text-slate-900 shadow-sm
+          ring-1 ring-slate-900/5
+          dark:border-slate-700/70 dark:from-slate-900/70 dark:to-slate-950/40
+          dark:text-slate-100 dark:ring-white/5
+        "
       >
-        {value}
+        <span
+          aria-hidden="true"
+          className="
+            pointer-events-none absolute left-0 top-2 bottom-2 w-1 rounded-full
+            bg-gradient-to-b from-brand-500/50 to-indigo-500/30
+            dark:from-brand-400/40 dark:to-indigo-400/25
+          "
+        />
+        <div className="pl-2">{value}</div>
       </div>
     </div>
   );
 }
+

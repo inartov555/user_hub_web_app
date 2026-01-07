@@ -19,12 +19,10 @@
     "additional": "Dodatečný",
     "settings": "Nastavení aplikace",
     "importFromExcel": "Import z Excelu",
-    "login": "Přihlášení",
     "logout": "Odhlásit se"
   },
   "auth": {
     "login": "Přihlásit se",
-    "signin": "Přihlásit se",
     "forgotPassword": "Zapomněli jste heslo?",
     "createAccount": "Vytvořit účet",
     "loginFailed": "Přihlášení se nezdařilo"

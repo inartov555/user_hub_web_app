@@ -19,12 +19,10 @@
     "additional": "Lisä",
     "settings": "Sovelluksen asetukset",
     "importFromExcel": "Tuo Excelistä",
-    "login": "Kirjautuminen",
     "logout": "Kirjaudu ulos"
   },
   "auth": {
     "login": "Kirjaudu sisään",
-    "signin": "Kirjaudu sisään",
     "forgotPassword": "Unohditko salasanan?",
     "createAccount": "Luo tili",
     "loginFailed": "Kirjautuminen epäonnistui"
