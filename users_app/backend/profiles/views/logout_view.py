@@ -16,7 +16,6 @@ class LogoutView(APIView):
     """
     Invalidate the current session by blacklisting a refresh token.
     """
-
     # Allow logout even if the access token already expired; possession of the
     # refresh token is sufficient.
     permission_classes = [permissions.AllowAny]
