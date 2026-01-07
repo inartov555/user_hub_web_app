@@ -10,6 +10,7 @@ import Button from "../components/button";
 import PasswordInput from "../components/PasswordInput";
 import UnifiedTitle from "../components/UnifiedTitle";
 import { SimpleErrorMessage } from "../components/Alerts";
+import { Card } from "../components/card";
 
 export default function ChangePassword() {
   const { t, i18n } = useTranslation();
@@ -41,20 +42,7 @@ export default function ChangePassword() {
   };
 
   return (
-    <div className="
-           relative overflow-hidden
-           rounded-2xl border p-4
-           bg-white/75 backdrop-blur shadow-soft ring-1 ring-slate-900/5
-           dark:bg-slate-900/50 dark:border-slate-700/70 dark:text-slate-100 dark:ring-white/5
-         "
-    >
-      <div aria-hidden
-           className="
-             pointer-events-none absolute inset-x-0 top-0 h-24
-             bg-gradient-to-b from-brand-500/10 via-indigo-500/6 to-transparent
-             dark:from-brand-400/12 dark:via-indigo-400/8
-           "
-      />
+    <Card className="max-w-xl mx-auto">
       <UnifiedTitle icon={<KeyRound className="h-4 w-4" />} title={t("users.changePassword")} />
       <form onSubmit={onSubmit} className="space-y-3">
         <PasswordInput placeholder={t("changePassword.newPassword")}
@@ -75,7 +63,7 @@ export default function ChangePassword() {
           </Button>
         </div>
       </form>
-    </div>
+    </Card>
   );
 }
 

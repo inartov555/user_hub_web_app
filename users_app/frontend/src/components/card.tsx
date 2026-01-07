@@ -3,10 +3,20 @@ import UnifiedTitle from "../components/UnifiedTitle";
 
 export function Card({ children, className = "" }: React.PropsWithChildren<{ className?: string }>) {
   return (
-    <div className={`rounded-2xl border shadow-card backdrop-blur
-                  bg-white/80 border-white/60
-                  dark:bg-slate-800/80 dark:border-slate-700/60
-                  ${className}`}>
+    <div className={
+           `relative overflow-hidden rounded-2xl border p-4
+            bg-white/75 backdrop-blur shadow-soft ring-1 ring-slate-900/5
+            dark:bg-slate-900/50 dark:border-slate-700/70 dark:text-slate-100 dark:ring-white/5
+            ${className}
+         `}
+    >
+      <div aria-hidden
+           className="
+             pointer-events-none absolute inset-x-0 top-0 h-24
+             bg-gradient-to-b from-brand-500/10 via-indigo-500/6 to-transparent
+             dark:from-brand-400/12 dark:via-indigo-400/8
+           "
+      />
       {children}
     </div>
   );

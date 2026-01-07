@@ -12,6 +12,7 @@ import PasswordInput from "../components/PasswordInput";
 import UnifiedTitle from "../components/UnifiedTitle";
 import { SimpleErrorMessage } from "../components/Alerts";
 import CustomLink from "../components/CustomLink";
+import { Card } from "../components/card";
 
 export default function Login() {
   const { t } = useTranslation();
@@ -53,20 +54,7 @@ export default function Login() {
   }
 
   return (
-    <div className="
-           relative overflow-hidden
-           rounded-2xl border p-4
-           bg-white/75 backdrop-blur shadow-soft ring-1 ring-slate-900/5
-           dark:bg-slate-900/50 dark:border-slate-700/70 dark:text-slate-100 dark:ring-white/5
-         "
-    >
-      <div aria-hidden
-           className="
-             pointer-events-none absolute inset-x-0 top-0 h-24
-             bg-gradient-to-b from-brand-500/10 via-indigo-500/6 to-transparent
-             dark:from-brand-400/12 dark:via-indigo-400/8
-           "
-      />
+    <Card className="max-w-xl mx-auto">
       <UnifiedTitle icon={<LogIn className="h-4 w-4" />} title={t("auth.login")} />
       <form onSubmit={onSubmit} className="space-y-3">
         <FormInput placeholder={t("signup.username")}
@@ -82,6 +70,6 @@ export default function Login() {
         <CustomLink title={t("auth.createAccount")} linkTo="/signup" />
         <CustomLink title={t("auth.forgotPassword")} linkTo="/reset-password" />
       </div>
-    </div>
+    </Card>
   );
 }

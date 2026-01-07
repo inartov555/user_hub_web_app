@@ -8,6 +8,7 @@ import { Input } from "../components/input";
 import Button from "../components/button";
 import UnifiedTitle from "../components/UnifiedTitle";
 import { SimpleErrorMessage, SimpleSuccessMessage, SimpleInfoMessage } from "../components/Alerts";
+import { Card } from "../components/card";
 
 export default function ExcelImportPanel() {
   const { t } = useTranslation();
@@ -101,20 +102,7 @@ export default function ExcelImportPanel() {
   }
 
   return (
-    <div className="
-           relative overflow-hidden
-           rounded-2xl border p-4
-           bg-white/75 backdrop-blur shadow-soft ring-1 ring-slate-900/5
-           dark:bg-slate-900/50 dark:border-slate-700/70 dark:text-slate-100 dark:ring-white/5
-         "
-    >
-      <div aria-hidden
-           className="
-             pointer-events-none absolute inset-x-0 top-0 h-24
-             bg-gradient-to-b from-brand-500/10 via-indigo-500/6 to-transparent
-             dark:from-brand-400/12 dark:via-indigo-400/8
-           "
-      />
+    <Card className="max-w-xl mx-auto">
       <UnifiedTitle icon={<FileSpreadsheet className="h-4 w-4" />} title={t("excelImport.title")} />
       <SimpleInfoMessage
         message={t("excelImport.fileUploadMessage")}
@@ -182,6 +170,6 @@ export default function ExcelImportPanel() {
           )}
         </div>
       </form>
-    </div>
+    </Card>
   );
 }

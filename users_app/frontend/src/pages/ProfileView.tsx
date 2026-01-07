@@ -8,6 +8,7 @@ import { useAuthStore } from "../auth/store";
 import Button from "../components/button";
 import { SimpleErrorMessage } from "../components/Alerts";
 import UnifiedTitle from "../components/UnifiedTitle";
+import { Card } from "../components/card";
 
 type ProfileUser = {
   id: number;
@@ -84,30 +85,16 @@ export default function ProfileView() {
     (profile.avatar ? mediaBase + profile.avatar : `https://placehold.co/160x160?text=${encodeURIComponent(initials || "👤")}`);
 
   return (
-    <div className="
-           relative overflow-hidden
-           rounded-2xl border p-4
-           bg-white/75 backdrop-blur shadow-soft ring-1 ring-slate-900/5
-           dark:bg-slate-900/50 dark:border-slate-700/70 dark:text-slate-100 dark:ring-white/5
-         "
-    >
-      <div aria-hidden
-           className="
-             pointer-events-none absolute inset-x-0 top-0 h-24
-             bg-gradient-to-b from-brand-500/10 via-indigo-500/6 to-transparent
-             dark:from-brand-400/12 dark:via-indigo-400/8
-           "
-      />
+    <Card>
       {/* Left: Avatar */}
       <div className="relative grid grid-cols-1 md:grid-cols-3 gap-6">
         {/* Left: Avatar */}
         <div className="flex items-start justify-center md:justify-start">
           <div className="
-               relative
-               rounded-full p-[3px]
-               bg-gradient-to-br from-brand-500/35 via-indigo-500/20 to-transparent
-               dark:from-brand-400/35 dark:via-indigo-400/25
-             "
+                 relative rounded-full p-[3px]
+                 bg-gradient-to-br from-brand-500/35 via-indigo-500/20 to-transparent
+                 dark:from-brand-400/35 dark:via-indigo-400/25
+               "
           >
             <img
               id="profileAvatar"
@@ -122,11 +109,12 @@ export default function ProfileView() {
                 dark:ring-white/10
               "
             />
-            <div aria-hidden className="
-                 pointer-events-none absolute inset-0 rounded-full
-                 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.12)]
-                 dark:shadow-[inset_0_0_0_1px_rgba(255,255,255,0.08)]
-               "
+            <div aria-hidden
+                 className="
+                   pointer-events-none absolute inset-0 rounded-full
+                   shadow-[inset_0_0_0_1px_rgba(255,255,255,0.12)]
+                   dark:shadow-[inset_0_0_0_1px_rgba(255,255,255,0.08)]
+                 "
             />
           </div>
         </div>
@@ -162,7 +150,7 @@ export default function ProfileView() {
           </div>
         </div>
       </div>
-    </div>
+    </Card>
   );
 }
 

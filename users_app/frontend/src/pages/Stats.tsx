@@ -1,32 +1,61 @@
 import { useQuery } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
-import { BarChart3 } from "lucide-react";
+import { BarChart3, Mail } from "lucide-react";
 import { api } from "../lib/axios";
 import UnifiedTitle from "../components/UnifiedTitle";
+import { Card } from "../components/card";
 
 export default function Stats() {
   const { t, i18n } = useTranslation();
   const { data } = useQuery({ queryKey: ["online-users"], queryFn: async () => (await api.get("/stats/online-users/")).data });
   return (
-    <div className="
-    	   relative overflow-hidden rounded-2xl border p-4
-           bg-white/75 backdrop-blur shadow-soft ring-1 ring-slate-900/5
-           dark:bg-slate-900/50 dark:border-slate-700/70 dark:text-slate-100 dark:ring-white/5
-    	 "
-    >
-      <div aria-hidden
-           className="
-             pointer-events-none absolute inset-x-0 top-0 h-24
-             bg-gradient-to-b from-brand-500/10 via-indigo-500/6 to-transparent
-             dark:from-brand-400/12 dark:via-indigo-400/8
-           "
-      />
+    <Card className="max-w-xl mx-auto">
       <UnifiedTitle icon={<BarChart3 className="h-4 w-4" />} title={t("stats.curOnline5Mins")} />
+      {/*
       <ul className="list-disc pl-6">
         {(data ?? []).map((u: any) => (
           <li key={u.id}>{u.username} ({u.email})</li>
         ))}
       </ul>
-    </div>
+      */}
+      <ul className="
+            divide-y divide-slate-200/70 rounded-2xl border
+            bg-white/70 shadow-sm ring-1 ring-slate-900/5
+            dark:divide-slate-700/70 dark:border-slate-700/70
+            dark:bg-slate-900/40 dark:ring-white/5
+          "
+      >
+        {(data ?? []).map((usr: any) => {
+          const initials = (usr.username?.[0] ?? "U").toUpperCase();
+          return (
+            <li key={usr.id} className="flex items-center justify-between gap-3 p-3">
+              <div className="min-w-0 flex items-center gap-3">
+                <div className="
+                       shrink-0 inline-flex h-9 w-9 items-center justify-center rounded-xl
+                       text-white text-xs font-bold shadow-soft ring-1 ring-white/10
+                       bg-gradient-to-br from-brand-600/80 to-indigo-600/60
+                     "
+                >
+                  {initials}
+                </div>
+
+                <div className="min-w-0">
+                  <div className="truncate font-semibold text-slate-900 dark:text-slate-50">
+                    {usr.username}
+                  </div>
+                  <div className="truncate text-xs text-slate-600 dark:text-slate-300">
+                    {usr.email}
+                  </div>
+                </div>
+              </div>
+
+              <div className="shrink-0 inline-flex items-center gap-2 text-xs text-slate-500 dark:text-slate-400">
+                <Mail className="h-4 w-4" />
+              </div>
+            </li>
+          );
+        })}
+      </ul>
+    </Card>
   );
 }
