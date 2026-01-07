@@ -3,9 +3,9 @@ import { NavLink, Link, useLocation, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { MessageCircle } from "lucide-react";
 import { api } from "../lib/axios";
+import i18n from "../lib/i18n";
 import { extractApiError } from "../lib/httpErrors";
 import { useAuthStore } from "../auth/store";
-import i18n from "../lib/i18n";
 import { LocaleFlag } from "../components/LocaleFlag";
 import Brand from "../components/Brand";
 import Button from "../components/button";
@@ -46,6 +46,7 @@ export default function Navbar() {
       : "absolute -bottom-1 left-1/2 h-[3px] w-6 -translate-x-1/2 rounded-full bg-transparent";
   const isUsersActive = pathname.startsWith("/users");
   const isProfileActive = pathname.startsWith("/profile-view") || pathname.startsWith("/profile-edit");
+  const isAboutActive = pathname.startsWith("/about");
   const isUserStatsActive = pathname.startsWith("/stats");
   const isSettingsActive = pathname.startsWith("/settings");
   const isExcelImportActive = pathname.startsWith("/import-excel");
@@ -94,6 +95,15 @@ export default function Navbar() {
           <div className="flex flex-col gap-2 items-start">
             {/* Row 1 */}
             <nav className="flex flex-wrap gap-2 md:gap-4">
+              {/* About website tab should be visible both authorized and not authorized users */}
+              <NavLink
+                id="aboutWebsite"
+                to="/about"
+                className={({ isActive }) => tabCls(isAboutActive && !isUsersActive && !isProfileActive && !isAdditionalActive)}
+              >
+                <span aria-hidden="true" className={indicatorCls(isAboutActive)} />
+                {t("about.aboutWebsite")}
+              </NavLink>
               {user && (
                 <>
                   {/* While Additional is active, force row-1 tabs to look inactive */}

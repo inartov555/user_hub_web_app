@@ -58,6 +58,7 @@ export default function App() {
     const isPublic =
       location.pathname === "/login" ||
       location.pathname === "/signup" ||
+      location.pathname === "/about" ||
       location.pathname.startsWith("/reset-password");
 
     if (!user && !hasTokens && !isPublic) {

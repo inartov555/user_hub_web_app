@@ -100,11 +100,9 @@ export default function ProfileView() {
               id="profileAvatar"
               src={avatarSrc}
               alt={t("profileEdit.profileAvatar")}
-              width={160}
-              height={160}
               style={{ objectFit: "cover", borderRadius: "9999px" }}
               className="
-                h-40 w-40 rounded-full
+                h-[350px] w-[350px] rounded-full
                 ring-1 ring-slate-900/10 shadow-card
                 dark:ring-white/10
               "

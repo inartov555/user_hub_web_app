@@ -19,6 +19,7 @@ import ExcelImport from "./pages/ExcelImport";
 import ChangePassword from "./pages/ChangePassword";
 import UserDeleteConfirm from "./pages/UserDeleteConfirm";
 import Settings from "./pages/Settings";
+import About from "./pages/About";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
@@ -31,6 +32,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
             <Route path="login" element={<Login />} />
             <Route path="signup" element={<Signup />} />
             <Route path="reset-password" element={<ResetPassword />} />
+            <Route path="about" element={<About />} />
             {/* Protected routes */}
             <Route element={<ProtectedRoute />}>
               <Route index element={<Navigate to="/users" replace />} />
