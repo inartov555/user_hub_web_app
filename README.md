@@ -23,6 +23,7 @@ This is a test website + automation framework
 ## 📌 Changelog v1.5 vs. v1.4
 
 - 🛠️ **Fixed in `ui_tests_pw`:** Safari: white text on the white background in the select element was displayed when the dark theme was on
+- 🛠️ **Fixed in `ui_tests_pw`:** Firefox: sometimes test failed to click the Save button on the App Settings page
 - 🛠️ **Fixed in `users_app`:** Excel: user could press the import button, and the process was started from scratch without waiting to finish the previous one
 - 🛠️ **Fixed in `users_app`:** NavBar: Tabs were messed up when localization changed to, e.g., Spanish
 - ✨ **Improved in `ui_tests_pw`:** Smart browser install (only selected one instead of all supported to preserve time)

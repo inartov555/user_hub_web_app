@@ -307,6 +307,7 @@ def _helper_app_settings_page_admin_user(page: Page, ui_theme_param: Theme, ui_l
     app_settings_page.change_values_save_success(False, 222, 222, 222)
     # Screenshot -> Admin User -> App Settings Page -> Success
     take_a_screenshot(page)
+    app_settings_page.reload()  # Firefox glitches without it and does not find visible and clickable Save button
     # Let's check the error validation
     app_settings_page.change_values_save_error(True, 13, 13, 13)
     # Screenshot -> Admin User -> App Settings Page -> Error case

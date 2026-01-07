@@ -48,7 +48,6 @@ class SettingsPage(BasePage):
         if rotate_refresh_token:
             # This param is shown on UI only if self.rotate_refresh_token is set to true
             self.change_renew_token_at_seconds(renew_at_sec)
-        self.save.focus()
         self.save.click()
         # UI logic: button becomes disabled after clicking and before getting a response
         expect(self.save).to_be_enabled()
@@ -71,7 +70,6 @@ class SettingsPage(BasePage):
         if rotate_refresh_token:
             # This param is shown on UI only if self.rotate_refresh_token is set to true
             self.change_renew_token_at_seconds(renew_at_sec)
-        self.save.focus()
         self.save.click()
         # UI logic: button becomes disabled after clicking and before getting a response
         expect(self.save).to_be_enabled()
