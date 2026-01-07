@@ -114,10 +114,7 @@ def _helper_reset_password_page(page: Page, ui_theme_param: Theme, ui_locale_par
 
 def _helper_users_table_page_admin_user(page: Page,
                                         ui_theme_param: Theme,
-                                        ui_locale_param: str,
-                                        username: str,
-                                        email: str,
-                                        password: str) -> None:
+                                        ui_locale_param: str) -> None:
     """
     This is a helper function that takes screenshots on the Users Table page (table, controls)
     """
@@ -140,11 +137,13 @@ def _helper_users_table_page_admin_user(page: Page,
     take_a_screenshot(page)
     # Let's create a user which will be deleted right before confirming deletion
     api_utils = get_api_utils()
-    api_utils.create_user(username, email, password)
+    login_info = api_utils.api_login(DEFAULT_ADMIN_USERNAME, DEFAULT_ADMIN_PASSWORD)
+    access_token = login_info.get("access")
+    api_utils.import_excel_spreadsheet(access_token, "test_data/import_template_test_20_users.xlsx")
+    # Now, let's search for just imported users on UI
     users_table_page.search_and_wait_for_results("admin")
     # There are supposed to be 2 users: admin and just created one
-    users_table_page.check_rows.nth(0).click()
-    users_table_page.check_rows.nth(1).click()
+    users_table_page.check_all_header.click()
     # The item checking does not have time to change the styles before take a screenshot
     users_table_page.wait_a_bit(FIXED_TIME_TO_WAIT)
     # Screenshot -> Admin user -> Users Table page -> Checked users
@@ -153,8 +152,7 @@ def _helper_users_table_page_admin_user(page: Page,
 
 def _helper_user_delete_page(page: Page,
                              ui_theme_param: Theme,
-                             ui_locale_param: str,
-                             email: str) -> None:
+                             ui_locale_param: str) -> None:
     """
     This is a helper function that takes screenshots on the User Delete page (Success/Error cases)
     """
@@ -169,7 +167,9 @@ def _helper_user_delete_page(page: Page,
     # Screenshot -> Admin user -> User Delete Confirm page -> List of users to delete
     take_a_screenshot(page)
     # Let's delete previously created via API user
-    delete_users_by_suffix_via_api(email, "strict", "email")
+    delete_users_by_suffix_via_api("admin-excel-watermelon-11@test.com", "strict", "email")
+    delete_users_by_suffix_via_api("admin-excel-watermelon-13@test.com", "strict", "email")
+    delete_users_by_suffix_via_api("admin-excel-watermelon-14@test.com", "strict", "email")
     # Let's see if User Delete Confirm page shows error messages (it's supposed to show an error)
     user_delete_page.click_top_confirm_delete_error()
     # Screenshot -> Admin user -> User Delete Confirm page -> List of users to delete
@@ -361,10 +361,6 @@ def test_base_demo(page: Page,
     """
     Base DEMO test to run multiple pages and take screenshots
     """
-    username = "admin-wild-watermelon"
-    email = f"{username}@delete.com"
-    password = "Ch@ngeme123"
-
     _helper_login_page(page,
                        ui_theme_param,
                        ui_locale_param)
@@ -376,14 +372,10 @@ def test_base_demo(page: Page,
                                 ui_locale_param)
     _helper_users_table_page_admin_user(page,
                                         ui_theme_param,
-                                        ui_locale_param,
-                                        username,
-                                        email,
-                                        password)
+                                        ui_locale_param)
     _helper_user_delete_page(page,
                              ui_theme_param,
-                             ui_locale_param,
-                             email)
+                             ui_locale_param)
     _helper_change_password_page(page,
                                  ui_theme_param,
                                  ui_locale_param)
@@ -426,10 +418,6 @@ def test_locale_demo(page: Page,
     """
     Locale DEMO test to run multiple pages and take screenshots
     """
-    username = "admin-wild-watermelon"
-    email = f"{username}@delete.com"
-    password = "Ch@ngeme123"
-
     _helper_login_page(page,
                        ui_theme_param,
                        LocaleConsts.ESTONIAN)
@@ -441,14 +429,10 @@ def test_locale_demo(page: Page,
                                 LocaleConsts.ENGLISH_US)
     _helper_users_table_page_admin_user(page,
                                         ui_theme_param,
-                                        LocaleConsts.UKRAINIAN,
-                                        username,
-                                        email,
-                                        password)
+                                        LocaleConsts.UKRAINIAN)
     _helper_user_delete_page(page,
                              ui_theme_param,
-                             LocaleConsts.CZECH,
-                             email)
+                             LocaleConsts.CZECH)
     _helper_change_password_page(page,
                                  ui_theme_param,
                                  LocaleConsts.POLISH)

@@ -353,9 +353,9 @@ class UsersAppApi(ApiJsonRequest):
                                      headers=self.get_authorization_token_dict(access))
         return response
 
-    def import_excel_sheet(self, access: str, file_name: str) -> dict:
+    def import_excel_spreadsheet(self, access: str, file_name: str) -> dict:
         """
-        PUT /api/v1/system/settings/
+        PUT /api/v1/import-excel/
 
         Only Admin user can call it.
 
@@ -363,14 +363,12 @@ class UsersAppApi(ApiJsonRequest):
             dict, example: {created: 0, updated: 0, processed: 0}
         """
         headers=self.get_authorization_token_dict(access)
-        # headers["Content-Type"] = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-        # headers["Content-Type"] = "multipart/form-data; boundary=----WebKitFormBoundary5ilIG8AS3AbGlqdB"
         with open(file_name, "rb") as _file:
             multipart={
                 "file": (
                     file_name,
                     _file.read(),
-                    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                    "multipart/form-data; boundary=----WebKitFormBoundary5ilIG8AS3AbGlqdB"
                 ),
             }
 
