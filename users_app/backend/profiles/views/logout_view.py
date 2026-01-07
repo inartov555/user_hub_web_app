@@ -8,6 +8,7 @@ from django.core.cache import cache
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import permissions
+from rest_framework.exceptions import ValidationError
 
 
 BLACKLIST_PREFIX = "jwt:bl:"
@@ -25,11 +26,11 @@ class LogoutView(APIView):
         Logging out
         """
         token = request.auth  # the validated JWT token object
+        if not token:
+            raise ValidationError({"details": "No token found"})
         jti = token.get("jti")
         exp = token.get("exp")  # epoch seconds
-        print("\n\n\n\n !!! LogoutView !!! \n\n\n\n")
         if jti and exp:
             ttl = max(0, int(exp) - int(time.time()))
-            cache.set(f"{BLACKLIST_PREFIX}{jti}", 1, timeout=ttl)
-
+            cache.set(f"{BLACKLIST_PREFIX}{jti}", 1, timeout=time.time())
         return Response(status=204)

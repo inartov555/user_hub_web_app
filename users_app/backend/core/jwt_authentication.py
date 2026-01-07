@@ -119,7 +119,7 @@ class JWTAuthentication(BaseAuthentication):
 
     def get_validated_token(self, raw_token):  # pylint: disable=unused-argument
         # Not used in this class
-        pass
+        return raw_token
         
 
 
@@ -132,9 +132,7 @@ class JWTAuthenticationWithDenylist(JWTAuthentication):
         Get valid token and raise error if it's blacklisted
         """
         token = super().get_validated_token(raw_token)
-        print("\n\n\n\n !!! JWTAuthenticationWithDenylist !!! \n\n\n\n")
         jti = token.get("jti")
         if jti and cache.get(f"{BLACKLIST_PREFIX}{jti}"):
             raise AuthenticationFailed("Token is blacklisted", code="token_not_valid")
-
         return token
