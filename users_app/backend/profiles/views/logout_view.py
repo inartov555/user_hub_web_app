@@ -1,34 +1,20 @@
-"""profiles/views/logout_view.py
-
-JWTs are stateless, so there is no server-side "session" to destroy.
-
-What we *can* invalidate is the client's ability to extend the session by
-blacklisting the current **refresh token** (SimpleJWT blacklist app).
-
-This endpoint is intentionally idempotent: calling it multiple times with the
-same (or even invalid/expired) token returns 204.
+"""
+JWTs are stateless, so there is no server-side session to destroy.
 """
 
 from django.conf import settings
 from django.db import IntegrityError
-
 from rest_framework import permissions, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
-
+from rest_framework.exceptions import ValidationError
 from rest_framework_simplejwt.exceptions import TokenError
 from rest_framework_simplejwt.tokens import RefreshToken
 
 
 class LogoutView(APIView):
-    """Invalidate the current session by blacklisting a refresh token.
-
-    POST body:
-      {"refresh": "<refresh-jwt>"}
-
-    Returns:
-      204 No Content (idempotent)
-      400 if no refresh token is provided
+    """
+    Invalidate the current session by blacklisting a refresh token.
     """
 
     # Allow logout even if the access token already expired; possession of the
@@ -37,14 +23,11 @@ class LogoutView(APIView):
 
     def post(self, request, *args, **kwargs):
         """
-        Missing function or method docstring (missing-function-docstring)
+        Logging out
         """
         refresh = request.data.get("refresh")
         if not refresh:
-            return Response(
-                {"detail": "Refresh token is required."},
-                status=status.HTTP_400_BAD_REQUEST,
-            )
+            raise ValidationError({"detail": "Refresh token is required."})
 
         try:
             token = RefreshToken(refresh)
@@ -55,12 +38,10 @@ class LogoutView(APIView):
                 user_id_claim = settings.SIMPLE_JWT.get("USER_ID_CLAIM", "user_id")
                 token_user_id = token.get(user_id_claim)
                 if str(token_user_id) != str(request.user.pk):
-                    return Response(
-                        {"detail": "Refresh token does not belong to the current user."},
-                        status=status.HTTP_403_FORBIDDEN,
-                    )
+                    raise ValidationError(
+                        {"detail": "Refresh token does not belong to the current user."})
 
-            # Blacklist the token (SimpleJWT blacklist app).
+            # Blacklist the token
             try:
                 token.blacklist()
             except AttributeError:
