@@ -22,7 +22,8 @@ class ProfileEditPage(BasePage):
         self.first_name = self.page.locator("#firstName")
         self.last_name = self.page.locator("#lastName")
         self.bio = self.page.locator("#bio")
-        self.profile_avatar = self.page.locator("#profileAvatarImage")
+        self.profile_avatar_file = self.page.locator("#profileAvatarImage")
+        self.profile_avatar_image = self.page.locator("#profileAvatar")
         self.save = self.page.locator("#save")
         self.cancel = self.page.locator("#cancel")
 
@@ -41,7 +42,7 @@ class ProfileEditPage(BasePage):
         self.last_name.fill(last_name)
         self.bio.fill(bio)
         if avatar:
-            self.profile_avatar.set_input_files(avatar)
+            self.profile_avatar_file.set_input_files(avatar)
 
     def click_save_and_wait_profile_view(self) -> None:
         """
@@ -64,7 +65,7 @@ class ProfileEditPage(BasePage):
         expect(self.first_name).to_be_visible()
         expect(self.last_name).to_be_visible()
         expect(self.bio).to_be_visible()
-        expect(self.profile_avatar).to_be_visible()
+        expect(self.profile_avatar_file).to_be_visible()
 
     def remove_maxlength_attribute_from_input_fields(self) -> None:
         """
@@ -79,11 +80,17 @@ class ProfileEditPage(BasePage):
         Assert that the passed avatar is in the Profile Edit page.
         Note: avatar being set while editing will be applied
         after saving and entering the Profile Edit page again.
+
+        Example for the default avatar = ".*placehold.co/\d+x\d+\?text=.*"
+        Example for a some uploaded picture = f".*/media/avatars/user_\d+/.*{Path(avatar_path).suffix}"
         """
-        expect(self.profile_avatar).to_have_attribute("src", re.compile(r".*" + src_attr + r".*"))
+        expect(self.profile_avatar_image).to_have_attribute("src", re.compile(src_attr))
 
     def assert_avatar_not_in_profile_edit(self, src_attr: str) -> None:
         """
         Assert that the passed avatar is not in the Profile Edit page.
+
+        Example for the default avatar = ".*placehold.co/\d+x\d+\?text=.*"
+        Example for a some uploaded picture = f".*/media/avatars/user_\d+/.*{Path(avatar_path).suffix}"
         """
-        expect(self.profile_avatar).not_to_have_attribute("src", re.compile(r".*" + src_attr + r".*"))
+        expect(self.profile_avatar_image).not_to_have_attribute("src", re.compile(src_attr))

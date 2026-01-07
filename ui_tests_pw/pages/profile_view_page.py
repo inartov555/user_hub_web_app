@@ -24,7 +24,7 @@ class ProfileViewPage(BasePage):
         self.user_id = self.page.locator("#userid")
         self.email = self.page.locator("#email")
         self.bio = self.page.locator("#bio")
-        self.profile_avatar = self.page.locator("#profileAvatarImage")
+        self.profile_avatar_image = self.page.locator("#profileAvatar")
         self.edit_profile = self.page.locator("#editProfile")
         self.change_password = self.page.locator("#changePassword")
 
@@ -42,6 +42,7 @@ class ProfileViewPage(BasePage):
         expect(self.username).to_be_visible()
         expect(self.email).to_be_visible()
         expect(self.full_name).to_be_visible()
+        expect(self.profile_avatar_image).to_be_visible()
 
     def click_edit_button(self) -> None:
         """
@@ -60,11 +61,17 @@ class ProfileViewPage(BasePage):
     def assert_avatar_in_profile_view(self, src_attr: str) -> None:
         """
         Assert that the passed avatar is in the Profile View page.
+
+        Example for the default avatar = ".*placehold.co/\d+x\d+\?text=.*"
+        Example for a some uploaded picture = f".*/media/avatars/user_\d+/.*{Path(avatar_path).suffix}"
         """
-        expect(self.profile_avatar).to_have_attribute("src", re.compile(r".*" + src_attr + r".*"))
+        expect(self.profile_avatar_image).to_have_attribute("src", re.compile(src_attr))
 
     def assert_avatar_not_in_profile_view(self, src_attr: str) -> None:
         """
         Assert that the passed avatar is not in the Profile View page.
+
+        Example for the default avatar = ".*placehold.co/\d+x\d+\?text=.*"
+        Example for a some uploaded picture = f".*/media/avatars/user_\d+/.*{Path(avatar_path).suffix}"
         """
-        expect(self.profile_avatar).not_to_have_attribute("src", re.compile(r".*" + src_attr + r".*"))
+        expect(self.profile_avatar_image).not_to_have_attribute("src", re.compile(src_attr))
