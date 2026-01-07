@@ -38,6 +38,8 @@ class BasePage:
         self.username = self.page.locator('#username')
         # Common controls
         self.logout = self.page.locator('#logout')
+        self.error_msg = self.page.locator("div[data-tag='simpleErrorMessage']")
+        self.info_msg = self.page.locator("div[data-tag='simpleInfoMessage']")
         # /users page after logging in
         self.users_tab = self.page.locator('#users')
         self.profile_tab = self.page.locator('#profile')
@@ -282,3 +284,21 @@ class BasePage:
         """
         self.page.wait_for_url(re.compile(r".*/import-excel$"))
         expect(self.page).to_have_url(re.compile(r".*/import-excel$"))
+
+    def assert_error_visible(self) -> None:
+        """
+        Assert that an error message is visible when failure happened
+        """
+        expect(self.error_msg).to_be_visible()
+
+    def assert_there_s_no_error(self) -> None:
+        """
+        Assert that there's no error after performing an action
+        """
+        expect(self.error_msg).not_to_be_visible()
+
+    def assert_info_message(self) -> None:
+        """
+        Assert that an info message is shown
+        """
+        expect(self.info_msg).to_be_visible()
