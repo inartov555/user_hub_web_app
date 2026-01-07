@@ -194,7 +194,6 @@ export default function Navbar() {
                     await api.post("/auth/jwt/logout/");
                   } catch (err: any) {
                     const parsed = extractApiError(err as unknown);
-                    // setError(`${parsed.message}`);
                     console.log("Raw error: " + err)
                     console.log("Parsed error: " + parsed.message)
                   }

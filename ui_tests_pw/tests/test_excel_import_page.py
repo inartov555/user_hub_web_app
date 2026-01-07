@@ -71,7 +71,7 @@ def test_upload_a_correct_spreadsheet(page: Page,
         email = f"{username}-{num}@test.com"
     """
     admin_excel_import_page.assert_loaded()
-    admin_excel_import_page.import_excel_file_success("test_data/import_template_test_50_users.xlsx")
+    admin_excel_import_page.import_excel_file_success("test_data/excel_import/import_template_test_50_users.xlsx")
     # Let's check the success message title
     actual = admin_excel_import_page.success_title.text_content()
     expected = "Result"

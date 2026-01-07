@@ -12,7 +12,7 @@ from .base_page import BasePage
 
 class ProfileViewPage(BasePage):
     """
-    Encapsulates the profile view UI.
+    Page object for the Profile view page.
     """
 
     def __init__(self, page: Page):

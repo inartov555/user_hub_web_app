@@ -77,6 +77,7 @@ def test_deleted_user_is_no_longer_shown(user_stats_page: StatsPage,
 
 
 @pytest.mark.admin
+@pytest.mark.longrun
 @pytest.mark.parametrize("suffix", ["mango"])
 @pytest.mark.usefixtures("cleanup_delete_users_by_suffix")
 def test_user_disappears_from_user_stats_if_not_active_more_than_5_mins(user_stats_page: StatsPage,
@@ -107,6 +108,7 @@ def test_user_disappears_from_user_stats_if_not_active_more_than_5_mins(user_sta
 
 
 @pytest.mark.admin
+@pytest.mark.longrun
 @pytest.mark.parametrize("suffix", ["strawberry"])
 @pytest.mark.usefixtures("cleanup_delete_users_by_suffix")
 def test_user_is_present_in_user_stats_if_active_more_than_5_mins(user_stats_page: StatsPage,
