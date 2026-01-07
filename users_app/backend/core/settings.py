@@ -52,7 +52,8 @@ load_dotenv()
 
 # This variable DEBUG can be (0, 1) which means not debug/debug
 DEBUG = os.getenv("DEBUG", "1") == "1"
-LOG_LEVEL = os.getenv("DJANGO_LOG_LEVEL", "INFO").upper()
+# LOG_LEVEL = os.getenv("DJANGO_LOG_LEVEL", "INFO").upper()
+LOG_LEVEL = "DEBUG"
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 LOG_DIR = os.getenv("HOST_ARTIFACTS", "workspace/artifacts")

@@ -190,6 +190,7 @@ export default function Navbar() {
               <Button
                 id="logout"
                 onClick={async () => {
+                  logout();
                   try {
                     await api.post("/auth/jwt/logout/");
                   } catch (err: any) {
@@ -198,10 +199,7 @@ export default function Navbar() {
                     console.log("Raw error: " + err)
                     console.log("Parsed error: " + parsed.message)
                   }
-                  finally {
-                    logout();
-                    navigate("/login");
-                  }
+                  navigate("/login");
                 }}
               >
                 {t("nav.logout")}
