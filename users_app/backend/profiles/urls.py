@@ -27,5 +27,5 @@ urlpatterns = [
     path("system/settings/", SettingsView.as_view(), name="system-settings"),
     path("system/runtime-auth/", runtime_auth_config, name="runtime-auth-config"),
     path("auth/jwt/refresh/", RuntimeAwareTokenRefreshView.as_view(), name="token_refresh"),
-    path("auth/jwt/logout/", LogoutView.as_view(), name="jwt-logout"),
+    # path("auth/jwt/logout/", LogoutView.as_view(), name="jwt-logout"),
 ]
