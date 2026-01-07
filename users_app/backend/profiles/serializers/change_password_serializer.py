@@ -13,15 +13,19 @@ class ChangePasswordSerializer(serializers.Serializer):
         min_length=8, max_length=40, write_only=True, required=True, trim_whitespace=False,
         allow_blank=False
     )
+    confirm_password = serializers.CharField(
+        min_length=8, max_length=40, write_only=True, required=True, trim_whitespace=False,
+        allow_blank=False
+    )
 
     def create(self, validated_data):
         """
-        Not used for write-once actions, but required to satisfy abstract methods.
+        Not used
         """
         return validated_data
 
     def update(self, instance, validated_data):
         """
-        Not used in this serializer; password change is handled in the view.
+        Not used
         """
         return instance

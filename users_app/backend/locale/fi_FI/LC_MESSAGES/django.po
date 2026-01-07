@@ -159,6 +159,9 @@ msgstr "Sukunimi"
 msgid "file_input"
 msgstr "Tiedoston syöte"
 
+msgid "confirm_password"
+msgstr "Vahvista salasana"
+
 msgid "Ensure this field has no more than 40 characters."
 msgstr "Varmista, että tässä kentässä ei ole enempää kuin 40 merkkiä."
 

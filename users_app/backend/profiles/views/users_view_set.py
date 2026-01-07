@@ -102,6 +102,9 @@ class UsersViewSet(viewsets.ReadOnlyModelViewSet):
         ser = ChangePasswordSerializer(data=request.data)
         ser.is_valid(raise_exception=True)
         new_pw = ser.validated_data["password"]
+        new_cpw = ser.validated_data["confirm_password"]
+        if new_pw != new_cpw:
+            raise ValidationError({"password": "Passwords do not match."})
 
         # Run Django password validators
         try:

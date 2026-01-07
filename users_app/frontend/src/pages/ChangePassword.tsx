@@ -28,6 +28,7 @@ export default function ChangePassword() {
     e.preventDefault();
     setError(null);
 
+    /*
     if (!password || password.length < 8) {
       setError(t("changePassword.atLeast8Chars"));
       return;
@@ -36,14 +37,15 @@ export default function ChangePassword() {
       setError(t("changePassword.notMatch"));
       return;
     }
+    */
 
     try {
       setSaving(true);
-      await api.post(`/users/${id}/set-password/`, { password });
+      await api.post(`/users/${id}/set-password/`, { password, "confirm_password": confirmPassword });
       navigate("/users", { replace: true });
     } catch (err) {
       const parsed = extractApiError(err as unknown);
-      setError(t("changePassword.setPasswordFailed") + "\n" + parsed.message);
+      setError(parsed.message);
     } finally {
       setSaving(false);
     }
@@ -65,7 +67,7 @@ export default function ChangePassword() {
                        id="confirmPassword"
                        value={confirmPassword}
                        onChange={e => setConfirmPassword(e.target.value)} />
-        {error && <SimpleErrorMessage errorBackend={error} />}
+        {error && <SimpleErrorMessage errorUi={t("changePassword.setPasswordFailed")} errorBackend={error} />}
         <div className="flex gap-2">
           <Button id="changePassword" type="submit" disabled={saving}>
             {saving ? t("changePassword.saving") : t("profileEdit.save")}

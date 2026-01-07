@@ -159,6 +159,9 @@ msgstr "Nazwisko"
 msgid "file_input"
 msgstr "Pole pliku"
 
+msgid "confirm_password"
+msgstr "Potwierdź hasło"
+
 msgid "Ensure this field has no more than 40 characters."
 msgstr "Upewnij się, że to pole nie ma więcej niż 40 znaków."
 
