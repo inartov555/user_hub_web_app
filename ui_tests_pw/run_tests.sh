@@ -116,7 +116,7 @@ TEST_GREP=""
 # to run all tests, just set TEST_GREP="$TEST_GREP" (to preserve base settings)
 
 # TEST_GREP="$TEST_GREP -k 'test_base_demo or test_locale_demo'"
-TEST_GREP="$TEST_GREP -k 'test_user_is_present_in_user_stats_if_active_more_than_5_mins'"
+TEST_GREP="$TEST_GREP -k 'test_new_avatar_picture_shown_after_uploading_a_picture or test_profile_edit_renders_and_can_save'"
 
 docker compose run -e TEST_GREP="$TEST_GREP" --rm ui_tests_pw
 
