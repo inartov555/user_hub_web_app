@@ -33,8 +33,6 @@ This is a test website + automation framework
 - 🆕 **Added in `ui_tests_pw`:** New tests to test_settings_page.py
 - 🆕 **Added in `ui_tests_pw`:** New tests to test_excel_import_page.py
 - 🆕 **Added in `ui_tests_pw`:** New tests to test_stats_page.py
-- 🆕 **Added in `ui_tests_pw`:** New tests to test_profile_edit_page.py
-- 🆕 **Added in `users_app`:** Logout backend service (invalidating access token, so it cannot be used when used clicked Logout, but token itself is still alive)
 
 ---
 

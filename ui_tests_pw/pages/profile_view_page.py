@@ -62,9 +62,8 @@ class ProfileViewPage(BasePage):
         """
         Assert that the passed avatar is in the Profile View page.
 
-        Examples for src_attr:
-            - default avatar = ".*placehold.co/\d+x\d+\?text=.*"
-            - some uploaded picture = f".*/media/avatars/user_\d+/.*{Path(avatar_path).suffix}"
+        Example for the default avatar = ".*placehold.co/\d+x\d+\?text=.*"
+        Example for a some uploaded picture = f".*/media/avatars/user_\d+/.*{Path(avatar_path).suffix}"
         """
         expect(self.profile_avatar_image).to_have_attribute("src", re.compile(src_attr))
 
@@ -72,8 +71,7 @@ class ProfileViewPage(BasePage):
         """
         Assert that the passed avatar is not in the Profile View page.
 
-        Examples for src_attr:
-            - default avatar = ".*placehold.co/\d+x\d+\?text=.*"
-            - some uploaded picture = f".*/media/avatars/user_\d+/.*{Path(avatar_path).suffix}"
+        Example for the default avatar = ".*placehold.co/\d+x\d+\?text=.*"
+        Example for a some uploaded picture = f".*/media/avatars/user_\d+/.*{Path(avatar_path).suffix}"
         """
         expect(self.profile_avatar_image).not_to_have_attribute("src", re.compile(src_attr))
