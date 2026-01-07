@@ -23,7 +23,6 @@ class SignupPage(BasePage):
         self.password = self.page.locator("#password")
         self.save = self.page.locator("#create")
         self.login = self.page.locator("a[href='/login']")
-        self.error = self.page.locator("div[data-tag='simpleErrorMessage'] p")
 
     def open(self) -> None:
         """
@@ -65,12 +64,6 @@ class SignupPage(BasePage):
         """
         self.login.click()
         self.assert_login_page_is_displayed()
-
-    def assert_error_visible(self) -> None:
-        """
-        Assert that an error message is visible after a failed signup attempt.
-        """
-        expect(self.error).to_be_visible()
 
     def assert_sign_up_is_loaded(self) -> None:
         """

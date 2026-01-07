@@ -22,7 +22,6 @@ class ExcelImportPage(BasePage):
         self.import_template_btn = self.page.locator("#importTemplate")
         self.download_template_btn = self.page.locator("#downloadTemplate")
         self.input_file = self.page.locator("input[type='file']")
-        self.error = self.page.locator("div[data-tag='simpleErrorMessage'] p")
         self.success_title = page.locator('div[data-tag="resultSuccessTitle"]')
         self.success_body = page.locator('div[data-tag="resultSuccessBody"]')
 
@@ -58,18 +57,6 @@ class ExcelImportPage(BasePage):
         expect(self.success_body).to_be_visible()
         expect(self.success_body).to_have_text(re.compile(r".+"))
 
-    def assert_error_alert_shown(self) -> None:
-        """
-        Verify that the error message is shown
-        """
-        expect(self.error).to_be_visible()
-
-    def assert_there_s_no_error(self) -> None:
-        """
-        Assert that there's no error after importing an Excel spreadsheet
-        """
-        expect(self.error).not_to_be_visible()
-
     def assert_loaded(self) -> None:
         """
         Verify if the Excel Import page is loaded and key elements are shown
@@ -98,4 +85,4 @@ class ExcelImportPage(BasePage):
         self.import_template_btn.click()
         # UI logic: button becomes disabled after clicking and before getting response
         expect(self.import_template_btn).to_be_enabled()
-        self.assert_error_alert_shown()
+        self.assert_error_visible()

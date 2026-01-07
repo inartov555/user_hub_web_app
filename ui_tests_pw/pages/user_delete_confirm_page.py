@@ -22,7 +22,6 @@ class UserDeleteConfirmPage(BasePage):
         self.confirm_delete_bottom = self.page.locator("#confirmDeleteBottom")
         self.cancel_top = self.page.locator("#cancelTop")
         self.cancel_bottom = self.page.locator("#cancelBottom")
-        self.error = self.page.locator("div[data-tag='simpleErrorMessage'] p")
 
     def open(self) -> None:
         """
@@ -62,9 +61,3 @@ class UserDeleteConfirmPage(BasePage):
         self.confirm_delete_top.click()
         self.assert_confirm_delete_loaded()
         self.assert_error_visible()
-
-    def assert_error_visible(self) -> None:
-        """
-        Assert that an error message is visible after a failed User Delete Confirm page.
-        """
-        expect(self.error).to_be_visible()

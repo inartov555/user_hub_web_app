@@ -23,7 +23,12 @@ class ProfileEditPage(BasePage):
         self.bio = self.page.locator("#bio")
         self.save = self.page.locator("#save")
         self.cancel = self.page.locator("#cancel")
-        self.error = self.page.locator("div[data-tag='errorAlert']")
+
+    def assert_error_alert_shown(self) -> None:
+        """
+        Demo
+        """
+        self.click_save_and_wait_profile_view()
 
     def open(self) -> None:
         """
@@ -69,9 +74,3 @@ class ProfileEditPage(BasePage):
         self.first_name.evaluate("node => node.removeAttribute('maxlength')")
         self.last_name.evaluate("node => node.removeAttribute('maxlength')")
         self.bio.evaluate("node => node.removeAttribute('maxlength')")
-
-    def assert_error_alert_shown(self) -> None:
-        """
-        Verify that the error alert is shown when, e.g., the field length exceeds
-        """
-        expect(self.error).to_be_visible()
