@@ -3,6 +3,7 @@ Page object for the Profile edit page.
 """
 
 from __future__ import annotations
+import re
 
 from playwright.sync_api import expect, Page
 
@@ -21,6 +22,7 @@ class ProfileEditPage(BasePage):
         self.first_name = self.page.locator("#firstName")
         self.last_name = self.page.locator("#lastName")
         self.bio = self.page.locator("#bio")
+        self.profile_avatar = self.page.locator("#profileAvatarImage")
         self.save = self.page.locator("#save")
         self.cancel = self.page.locator("#cancel")
 
@@ -31,13 +33,15 @@ class ProfileEditPage(BasePage):
         self.goto("/profile-edit")
         self.verify_profile_edit_page_uri_is_open()
 
-    def fill_basic_fields(self, first_name: str, last_name: str, bio: str) -> None:
+    def fill_basic_fields(self, first_name: str, last_name: str, bio: str, avatar: str = None) -> None:
         """
         Fill first name, last name, and bio fields.
         """
         self.first_name.fill(first_name)
         self.last_name.fill(last_name)
         self.bio.fill(bio)
+        if avatar:
+            self.profile_avatar.set_input_files(avatar)
 
     def click_save_and_wait_profile_view(self) -> None:
         """
@@ -60,6 +64,7 @@ class ProfileEditPage(BasePage):
         expect(self.first_name).to_be_visible()
         expect(self.last_name).to_be_visible()
         expect(self.bio).to_be_visible()
+        expect(self.profile_avatar).to_be_visible()
 
     def remove_maxlength_attribute_from_input_fields(self) -> None:
         """
@@ -68,3 +73,17 @@ class ProfileEditPage(BasePage):
         self.first_name.evaluate("node => node.removeAttribute('maxlength')")
         self.last_name.evaluate("node => node.removeAttribute('maxlength')")
         self.bio.evaluate("node => node.removeAttribute('maxlength')")
+
+    def assert_avatar_in_profile_edit(self, src_attr: str) -> None:
+        """
+        Assert that the passed avatar is in the Profile Edit page.
+        Note: avatar being set while editing will be applied
+        after saving and entering the Profile Edit page again.
+        """
+        expect(self.profile_avatar).to_have_attribute("src", re.compile(r".*" + src_attr + r".*"))
+
+    def assert_avatar_not_in_profile_edit(self, src_attr: str) -> None:
+        """
+        Assert that the passed avatar is not in the Profile Edit page.
+        """
+        expect(self.profile_avatar).not_to_have_attribute("src", re.compile(r".*" + src_attr + r".*"))

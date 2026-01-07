@@ -3,6 +3,7 @@ Page object for the Profile view page.
 """
 
 from __future__ import annotations
+import re
 
 from playwright.sync_api import expect, Page
 
@@ -23,6 +24,7 @@ class ProfileViewPage(BasePage):
         self.user_id = self.page.locator("#userid")
         self.email = self.page.locator("#email")
         self.bio = self.page.locator("#bio")
+        self.profile_avatar = self.page.locator("#profileAvatarImage")
         self.edit_profile = self.page.locator("#editProfile")
         self.change_password = self.page.locator("#changePassword")
 
@@ -54,3 +56,15 @@ class ProfileViewPage(BasePage):
         """
         self.change_password.click()
         self.verify_change_password_page_uri_is_open()
+
+    def assert_avatar_in_profile_view(self, src_attr: str) -> None:
+        """
+        Assert that the passed avatar is in the Profile View page.
+        """
+        expect(self.profile_avatar).to_have_attribute("src", re.compile(r".*" + src_attr + r".*"))
+
+    def assert_avatar_not_in_profile_view(self, src_attr: str) -> None:
+        """
+        Assert that the passed avatar is not in the Profile View page.
+        """
+        expect(self.profile_avatar).not_to_have_attribute("src", re.compile(r".*" + src_attr + r".*"))
