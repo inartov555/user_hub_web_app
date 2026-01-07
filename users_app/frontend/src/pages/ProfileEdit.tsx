@@ -103,75 +103,140 @@ export default function ProfileEdit() {
 
   return (
     <div className="
-           card grid grid-cols-1 md:grid-cols-3 gap-6 p-4 rounded-2xl border bg-white dark:bg-slate-800
-           dark:text-slate-100 dark:border-slate-700
+           relative overflow-hidden
+           rounded-2xl border p-4
+           bg-white/75 backdrop-blur shadow-soft ring-1 ring-slate-900/5
+           dark:bg-slate-900/50 dark:border-slate-700/70 dark:text-slate-100 dark:ring-white/5
          "
     >
-      {/* Left: Avatar */}
-      <div className="flex items-start justify-center md:justify-start">
-        <img
-          id="profileAvatar"
-          src={avatarSrc}
-          alt={t("profileEdit.profileAvatar")}
-          width={160}
-          height={160}
-          style={{ objectFit: "cover", borderRadius: "50%" }}
-        />
-      </div>
+      {/* subtle top accent */}
+      <div aria-hidden className="
+           pointer-events-none absolute inset-x-0 top-0 h-24
+           bg-gradient-to-b from-brand-500/10 via-indigo-500/6 to-transparent
+           dark:from-brand-400/12 dark:via-indigo-400/8
+         "
+      />
 
-      {/* Right: Form */}
-      <div className="md:col-span-2 space-y-3">
-        <UnifiedTitle icon={<UserPen className="h-4 w-4" />}
-                      title={t("profileEdit.editProfile")}
-                      subtitle={t("profileView.yourPersonalDetails")}
-        />
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <FormInput
-            id="firstName"
-            placeholder={t("users.firstName")}
-            value={first_name}
-            onChange={(e) => setFirstName(e.target.value)}
-          />
-          <FormInput
-            id="lastName"
-            placeholder={t("users.lastName")}
-            value={last_name}
-            onChange={(e) => setLastName(e.target.value)}
-          />
+      <div className="relative grid grid-cols-1 md:grid-cols-3 gap-6">
+        {/* Left: Avatar */}
+        <div className="flex items-start justify-center md:justify-start">
+          <div className="
+               relative
+               rounded-full p-[3px]
+               bg-gradient-to-br from-brand-500/35 via-indigo-500/20 to-transparent
+               dark:from-brand-400/35 dark:via-indigo-400/25
+             "
+          >
+            <img
+              id="profileAvatar"
+              src={avatarSrc}
+              alt={t("profileEdit.profileAvatar")}
+              width={160}
+              height={160}
+              style={{ objectFit: "cover", borderRadius: "9999px" }}
+              className="
+                h-40 w-40 rounded-full
+                ring-1 ring-slate-900/10 shadow-card
+                dark:ring-white/10
+              "
+            />
+            <div aria-hidden className="
+                 pointer-events-none absolute inset-0 rounded-full
+                 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.12)]
+                 dark:shadow-[inset_0_0_0_1px_rgba(255,255,255,0.08)]
+               "
+            />
+          </div>
         </div>
 
-        <label className="block space-y-1">
-          <span className="text-sm text-slate-700 dark:text-slate-100">{t("excelImport.bio")}</span>
-          <textarea
-            id="bio"
-            className="w-full rounded-md border px-3 py-2 min-h-[120px] outline-none focus:ring
-              bg-white text-slate-900 placeholder-slate-500
-              border border-slate-300
-              focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500
-              dark:bg-slate-900 dark:text-slate-100 dark:placeholder-slate-500
-              dark:border-slate-700
-            "
-            placeholder={t("excelImport.bio")}
-            value={bio}
-            maxLength={500}
-            onChange={(e) => setBio(e.target.value)}
+        {/* Right: Form */}
+        <div className="md:col-span-2 space-y-4">
+          <UnifiedTitle
+            icon={<UserPen className="h-4 w-4" />}
+            title={t("profileEdit.editProfile")}
+            subtitle={t("profileView.yourPersonalDetails")}
           />
-        </label>
 
-        <div>
-          <Input
-            id="profileAvatarImage"
-            type="file"
-            accept="image/*"
-            onChange={(e) => setAvatarFile(e.target.files?.[0] || null)}
-          />
-        </div>
+          <div className="
+               rounded-2xl border p-4
+               bg-white/70 shadow-sm ring-1 ring-slate-900/5
+               dark:bg-slate-900/40 dark:border-slate-700/70 dark:ring-white/5
+             "
+          >
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <FormInput
+                id="firstName"
+                placeholder={t("users.firstName")}
+                value={first_name}
+                onChange={(e) => setFirstName(e.target.value)}
+              />
+              <FormInput
+                id="lastName"
+                placeholder={t("users.lastName")}
+                value={last_name}
+                onChange={(e) => setLastName(e.target.value)}
+              />
+            </div>
 
-        <div className="flex gap-2">
-          <Button id="save" onClick={onSave}>{t("profileEdit.save")}</Button>
-          <Button id="cancel" onClick={() => navigate("/profile-view")}>
-            {t("userDeleteConfirm.cancel")}
-          </Button>
+            <label className="block space-y-1 mt-4">
+              <span className="text-sm font-medium text-slate-700 dark:text-slate-200">
+                {t("excelImport.bio")}
+              </span>
+              <textarea
+                id="bio"
+                className="
+                  w-full rounded-xl px-3 py-2 min-h-[140px]
+                  bg-white text-slate-900 placeholder-slate-500
+                  border border-slate-200/80 shadow-sm
+                  focus:outline-none focus:ring-2 focus:ring-brand-400 focus:border-brand-400
+                  dark:bg-slate-950/40 dark:text-slate-100 dark:placeholder-slate-500
+                  dark:border-slate-700/70
+                "
+                placeholder={t("excelImport.bio")}
+                value={bio}
+                maxLength={500}
+                onChange={(e) => setBio(e.target.value)}
+              />
+              <div className="flex justify-end text-xs text-slate-500 dark:text-slate-400">
+                {bio.length}/500
+              </div>
+            </label>
+
+            <div className="mt-4">
+              <div className="
+                   rounded-2xl border p-3
+                   bg-slate-50/60
+                   dark:bg-slate-950/30 dark:border-slate-700/70
+                 "
+              >
+                <div className="text-sm font-medium text-slate-700 dark:text-slate-200">
+                  {t("profileEdit.profileAvatar")}
+                </div>
+                <div className="mt-2">
+                  <Input
+                    id="profileAvatarImage"
+                    type="file"
+                    accept="image/*"
+                    onChange={(e) => setAvatarFile(e.target.files?.[0] || null)}
+                  />
+                </div>
+                {avatarFile?.name && (
+                  <div className="mt-2 text-xs text-slate-600 dark:text-slate-300">
+                    {avatarFile.name}
+                  </div>
+                )}
+              </div>
+            </div>
+
+            <div className="mt-5 flex flex-wrap gap-2">
+              <Button id="save" onClick={onSave}>
+                {t("profileEdit.save")}
+              </Button>
+              <Button id="cancel" onClick={() => navigate("/profile-view")}>
+                {t("userDeleteConfirm.cancel")}
+              </Button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
