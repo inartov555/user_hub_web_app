@@ -78,6 +78,11 @@ def before_tests() -> None:
         1. Creating a regular user
     """
     ensure_regular_user()
+    api = get_api_utils()
+    login_info = api.api_login(DEFAULT_ADMIN_USERNAME, DEFAULT_ADMIN_PASSWORD)
+    access_token = login_info.get("access")
+    api.import_excel_sheet(access_token, "test_data/import_template_test_50_users.xlsx")
+    # yo['one']
 
 
 @pytest.fixture(scope="session", autouse=True)

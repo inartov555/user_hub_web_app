@@ -60,6 +60,7 @@ class ApiBase:
                      method: str,
                      uri: str,
                      payload: dict = None,
+                     multipart: dict = None,
                      query_params: dict = None,
                      headers: dict = None):
         """
@@ -70,6 +71,7 @@ class ApiBase:
             method (str): one of ("get", "post", "put", "delete")
             uri (str): e.g. /v1/someApiRequest
             payload (dict): payload
+            multipart (dict): file data
             query_params (dict): these params will be used in URL
             headers (dict): headers to add to the default ones
 
@@ -104,6 +106,7 @@ class ApiBase:
                                        "headers": self.headers,
                                        "params": query_params,
                                        "data": payload,
+                                       "files": multipart,
                                        "timeout": 30,
                                        "verify": True,
                                        },
@@ -112,6 +115,7 @@ class ApiBase:
                                          "headers": self.headers,
                                          "params": query_params,
                                          "data": payload,
+                                         "files": multipart,
                                          "timeout": 30,
                                          "verify": True,
                                          },
@@ -120,6 +124,7 @@ class ApiBase:
                                       "headers": self.headers,
                                       "params": query_params,
                                       "data": payload,
+                                      "files": multipart,
                                       "timeout": 30,
                                       "verify": True,
                                       },
@@ -180,6 +185,7 @@ class ApiJsonRequest(ApiBase):
                      method: str,
                      uri: str,
                      payload: dict = None,
+                     multipart: dict = None,
                      query_params: dict = None,
                      headers: dict = None,
                      is_return_resp_obj: bool = False,
@@ -189,6 +195,7 @@ class ApiJsonRequest(ApiBase):
             method (str): one of ("get", "post", "put", "delete")
             uri (str): e.g. /v1/someApiRequest
             payload (dict): payload
+            multipart (dict): file data
             query_params (dict): these params will be used in URL
             headers (dict): headers to add to the default ones
             raise_error_if_failed (bool): If a test should fail when response validation failed;
@@ -207,7 +214,14 @@ class ApiJsonRequest(ApiBase):
             query_params = {}
         if not headers:
             headers = {}
-        response_obj = super().make_request(method, uri, payload, query_params, headers)
+        if multipart and self.headers.get("Content-Type"):
+            self.headers.pop("Content-Type")
+        response_obj = super().make_request(method=method,
+                                            uri=uri,
+                                            payload=payload,
+                                            multipart=multipart,
+                                            query_params=query_params,
+                                            headers=headers)
         if is_return_resp_obj:
             return response_obj
         resp_text = response_obj.text
@@ -337,4 +351,33 @@ class UsersAppApi(ApiJsonRequest):
                                      "/api/v1/system/settings/",
                                      payload=payload,
                                      headers=self.get_authorization_token_dict(access))
+        return response
+
+    def import_excel_sheet(self, access: str, file_name: str) -> dict:
+        """
+        PUT /api/v1/system/settings/
+
+        Only Admin user can call it.
+
+        Returns:
+            dict, example: {created: 0, updated: 0, processed: 0}
+        """
+        headers=self.get_authorization_token_dict(access)
+        # headers["Content-Type"] = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        # headers["Content-Type"] = "multipart/form-data; boundary=----WebKitFormBoundary5ilIG8AS3AbGlqdB"
+        with open(file_name, "rb") as _file:
+            multipart={
+                "file": (
+                    file_name,
+                    _file.read(),
+                    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                ),
+            }
+
+        response = self.make_request(
+            "post",
+            "/api/v1/import-excel/",
+            headers=headers,
+            multipart=multipart
+        )
         return response
