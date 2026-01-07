@@ -85,50 +85,80 @@ export default function ProfileView() {
 
   return (
     <div className="
-           card grid grid-cols-1 gap-6 md:grid-cols-3 p-4 rounded-2xl border bg-white dark:bg-slate-800
-           dark:text-slate-100 dark:border-slate-700
+           relative overflow-hidden
+           rounded-2xl border p-4
+           bg-white/75 backdrop-blur shadow-soft ring-1 ring-slate-900/5
+           dark:bg-slate-900/50 dark:border-slate-700/70 dark:text-slate-100 dark:ring-white/5
          "
     >
+      <div aria-hidden className="
+           pointer-events-none absolute inset-x-0 top-0 h-24
+           bg-gradient-to-b from-brand-500/10 via-indigo-500/6 to-transparent
+           dark:from-brand-400/12 dark:via-indigo-400/8
+         "
+      />
       {/* Left: Avatar */}
-      <div className="flex items-start justify-center md:justify-start">
-        <img
-          id="profileAvatar"
-          src={avatarSrc}
-          alt={t("profileEdit.profileAvatar")}
-          width={160}
-          height={160}
-          style={{ objectFit: "cover", borderRadius: "50%" }}
-        />
-      </div>
-
-      {/* Right: Details */}
-      <div className="md:col-span-2 space-y-4">
-        <UnifiedTitle icon={<UserCircle className="h-4 w-4" />}
-                      title={t("profileView.profile")}
-                      subtitle={t("profileView.yourPersonalDetails")}
-        />
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <Field id="fullName" label={t("profileView.fullName")} value={fullName} />
-          <Field id="username" label={t("signup.username")} value={profile.user?.username || "—"} />
-          <Field id="email" label={t("signup.email")} value={profile.user?.email || "—"} />
-          <Field id="userid" label={t("profileView.pId")} value={String(profile.user?.id ?? "—")} />
+      <div className="relative grid grid-cols-1 md:grid-cols-3 gap-6">
+        {/* Left: Avatar */}
+        <div className="flex items-start justify-center md:justify-start">
+          <div className="
+               relative
+               rounded-full p-[3px]
+               bg-gradient-to-br from-brand-500/35 via-indigo-500/20 to-transparent
+               dark:from-brand-400/35 dark:via-indigo-400/25
+             "
+          >
+            <img
+              id="profileAvatar"
+              src={avatarSrc}
+              alt={t("profileEdit.profileAvatar")}
+              width={160}
+              height={160}
+              style={{ objectFit: "cover", borderRadius: "9999px" }}
+              className="
+                h-40 w-40 rounded-full
+                ring-1 ring-slate-900/10 shadow-card
+                dark:ring-white/10
+              "
+            />
+            <div aria-hidden className="
+                 pointer-events-none absolute inset-0 rounded-full
+                 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.12)]
+                 dark:shadow-[inset_0_0_0_1px_rgba(255,255,255,0.08)]
+               "
+            />
+          </div>
         </div>
 
-        <div>
-          <Field id="bio" label={t("excelImport.bio")} value={bioField} />
-        </div>
+        {/* Right: Details */}
+        <div className="md:col-span-2 space-y-4">
+          <UnifiedTitle icon={<UserCircle className="h-4 w-4" />}
+                        title={t("profileView.profile")}
+                        subtitle={t("profileView.yourPersonalDetails")}
+          />
 
-        {error && (<SimpleErrorMessage errorUi={t("profileView.viewFailed")} errorBackend={error} />)}
-        <div className="flex gap-2">
-          <Button id="editProfile" onClick={() => navigate("/profile-edit")}>
-            {t("profileView.editProfile")}
-          </Button>
-          {profile?.user?.id != null && (
-            <Button id="changePassword" onClick={() => navigate(`/users/${profile.user.id}/change-password`)}>
-              {t("profileView.changePassword")}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <Field id="fullName" label={t("profileView.fullName")} value={fullName} />
+            <Field id="username" label={t("signup.username")} value={profile.user?.username || "—"} />
+            <Field id="email" label={t("signup.email")} value={profile.user?.email || "—"} />
+            <Field id="userid" label={t("profileView.pId")} value={String(profile.user?.id ?? "—")} />
+          </div>
+
+          <div>
+            <Field id="bio" label={t("excelImport.bio")} value={bioField} />
+          </div>
+
+          {error && (<SimpleErrorMessage errorUi={t("profileView.viewFailed")} errorBackend={error} />)}
+          <div className="flex gap-2">
+            <Button id="editProfile" onClick={() => navigate("/profile-edit")}>
+              {t("profileView.editProfile")}
             </Button>
-          )}
+            {profile?.user?.id != null && (
+              <Button id="changePassword" onClick={() => navigate(`/users/${profile.user.id}/change-password`)}>
+                {t("profileView.changePassword")}
+              </Button>
+            )}
+          </div>
         </div>
       </div>
     </div>

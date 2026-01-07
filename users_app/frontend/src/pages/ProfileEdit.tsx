@@ -109,7 +109,6 @@ export default function ProfileEdit() {
            dark:bg-slate-900/50 dark:border-slate-700/70 dark:text-slate-100 dark:ring-white/5
          "
     >
-      {/* subtle top accent */}
       <div aria-hidden className="
            pointer-events-none absolute inset-x-0 top-0 h-24
            bg-gradient-to-b from-brand-500/10 via-indigo-500/6 to-transparent
