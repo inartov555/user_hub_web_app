@@ -30,7 +30,7 @@ export default function Stats() {
           const fullName = [usr.firstName, usr.lastName].filter(Boolean).join(" ").trim();
           const tooltip = fullName || usr.email || initials;
           return (
-            <li key={usr.id} className="flex items-center justify-between gap-3 p-3">
+            <li data-tag={`userId-${usr.id}-username-${usr.username}`} key={usr.id} className="flex items-center justify-between gap-3 p-3">
               <div className="min-w-0 flex items-center gap-3">
                 <div className="
                        shrink-0 inline-flex h-9 w-9 items-center justify-center rounded-xl
@@ -42,10 +42,10 @@ export default function Stats() {
                 </div>
 
                 <div className="min-w-0" title={tooltip}>
-                  <div className="truncate font-semibold text-slate-900 dark:text-slate-50">
+                  <div data-tag={`username-${usr.username}`} className="truncate font-semibold text-slate-900 dark:text-slate-50">
                     {usr.username}
                   </div>
-                  <div className="truncate text-xs text-slate-600 dark:text-slate-300">
+                  <div data-tag={`email-${usr.email}`} className="truncate text-xs text-slate-600 dark:text-slate-300">
                     {usr.email}
                   </div>
                 </div>

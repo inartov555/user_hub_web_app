@@ -24,12 +24,6 @@ class ProfileEditPage(BasePage):
         self.save = self.page.locator("#save")
         self.cancel = self.page.locator("#cancel")
 
-    def assert_error_alert_shown(self) -> None:
-        """
-        Demo
-        """
-        self.click_save_and_wait_profile_view()
-
     def open(self) -> None:
         """
         Open the profile edit page.

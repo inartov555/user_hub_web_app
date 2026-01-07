@@ -262,7 +262,7 @@ def _helper_profile_edit_page_regular_user(page: Page, ui_theme_param: Theme, ui
                                         field_value_501_symb,
                                         field_value_501_symb)
     profile_edit_page.save.click()
-    profile_edit_page.assert_error_alert_shown()
+    profile_edit_page.assert_error_visible()
     # Screenshot -> Regular User -> Profile Edit Page -> Error alert
     take_a_screenshot(page)
 
@@ -362,7 +362,7 @@ def test_base_demo(page: Page,
     Base DEMO test to run multiple pages and take screenshots
     """
     username = "admin-wild-watermelon"
-    email = f"{username}@delete-after-testing.com"
+    email = f"{username}@delete.com"
     password = "Ch@ngeme123"
 
     _helper_login_page(page,
@@ -427,7 +427,7 @@ def test_locale_demo(page: Page,
     Locale DEMO test to run multiple pages and take screenshots
     """
     username = "admin-wild-watermelon"
-    email = f"{username}@delete-after-testing.com"
+    email = f"{username}@delete.com"
     password = "Ch@ngeme123"
 
     _helper_login_page(page,
