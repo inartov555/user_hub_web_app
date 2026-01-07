@@ -36,6 +36,9 @@ class LogoutView(APIView):
     permission_classes = [permissions.AllowAny]
 
     def post(self, request, *args, **kwargs):
+        """
+        Missing function or method docstring (missing-function-docstring)
+        """
         refresh = request.data.get("refresh")
         if not refresh:
             return Response(
