@@ -58,7 +58,7 @@ class JWTAuthentication(BaseAuthentication):
             return None
 
         try:
-            access_token = AccessToken(raw_access)
+            access_token = self.get_validated_token(raw_access)
             user = self._user_from_token(access_token)
 
             # Flag near-expiry (no auto-renew)
@@ -66,7 +66,7 @@ class JWTAuthentication(BaseAuthentication):
             request.jwt.seconds_to_expiry = seconds_left
 
             # On success, DRF expects (user, auth)
-            return (user, str(access_token))
+            return (user, access_token)
 
         except (TokenError, InvalidToken) as exc:
             # Preserve previous "auth failed" side-channel flag,
@@ -74,6 +74,10 @@ class JWTAuthentication(BaseAuthentication):
             request.jwt_auth_failed = True
             request.jwt.auth_failed = True
             raise AuthenticationFailed(detail=str(exc)) from exc
+        except AuthenticationFailed as exc:
+            request.jwt_auth_failed = True
+            request.jwt.auth_failed = True
+            raise
 
     def authenticate_header(self, request) -> str:
         # Controls the WWW-Authenticate header on 401s
@@ -117,11 +121,14 @@ class JWTAuthentication(BaseAuthentication):
         now_ts = int(datetime.now(timezone.utc).timestamp())
         return max(0, exp_ts - now_ts)
 
-    def get_validated_token(self, raw_token):  # pylint: disable=unused-argument
+    def get_validated_token(self, raw_token: str) -> AccessToken:
         """
-        Not used
+        Return a validated SimpleJWT AccessToken instance (or raise AuthenticationFailed)
         """
-        return raw_token
+        try:
+            return AccessToken(raw_token)
+        except (TokenError, InvalidToken) as exc:
+            raise AuthenticationFailed(detail=str(exc)) from exc
 
 
 
@@ -134,7 +141,7 @@ class JWTAuthenticationWithDenylist(JWTAuthentication):
         Get valid token and raise error if it's blacklisted
         """
         token = super().get_validated_token(raw_token)
-        jti = token.get("jti")
+        jti = token.get("jti") if token else None
         if jti and cache.get(f"{BLACKLIST_PREFIX}{jti}"):
             raise AuthenticationFailed("Token is blacklisted", code="token_not_valid")
         return token

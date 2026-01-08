@@ -6,10 +6,10 @@ so the client can refresh credentials.
 """
 
 from rest_framework.exceptions import AuthenticationFailed, ValidationError
-from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework_simplejwt.exceptions import InvalidToken
 
 from ..boot import get_boot_id
+from core.jwt_authentication import JWTAuthenticationWithDenylist
 
 
 def boot_header(get_response):
@@ -36,7 +36,7 @@ class BootIdEnforcerMiddleware:
     """
     def __init__(self, get_response):
         self.get_response = get_response
-        self.jwt_auth = JWTAuthentication()
+        self.jwt_auth = JWTAuthenticationWithDenylist()
 
     def __call__(self, request):
         # Pull raw Bearer token (if any)
