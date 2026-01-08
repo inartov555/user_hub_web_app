@@ -16,6 +16,7 @@ from rest_framework.authentication import BaseAuthentication, get_authorization_
 from rest_framework.exceptions import AuthenticationFailed, ValidationError
 from rest_framework_simplejwt.tokens import AccessToken
 from rest_framework_simplejwt.exceptions import TokenError, InvalidToken
+from rest_framework_simplejwt.token_blacklist.models import BlacklistedToken
 
 
 logger = logging.getLogger(__name__)
@@ -142,6 +143,17 @@ class JWTAuthenticationWithDenylist(JWTAuthentication):
         """
         token = super().get_validated_token(raw_token)
         jti = token.get("jti") if token else None
-        if jti and cache.get(f"{BLACKLIST_PREFIX}{jti}"):
+        if not jti:
+            return token
+
+        if cache.get(f"{BLACKLIST_PREFIX}{jti}"):
             raise AuthenticationFailed("Token is blacklisted", code="token_not_valid")
+
+        try:
+            if BlacklistedToken.objects.filter(token__jti=jti).exists():
+                raise AuthenticationFailed("Token is blacklisted", code="token_not_valid")
+        except Exception:
+            # ignore DB errors; cache still enforces invalidation
+            pass
+
         return token
