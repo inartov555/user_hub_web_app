@@ -76,7 +76,7 @@ readFromPyestIni() {
   ' "$ini_file1"
 }
 
-if BROWSER="$(readFromPyestIni $INI_CONFIG_FILE pytest browser)"; then
+if BROWSER="$(readFromPyestIni "$INI_CONFIG_FILE" pytest browser)"; then
   if [ -z $BROWSER ]; then
     echo "browser addopt found, but it's empty, so taking default value - chromium"
     # Default value when an empty parameter is found
@@ -94,11 +94,11 @@ echo "Building images..."
 case "$clear_cache" in
   true)
     echo "Cache will be cleared when starting the service"
-    docker compose build --build-arg PW_BROWSER=$BROWSER ui_tests_pw --no-cache
+    docker compose build --build-arg "PW_BROWSER=$BROWSER" ui_tests_pw --no-cache
     ;;
   *)
     echo "Cache will be preserved when starting the service"
-    docker compose build --build-arg PW_BROWSER=$BROWSER ui_tests_pw
+    docker compose build --build-arg "PW_BROWSER=$BROWSER" ui_tests_pw
 esac
 
 echo "Starting the tests..."

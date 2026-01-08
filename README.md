@@ -11,7 +11,7 @@ This is a test website + automation framework
 
 ## 📦 Releases
 
-- 🟨 **[v1.5](https://github.com/inartov555/user_hub_web_app/tree/stable_v1.5_jan_9_2025)** is in progress, it is not released yet
+- 🟨 **[v1.5](https://github.com/inartov555/user_hub_web_app/tree/stable_v1.5_jan_12_2025)** is in progress, it is not released yet
 - 🟩 **[v1.4](https://github.com/inartov555/user_hub_web_app/tree/stable_v1.4_jan_4_2026)** released on Jan-04-2026
 - 🟩 **[v1.3](https://github.com/inartov555/user_hub_web_app/tree/stable_v1.3_dec_28_2025)** released on Dec-28-2025
 - 🟩 **[v1.2](https://github.com/inartov555/user_hub_web_app/tree/stable_v1.2_dec_23_2025)** released on Dec-23-2025
@@ -37,6 +37,7 @@ This is a test website + automation framework
 - 🆕 **Added in `ui_tests_pw`:** New tests to test_profile_edit_page.py
 - 🆕 **Added in `ui_tests_pw`:** New tests to test_about_website_page.py
 - 🆕 **Added in `ui_tests_pw`:** New tests to test_logout.py
+- 🆕 **Added in `ui_tests_pw`:** New tests to test_about_website_page.py
 - 🆕 **Added in `users_app`:** Logout backend service (invalidating the access token, so it cannot be used when user clicked Logout, but token itself is still alive)
 - 🆕 **Added in `users_app`:** About website page
 

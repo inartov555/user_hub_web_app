@@ -19,23 +19,22 @@ RUN apt-get update \
  && apt-get install -y --no-install-recommends gettext gosu \
  && rm -rf /var/lib/apt/lists/*
 
+RUN --mount=type=cache,target=.cache/pip \
+    python -m pip install -U pip && \
+    pip install -r requirements.txt
+
 # PW_BROWSER is set in the run_test.sh file
 # Install branded browser channels only when requested (msedge/chrome)
 RUN set -eux; \
   if [ "$PW_BROWSER" = "msedge" ] || [ "$PW_BROWSER" = "chrome" ]; then \
-    for i in 1 2 3; do \
-        apt-get update && python -m playwright install --with-deps "$PW_BROWSER" && break; \
-      echo "Retry $i failed, retrying..."; sleep 5; \
-    done; \
-    rm -rf /var/lib/apt/lists/*; \
+    echo "Installing browser channel: $PW_BROWSER"; \
+    apt-get update && \
+      python -m playwright install --with-deps "$PW_BROWSER" && \
+      rm -rf /var/lib/apt/lists/*; \
   fi
 
 RUN chown -R pwuser:pwuser /tests
 USER pwuser
-
-RUN --mount=type=cache,target=.cache/pip \
-    python -m pip install -U pip && \
-    pip install -r requirements.txt
 
 # Validate .po syntax (correct paths: /tests/locale/**)
 RUN sh -c 'set -eu; \
