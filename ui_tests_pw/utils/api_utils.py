@@ -225,6 +225,7 @@ class ApiJsonRequest(ApiBase):
         if is_return_resp_obj:
             return response_obj
         resp_text = response_obj.text
+        response_json = None
         if response_obj.status_code != 204:
             response_json = json.loads(resp_text)
         # Response validation can be added here.
