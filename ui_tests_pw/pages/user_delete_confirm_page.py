@@ -11,7 +11,7 @@ from .base_page import BasePage
 
 class UserDeleteConfirmPage(BasePage):
     """
-    Encapsulates the user deletion confirmation page.
+    Page object for the User Delete Confirm page.
     """
 
     def __init__(self, page: Page):

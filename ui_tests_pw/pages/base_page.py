@@ -21,9 +21,6 @@ log = Logger(__name__)
 class BasePage:
     """
     Base class for all page objects.
-
-    Each specific page object wraps a Playwright Page instance and provides
-    typed helpers for navigation and common UI actions (theme, localization).
     """
 
     def __init__(self, page: Page) -> None:

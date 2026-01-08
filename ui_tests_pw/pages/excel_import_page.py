@@ -12,7 +12,7 @@ from .base_page import BasePage
 
 class ExcelImportPage(BasePage):
     """
-    Encapsulates the Excel import UI for bulk user operations.
+    Page object for the Excel import page (admin-only).
     """
 
     def __init__(self, page: Page):

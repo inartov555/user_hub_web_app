@@ -11,7 +11,7 @@ from .base_page import BasePage
 
 class StatsPage(BasePage):
     """
-    Encapsulates the online-users stats page.
+    Page object for the Stats page.
     """
 
     def __init__(self, page: Page):

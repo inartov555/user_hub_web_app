@@ -43,12 +43,16 @@ class AboutWebsitePage(BasePage):
 
     def assert_there_are_login_and_signup_links(self) -> None:
         """
+        Assert that the Log in and Sign up links are present on the About website page
+        for not logged in users
         """
         expect(self.login).to_be_visible()
         expect(self.signup).to_be_visible()
 
     def assert_no_login_and_sign_up_links(self) -> None:
         """
+        Assert that there are NO Log in and/or Sign up page on the About website page
+        for logged in users
         """
         expect(self.login).not_to_be_visible()
         expect(self.signup).not_to_be_visible()

@@ -29,7 +29,7 @@ class ProfileViewPage(BasePage):
 
     def open(self) -> None:
         """
-        Open the profile view page.
+        Open the Profile View page.
         """
         self.goto("/profile-view")
         self.verify_profile_view_page_uri_is_open()

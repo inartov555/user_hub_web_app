@@ -11,7 +11,7 @@ from .base_page import BasePage
 
 class ChangePasswordPage(BasePage):
     """
-    Encapsulates the change-password form for a user.
+    Page object for the Change Password page.
     """
 
     def __init__(self, page: Page):

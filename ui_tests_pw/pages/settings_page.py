@@ -25,7 +25,7 @@ class SettingsPage(BasePage):
 
     def open(self) -> None:
         """
-        Open the settings page.
+        Open the App Settings page.
         """
         self.goto("/settings")
         self.verify_app_settings_page_uri_is_open()

@@ -11,7 +11,7 @@ from .base_page import BasePage
 
 class SignupPage(BasePage):
     """
-    Encapsulates the registration/signup page.
+    Page object for the Signup page.
     """
 
     def __init__(self, page: Page):

@@ -11,7 +11,7 @@ from pages.base_page import BasePage
 
 class LoginPage(BasePage):
     """
-    Encapsulates interactions with the login page.
+    Page object for the Login page.
     """
 
     def __init__(self, page: Page):

@@ -16,7 +16,7 @@ log = Logger(__name__)
 
 class UsersTablePage(BasePage):
     """
-    Encapsulates the Users table view and its sorting/filtering actions.
+    Page object for the Users table page..
     """
 
     def __init__(self, page: Page):
@@ -202,7 +202,7 @@ class UsersTablePage(BasePage):
         self.rows_per_page_top select control.
 
         Args:
-            num (int): one of (5, 10, 20, 30, 50, 100, 200, 500, 1000, 2000)
+            num (int): one of (5, 10, 20, 30, 50, 100, 200, 500, 1000, 2000,)
         """
         self.rows_per_page_top.select_option(str(num))
 

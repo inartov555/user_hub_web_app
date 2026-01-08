@@ -31,7 +31,7 @@ class ResetPasswordPage(BasePage):
 
     def request_reset(self, email: str) -> None:
         """
-        Submit the reset-password form with the given email.
+        Submit the Reset Password form with the given email.
         """
         self.email.fill(email)
         self.submit.click()

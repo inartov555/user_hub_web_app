@@ -28,7 +28,7 @@ class ProfileEditPage(BasePage):
 
     def open(self) -> None:
         """
-        Open the profile edit page.
+        Open the Profile Edit page.
         """
         self.goto("/profile-edit")
         self.verify_profile_edit_page_uri_is_open()
