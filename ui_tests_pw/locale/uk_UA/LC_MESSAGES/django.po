@@ -51,3 +51,6 @@ msgstr "Імпорт успішно завершено"
 
 msgid "Result"
 msgstr "Результат"
+
+msgid "About website"
+msgstr "Про сайт"

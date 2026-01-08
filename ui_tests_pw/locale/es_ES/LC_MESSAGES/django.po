@@ -51,3 +51,6 @@ msgstr "La importación finalizó correctamente"
 
 msgid "Result"
 msgstr "Resultado"
+
+msgid "About website"
+msgstr "Acerca del sitio"

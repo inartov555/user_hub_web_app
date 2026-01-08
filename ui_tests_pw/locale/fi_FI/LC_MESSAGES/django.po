@@ -51,3 +51,6 @@ msgstr "Tuonti valmistui onnistuneesti"
 
 msgid "Result"
 msgstr "Tulos"
+
+msgid "About website"
+msgstr "Tietoa sivustosta"

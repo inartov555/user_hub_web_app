@@ -51,3 +51,6 @@ msgstr "Import completed successfully"
 
 msgid "Result"
 msgstr "Result"
+
+msgid "About website"
+msgstr "About website"

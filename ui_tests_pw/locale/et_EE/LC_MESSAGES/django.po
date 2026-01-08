@@ -51,3 +51,6 @@ msgstr "Import lõpetati edukalt"
 
 msgid "Result"
 msgstr "Tulemus"
+
+msgid "About website"
+msgstr "Veebisaidist"
