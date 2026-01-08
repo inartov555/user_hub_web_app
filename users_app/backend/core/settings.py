@@ -243,7 +243,6 @@ CORS_ALLOW_CREDENTIALS = True
 
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
-        "rest_framework_simplejwt.authentication.JWTAuthentication",
         "core.jwt_authentication.JWTAuthenticationWithDenylist",
     ),
     "DEFAULT_PERMISSION_CLASSES": (

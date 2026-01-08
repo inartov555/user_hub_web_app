@@ -19,8 +19,8 @@ export default function About() {
       />
       {!user && (
         <div className="mt-4 text-sm flex justify-between">
-          <CustomLink title={t("auth.createAccount")} linkTo="/signup" />
           <CustomLink title={t("auth.login")} linkTo="/login" />
+          <CustomLink title={t("auth.createAccount")} linkTo="/signup" />
         </div>
       )}
     </Card>
