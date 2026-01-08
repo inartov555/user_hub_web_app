@@ -37,7 +37,7 @@ This is a test website + automation framework
 - 🆕 **Added in `ui_tests_pw`:** New tests to test_profile_edit_page.py
 - 🆕 **Added in `ui_tests_pw`:** New tests to test_about_website_page.py
 - 🆕 **Added in `ui_tests_pw`:** New tests to test_logout.py
-- 🆕 **Added in `users_app`:** Logout backend service (invalidating the access token, so it cannot be used when user clicked Logout, but token itself is still alive)
+- 🆕 **Added in `users_app`:** Logout backend service (invalidating access token, so it cannot be used when used clicked Logout, but token itself is still alive)
 - 🆕 **Added in `users_app`:** About website page
 
 ---
