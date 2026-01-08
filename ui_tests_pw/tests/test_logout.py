@@ -41,4 +41,4 @@ def test_access_token_invalidated_after_logging_out_admin(username: str, passwor
     except Exception:  # pylint: disable=broad-exception-caught
         did_invalidated_token_work = False
     if did_invalidated_token_work:
-        raise AssertionError("/api/v1/auth/jwt/logout did not invalidate the access token")
+        raise AssertionError("/api/v1/auth/jwt/logout/ did not invalidate the access token")
