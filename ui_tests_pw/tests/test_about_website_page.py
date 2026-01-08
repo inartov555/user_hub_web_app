@@ -1,5 +1,5 @@
 """
-Tests for the Reset Password page.
+Tests for the About website page.
 """
 
 from __future__ import annotations
