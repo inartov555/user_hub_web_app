@@ -116,7 +116,8 @@ TEST_GREP=""
 # to run all tests, just set TEST_GREP="$TEST_GREP" (to preserve base settings)
 
 # TEST_GREP="$TEST_GREP -k 'test_base_demo or test_locale_demo'"
-# TEST_GREP="$TEST_GREP -k 'test_new_avatar_picture_shown_after_uploading_a_picture or test_profile_edit_renders_and_can_save'"
+TEST_GREP="$TEST_GREP -k 'test_verify_there_are_login_and_signup_links_for_logged_in_user or test_verify_that_there_s_no_login_and_signup_links_for_logged_in_user or test_links_to_signup_and_login'"
+# TEST_GREP="$TEST_GREP -k 'test_verify_that_there_s_no_login_and_signup_links_for_logged_in_user'"
 
 docker compose run -e TEST_GREP="$TEST_GREP" --rm ui_tests_pw
 

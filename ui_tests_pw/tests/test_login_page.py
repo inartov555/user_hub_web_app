@@ -65,7 +65,7 @@ def test_admin_can_login_and_see_users_nav(login_page: LoginPage) -> None:
     login_page.submit_credentials_success(DEFAULT_ADMIN_USERNAME, DEFAULT_ADMIN_PASSWORD)
 
 
-@pytest.mark.localization
+@pytest.mark.regular_user
 def test_login_links_to_signup_and_reset_password(login_page: LoginPage,
                                                   page: Page) -> None:
     """

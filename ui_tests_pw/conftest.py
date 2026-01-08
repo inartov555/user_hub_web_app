@@ -35,6 +35,7 @@ from pages.reset_password_page import ResetPasswordPage
 from pages.settings_page import SettingsPage
 from pages.signup_page import SignupPage
 from pages.stats_page import StatsPage
+from pages.about_website_page import AboutWebsitePage
 
 
 log = Logger(__name__)
@@ -313,6 +314,16 @@ def reset_password_page_fixture(page: Page,
     reset_password_page = ResetPasswordPage(page)
     reset_password_page.open()
     return reset_password_page
+
+
+@pytest.fixture(name="about_website_page", scope="function")
+def about_website_page_fixture(page: Page) -> AboutWebsitePage:
+    """
+    Get About website page
+    """
+    about_website_page = AboutWebsitePage(page)
+    about_website_page.open()
+    return about_website_page
 
 
 @pytest.fixture(name="signup_page", scope="function")
