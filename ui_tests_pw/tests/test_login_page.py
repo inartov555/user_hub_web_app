@@ -7,14 +7,14 @@ from __future__ import annotations
 import pytest
 from playwright.sync_api import Page
 
-from core.constants import LocaleConsts, ThemeConsts
-from pages.login_page import LoginPage
 from config import (
     DEFAULT_ADMIN_USERNAME,
     DEFAULT_ADMIN_PASSWORD,
     DEFAULT_REGULAR_USERNAME,
     DEFAULT_REGULAR_PASSWORD,
 )
+from core.constants import LocaleConsts, ThemeConsts
+from pages.login_page import LoginPage
 from utils.theme import Theme
 
 

@@ -5,7 +5,7 @@ Tests for the Reset Password page.
 from __future__ import annotations
 
 import pytest
-from playwright.sync_api import expect
+from playwright.sync_api import Page
 
 from config import (
     DEFAULT_REGULAR_USERNAME,
@@ -20,10 +20,8 @@ from utils.theme import Theme
 @pytest.mark.theme
 @pytest.mark.localization
 @pytest.mark.unauthorized
-# @pytest.mark.parametrize("ui_theme_param", ThemeConsts.ALL_SUPPORTED_THEMES)
-# @pytest.mark.parametrize("ui_locale_param", LocaleConsts.ALL_SUPPORTED_LOCALES)
-@pytest.mark.parametrize("ui_theme_param", ["light"])
-@pytest.mark.parametrize("ui_locale_param", ["en-US"])
+@pytest.mark.parametrize("ui_theme_param", ThemeConsts.ALL_SUPPORTED_THEMES)
+@pytest.mark.parametrize("ui_locale_param", LocaleConsts.ALL_SUPPORTED_LOCALES)
 @pytest.mark.usefixtures("cleanup_set_default_theme_and_locale")
 def test_verify_there_are_login_and_signup_links_for_logged_in_user(about_website_page: AboutWebsitePage,
                                                                     login_page: LoginPage,
@@ -47,10 +45,8 @@ def test_verify_there_are_login_and_signup_links_for_logged_in_user(about_websit
 @pytest.mark.theme
 @pytest.mark.localization
 @pytest.mark.authorized
-# @pytest.mark.parametrize("ui_theme_param", ThemeConsts.ALL_SUPPORTED_THEMES)
-# @pytest.mark.parametrize("ui_locale_param", LocaleConsts.ALL_SUPPORTED_LOCALES)
-@pytest.mark.parametrize("ui_theme_param", ["light"])
-@pytest.mark.parametrize("ui_locale_param", ["en-US"])
+@pytest.mark.parametrize("ui_theme_param", ThemeConsts.ALL_SUPPORTED_THEMES)
+@pytest.mark.parametrize("ui_locale_param", LocaleConsts.ALL_SUPPORTED_LOCALES)
 @pytest.mark.usefixtures("cleanup_set_default_theme_and_locale")
 def test_verify_that_there_s_no_login_and_signup_links_for_logged_in_user(page: Page,
                                                                           about_website_page: AboutWebsitePage,

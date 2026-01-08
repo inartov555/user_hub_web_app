@@ -92,7 +92,7 @@ def screenshot_dir() -> str:
 
 
 @pytest.fixture(name="browser", scope="session", autouse=True)
-def browser_setup(playwright, request):
+def browser_setup(playwright, request) -> Browser:
     """
     Set the browser driver
     """
