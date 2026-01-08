@@ -18,7 +18,6 @@ class ProfileViewPage(BasePage):
     def __init__(self, page: Page):
         super().__init__(page)
 
-        self.page_title = self.page.locator("h2")
         self.full_name = self.page.locator("#fullName")
         self.username = self.page.locator("#username")
         self.user_id = self.page.locator("#userid")

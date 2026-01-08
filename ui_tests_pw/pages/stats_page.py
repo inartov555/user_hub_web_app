@@ -17,7 +17,6 @@ class StatsPage(BasePage):
     def __init__(self, page: Page):
         super().__init__(page)
 
-        self.page_title = self.page.locator("h2")
         self.online_user_list = self.page.locator("ul li")
 
     def open(self) -> None:

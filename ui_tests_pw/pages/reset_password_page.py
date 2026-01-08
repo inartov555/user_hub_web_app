@@ -11,13 +11,12 @@ from .base_page import BasePage
 
 class ResetPasswordPage(BasePage):
     """
-    Encapsulates the reset-password page.
+    Page object for the Reset Password page.
     """
 
     def __init__(self, page: Page):
         super().__init__(page)
 
-        self.page_title = self.page.locator("h2")
         self.email = self.page.locator("#email")
         self.submit = self.page.locator("form button[type='submit']")
         self.reset_pswd_info_msg = self.page.locator("div[data-tag='simpleInfoMessage']")
@@ -39,7 +38,7 @@ class ResetPasswordPage(BasePage):
 
     def click_sign_in_link(self) -> None:
         """
-        Clicking the Sign in link on the Reset Password page
+        Clicking the Log in link on the Reset Password page
         """
         self.login.click()
         self.verify_login_page_uri_is_open()

@@ -11,13 +11,12 @@ from .base_page import BasePage
 
 class SettingsPage(BasePage):
     """
-    Encapsulates the application settings form (admin-only).
+    Page object for the admin Settings page.
     """
 
     def __init__(self, page: Page):
         super().__init__(page)
 
-        self.page_title = self.page.locator("h2")
         self.rotate_refresh_token = self.page.locator("#rotateRefreshTokens")
         self.renew_at_sec = self.page.locator("#renewAtSeconds")
         self.idle_timeout_sec = self.page.locator("#idleTimeoutSeconds")

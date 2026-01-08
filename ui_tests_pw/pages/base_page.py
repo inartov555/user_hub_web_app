@@ -37,6 +37,8 @@ class BasePage:
         # Not logged in user
         self.username = self.page.locator('#username')
         # Common controls
+        self.page_title = self.page.locator('h2')
+        self.about_website = self.page.locator('#aboutWebsite')
         self.logout = self.page.locator('#logout')
         self.error_msg = self.page.locator("div[data-tag='simpleErrorMessage']")
         self.info_msg = self.page.locator("div[data-tag='simpleInfoMessage']")
@@ -150,6 +152,13 @@ class BasePage:
         Verify if the Login page is displayed
         """
         self.verify_login_page_uri_is_open()
+
+    def click_about_website_tab(self) -> None:
+        """
+        Click the About Website tab
+        """
+        self.about_website.click()
+        self.verify_about_website_page_uri_is_open()
 
     def click_users_tab(self) -> None:
         """
@@ -309,3 +318,10 @@ class BasePage:
         Assert that a success message is shown
         """
         expect(self.success_msg).to_be_visible()
+
+    def verify_about_website_page_uri_is_open(self) -> None:
+        """
+        Verify that the page with /about URI is shown now
+        """
+        self.page.wait_for_url(re.compile(r".*/about$"))
+        expect(self.page).to_have_url(re.compile(r".*/about$"))
