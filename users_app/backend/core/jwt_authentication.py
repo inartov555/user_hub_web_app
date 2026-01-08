@@ -75,7 +75,7 @@ class JWTAuthentication(BaseAuthentication):
             request.jwt_auth_failed = True
             request.jwt.auth_failed = True
             raise AuthenticationFailed(detail=str(exc)) from exc
-        except AuthenticationFailed as exc:
+        except AuthenticationFailed:
             request.jwt_auth_failed = True
             request.jwt.auth_failed = True
             raise
@@ -152,7 +152,7 @@ class JWTAuthenticationWithDenylist(JWTAuthentication):
         try:
             if BlacklistedToken.objects.filter(token__jti=jti).exists():
                 raise AuthenticationFailed("Token is blacklisted", code="token_not_valid")
-        except Exception:
+        except Exception:  # pylint: disable=broad-exception-caught
             # ignore DB errors; cache still enforces invalidation
             pass
 

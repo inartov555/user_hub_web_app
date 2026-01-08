@@ -24,9 +24,15 @@ BLACKLIST_PREFIX = "jwt:bl:"
 
 
 class LogoutView(APIView):
+    """
+    Log out
+    """
     permission_classes = [permissions.IsAuthenticated]
 
     def post(self, request):
+        """
+        Log out
+        """
         token = request.auth  # should be AccessToken instance from your auth class
         if not token:
             raise ValidationError({"details": "No token found"})
@@ -58,7 +64,7 @@ class LogoutView(APIView):
                 },
             )
             BlacklistedToken.objects.get_or_create(token=outstanding)
-        except Exception as exc:  # don't 500 logout
+        except Exception as exc:  # pylint: disable=broad-exception-caught
             logger.warning("DB blacklist failed; cache blacklist still applied: %s", exc)
 
         return Response(status=204)

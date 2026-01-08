@@ -8,8 +8,8 @@ so the client can refresh credentials.
 from rest_framework.exceptions import AuthenticationFailed, ValidationError
 from rest_framework_simplejwt.exceptions import InvalidToken
 
-from ..boot import get_boot_id
 from core.jwt_authentication import JWTAuthenticationWithDenylist
+from ..boot import get_boot_id
 
 
 def boot_header(get_response):
