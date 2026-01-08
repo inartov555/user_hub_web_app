@@ -112,7 +112,7 @@ def test_user_disappears_from_user_stats_if_not_active_more_than_5_mins(user_sta
 @pytest.mark.parametrize("suffix", ["strawberry"])
 @pytest.mark.usefixtures("cleanup_delete_users_by_suffix")
 def test_user_is_present_in_user_stats_if_active_more_than_5_mins(user_stats_page: StatsPage,
-                                                                        suffix: str) -> None:
+                                                                  suffix: str) -> None:
     """
     Verify that active for more than 5 minutes user is still shown on the User Stats page.
 
@@ -135,6 +135,36 @@ def test_user_is_present_in_user_stats_if_active_more_than_5_mins(user_stats_pag
     for _ in range(11):
         user_stats_page.wait_a_bit(30)
         api_utils.get_profile_details(login_info.get("access"))
+    # Let's reload the page and check the results
+    user_stats_page.reload()
+    user_stats_page.assert_user_was_online_during_last_5_mins(username)
+
+
+@pytest.mark.admin
+@pytest.mark.parametrize("suffix", ["raspberry"])
+@pytest.mark.usefixtures("cleanup_delete_users_by_suffix")
+def test_user_is_present_in_user_stats_after_logging_out(user_stats_page: StatsPage,
+                                                                  suffix: str) -> None:
+    """
+    Verify that user who logs out, still shown on the User Stats page for 5 minutes
+
+    Username & email are created with this logic:
+        username = f"ui-test-{suffix}"
+        email = f"{username}@test.com"
+        password = "Ch@ngeme123"
+    """
+    api_utils = get_api_utils()
+    username = f"api-new-{suffix}"
+    email = f"{username}@raspberry.com"
+    password = "Ch@ngeme123"
+    login_info = api_utils.create_user_and_login(username, email, password)
+    # Let's get profile details to simulate UI behavior, so the user becomes shown on the User Stats page
+    api_utils.get_profile_details(login_info.get("access"))
+    # Now let's check if user is shown on the User Stats page
+    user_stats_page.reload()
+    user_stats_page.assert_user_was_online_during_last_5_mins(username)
+    # Now user logs out
+    api_utils.logout(login_info.get("access"))
     # Let's reload the page and check the results
     user_stats_page.reload()
     user_stats_page.assert_user_was_online_during_last_5_mins(username)

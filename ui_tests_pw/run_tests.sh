@@ -104,7 +104,7 @@ esac
 echo "Starting the tests..."
 TEST_GREP=""
 
-# TEST_GREP="$TEST_GREP --reruns 2 --reruns-delay 2"
+TEST_GREP="$TEST_GREP --reruns 2 --reruns-delay 2"
 
 # Uncomment if you need tests to be run in parallel (set number or auto).
 # Note: there are some tests that change settings, so you can run tests in parallel only when
@@ -115,9 +115,8 @@ TEST_GREP=""
 # If you need to run particular test(s), then set it as shown in the line below (TEST_GREP);
 # to run all tests, just set TEST_GREP="$TEST_GREP" (to preserve base settings)
 
-TEST_GREP="$TEST_GREP -k 'test_base_demo or test_locale_demo'"
-# TEST_GREP="$TEST_GREP -k 'test_verify_there_are_login_and_signup_links_for_logged_in_user or test_verify_that_there_s_no_login_and_signup_links_for_logged_in_user or test_links_to_signup_and_login'"
-# TEST_GREP="$TEST_GREP -k 'test_access_token_invalidated_after_logging_out_admin'"
+# TEST_GREP="$TEST_GREP -k 'test_base_demo or test_locale_demo'"
+# TEST_GREP="$TEST_GREP -k 'test_user_is_present_in_user_stats_after_logging_out'"
 
 docker compose run -e TEST_GREP="$TEST_GREP" --rm ui_tests_pw
 

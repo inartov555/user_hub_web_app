@@ -459,7 +459,7 @@ def test_locale_demo(page: Page,
                         LocaleConsts.FINNISH)
     _helper_reset_password_page(page,
                                 ui_theme_param,
-                                LocaleConsts.ENGLISH_US)
+                                LocaleConsts.SPANISH)
     _helper_about_website_page(page,
                                ui_theme_param,
                                LocaleConsts.CZECH)
