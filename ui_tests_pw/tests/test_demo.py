@@ -98,7 +98,7 @@ def _helper_reset_password_page(page: Page, ui_theme_param: Theme, ui_locale_par
     # Screenshot -> Forgot Password page -> Email input
     take_a_screenshot(page)
     reset_password_page = ResetPasswordPage(page)
-    reset_password_page.request_reset("invalid")
+    reset_password_page.request_reset("mail")
     reset_password_page.assert_error_visible()
     # Screenshot -> Reset Password page -> Error
     take_a_screenshot(page)
