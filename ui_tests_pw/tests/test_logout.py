@@ -1,5 +1,5 @@
 """
-Tests related to logout
+Tests related to logging out
 """
 
 from __future__ import annotations
