@@ -29,6 +29,7 @@ from pages.profile_edit_page import ProfileEditPage
 from pages.stats_page import StatsPage
 from pages.settings_page import SettingsPage
 from pages.excel_import_page import ExcelImportPage
+from pages.about_website_page import AboutWebsitePage
 from utils.theme import Theme
 from utils.auth import get_api_utils
 from config import (
@@ -110,6 +111,33 @@ def _helper_reset_password_page(page: Page, ui_theme_param: Theme, ui_locale_par
     take_a_screenshot(page)
     # Let's get back to the Login page
     reset_password_page.click_sign_in_link()
+
+
+def _helper_about_website_page(page: Page, ui_theme_param: Theme, ui_locale_param: str) -> None:
+    """
+    This is a helper function that takes screenshots on the About Website page
+    """
+    login_page = LoginPage(page)
+    login_page.ensure_theme(ui_theme_param)
+    login_page.ensure_locale(ui_locale_param)
+    # Now, let's check the About Website tab when user is not yet logged in
+    login_page.click_about_website_tab()
+    about_website_page = AboutWebsitePage(page)
+    about_website_page.assert_info_message()
+    about_website_page.assert_there_are_login_and_signup_links()
+    # Screenshot -> Not logged in -> About Website page
+    take_a_screenshot(page)
+    # Getting back to the Log in page
+    about_website_page.click_log_in_link()
+    # After this, let's login and check the About Website page for a logged in user
+    login_page.submit_credentials_success(DEFAULT_REGULAR_USERNAME, DEFAULT_REGULAR_PASSWORD)
+    login_page.click_about_website_tab()
+    about_website_page.assert_info_message()
+    about_website_page.assert_no_login_and_sign_up_links()
+    # Screenshot -> Regular User -> About Website page
+    take_a_screenshot(page)
+    # Let's logout to get ready for the next stage
+    about_website_page.click_logout_and_wait_for_login_page()
 
 
 def _helper_users_table_page_admin_user(page: Page,
@@ -372,6 +400,9 @@ def test_base_demo(page: Page,
     _helper_reset_password_page(page,
                                 ui_theme_param,
                                 ui_locale_param)
+    _helper_about_website_page(page,
+                               ui_theme_param,
+                               ui_locale_param)
     _helper_users_table_page_admin_user(page,
                                         ui_theme_param,
                                         ui_locale_param)
@@ -429,6 +460,9 @@ def test_locale_demo(page: Page,
     _helper_reset_password_page(page,
                                 ui_theme_param,
                                 LocaleConsts.ENGLISH_US)
+    _helper_about_website_page(page,
+                               ui_theme_param,
+                               LocaleConsts.CZECH)
     _helper_users_table_page_admin_user(page,
                                         ui_theme_param,
                                         LocaleConsts.UKRAINIAN)

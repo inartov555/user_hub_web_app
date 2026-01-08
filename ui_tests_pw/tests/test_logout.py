@@ -25,7 +25,7 @@ def test_access_token_invalidated_after_logging_out_admin(username: str, passwor
     1. Login via API as an admin
     2. Preserve the access token
     3. Do some actions to simulate real website activity, e.g. call /api/v1/auth/users/me/
-    4. Log out
+    4. Log out /api/v1/auth/jwt/logout/
     5. Try to call some requests that require access token with value from step #2
     """
     api_utils = get_api_utils()

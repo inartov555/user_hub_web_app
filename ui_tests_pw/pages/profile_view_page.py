@@ -60,19 +60,11 @@ class ProfileViewPage(BasePage):
     def assert_avatar_in_profile_view(self, src_attr: str) -> None:
         """
         Assert that the passed avatar is in the Profile View page.
-
-        Examples for src_attr:
-            - default avatar = r".*placehold.co/\\d+x\\d+\\?text=.*"
-            - some uploaded picture = rf".*/media/avatars/user_\\d+/.*{Path(avatar_path).suffix}"
         """
         expect(self.profile_avatar_image).to_have_attribute("src", re.compile(src_attr))
 
     def assert_avatar_not_in_profile_view(self, src_attr: str) -> None:
         """
         Assert that the passed avatar is not in the Profile View page.
-
-        Examples for src_attr:
-            - default avatar = r".*placehold.co/\\d+x\\d+\\?text=.*"
-            - some uploaded picture = rf".*/media/avatars/user_\\d+/.*{Path(avatar_path).suffix}"
         """
         expect(self.profile_avatar_image).not_to_have_attribute("src", re.compile(src_attr))
