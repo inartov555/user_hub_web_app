@@ -225,7 +225,8 @@ class ApiJsonRequest(ApiBase):
         if is_return_resp_obj:
             return response_obj
         resp_text = response_obj.text
-        response_json = json.loads(resp_text)
+        if response_obj.status_code != 204:
+            response_json = json.loads(resp_text)
         # Response validation can be added here.
         # Use raise_error_if_failed and raise AssertionError if validation failed and raise_error_if_failed is True
         if raise_error_if_failed:
