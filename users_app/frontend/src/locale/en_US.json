@@ -22,9 +22,9 @@
     "logout": "Logout"
   },
   "about": {
-    "aboutWebsite": "About Website",
+    "aboutWebsite": "About website",
     "infoAboutWebsite": "A production‑grade example app with a Django REST Framework backend and a React + Vite + TypeScript SPA frontend. It demonstrates JWT auth with runtime tuning, profile management, Excel import, online-user stats, i18n, and a clean Tailwind UI.",
-    "createdBy": "Created By:"
+    "createdBy": "Created by:"
   },
   "auth": {
     "login": "Log in",
