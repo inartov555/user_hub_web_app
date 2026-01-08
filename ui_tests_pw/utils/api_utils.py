@@ -421,9 +421,9 @@ class UsersAppApi(ApiJsonRequest):
 
     def logout(self, access: str) -> dict:
         """
-        POST /api/v1/auth/jwt/logout
+        POST /api/v1/auth/jwt/logout/
         """
         response = self.make_request("post",
-                                     "/api/v1/auth/jwt/logout",
+                                     "/api/v1/auth/jwt/logout/",
                                      headers=self.get_authorization_token_dict(access))
         return response
