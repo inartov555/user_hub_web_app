@@ -48,7 +48,7 @@ def test_profile_edit_renders_and_can_save(profile_edit_page_regular: ProfileEdi
     profile_edit_page_regular.click_save_and_wait_profile_view_success(edit_data.get("firstName"),
                                                                        edit_data.get("lastName"),
                                                                        edit_data.get("bio"),
-                                                                       vatar_path)
+                                                                       avatar_path)
     profile_view_page = ProfileViewPage(page)
 
     default_avatar = r".*placehold.co/\d+x\d+\?text=.*"  # pylint: disable=anomalous-backslash-in-string
@@ -118,11 +118,10 @@ def test_new_avatar_picture_shown_after_uploading_a_picture(login_page: LoginPag
     profile_edit_page = ProfileEditPage(page)
     profile_edit_page.assert_avatar_in_profile_edit(default_avatar)
     # Now, let's set a new avatar
-    profile_edit_page.fill_basic_fields(edit_data.get("firstName"),
-                                        edit_data.get("lastName"),
-                                        edit_data.get("bio"),
-                                        avatar_path)
-    profile_edit_page.click_save_and_wait_profile_view()
+    profile_edit_page.click_save_and_wait_profile_view_success(edit_data.get("firstName"),
+                                                               edit_data.get("lastName"),
+                                                               edit_data.get("bio"),
+                                                               avatar_path)
     profile_view_page.assert_avatar_in_profile_view(src_to_check)
     profile_view_page.assert_avatar_not_in_profile_view(default_avatar)
     profile_view_page.click_edit_button()
