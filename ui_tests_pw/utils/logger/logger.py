@@ -17,7 +17,7 @@ class Logger:
     __loggers = []  # links to all created loggers
     log_format = '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
 
-    def __init__(self, logger_name: str) -> None:
+    def __init__(self, logger_name: str):
         """
         Wrapper over logging class that initializes a logger with the config in 'tools/logger/logging.json'.
         To modify default log level edit in 'tools/logger/logging.json' the parameter json['handlers']['console']['info']
