@@ -48,3 +48,22 @@ class ChangePasswordPage(BasePage):
         expect(self.password).to_be_visible()
         expect(self.confirm_password).to_be_visible()
         expect(self.submit).to_be_visible()
+
+    def change_password_success(self, password: str) -> None:
+        """
+        Change password -> Success
+        """
+        self.password.fill(password)
+        self.confirm_password.fill(password)
+        self.submit.click()
+        self.wait_for_the_users_table_page_to_load()
+
+    def change_password_error(self, password: str, confirm_password: str) -> None:
+        """
+        Change password -> Error alert
+        """
+        self.password.fill(password)
+        self.confirm_password.fill(confirm_password)
+        self.submit.click()
+        self.assert_change_password_is_loaded()
+        self.assert_error_visible()
