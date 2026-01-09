@@ -12,7 +12,10 @@ class CustomPasswordResetSerializer(SendEmailResetSerializer):
     """
     Custom password reset email serializer with strict email validation.
     """
-    email = serializers.EmailField(min_length=5, max_length=40, required=True)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        self.fields["email"] = serializers.EmailField(min_length=5, max_length=40, required=True)
 
     def validate_email(self, value: str) -> str:
         """
