@@ -27,7 +27,7 @@ export default function Stats() {
       >
         {(data ?? []).map((usr: any) => {
           const initials = (usr.username?.[0] ?? "U").toUpperCase();
-          const fullName = [usr.firstName, usr.lastName].filter(Boolean).join(" ").trim();
+          const fullName = [usr.first_name, usr.last_name].filter(Boolean).join(" ").trim();
           const tooltip = fullName || usr.email || initials;
           return (
             <li data-tag={`userId-${usr.id}-username-${usr.username}`}

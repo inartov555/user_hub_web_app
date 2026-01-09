@@ -18,9 +18,13 @@ export default function About() {
         block={<span>{t("about.infoAboutWebsite")}</span>}
       />
       {!user && (
-        <div className="mt-4 text-sm flex justify-between">
-          <CustomLink title={t("auth.login")} linkTo="/login" />
-          <CustomLink title={t("auth.createAccount")} linkTo="/signup" />
+        <div className="mt-4 text-sm flex justify-between max-w-xl mx-auto">
+          <span className="ml-10">
+            <CustomLink title={t("auth.login")} linkTo="/login" />
+          </span>
+          <span className="mr-10">
+            <CustomLink title={t("auth.createAccount")} linkTo="/signup" />
+          </span>
         </div>
       )}
     </Card>
