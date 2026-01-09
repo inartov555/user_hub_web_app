@@ -481,3 +481,15 @@ def setup_cleanup_update_app_settings() -> None:
     login_info = api_utils.api_login(DEFAULT_ADMIN_USERNAME, DEFAULT_ADMIN_PASSWORD)
     access_token = login_info.get("access")
     api_utils.update_system_settings(access_token, old_settings)
+
+
+@pytest.fixture(scope="function")
+def cleanup_logout_currently_logged_in_user_on_ui(page: Page) -> None:
+    """
+    Logging out currently logged in user on UI
+    """
+    yield
+
+    log.info("Cleanup. Logging out...")
+    login_page = LoginPage(page)
+    login_page.click_logout_and_wait_for_login_page()
