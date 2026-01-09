@@ -22,7 +22,7 @@ class ExcelImportPage(BasePage):
         self.download_template_btn = self.page.locator("#downloadTemplate")
         self.input_file = self.page.locator("input[type='file']")
         self.success_title = page.locator('div[data-tag="resultSuccessTitle"]')
-        self.success_body = page.locator('div[data-tag="resultSuccessBody"]')
+        self.success_body = page.locator('ul[data-tag="resultSuccessBody"]')
 
     def open(self) -> None:
         """
