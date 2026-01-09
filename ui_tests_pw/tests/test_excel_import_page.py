@@ -91,12 +91,6 @@ def test_excel_import_page_renders_for_admin(ui_theme_param: Theme,
     actual = admin_excel_import_page.page_title.text_content()
     expected = "Excel Import"
     admin_excel_import_page.assert_text_localization(ui_locale_param, actual, expected, "strict")
-    # Verify title of results block
-    actual = admin_excel_import_page.success_msg.text_content()
-    expected = "Import completed successfully"
-    admin_excel_import_page.assert_text_localization(ui_locale_param, actual, expected, "contains")
-    expected = "Result"
-    admin_excel_import_page.assert_text_localization(ui_locale_param, actual, expected, "contains")
 
 
 @pytest.mark.regular_user
@@ -137,6 +131,9 @@ def test_upload_a_correct_spreadsheet(page: Page,
     admin_excel_import_page.assert_loaded()
     admin_excel_import_page.import_excel_file_success("test_data/excel_import/import_template_test_50_users.xlsx")
     # Let's check the success message title
+    actual = admin_excel_import_page.success_msg.text_content()
+    expected = "Import completed successfully"
+    admin_excel_import_page.assert_text_localization(ui_locale_param, actual, expected, "contains")
     actual = admin_excel_import_page.success_title.text_content()
     expected = "Result"
     admin_excel_import_page.assert_text_localization(ui_locale_param, actual, expected)
@@ -216,6 +213,9 @@ def test_check_full_name_updates_from_excel_are_applied(page: Page,
     admin_excel_import_page.assert_loaded()
     admin_excel_import_page.import_excel_file_success("test_data/excel_import/import_template_update_test_2_users.xlsx")
     # Let's check the success message title
+    actual = admin_excel_import_page.success_msg.text_content()
+    expected = "Import completed successfully"
+    admin_excel_import_page.assert_text_localization(ui_locale_param, actual, expected, "contains")
     actual = admin_excel_import_page.success_title.text_content()
     expected = "Result"
     admin_excel_import_page.assert_text_localization(ui_locale_param, actual, expected)
@@ -299,6 +299,9 @@ def test_check_bio_updates_from_excel_are_applied(page: Page,
     admin_excel_import_page.assert_loaded()
     admin_excel_import_page.import_excel_file_success("test_data/excel_import/import_template_update_test_2_users.xlsx")
     # Let's check the success message title
+    actual = admin_excel_import_page.success_msg.text_content()
+    expected = "Import completed successfully"
+    admin_excel_import_page.assert_text_localization(ui_locale_param, actual, expected, "contains")
     actual = admin_excel_import_page.success_title.text_content()
     expected = "Result"
     admin_excel_import_page.assert_text_localization(ui_locale_param, actual, expected)
@@ -343,6 +346,9 @@ def test_check_if_results_show_0_when_no_users_to_update_and_create(page: Page,
     admin_excel_import_page.assert_loaded()
     admin_excel_import_page.import_excel_file_success("test_data/excel_import/import_template_update_test_2_users.xlsx")
     # Let's check the success message title
+    actual = admin_excel_import_page.success_msg.text_content()
+    expected = "Import completed successfully"
+    admin_excel_import_page.assert_text_localization(ui_locale_param, actual, expected, "contains")
     actual = admin_excel_import_page.success_title.text_content()
     expected = "Result"
     admin_excel_import_page.assert_text_localization(ui_locale_param, actual, expected)

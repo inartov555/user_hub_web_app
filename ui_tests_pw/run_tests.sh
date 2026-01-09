@@ -115,8 +115,8 @@ TEST_GREP=""
 # If you need to run particular test(s), then set it as shown in the line below (TEST_GREP);
 # to run all tests, just set TEST_GREP="$TEST_GREP" (to preserve base settings)
 
-# TEST_GREP="$TEST_GREP -k 'test_base_demo or test_locale_demo'"
-TEST_GREP="$TEST_GREP -k 'test_check_if_results_show_0_when_no_users_to_update_and_create or test_check_bio_updates_from_excel_are_applied or test_check_full_name_updates_from_excel_are_applied or test_upload_a_correct_spreadsheet'"
+TEST_GREP="$TEST_GREP -k 'test_base_demo or test_locale_demo'"
+# TEST_GREP="$TEST_GREP -m 'not longrun'"
 
 docker compose run -e TEST_GREP="$TEST_GREP" --rm ui_tests_pw
 
