@@ -7,7 +7,7 @@ import re
 
 from playwright.sync_api import expect, Page
 
-from .base_page import BasePage
+from pages.base_page import BasePage
 
 
 class ProfileViewPage(BasePage):

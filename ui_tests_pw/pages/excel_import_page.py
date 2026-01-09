@@ -21,6 +21,7 @@ class ExcelImportPage(BasePage):
         self.import_template_btn = self.page.locator("#importTemplate")
         self.download_template_btn = self.page.locator("#downloadTemplate")
         self.input_file = self.page.locator("input[type='file']")
+        # Specific success block elements of the Excel Import page
         self.success_title = page.locator('div[data-tag="resultSuccessTitle"]')
         self.success_body = page.locator('ul[data-tag="resultSuccessBody"]')
 
