@@ -15,7 +15,7 @@ class UserManager(BaseUserManager):
     Provides factory methods to create regular users and superusers while
     ensuring email normalization and secure password hashing.
     """
-    def create_user(self, email, password=None, **extra):
+    def create_user(self, email, password=None, **extra) -> "User":
         """
         Create and save a regular user with the given email and password.
 
@@ -36,7 +36,7 @@ class UserManager(BaseUserManager):
         user.save()
         return user
 
-    def create_superuser(self, email, password=None, **extra):
+    def create_superuser(self, email, password=None, **extra) -> "User":
         """
         Create and save a superuser with the given email and password.
 

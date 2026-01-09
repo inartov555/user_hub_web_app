@@ -11,7 +11,7 @@ class UsersEndpointsTests(APITestCase):
     """
     Testing endpoints
     """
-    def setUp(self):
+    def setUp(self) -> None:
         """
         Setup method
         """
@@ -30,7 +30,7 @@ class UsersEndpointsTests(APITestCase):
                                   {"username": self.user.username, "password": self.password}, format="json").json()
         self.client.credentials(HTTP_AUTHORIZATION=f"Bearer {tokens['access']}")
 
-    def test_list_users_requires_auth(self):
+    def test_list_users_requires_auth(self) -> None:
         """
         Test users require authentication
         """
@@ -38,7 +38,7 @@ class UsersEndpointsTests(APITestCase):
         resp = anon.get("/api/v1/users/")
         self.assertEqual(resp.status_code, status.HTTP_401_UNAUTHORIZED)
 
-    def test_list_and_search_users(self):
+    def test_list_and_search_users(self) -> None:
         """
         Test listing and searching users
         """

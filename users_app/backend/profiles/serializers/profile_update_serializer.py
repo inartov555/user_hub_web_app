@@ -1,5 +1,5 @@
 """
-DRF serializer used to update a user’s Profile together with a couple of fields
+DRF serializer used to update a user's Profile together with a couple of fields
 on the related User in one request.
 """
 
@@ -10,7 +10,7 @@ from ..models.profile import Profile
 
 class ProfileUpdateSerializer(serializers.ModelSerializer):
     """
-    DRF serializer used to update a user’s Profile together with a couple of fields
+    DRF serializer used to update a user's Profile together with a couple of fields
     on the related User in one request.
     """
     first_name = serializers.CharField(source="user.first_name", required=False, max_length=40)
@@ -25,14 +25,14 @@ class ProfileUpdateSerializer(serializers.ModelSerializer):
         model = Profile
         fields = ["first_name", "last_name", "locale", "bio", "avatar"]
 
-    def update(self, instance, validated_data):
+    def update(self, instance, validated_data) -> Profile:
         """
         Persist updates to the Profile and selected fields on the related User.
 
         Args:
             instance: The existing Profile instance to update.
             validated_data: Data already validated by DRF, potentially including a
-                nested `user` dict produced by the `source="user.*"` mappings.
+                nested user dict produced by the source="user.* mappings.
 
         Returns:
             The updated Profile instance.
@@ -46,7 +46,7 @@ class ProfileUpdateSerializer(serializers.ModelSerializer):
         validated_data.pop("locale", None)
         return super().update(instance, validated_data)
 
-    def to_representation(self, instance):
+    def to_representation(self, instance) -> dict[str, Any]:
         """
         Include 'locale' in the serialized output if the client sent it,
         so PATCH response contains it (tests assert this).

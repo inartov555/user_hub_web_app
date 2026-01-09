@@ -12,7 +12,7 @@ class RefreshRouteTest(SimpleTestCase):
     """
     Test refresh route
     """
-    def test_refresh_resolves_to_runtime_view(self):
+    def test_refresh_resolves_to_runtime_view(self) -> None:
         """
         Test if refresh resolves to the runtime view
         """

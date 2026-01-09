@@ -2,6 +2,8 @@
 Chooses the refresh serializer at request time
 """
 
+from typing import NoReturn
+
 from rest_framework.exceptions import PermissionDenied
 from rest_framework_simplejwt.views import TokenRefreshView
 
@@ -15,12 +17,12 @@ class RuntimeAwareTokenRefreshView(TokenRefreshView):
     - ROTATE_REFRESH_TOKENS = True  -> use CustomTokenRefreshSerializer (rotates)
     - ROTATE_REFRESH_TOKENS = False -> use SimpleJWT's TokenRefreshSerializer (no rotation)
     """
-    def get_serializer_class(self):
+    def get_serializer_class(self) -> type:
         eff = get_effective_auth_settings()  # pulls DB overrides live
         if bool(eff.rotate_refresh_tokens):
             return CustomTokenRefreshSerializer
         # Disallow refresh entirely, if token rotation is False
-        def _deny(*args, **kwargs):
+        def _deny(*args, **kwargs) -> NoReturn:
             raise PermissionDenied("Token refresh is disabled.")
         # Return a "serializer" that always denies
         return type("DisabledRefreshSerializer", (), {"validate": _deny})

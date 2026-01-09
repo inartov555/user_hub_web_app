@@ -14,7 +14,7 @@ class ProfilesConfig(AppConfig):
     name = "profiles"
     label = "profiles"  # keep label stable
 
-    def ready(self):
+    def ready(self) -> None:
         """
         Resolve the user model lazily/safely
         """
