@@ -289,7 +289,7 @@ def test_check_bio_updates_from_excel_are_applied(page: Page,
                                             password,
                                             email,
                                             same_first_name,
-                                            diff_bio,
+                                            same_last_name,
                                             diff_bio)
     # Let's log back in as admin to import an excel spreadsheet
     login_page = LoginPage(page)
