@@ -78,7 +78,7 @@ class ProfileEditPage(BasePage):
 
     def assert_loaded(self) -> None:
         """
-        Assert that the profile edit form is loaded.
+        Assert that the profile edit form is loaded
         """
         expect(self.first_name).to_be_visible()
         expect(self.last_name).to_be_visible()

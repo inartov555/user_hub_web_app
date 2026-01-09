@@ -45,11 +45,10 @@ def test_profile_edit_renders_and_can_save(profile_edit_page_regular: ProfileEdi
     expected = "Edit profile"
     profile_edit_page_regular.assert_text_localization(ui_locale_param, actual, expected)
     # Now let's check if data are saved
-    profile_edit_page_regular.fill_basic_fields(edit_data.get("firstName"),
-                                                edit_data.get("lastName"),
-                                                edit_data.get("bio"),
-                                                avatar_path)
-    profile_edit_page_regular.click_save_and_wait_profile_view()
+    profile_edit_page_regular.click_save_and_wait_profile_view_success(edit_data.get("firstName"),
+                                                                       edit_data.get("lastName"),
+                                                                       edit_data.get("bio"),
+                                                                       vatar_path)
     profile_view_page = ProfileViewPage(page)
 
     default_avatar = r".*placehold.co/\d+x\d+\?text=.*"  # pylint: disable=anomalous-backslash-in-string
