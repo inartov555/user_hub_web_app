@@ -128,10 +128,6 @@ class ExcelUploadView(APIView):
                 "is_active": row.get("is_active", True),
             })
             if not was_created:
-                for _name in ["first_name", "last_name"]:
-                    val = row.get(_name)
-                    if pd.notna(val):
-                        setattr(user, _name, val)
                 if pd.notna(username_cell) and user.username != username_cell:
                     user.username = username_cell
                     user_updated = True
