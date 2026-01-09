@@ -1,6 +1,5 @@
 """
-DEMO tests. They can be used to collect screenshots and see key screens.
-Also, these tests have some checks.
+DEMO tests.
 Non-test methods that start from _* are state dependent.
 
    1. test_base_demo
@@ -287,9 +286,11 @@ def _helper_profile_edit_page_regular_user(page: Page, ui_theme_param: Theme, ui
     # Let's check error validation
     profile_edit_page.remove_maxlength_attribute_from_input_fields()
     field_value_501_symb = "".join(random.choices(string.ascii_letters + string.digits, k=501))
-    profile_edit_page.click_save_and_wait_error(field_value_501_symb,
-                                                field_value_501_symb,
-                                                field_value_501_symb)
+    profile_edit_page.fill_basic_fields(field_value_501_symb,
+                                        field_value_501_symb,
+                                        field_value_501_symb)
+    profile_edit_page.save.click()
+    profile_edit_page.assert_error_visible()
     # Screenshot -> Regular User -> Profile Edit Page -> Error alert
     take_a_screenshot(page)
 

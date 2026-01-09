@@ -6,7 +6,7 @@
 
 ## 💡 Users App
 
-- A production‑grade example app with a *Django REST Framework* (DRF) backend and a *React + Vite + TypeScript* SPA frontend.
+- A production‑grade example app with a Django REST Framework (DRF) backend and a React + Vite + TypeScript SPA frontend.
 - It demonstrates JWT auth with runtime tuning, profile management, Excel import, online-user stats, i18n, and a clean Tailwind UI.
 - Created on Oct-10-2025
 
@@ -53,7 +53,7 @@ Open:
 
 ## ✨ Features
 
-- **JWT auth** via SimpleJWT + Djoser (login by email or username)
+- **JWT auth** via SimpleJWT + Djoser (login by **email or username**)
 - **Users & Profiles**
   - List/filter/sort/search users (server‑side)
   - View/edit own profile, change password
