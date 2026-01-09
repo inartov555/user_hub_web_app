@@ -222,9 +222,8 @@ def _helper_change_password_page(page: Page, ui_theme_param: Theme, ui_locale_pa
     take_a_screenshot(page)
     # Error case
     change_password_page = ChangePasswordPage(page)
-    change_password_page.fill_passwords("short", "short")
-    change_password_page.submit.click()
-    change_password_page.assert_error_visible()
+    change_password_page.assert_change_password_is_loaded()
+    change_password_page.change_password_error("short", "short")
     # Screenshot -> Admin user -> Change Password page -> Error case
     take_a_screenshot(page)
 

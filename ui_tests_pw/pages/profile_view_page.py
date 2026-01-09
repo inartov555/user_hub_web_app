@@ -43,6 +43,13 @@ class ProfileViewPage(BasePage):
         expect(self.full_name).to_be_visible()
         expect(self.profile_avatar_image).to_be_visible()
 
+    def verify_full_name_and_bio_values(self, full_name: str, bio: str) -> None:
+        """
+        Verify that full name and bio matches passed values
+        """
+        expect(self.full_name).to_have_text(full_name)
+        expect(self.bio).to_have_text(bio)
+
     def click_edit_button(self) -> None:
         """
         Click the Edit button to enter the Profile Edit page
