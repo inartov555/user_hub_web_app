@@ -153,7 +153,7 @@ export default function ExcelImportPanel() {
           </>
         )}
 
-        <div className="flex gap-2">
+        <div className="flex gap-2 justify-center">
           <Button id="importTemplate" disabled={submitting} type="submit">
             {submitting ? t("excelImport.uploading") : t("excelImport.startImport")}
           </Button>

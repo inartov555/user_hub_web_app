@@ -9,7 +9,7 @@ import { useAuthStore } from "../auth/store";
 import { Card, CardHeader, CardBody } from "../components/card";
 import Button from "../components/button";
 import PasswordInput from "../components/PasswordInput";
-import { SimpleErrorMessage } from "../components/Alerts";
+import { SimpleErrorMessage, SimpleInfoMessage } from "../components/Alerts";
 
 type User = {
   id: number;
@@ -110,12 +110,17 @@ export default function UserDeleteConfirm() {
   if (!remainingUsers.length) return null;
 
   return (
-    <Card>
+    <Card className="w-full mx-auto max-w-3xl">
       <CardHeader icon=<UserX className="h-4 w-4" /> title={t("userDeleteConfirm.confirmDelete")} />
       <CardBody className="space-y-4">
-        <p className="text-sm text-slate-700 dark:text-slate-100">
-          {t("userDeleteConfirm.youAboutToDelete")} <strong>{remainingUsers.length}</strong> {t("userDeleteConfirm.cannotBeUndone")}
-        </p>
+        <SimpleInfoMessage
+          message=""
+          block={
+            <p className="text-sm text-slate-700 dark:text-slate-100">
+              {t("userDeleteConfirm.youAboutToDelete")} <strong>{remainingUsers.length}</strong> {t("userDeleteConfirm.cannotBeUndone")}
+            </p>
+          }
+        />
 
         {/* Top button pair */}
         <div className="flex gap-2">

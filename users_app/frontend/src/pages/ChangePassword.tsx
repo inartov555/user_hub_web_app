@@ -54,7 +54,7 @@ export default function ChangePassword() {
                        value={confirmPassword}
                        onChange={e => setConfirmPassword(e.target.value)} />
         {error && <SimpleErrorMessage errorUi={t("changePassword.setPasswordFailed")} errorBackend={error} />}
-        <div className="flex gap-2">
+        <div className="flex gap-2 justify-center">
           <Button id="changePassword" type="submit" disabled={saving}>
             {saving ? t("changePassword.saving") : t("profileEdit.save")}
           </Button>
