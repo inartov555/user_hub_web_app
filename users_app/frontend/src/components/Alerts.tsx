@@ -14,7 +14,6 @@ export function SimpleErrorMessage({ errorUi, errorBackend }: { errorUi?: string
            rounded-xl border border-rose-200/60 bg-rose-50/40 px-3 py-2
            backdrop-blur-sm text-sm text-rose-600 whitespace-pre-line
            dark:border-rose-500/25 dark:bg-rose-950/20 dark:text-rose-300
-           w-full mx-auto max-w-3xl
          "
     >
       <div className="mt-4 mb-2 text-sm flex">
@@ -39,7 +38,6 @@ export function SimpleSuccessMessage({ message, block }: { message?: string; blo
         rounded-xl border border-emerald-200/60 bg-emerald-50/40 px-3 py-2
         backdrop-blur-sm text-sm text-emerald-800 whitespace-pre-line
         dark:border-emerald-400/25 dark:bg-emerald-950/20 dark:text-emerald-100
-        w-full mx-auto max-w-3xl
       "
     >
       <div className="mt-4 mb-2 text-sm flex">
@@ -64,7 +62,6 @@ export function SimpleInfoMessage({ message, block }: { message?: string; block?
         rounded-xl border border-sky-200/60 bg-sky-50/40 px-3 py-2
         backdrop-blur-sm text-sm text-sky-800 whitespace-pre-line
         dark:border-sky-400/25 dark:bg-sky-950/20 dark:text-sky-200 mb-2
-        w-full mx-auto max-w-3xl
       "
     >
       <div className="mt-4 mb-2 text-sm flex">

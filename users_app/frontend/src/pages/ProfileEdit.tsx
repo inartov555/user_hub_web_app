@@ -88,7 +88,6 @@ export default function ProfileEdit() {
   }
 
   if (loading) return <div className="card p-4">{t("users.loading")}</div>;
-  if (error && isFailedToSave) return <SimpleErrorMessage errorUi={t("profileEdit.saveFailed")} errorBackend={error} />;
   if (error && !isFailedToSave) return <SimpleErrorMessage errorUi={t("profileEdit.profileLoadError")} errorBackend={error} />;
   if (!data) return <div className="card p-4">{t("users.loading")}</div>;
 
@@ -212,6 +211,8 @@ export default function ProfileEdit() {
                 )}
               </div>
             </div>
+
+            {error && isFailedToSave && <SimpleErrorMessage errorUi={t("profileEdit.saveFailed")} errorBackend={error} />}
 
             <div className="mt-5 flex flex-wrap gap-2">
               <Button id="save" onClick={onSave}>
