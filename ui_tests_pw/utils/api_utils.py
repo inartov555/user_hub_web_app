@@ -428,6 +428,8 @@ class UsersAppApi(ApiJsonRequest):
         """
         PUT /api/v1/auth/users/${id}/
 
+        Updating existing users.
+
         Returns:
             dict
         """
