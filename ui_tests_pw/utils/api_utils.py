@@ -352,11 +352,7 @@ class UsersAppApi(ApiJsonRequest):
                                   "ROTATE_REFRESH_TOKENS": true }
 
         Returns:
-            dict, example:
-                    { "JWT_RENEW_AT_SECONDS": 9999,
-                      "IDLE_TIMEOUT_SECONDS": 9999,
-                      "ACCESS_TOKEN_LIFETIME": 9999,
-                      "ROTATE_REFRESH_TOKENS": true }
+            dict
         """
         response = self.make_request("put",
                                      "/api/v1/system/settings/",
@@ -393,23 +389,12 @@ class UsersAppApi(ApiJsonRequest):
 
     def get_profile_details(self, access: str) -> dict:
         """
-        PUT /api/v1/auth/users/me/
+        GET /api/v1/auth/users/me/
 
         Only logged in user can call it.
 
         Returns:
-            dict, example:
-                    {
-                      "id": 121,
-                      "username": "test1",
-                      "email": "test1@test.com",
-                      "first_name": "string",
-                      "last_name": "string",
-                      "date_joined": "2026-01-07T09:03:07.050Z",
-                      "is_active": true,
-                      "is_staff": false,
-                      "is_superuser": false
-                    }
+            dict
         """
         response = self.make_request("get",
                                      "/api/v1/auth/users/me/",
@@ -429,3 +414,32 @@ class UsersAppApi(ApiJsonRequest):
         self.create_user(username, email, password)
         login_info = self.api_login(username, password)
         return login_info
+
+    def update_user(self,
+                    access: str,
+                    user_id: int,
+                    username: str,
+                    email: str,
+                    first_name: str,
+                    last_name: str,
+                    is_active: bool = True,
+                    is_staff: bool = False,
+                    is_superuser: bool = False) -> dict:
+        """
+        PUT /api/v1/auth/users/${id}/
+
+        Returns:
+            dict
+        """
+        payload = {"username": username,
+                   "email": email,
+                   "first_name": first_name,
+                   "last_name": last_name,
+                   "is_active": is_active,
+                   "is_staff": is_staff,
+                   "is_superuser": is_superuser}
+        response = self.make_request("put",
+                                     "/api/v1/auth/users/{user_id}/",
+                                     payload=payload,
+                                     headers=self.get_authorization_token_dict(access))
+        return response
