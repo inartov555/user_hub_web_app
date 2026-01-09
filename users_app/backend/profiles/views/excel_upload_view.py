@@ -29,7 +29,7 @@ class ExcelUploadView(APIView):
     serializer_class = UserSerializer
     user = get_user_model()
 
-    def get_permissions(self):
+    def get_permissions(self) -> list[permissions.BasePermission]:
         """
         Getting permissions needed for requests
         """

@@ -1,5 +1,5 @@
 """
-This defines a model named Profile - an extension of Django’s built-in User data.
+This defines a model named Profile - an extension of Django's built-in User data.
 Each user has exactly one profile.
 """
 
@@ -22,7 +22,7 @@ def avatar_upload_path(instance: "Profile", filename: str) -> str:
 
 class Profile(models.Model):
     """
-    This defines a model named Profile - an extension of Django’s built-in User data.
+    This defines a model named Profile - an extension of Django's built-in User data.
     Each user has exactly one profile.
     """
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, unique=True)
@@ -32,5 +32,5 @@ class Profile(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     last_activity = models.DateTimeField(null=True, blank=True)
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f"Profile({self.user.user_id})"

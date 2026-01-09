@@ -28,7 +28,7 @@ def env_tuple(name: str, default=()) -> tuple:
         return tuple(default)
     return tuple(prop.strip() for prop in raw.split(",") if prop.strip())
 
-def _attach_request_id(record):
+def _attach_request_id(record) -> bool:
     if not hasattr(record, "request_id"):
         record.request_id = "-"
     return True

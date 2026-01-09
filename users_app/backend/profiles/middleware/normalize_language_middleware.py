@@ -11,7 +11,7 @@ class NormalizeLanguageMiddleware(MiddlewareMixin):
     Normalize non-canonical language tags in headers/cookies/querystrings
     to Django's expected form (e.g., 'en_US' -> 'en-us', 'us-US' -> 'en-us').
     """
-    def process_request(self, request):
+    def process_request(self, request) -> None:
         """
         Processing the request with propper language
         """
