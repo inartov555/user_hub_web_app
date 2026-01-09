@@ -96,13 +96,13 @@ class UsersTablePage(BasePage):
         expect(self.check_all_header).to_have_count(0)
         expect(self.change_password_header).to_have_count(0)
 
-    def assert_username_contained_in_greeting_message(self, text: str) -> List[str]:
+    def assert_username_contained_in_greeting_message(self, text: str) -> None:
         """
         Assert that the username is contained in the greeting message
         """
         expect(self.greeting_mes).to_contain_text(text)
 
-    def get_current_column_sort_order(self, column: str) -> str:
+    def get_current_column_sort_order(self, column: str) -> str | None:
         """
         Get the current column sort order.
         SVG contains arrow-down/arrow-up/arrow-up-down in the className attribute.
