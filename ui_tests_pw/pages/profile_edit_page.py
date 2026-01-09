@@ -15,7 +15,7 @@ class ProfileEditPage(BasePage):
     Page object for the Profile edit page.
     """
 
-    def __init__(self, page: Page):
+    def __init__(self, page: Page) -> None:
         super().__init__(page)
 
         self.first_name = self.page.locator("#firstName")

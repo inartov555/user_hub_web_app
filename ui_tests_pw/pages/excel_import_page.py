@@ -15,7 +15,7 @@ class ExcelImportPage(BasePage):
     Page object for the Excel import page (admin-only).
     """
 
-    def __init__(self, page: Page):
+    def __init__(self, page: Page) -> None:
         super().__init__(page)
 
         self.import_template_btn = self.page.locator("#importTemplate")

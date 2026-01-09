@@ -14,7 +14,7 @@ class SignupPage(BasePage):
     Page object for the Signup page.
     """
 
-    def __init__(self, page: Page):
+    def __init__(self, page: Page) -> None:
         super().__init__(page)
 
         self.email = self.page.locator("#email")

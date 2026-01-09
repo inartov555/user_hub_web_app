@@ -14,7 +14,7 @@ class UserDeleteConfirmPage(BasePage):
     Page object for the User Delete Confirm page.
     """
 
-    def __init__(self, page: Page):
+    def __init__(self, page: Page) -> None:
         super().__init__(page)
 
         self.confirm_delete_top = self.page.locator("#confirmDeleteTop")

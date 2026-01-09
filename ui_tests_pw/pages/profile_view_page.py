@@ -15,7 +15,7 @@ class ProfileViewPage(BasePage):
     Page object for the Profile view page.
     """
 
-    def __init__(self, page: Page):
+    def __init__(self, page: Page) -> None:
         super().__init__(page)
 
         self.full_name = self.page.locator("#fullName")

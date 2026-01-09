@@ -14,7 +14,7 @@ class LoginPage(BasePage):
     Page object for the Login page.
     """
 
-    def __init__(self, page: Page):
+    def __init__(self, page: Page) -> None:
         super().__init__(page)
 
         self.username = self.page.locator("#username")

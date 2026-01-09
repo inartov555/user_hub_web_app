@@ -14,7 +14,7 @@ class SettingsPage(BasePage):
     Page object for the admin Settings page.
     """
 
-    def __init__(self, page: Page):
+    def __init__(self, page: Page) -> None:
         super().__init__(page)
 
         self.rotate_refresh_token = self.page.locator("#rotateRefreshTokens")

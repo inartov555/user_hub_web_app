@@ -14,7 +14,7 @@ class ChangePasswordPage(BasePage):
     Page object for the Change Password page.
     """
 
-    def __init__(self, page: Page):
+    def __init__(self, page: Page) -> None:
         super().__init__(page)
 
         self.password = self.page.locator("#password")

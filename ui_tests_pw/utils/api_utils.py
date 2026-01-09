@@ -19,7 +19,7 @@ class ApiError(Exception):
     """
     Class for raising API errors
     """
-    def __init__(self, error_msg: str):
+    def __init__(self, error_msg: str) -> None:
         """
         Args:
             error_msg (str): error message
@@ -35,7 +35,7 @@ class ApiBase:
     BEGIN_REQ = "========== BEGIN =========="
     END_REQ = "========== END =========="
 
-    def __init__(self, protocol: str, host: str, port: str):
+    def __init__(self, protocol: str, host: str, port: str) -> None:
         """
         Args:
             protocol (str): http or https
@@ -169,7 +169,7 @@ class ApiJsonRequest(ApiBase):
     API methods for the service that returs data in JSON format
     """
 
-    def __init__(self, protocol: str, host: str, port: str):
+    def __init__(self, protocol: str, host: str, port: str) -> None:
         """
         Args:
             protocol (str): http or https

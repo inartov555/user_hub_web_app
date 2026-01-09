@@ -14,7 +14,7 @@ class AboutWebsitePage(BasePage):
     Page object for the About website page.
     """
 
-    def __init__(self, page: Page):
+    def __init__(self, page: Page) -> None:
         super().__init__(page)
 
         self.login = self.page.locator("a[href='/login']")

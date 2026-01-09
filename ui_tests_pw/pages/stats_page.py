@@ -14,7 +14,7 @@ class StatsPage(BasePage):
     Page object for the Stats page.
     """
 
-    def __init__(self, page: Page):
+    def __init__(self, page: Page) -> None:
         super().__init__(page)
 
         self.online_user_list = self.page.locator("ul li")

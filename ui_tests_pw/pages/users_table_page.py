@@ -19,7 +19,7 @@ class UsersTablePage(BasePage):
     Page object for the Users table page..
     """
 
-    def __init__(self, page: Page):
+    def __init__(self, page: Page) -> None:
         super().__init__(page)
 
         self.greeting_mes = self.page.locator('#greeting')
