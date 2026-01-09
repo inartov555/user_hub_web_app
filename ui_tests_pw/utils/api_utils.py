@@ -417,7 +417,7 @@ class UsersAppApi(ApiJsonRequest):
 
     def update_user(self,
                     access: str,
-                    user_id: int,  # pylint: disable=unused-argument
+                    user_id: int,
                     username: str,
                     email: str,
                     first_name: str,
@@ -439,7 +439,7 @@ class UsersAppApi(ApiJsonRequest):
                    "is_staff": is_staff,
                    "is_superuser": is_superuser}
         response = self.make_request("put",
-                                     "/api/v1/auth/users/{user_id}/",
+                                     f"/api/v1/auth/users/{user_id}/",
                                      payload=payload,
                                      headers=self.get_authorization_token_dict(access))
         return response

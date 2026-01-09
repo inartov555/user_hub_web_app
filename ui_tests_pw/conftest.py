@@ -79,6 +79,7 @@ def before_tests() -> None:
         1. Creating a regular user
     """
     ensure_regular_user()
+    api_utils = get_api_utils()
 
 
 @pytest.fixture(scope="session", autouse=True)
