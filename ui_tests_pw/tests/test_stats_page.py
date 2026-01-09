@@ -70,7 +70,7 @@ def test_deleted_user_is_no_longer_shown(user_stats_page: StatsPage,
     user_stats_page.reload()
     user_stats_page.assert_user_was_online_during_last_5_mins(username)
     # Let's delete the user and check if they are no longer displayed on the User Stats page
-    delete_users_by_suffix_via_api(email)
+    delete_users_by_suffix_via_api(email, "email", "strict")
     # Let's reload the page and check the results
     user_stats_page.reload()
     user_stats_page.assert_user_is_not_listed_on_the_page(username)
