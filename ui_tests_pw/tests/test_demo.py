@@ -196,9 +196,9 @@ def _helper_user_delete_page(page: Page,
     take_a_screenshot(page)
     # Let's delete previously created via API user, so the delete operation on UI will show these
     # as failed during deletion since they are not pesent at the momen of UI deletion
-    delete_users_by_suffix_via_api("admin-excel-watermelon-11@test.com", "strict", "email")
-    delete_users_by_suffix_via_api("admin-excel-watermelon-13@test.com", "strict", "email")
-    delete_users_by_suffix_via_api("admin-excel-watermelon-14@test.com", "strict", "email")
+    delete_users_by_suffix_via_api("admin-excel-watermelon-11@test.com")
+    delete_users_by_suffix_via_api("admin-excel-watermelon-13@test.com")
+    delete_users_by_suffix_via_api("admin-excel-watermelon-14@test.com")
     # Let's see if User Delete Confirm page shows error messages (it's supposed to show an error)
     user_delete_page.click_top_confirm_delete_error()
     # Screenshot -> Admin user -> User Delete Confirm page -> List of users to delete
@@ -294,18 +294,33 @@ def _helper_profile_edit_page_regular_user(page: Page, ui_theme_param: Theme, ui
     profile_edit_page.assert_error_visible()
     # Screenshot -> Regular User -> Profile Edit Page -> Error alert
     take_a_screenshot(page)
+    
+
+def __create_and_login_user_for_user_stats_page() -> None:
+    """
+    Basically, this is a helper function for _helper_user_stats_page_admin_user.
+    It creates a few users and logs them in to verify that logged-in users are shown.
+    """
+    api_utils = get_api_utils()
+    username_list = ["jack.vesimeloni", "sarah.bowl", "jonathan.lopez", "jasmine.gonzalez"]
+    password = "Ch@ngeme123"
+    for username in username_list:
+        email = f"{username}@watermelon.com"
+        access_token = api_utils.create_user_and_login(username, email, password).get("access")
+        api_utils.get_profile_details(access=access_token)
 
 
 def _helper_user_stats_page_admin_user(page: Page, ui_theme_param: Theme, ui_locale_param: str) -> None:
     """
     This is a helper function that takes screenshots on the User Stats page
     """
+    # Let's prepare data for the User Stats page
+    __create_and_login_user_for_user_stats_page()
     login_page = LoginPage(page)
     login_page.ensure_theme(ui_theme_param)
     login_page.ensure_locale(ui_locale_param)
-    profile_edit_page = ProfileEditPage(page)
     # Let's log in to the website as Admin user
-    profile_edit_page.click_logout_and_wait_for_login_page()
+    login_page.click_logout_and_wait_for_login_page()
     login_page.submit_credentials_success(DEFAULT_ADMIN_USERNAME, DEFAULT_ADMIN_PASSWORD)
     # Let's open the User Stats tab
     stats_page = StatsPage(page)
