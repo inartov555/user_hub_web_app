@@ -11,7 +11,7 @@ class AuthAndProfileTests(APITestCase):
     """
     Authentication and profile-related tests
     """
-    def setUp(self) -> None:
+    def setUp(self):
         """
         Setup method
         """
@@ -22,7 +22,7 @@ class AuthAndProfileTests(APITestCase):
                                                         password=self.password)
         self.client = APIClient()
 
-    def test_jwt_create_and_refresh(self) -> None:
+    def test_jwt_create_and_refresh(self):
         """
         Login and refresh token it -> success
         """
@@ -44,7 +44,7 @@ class AuthAndProfileTests(APITestCase):
         self.assertEqual(refresh.status_code, status.HTTP_200_OK)
         self.assertIn("access", refresh.json())
 
-    def test_me_profile_update(self) -> None:
+    def test_me_profile_update(self):
         """
         Test my profile update
         """

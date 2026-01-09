@@ -2,13 +2,11 @@
 Idle-timeout middleware for Django session authentication.
 
 This enforces an inactivity window for authenticated users.
-It uses the effective app settings (DB override or defaults).
+It uses the *effective* app settings (DB override or defaults).
 """
 
 import time
-from typing import Optional
 
-from django.http import HttpResponseRedirect
 from django.utils.deprecation import MiddlewareMixin
 from django.contrib import auth
 from django.shortcuts import redirect
@@ -25,7 +23,7 @@ class IdleTimeoutMiddleware(MiddlewareMixin):
 
     SESSION_KEY = "last_request_ts"
 
-    def process_request(self, request) -> Optional[HttpResponseRedirect]:
+    def process_request(self, request):
         """
         Enforce inactivity timeout for the current request.
         """
@@ -33,7 +31,7 @@ class IdleTimeoutMiddleware(MiddlewareMixin):
         if not (user and user.is_authenticated):
             return None
 
-        # Pull the current effective value each request
+        # Pull the current effective value each request (cheap; or cache if you like)
         idle_timeout_seconds = get_effective_auth_settings().idle_timeout_seconds
 
         now = int(time.time())

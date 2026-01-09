@@ -12,7 +12,7 @@ from ..models.app_settings import get_effective_auth_settings, JWT_RENEW_AT_SECO
 
 @api_view(["GET"])
 @permission_classes([IsAuthenticated])
-def runtime_auth_config(_request) -> Response:
+def runtime_auth_config(_request):
     """
     Return the effective authentication timing settings.
     """

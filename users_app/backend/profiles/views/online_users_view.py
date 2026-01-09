@@ -1,8 +1,7 @@
 """
-Shows the list of users who have been active in the last 5 minutes.
+Active user
 """
 
-from django.db.models import QuerySet
 from django.contrib.auth import get_user_model
 from django.utils import timezone
 from rest_framework import permissions, generics
@@ -18,7 +17,7 @@ class OnlineUsersView(generics.ListAPIView):
     permission_classes = [permissions.IsAuthenticated]
     user = get_user_model()
 
-    def get_queryset(self) -> QuerySet["User"]:
+    def get_queryset(self):
         """
         Read-only DRF endpoint that returns the list of users who have been active in the last 5 minutes.
         """

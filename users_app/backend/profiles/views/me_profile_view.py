@@ -17,7 +17,7 @@ class MeProfileView(generics.RetrieveUpdateAPIView):
     permission_classes = [permissions.IsAuthenticated]
     parser_classes = [JSONParser, MultiPartParser, FormParser]
 
-    def get_serializer_class(self) -> type[ProfileSerializer] | type[ProfileUpdateSerializer]:
+    def get_serializer_class(self):
         """
         Return the serializer appropriate for the current HTTP method.
         """
@@ -25,7 +25,7 @@ class MeProfileView(generics.RetrieveUpdateAPIView):
             return ProfileUpdateSerializer
         return ProfileSerializer
 
-    def get_object(self) -> Profile:
+    def get_object(self):
         """
         Return the Profile for the authenticated user.
         Ensure it exists to avoid 500s when a user has no profile yet.

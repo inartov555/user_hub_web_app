@@ -1,5 +1,4 @@
-"""
-Profiles app signals and backfills.
+"""Profiles app signals and backfills.
 
 - create_profile_on_user_create: creates a Profile when a new User is created
 - backfill_profiles: bulk-creates missing profiles after migrations
@@ -16,7 +15,7 @@ from django.db.models.signals import post_migrate
 from django.dispatch import receiver
 
 
-def _get_user_and_profile_models() -> tuple[type["User"], type["Profile"]]:
+def _get_user_and_profile_models():
     """
     Resolve the AUTH_USER_MODEL and profiles.Profile lazily.
     """
@@ -26,7 +25,7 @@ def _get_user_and_profile_models() -> tuple[type["User"], type["Profile"]]:
     return user_model, profile_model
 
 
-def create_profile_on_user_create(sender, instance, created, **kwargs) -> None:  # pylint: disable=unused-argument
+def create_profile_on_user_create(sender, instance, created, **kwargs):  # pylint: disable=unused-argument
     """
     Post-save hook to create a profile for newly created users.
     """
@@ -34,7 +33,7 @@ def create_profile_on_user_create(sender, instance, created, **kwargs) -> None: 
         return
 
     # avoid creating profile within an open transaction; wait until commit
-    def _create() -> None:
+    def _create():
         _, profile_model = _get_user_and_profile_models()
         profile_model.objects.get_or_create(user=instance)
 
@@ -47,7 +46,7 @@ def _table_exists(table_name: str) -> bool:
 
 
 @receiver(post_migrate)
-def backfill_profiles(sender, app_config=None, using=None, **kwargs) -> None:
+def backfill_profiles(sender, app_config=None, using=None, **kwargs):
     """
     Only run after the 'profiles' app itself has been migrated
     """

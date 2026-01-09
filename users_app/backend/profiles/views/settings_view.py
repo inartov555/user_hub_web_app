@@ -4,10 +4,7 @@ GET: effective values (DB override if present, else core.settings default)
 PUT/PATCH: store overrides in DB (only affects NEW logins)
 """
 
-from typing import Any
-
 from rest_framework import permissions, generics
-
 from ..serializers.settings_serializer import SettingsSerializer
 
 
@@ -20,5 +17,5 @@ class SettingsView(generics.RetrieveUpdateAPIView):
     permission_classes = [permissions.IsAdminUser]
     serializer_class = SettingsSerializer
 
-    def get_object(self) -> dict[str, Any]:
+    def get_object(self):
         return {}

@@ -9,7 +9,7 @@ import sys
 from django.core.management import execute_from_command_line
 
 
-def main() -> None:
+def main():
     """
     App launcher
     """

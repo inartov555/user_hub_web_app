@@ -1,5 +1,5 @@
 """
-Django REST Framework ModelSerializer for Django's built-in User model.
+Django REST Framework ModelSerializer for Django’s built-in User model.
 It defines which user fields are exposed through your API and which of them are writable.
 """
 
@@ -9,7 +9,7 @@ from rest_framework import serializers
 
 class UserSerializer(serializers.ModelSerializer):
     """
-    Django REST Framework ModelSerializer for Django's built-in User model.
+    Django REST Framework ModelSerializer for Django’s built-in User model.
     It defines which user fields are exposed through your API and which of them are writable.
     """
     class Meta:

@@ -2,8 +2,6 @@
 Django REST Framework (DRF) serializer that changes the password.
 """
 
-from typing import Any
-
 from rest_framework import serializers
 
 
@@ -20,13 +18,13 @@ class ChangePasswordSerializer(serializers.Serializer):
         allow_blank=False
     )
 
-    def create(self, validated_data) -> dict[str, Any]:
+    def create(self, validated_data):
         """
         Not used
         """
         return validated_data
 
-    def update(self, instance, validated_data) -> Any:
+    def update(self, instance, validated_data):
         """
         Not used
         """

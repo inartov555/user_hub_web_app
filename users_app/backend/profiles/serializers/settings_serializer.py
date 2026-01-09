@@ -2,8 +2,6 @@
 Settings serializer
 """
 
-from typing import Any
-
 from rest_framework import serializers
 from ..models.app_settings import (
     AppSetting,
@@ -24,11 +22,11 @@ class SettingsSerializer(serializers.Serializer):
     ACCESS_TOKEN_LIFETIME = serializers.IntegerField(min_value=60, max_value=9999)
     ROTATE_REFRESH_TOKENS = serializers.BooleanField()
 
-    def to_representation(self, instance) -> dict[str, Any]:
+    def to_representation(self, instance):
         eff = get_effective_auth_settings()
         return eff.as_dict()
 
-    def update(self, instance, validated_data) -> dict[str, Any]:
+    def update(self, instance, validated_data):
         """
         Upsert overrides (store ONLY what admin set explicitly)
         """
@@ -43,5 +41,5 @@ class SettingsSerializer(serializers.Serializer):
             )
         return validated_data
 
-    def create(self, validated_data) -> dict[str, Any]:
+    def create(self, validated_data):
         return self.update(None, validated_data)

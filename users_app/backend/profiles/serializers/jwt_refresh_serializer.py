@@ -51,7 +51,7 @@ class CustomTokenRefreshSerializer(TokenRefreshSerializer):
         return data
 
     @staticmethod
-    def _user_from_token(token: Token) -> "User":
+    def _user_from_token(token: Token):
         """
         Map token.sub (user id) to a user instance, honoring SIMPLE_JWT user id field/type.
         """
@@ -60,10 +60,10 @@ class CustomTokenRefreshSerializer(TokenRefreshSerializer):
         user_id = token.get(settings.SIMPLE_JWT.get("USER_ID_CLAIM", "user_id"))
         return user_model.objects.get(**{user_id_field: user_id})
 
-    def create(self, validated_data) -> dict[str, Any]:
+    def create(self, validated_data):
         # Not used for token refresh; defined to satisfy BaseSerializer interface.
         return validated_data
 
-    def update(self, instance, validated_data) -> Any:
+    def update(self, instance, validated_data):
         # Not supported for this serializer.
         return instance

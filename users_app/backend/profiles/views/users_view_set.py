@@ -7,7 +7,6 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth import password_validation
 from django.core.exceptions import ValidationError as DjangoValidationError
 from django.db import IntegrityError
-from django.db.models import QuerySet
 from django.utils import translation
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets, permissions, status
@@ -34,14 +33,14 @@ class UsersViewSet(viewsets.ReadOnlyModelViewSet):
     search_fields = ["username", "email", "first_name", "last_name"]
     ordering_fields = ["id", "username", "email", "first_name", "last_name", "date_joined"]
 
-    def get_queryset(self) -> QuerySet["User"]:
+    def get_queryset(self):
         """
         Get queryset
         """
         user_model = get_user_model()
         return user_model.objects.select_related("profile").order_by("id")
 
-    def perform_destroy(self, instance) -> None:
+    def perform_destroy(self, instance):
         """
         Deleting a user
         """
@@ -50,7 +49,7 @@ class UsersViewSet(viewsets.ReadOnlyModelViewSet):
     # POST /bulk-delete
     @action(detail=False, methods=["post"], url_path="bulk-delete",
             permission_classes=[permissions.IsAuthenticated])
-    def bulk_delete(self, request) -> Response:
+    def bulk_delete(self, request):
         """
         Delete multiple users by id list: { "ids": [1,2,3] }
         """

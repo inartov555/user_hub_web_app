@@ -1,5 +1,5 @@
 """
-Django REST Framework ModelSerializer for Django's built-in User model.
+Django REST Framework ModelSerializer for Django’s built-in User model.
 It defines which user fields are exposed through your API and which of them are writable.
 """
 
@@ -11,7 +11,7 @@ from profiles.validators import validate_and_normalize_email, validate_and_norma
 
 class UserCreateSerializer(BaseUserCreateSerializer):
     """
-    Django REST Framework ModelSerializer for Django's built-in User model.
+    Django REST Framework ModelSerializer for Django’s built-in User model.
     It defines which user fields are exposed through your API and which of them are writable.
     """
     username = serializers.CharField(min_length=3, max_length=40, required=True)
