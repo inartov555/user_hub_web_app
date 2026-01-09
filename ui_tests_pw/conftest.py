@@ -215,7 +215,7 @@ def page_fixture(browser: Browser, request) -> Page:
     context.close()
 
 
-def pytest_addoption(parser):
+def pytest_addoption(parser) -> None:
     """
     Supported options
     """

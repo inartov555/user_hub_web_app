@@ -49,7 +49,7 @@ class ApiBase:
         self.headers = {"User-Agent": "Test-UsersApp",
                         "Unique-RequestId": str(self._unique_request_id_increment) + "_" + hex(int(time.time()))}
 
-    def append_headers(self, new_headers: dict):
+    def append_headers(self, new_headers: dict) -> None:
         """
         Args:
             new_headers (dict): new headers to append
@@ -62,7 +62,7 @@ class ApiBase:
                      payload: dict = None,
                      multipart: dict = None,
                      query_params: dict = None,
-                     headers: dict = None):
+                     headers: dict = None) -> Response:
         """
         Getting the Response object.
         Log lines are consolidated into single variable to support concurrent requests, if any are added.
@@ -189,7 +189,7 @@ class ApiJsonRequest(ApiBase):
                      query_params: dict = None,
                      headers: dict = None,
                      is_return_resp_obj: bool = False,
-                     raise_error_if_failed: bool = None):
+                     raise_error_if_failed: bool = None) -> Response | dict | list | None:
         """
         Args:
             method (str): one of ("get", "post", "put", "delete")
@@ -278,7 +278,7 @@ class UsersAppApi(ApiJsonRequest):
                   search: str = "",
                   page_num: int = 1,
                   page_size: int = 1000000,
-                  ordering: str = "id"):
+                  ordering: str = "id") -> dict:
         """
         GET /api/v1/users
 

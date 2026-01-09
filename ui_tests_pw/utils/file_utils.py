@@ -15,7 +15,7 @@ class FileUtils:
     log = Logger(__name__)
 
     @classmethod
-    def timestamped_path(cls, file_name, file_ext, path_to_file=os.getenv("HOST_ARTIFACTS")):
+    def timestamped_path(cls, file_name, file_ext, path_to_file=os.getenv("HOST_ARTIFACTS")) -> str:
         """
         Args:
             file_name (str): e.g. screenshot
