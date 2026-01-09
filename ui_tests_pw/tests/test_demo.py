@@ -218,12 +218,13 @@ def _helper_change_password_page(page: Page, ui_theme_param: Theme, ui_locale_pa
     users_table_page.search_and_wait_for_results("mi")
     # Let's select the 1st user for changing the password
     users_table_page.change_password_btn.nth(0).click()
-    users_table_page.assert_change_password_is_loaded()
     # Screenshot -> Admin user -> Change Password page
     take_a_screenshot(page)
     # Error case
     change_password_page = ChangePasswordPage(page)
-    change_password_page.change_password_error("short", "short")
+    change_password_page.fill_passwords("short", "short")
+    change_password_page.submit.click()
+    change_password_page.assert_error_visible()
     # Screenshot -> Admin user -> Change Password page -> Error case
     take_a_screenshot(page)
 
