@@ -35,7 +35,11 @@ export default function UnifiedTitle({
               text-slate-900 dark:text-slate-50
             "
           >
-            <span className="truncate">{title}</span>
+            <span className="truncate"
+                  style={{ overflowWrap: "anywhere", wordBreak: "break-word", whiteSpace: "normal" }}
+            >
+              {title}
+            </span>
 
             {/* Accent underline */}
             <span
@@ -53,6 +57,7 @@ export default function UnifiedTitle({
                className="
                  mt-2 max-w-prose text-sm sm:text-[0.95rem] leading-relaxed text-slate-600 dark:text-slate-300
                "
+               style={{ overflowWrap: "anywhere", wordBreak: "break-word", whiteSpace: "normal" }}
             >
               {subtitle}
             </p>

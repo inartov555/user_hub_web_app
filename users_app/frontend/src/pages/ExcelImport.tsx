@@ -102,7 +102,7 @@ export default function ExcelImportPanel() {
   }
 
   return (
-    <Card className="max-w-xl mx-auto">
+    <Card className="w-full mx-auto max-w-3xl">
       <UnifiedTitle icon={<FileSpreadsheet className="h-4 w-4" />} title={t("excelImport.title")} />
       <SimpleInfoMessage
         message={t("excelImport.fileUploadMessage")}

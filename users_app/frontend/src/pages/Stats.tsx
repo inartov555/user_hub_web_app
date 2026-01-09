@@ -9,7 +9,7 @@ export default function Stats() {
   const { t, i18n } = useTranslation();
   const { data } = useQuery({ queryKey: ["online-users"], queryFn: async () => (await api.get("/stats/online-users/")).data });
   return (
-    <Card className="max-w-xl mx-auto">
+    <Card className="w-full mx-auto max-w-3xl">
       <UnifiedTitle icon={<BarChart3 className="h-4 w-4" />} title={t("stats.curOnline5Mins")} />
       {/*
       <ul className="list-disc pl-6">
@@ -30,7 +30,11 @@ export default function Stats() {
           const fullName = [usr.firstName, usr.lastName].filter(Boolean).join(" ").trim();
           const tooltip = fullName || usr.email || initials;
           return (
-            <li data-tag={`userId-${usr.id}-username-${usr.username}`} key={usr.id} className="flex items-center justify-between gap-3 p-3">
+            <li data-tag={`userId-${usr.id}-username-${usr.username}`}
+                key={usr.id}
+                className="flex items-center justify-between gap-3 p-3"
+                title={tooltip}
+            >
               <div className="min-w-0 flex items-center gap-3">
                 <div className="
                        shrink-0 inline-flex h-9 w-9 items-center justify-center rounded-xl
@@ -41,7 +45,7 @@ export default function Stats() {
                   {initials}
                 </div>
 
-                <div className="min-w-0" title={tooltip}>
+                <div className="min-w-0">
                   <div data-tag={`username-${usr.username}`} className="truncate font-semibold text-slate-900 dark:text-slate-50">
                     {usr.username}
                   </div>

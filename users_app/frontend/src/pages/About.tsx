@@ -11,7 +11,7 @@ export default function About() {
   const { user } = useAuthStore();
 
   return (
-    <Card className="max-w-xl mx-auto">
+    <Card className="w-full mx-auto max-w-3xl">
       <UnifiedTitle icon={<LayoutTemplate className="h-4 w-4" />} title={t("about.aboutWebsite")} />
       <SimpleInfoMessage
         message={`${t("about.createdBy")} Iurii Nartov`}
