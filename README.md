@@ -26,12 +26,12 @@ This is a test website + automation framework
 - 🛠️ **Fixed in `ui_tests_pw`:** Firefox: sometimes, a test failed to click the Save button on the App Settings page
 - 🛠️ **Fixed in `users_app`:** Excel: user could press the import button, and the process was started from scratch without waiting to finish the previous one
 - 🛠️ **Fixed in `users_app`:** NavBar: Tabs were messed up when localization changed to, e.g., Spanish
-
+<br/>
 - ✨ **Improved in `ui_tests_pw`:** Smart browser install (only selected one instead of all supported to preserve time)
 - ✨ **Improved in `ui_tests_pw`:** Existing test structure, lite refactoring
 - ✨ **Improved in `users_app`:** Page styles such as background, etc.
 - ✨ **Improved in `users_app`:** Localization (removed unused, updated existing, localized not localized text)
-
+<br/>
 - 🆕 **Added in `ui_tests_pw`:** New tests to test_change_password_page.py
 - 🆕 **Added in `ui_tests_pw`:** New tests to test_settings_page.py
 - 🆕 **Added in `ui_tests_pw`:** New tests to test_excel_import_page.py
@@ -56,12 +56,12 @@ This is a test website + automation framework
 - 🛠️ **Fixed in `ui_tests_pw`:** Firefox: sometimes, one random test failed to log in because the submit button cannot be clicked on the Login page
 - 🛠️ **Fixed in `ui_tests_pw`:** Firefox: sometimes, one random test failed to type search text due to not finding the search input on the Users Table page
 - 🛠️ **Fixed in `ui_tests_pw`:** Safari/Webkit: sometimes, one random test failed because the browser got closed
-
+<br/>
 - ✨ **Improved in `users_app`:** Lite UI polishing
 - ✨ **Improved in `users_app`:** Duplicating buttons, at the bottom and top of the content block for the UsersTable and UserDeleteConfirm pages
 - ✨ **Improved in `users_app`:** Highlight kept for a row after checking it on the UsersTable page
 - ✨ **Improved in `users_app`:** Unifying error message with a SimpleErrorMessage component
-
+<br/>
 - 🆕 **Added in `users_app`:** Show/hide button for the password field
 - 🆕 **Added in `users_app`:** Icons to page titles
 - 🆕 **Added in `users_app`:** User ID column to the UserDeleteConfirm page
@@ -74,13 +74,13 @@ This is a test website + automation framework
 
 - 🛠️ **Fixed in `ui_tests_pw`:** test_locale_dropdown_matches_backend_languages (ModuleNotFoundError: No module named 'core')
 - 🛠️ **Fixed in `users_app`:** Unlocalized title for the Sign up page
-_ _ _
+<br/>
 - ✨ **Improved in `users_app`:** Polishing UI accross the website
 - ✨ **Improved in `users_app`:** Behavior for the Cancel button in View/Edit Profile, Change Password pages (small area in the middle of the button was clickable)
 - ✨ **Improved in `users_app`:** Validation in App Settings
 - ✨ **Improved in `users_app`:** Button disabled state color now is more obvious
 - ✨ **Improved in `ui_tests_pw`:** Now regular user, which is required by tests, is automatically created if not present
-. . .
+<br/>
 - 🆕 **Added in `ui_tests_pw`:** Localization checks to tests
 - 🆕 **Added in `ui_tests_pw`:** Cleanup fixture for theme and locale (default is light theme and en-US locale)
 - 🆕 **Added in `users_app`:** Localized tooltip text to elements without any text
@@ -97,12 +97,12 @@ _ _ _
 - 🛠️ **Fixed in `users_app`:** Profile Edit -> save an avatar > 1 MB -> 413 Request Entity Too Large (increased size to 10 MB)
 - 🛠️ **Fixed in `users_app`:** Excel import -> incorrect counting of updated users (non-changed users were counted as updated ones when importing)
 - 🛠️ **Fixed in `users_app`:** Excel import -> there was no validation for user uniqueness when importing
-...
+<br/>
 - ✨ **Improved in `users_app`:** Unifying button style accross the website
 - ✨ **Improved in `users_app`:** Prettifying table headers (mouse over/up/down styles)
 - ✨ **Improved in `users_app`:** Localization for some error cases
 - ✨ **Improved in `users_app`:** Excel import -> email validation when importing
-- - -
+<br/>
 - 🆕 **Added in `users_app`:** Cookie consent overlay
 - 🆕 **Added in `ui_tests_pw`:** Handling the cookie consent overlay in automation tests
 
@@ -113,10 +113,10 @@ _ _ _
 - 🛠️ **Fixed in `users_app`:** /import-excel (Additional -> Import from Excel tab), Download Template button threw HTTP 404
 - 🛠️ **Fixed in `users_app`:** /users/confirm-delete (when confirming user deletion), error thrown, and the website was not redirected to the /users page
 - 🛠️ **Fixed in `users_app`:** /users page, sorting got cleared after page refresh
-___
+<br/>
 - ✨ **Improved in `users_app` & `ui_tests_pw`:** GitHub actions logic
 - ✨ **Improved in `users_app`:** Docker configuration
 - ✨ **Improved in `users_app`:** run_web_site.sh & setup.sh
-***
+<br/>
 - 🆕 **Added in `users_app`:** data-tag, id, etc. to key elements used in UI automation for convenience
 - 🆕 **Added `ui_tests_pw`:** UI test framework
