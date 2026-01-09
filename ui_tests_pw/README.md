@@ -1,6 +1,6 @@
 ## 💡 Users App UI Automation (Pytest + Playwright + Django + Docker)
 
-- This folder contains a **UI automation framework** for the attached Users App (`users_app` folder in the root project directory).
+- This folder contains a UI automation framework for the attached Users App (`users_app` folder in the root project directory).
 - Created on Nov-05-2025
 
 ## 🧰 Stack
@@ -49,6 +49,7 @@
   - Login,
   - Signup,
   - Reset Password
+  - About
   - Users Table
   - Profile View
   - Profile Edit
