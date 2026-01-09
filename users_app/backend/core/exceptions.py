@@ -80,7 +80,8 @@ def _to_str(value: Any) -> str:
             return translation.gettext_lazy("Unknown error.")
 
 
-def _serialize_validation_errors(detail: Any) -> Any:
+def _serialize_validation_errors(detail: Any) -> \
+    ValidationErrorDetail = str | list["ValidationErrorDetail"] | dict[str, "ValidationErrorDetail"]:
     """
     DRF ValidationError.detail can be a dict/list/str. Keep structure but translate strings.
     """

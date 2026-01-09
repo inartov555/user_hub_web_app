@@ -1,9 +1,10 @@
 """
-Django REST Framework ModelSerializer for Django’s built-in User model.
+Django REST Framework ModelSerializer for Django's built-in User model.
 It defines which user fields are exposed through your API and which of them are writable.
 """
 
 from typing import Any, Dict
+from typing import NoReturn
 from datetime import timedelta
 
 from django.conf import settings
@@ -19,7 +20,7 @@ from ..models.app_settings import get_effective_auth_settings
 
 class EmailOrUsernameTokenCreateSerializer(TokenObtainPairSerializer):
     """
-    Django REST Framework ModelSerializer for Django’s built-in User model.
+    Django REST Framework ModelSerializer for Django's built-in User model.
     It defines which user fields are exposed through your API and which of them are writable.
     """
 
@@ -114,6 +115,6 @@ class EmailOrUsernameTokenCreateSerializer(TokenObtainPairSerializer):
         # Not used
         return validated_data
 
-    def update(self, instance: Any, validated_data: Dict[str, Any]) -> Any:
+    def update(self, instance: Any, validated_data: Dict[str, Any]) -> NoReturn:
         # Not used
         raise NotImplementedError("Update is not supported for this serializer.")
