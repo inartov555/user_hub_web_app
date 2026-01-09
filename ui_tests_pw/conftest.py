@@ -398,50 +398,21 @@ def user_stats_page_fixture(logged_in_admin: Page) -> StatsPage:
     return user_stats_page
 
 
-def delete_users_by_suffix_via_api(suffix: str,
-                                   compare: str = "contains",
-                                   mode: str = "username") -> None:
+def delete_users_by_suffix_via_api(suffix: str) -> None:
     """
     Delete users by passed suffix, if found.
 
     Args:
-        suffix (str): part of the username/email/first name/last name depending on compare
-        compare (str): one of (strict, contains)
-        mode (str): one of (username, email, first_name, last_name)
+        suffix (str): part of the username/email/first_name/last_name depending on compare
     """
-    _suffix_lower = suffix.lower()
-    _compare_lower = compare.lower()
-    _mode_lower = mode.lower()
     api_utils = get_api_utils()
+    user_id_list = []
     login_info = api_utils.api_login(DEFAULT_ADMIN_USERNAME, DEFAULT_ADMIN_PASSWORD)
     access_token = login_info.get("access")
-    users = api_utils.get_users(access=access_token, search=_suffix_lower)
-
-    def _compare(_suffix: str, _value_to_compare: str, _compare: str) -> bool:
-        """
-        Returns:
-            bool, if the match happened
-        """
-        value_lower = _value_to_compare.lower() if _value_to_compare else ""
-        if _compare == "strict" and _suffix == value_lower or \
-           _compare == "contains" and _suffix in value_lower:
-            return True
-        return False
-
-    user_id_list = []
-    for user in users.get("results"):
-        value_to_pass = ""
-        if _mode_lower == "email":
-            value_to_pass = user.get("email")
-        elif _mode_lower == "username":
-            value_to_pass = user.get("username")
-        elif _mode_lower == "firstname":
-            value_to_pass = user.get("firstName")
-        elif _mode_lower == "lastname":
-            value_to_pass = user.get("lastName")
-        compare_result = _compare(_suffix_lower, value_to_pass, _compare_lower)
-        if compare_result:
-            user_id_list.append(user.get("id"))
+    users = api_utils.get_users(access=access_token, search=suffix)
+    if users and users.get("results"):
+        for _user in users.get("results"):
+            user_id_list.append(int(_user.get("id")))
     if user_id_list:
         api_utils.bulk_user_delete(access_token, user_id_list)
 
@@ -458,7 +429,7 @@ def cleanup_delete_users_by_suffix(suffix: str) -> None:
     yield
 
     log.info("Cleanup. Deleting users created while running a test")
-    delete_users_by_suffix_via_api(suffix, "contains", "username")
+    delete_users_by_suffix_via_api(suffix)
 
 
 @pytest.fixture(scope="function")
