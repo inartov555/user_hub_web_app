@@ -37,7 +37,7 @@ class JWTAuthentication(BaseAuthentication):
     def __init__(self) -> None:
         self.user_model = get_user_model()
 
-    def authenticate(self, request):
+    def authenticate(self, request) -> Optional[tuple["User", AccessToken]]:
         # eff = get_effective_auth_settings()  # pulls DB overrides live
         # Provide a namespace for side-channel info (mirrors prior middleware)
         if not hasattr(request, "jwt"):
@@ -106,7 +106,7 @@ class JWTAuthentication(BaseAuthentication):
         except UnicodeDecodeError:
             return token if isinstance(token, str) else None
 
-    def _user_from_token(self, token: AccessToken):
+    def _user_from_token(self, token: AccessToken) -> "User":
         user_id = token.get("user_id") or token.get("sub")
         if not user_id:
             raise ValidationError(
@@ -137,7 +137,7 @@ class JWTAuthenticationWithDenylist(JWTAuthentication):
     """
     Blacklisting tokens
     """
-    def get_validated_token(self, raw_token):
+    def get_validated_token(self, raw_token) -> AccessToken:
         """
         Get valid token and raise error if it's blacklisted
         """

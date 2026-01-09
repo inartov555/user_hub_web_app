@@ -1,10 +1,13 @@
 """
-On each request, it compares the `boot_id` value embedded in the validated JWT (added at
-issue time) with the server's current boot ID.
-If they differ—e.g., after a deploy or restart—the middleware returns a 401
+On each request, it compares the boot_id value embedded in the validated JWT
+with the server's current boot ID.
+If they differ, e.g., after a deploy or restart—the middleware returns a 401
 so the client can refresh credentials.
 """
 
+from typing import Callable
+
+from django.http import HttpRequest, HttpResponse
 from rest_framework.exceptions import AuthenticationFailed, ValidationError
 from rest_framework_simplejwt.exceptions import InvalidToken
 
@@ -12,13 +15,13 @@ from core.jwt_authentication import JWTAuthenticationWithDenylist
 from ..boot import get_boot_id
 
 
-def boot_header(get_response):
+def boot_header(get_response) -> Callable[[HttpRequest], HttpResponse]:
     """
     Attach the current boot id to every HTTP response so the frontend
     can detect deploys/restarts without making a separate call.
     Header: X-Boot-Id: <int>
     """
-    def middleware(request):
+    def middleware(request) -> HttpResponse:
         response = get_response(request)
         try:
             response["X-Boot-Id"] = str(int(get_boot_id()))
@@ -34,11 +37,11 @@ class BootIdEnforcerMiddleware:
     Middleware to enforce logout of JWT-authenticated users after a server "boot ID"
     change.
     """
-    def __init__(self, get_response):
+    def __init__(self, get_response) -> None:
         self.get_response = get_response
         self.jwt_auth = JWTAuthenticationWithDenylist()
 
-    def __call__(self, request):
+    def __call__(self, request) -> HttpResponse:
         # Pull raw Bearer token (if any)
         auth_header = request.META.get("HTTP_AUTHORIZATION", "")
         if auth_header.lower().startswith("bearer "):
