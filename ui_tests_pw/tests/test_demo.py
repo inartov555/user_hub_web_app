@@ -294,7 +294,7 @@ def _helper_profile_edit_page_regular_user(page: Page, ui_theme_param: Theme, ui
     profile_edit_page.assert_error_visible()
     # Screenshot -> Regular User -> Profile Edit Page -> Error alert
     take_a_screenshot(page)
-    
+
 
 def __create_and_login_user_for_user_stats_page() -> None:
     """
