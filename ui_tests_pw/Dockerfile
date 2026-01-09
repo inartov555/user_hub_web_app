@@ -23,7 +23,7 @@ RUN --mount=type=cache,target=.cache/pip \
     python -m pip install -U pip && \
     pip install -r requirements.txt
 
-# PW_BROWSER is set in the run_test.sh file
+# PW_BROWSER is set in the run_tests.sh file
 # Install branded browser channels only when requested (msedge/chrome)
 RUN set -eux; \
   if [ "$PW_BROWSER" = "msedge" ] || [ "$PW_BROWSER" = "chrome" ]; then \
@@ -59,5 +59,5 @@ RUN sh -c 'set -eu; \
     ls -l "$MO"; \
   done'
 
-# TEST_GREP is set in the run_test.sh file
+# TEST_GREP is set in the run_tests.sh file
 CMD bash -lc "python -m pytest -v --tb=short -s --html='$HOST_ARTIFACTS/test_report_$(date +%Y-%m-%d_%H-%M-%S).html' $TEST_GREP"
