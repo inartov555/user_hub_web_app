@@ -43,12 +43,31 @@ class ProfileEditPage(BasePage):
         if avatar:
             self.profile_avatar_file.set_input_files(avatar)
 
-    def click_save_and_wait_profile_view(self) -> None:
+    def click_save_and_wait_profile_view_success(self,
+                                                 first_name: str,
+                                                 last_name: str,
+                                                 bio: str,
+                                                 avatar: str = None) -> None:
         """
-        Click the Save button and wait for the Profile View page to load
+        Click the Save button and wait for the Profile View page to load -> Success case
         """
+        self.fill_basic_fields(first_name, last_name, bio, avatar)
         self.save.click()
         self.verify_profile_view_page_uri_is_open()
+        self.assert_there_s_no_error()
+
+    def click_save_and_wait_error(self,
+                                  first_name: str,
+                                  last_name: str,
+                                  bio: str,
+                                  avatar: str = None) -> None:
+        """
+        Click the Save button -> Error case
+        """
+        self.fill_basic_fields(first_name, last_name, bio, avatar)
+        self.save.click()
+        self.verify_profile_edit_page_uri_is_open()
+        self.assert_error_visible()
 
     def click_cancel_and_wait_profile_view(self) -> None:
         """
