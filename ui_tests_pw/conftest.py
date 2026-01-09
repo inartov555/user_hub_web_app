@@ -403,7 +403,7 @@ def delete_users_by_suffix_via_api(suffix: str) -> None:
     Delete users by passed suffix, if found.
 
     Args:
-        suffix (str): part of the username/email/first_name/last_name depending on compare
+        suffix (str): part/full value of the username/email/first_name/last_name
     """
     api_utils = get_api_utils()
     user_id_list = []
