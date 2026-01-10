@@ -52,5 +52,14 @@ msgstr "Import byl úspěšně dokončen"
 msgid "Result"
 msgstr "Výsledek"
 
+msgid "Processed:"
+msgstr "Zpracováno:"
+
+msgid "Created:"
+msgstr "Vytvořeno:"
+
+msgid "Updated:"
+msgstr "Aktualizováno:"
+
 msgid "About website"
 msgstr "O webu"

@@ -52,5 +52,14 @@ msgstr "Import lõpetati edukalt"
 msgid "Result"
 msgstr "Tulemus"
 
+msgid "Processed:"
+msgstr "Töödeldud:"
+
+msgid "Created:"
+msgstr "Loodud:"
+
+msgid "Updated:"
+msgstr "Uuendatud:"
+
 msgid "About website"
 msgstr "Veebisaidist"

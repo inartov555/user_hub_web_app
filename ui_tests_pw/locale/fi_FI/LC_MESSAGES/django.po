@@ -52,5 +52,14 @@ msgstr "Tuonti valmistui onnistuneesti"
 msgid "Result"
 msgstr "Tulos"
 
+msgid "Processed:"
+msgstr "Käsitelty:"
+
+msgid "Created:"
+msgstr "Luotu:"
+
+msgid "Updated:"
+msgstr "Päivitetty:"
+
 msgid "About website"
 msgstr "Tietoa sivustosta"
