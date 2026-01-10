@@ -139,7 +139,7 @@ user_hub_web_app/
 | GET    | `/api/v1/system/runtime-auth/`         | Read runtime‑computed auth config |
 | POST   | `/api/v1/auth/jwt/create`              | Obtain access/refresh (Djoser) |
 | POST   | `/api/v1/auth/jwt/refresh/`            | Refresh access (runtime‑aware) |
-| POST   | `/api/v1/auth/jwt/logout/              | Invalidate access token when user logs out on UI/API |
+| POST   | `/api/v1/auth/jwt/logout/`             | Invalidate access token when user logs out on UI/API |
 | GET    | `/api/v1/schema/`                      | OpenAPI schema |
 | GET    | `/api/v1/docs/`                        | Swagger UI |
 
