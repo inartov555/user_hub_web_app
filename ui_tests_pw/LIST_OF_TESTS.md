@@ -81,7 +81,7 @@
 
 ---
 
-11. **tests/test_signup_page.pyv
+11. **tests/test_signup_page.py**
  - test_signup_page_renders
  - test_signup_valid_data_creates_user
  - test_signup_invalid_data_shows_errors
