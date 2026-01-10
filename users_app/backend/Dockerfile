@@ -25,9 +25,13 @@ RUN python -m venv "$VIRTUAL_ENV" \
  && chown -R pwuser:pwuser /app /home/pwuser
 ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 
-RUN pip install --upgrade pip && \
-    if [ -f requirements.txt ]; then pip install -r requirements.txt; fi && \
-    if [ -f requirements-dev.txt ]; then pip install -r requirements-dev.txt; fi
+# RUN pip install --upgrade pip && \
+#    if [ -f requirements.txt ]; then pip install -r requirements.txt; fi && \
+#    if [ -f requirements-dev.txt ]; then pip install -r requirements-dev.txt; fi
+
+RUN --mount=type=cache,target=.cache/pip \
+    python -m pip install -U pip && \
+    pip install -r requirements.txt
 
 # Validate .po syntax (correct paths: /app/locale/**)
 RUN sh -c 'set -eu; \

@@ -19,7 +19,6 @@ services:
 
   backend:
     build: { context: ., dockerfile: backend/Dockerfile }
-    # working_dir: /app/backend
     env_file: backend/.env
     depends_on: 
       db:
@@ -30,7 +29,6 @@ services:
       HOST_ARTIFACTS: /tests/artifacts
     ports: ["8000:8000"]
     volumes:
-      # - ./:/app
       - media_data:/app/media
       - ${HOST_ARTIFACTS}:/tests/artifacts
     stop_signal: SIGINT
