@@ -5,7 +5,7 @@
 
 ---
 
-[List of automation tests](./ui_tests_pw/LIST_OF_TESTS.md)
+[List of automation tests](./LIST_OF_TESTS.md)
 
 ---
 
