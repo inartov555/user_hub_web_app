@@ -1,5 +1,7 @@
 ## 🗂️ (54) List of automation test (parametrization not considered)
 
+---
+
 1. **tests/test_about_website_page.py**
  - test_verify_there_are_login_and_signup_links_for_logged_in_user
  - test_verify_that_there_s_no_login_and_signup_links_for_logged_in_user
