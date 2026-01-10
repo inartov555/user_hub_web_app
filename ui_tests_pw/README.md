@@ -19,7 +19,7 @@
 
 ## 🔑 Prerequisites
 
-- **The test launch was tested against Linux Ubuntu OS**
+- **The test launch was tested against the Linux Ubuntu OS**
 - Start the Users App website (`users_app` folder in the root project directory)
 - Docker & docker-compose installed
 - Python is only required inside the Docker image
@@ -69,8 +69,8 @@
   - Dark/light theme behavior
   - Localization (English + at least one non-English locale)
   - Access control for:
-    - Regular user: `test1 / changeme123`
-    - Admin: `admin / changeme123`
+    - Regular user: `test1 / changeme123` (automation framework creates it before running the tests)
+    - Admin: `admin / changeme123` (it's created automatically during the first start of the website)
 - The Users table page gets additional coverage for:
   - Multi-column sorting state & indicators
   - Admin-only controls (`Delete users`, `Change password` column)
