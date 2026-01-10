@@ -3,6 +3,12 @@
 - This folder contains a UI automation framework for the attached Users App (`users_app` folder in the root project directory).
 - Created on Nov-05-2025
 
+---
+
+[List of automation tests](./ui_tests_pw/LIST_OF_TESTS.md)
+
+---
+
 ## 🧰 Stack
 
 - **Python** + **Pytest**
