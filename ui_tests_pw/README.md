@@ -13,6 +13,7 @@
 
 ## 🔑 Prerequisites
 
+- **The test launch was tested against Linux Ubuntu OS**
 - Start the Users App website (`users_app` folder in the root project directory)
 - Docker & docker-compose installed
 - Python is only required inside the Docker image

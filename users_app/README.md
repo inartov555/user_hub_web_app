@@ -19,6 +19,8 @@
 
 **Prerequisites:** Docker & docker‑compose.
 
+- **The website launch was tested against Linux Ubuntu OS**
+
 ```
 # You can just run ./run_website.sh, it defaults to ./run_website.sh false false false
 
