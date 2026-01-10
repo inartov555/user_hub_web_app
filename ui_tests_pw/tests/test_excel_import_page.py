@@ -47,8 +47,8 @@ def _helper_update_profile_via_regular_user(authorized_admin_page: Page,
     users_table_page.search_and_wait_for_results(email)
     # Verifying number of users (expected = 1)
     actual = users_table_page.page_title.text_content()
-    expected = "People (1)"
-    users_table_page.assert_text_localization(ui_locale_param, actual, expected)
+    expected = "People"
+    users_table_page.assert_text_localization(ui_locale_param, actual, expected, " (1)", "strict")
     users_table_page.change_password_btn.nth(0).click()
     # Set password for previously created user
     change_password_page = ChangePasswordPage(page)
@@ -74,6 +74,7 @@ def _helper_update_profile_via_regular_user(authorized_admin_page: Page,
 @pytest.mark.admin
 @pytest.mark.theme
 @pytest.mark.localization
+@pytest.mark.excel_import
 @pytest.mark.parametrize("ui_theme_param", ThemeConsts.ALL_SUPPORTED_THEMES)
 @pytest.mark.parametrize("ui_locale_param", LocaleConsts.ALL_SUPPORTED_LOCALES)
 @pytest.mark.usefixtures("cleanup_set_default_theme_and_locale")
@@ -90,10 +91,11 @@ def test_excel_import_page_renders_for_admin(ui_theme_param: Theme,
     # Verifying localization
     actual = admin_excel_import_page.page_title.text_content()
     expected = "Excel Import"
-    admin_excel_import_page.assert_text_localization(ui_locale_param, actual, expected, "strict")
+    admin_excel_import_page.assert_text_localization(ui_locale_param, actual, expected, None, "strict")
 
 
 @pytest.mark.regular_user
+@pytest.mark.excel_import
 def test_excel_import_page_not_visible_in_nav_for_regular_user(regular_users_page: UsersTablePage) -> None:
     """
     Regular user should not see the Additional/Import from Excel nav items.
@@ -104,6 +106,7 @@ def test_excel_import_page_not_visible_in_nav_for_regular_user(regular_users_pag
 
 
 @pytest.mark.admin
+@pytest.mark.excel_import
 def test_excel_download_template_does_not_require_file(admin_excel_import_page: ExcelImportPage) -> None:
     """
     Admin should be able to download the Excel template.
@@ -114,8 +117,9 @@ def test_excel_download_template_does_not_require_file(admin_excel_import_page: 
 
 
 @pytest.mark.admin
+@pytest.mark.excel_import
 @pytest.mark.parametrize("suffix", ["watermelon"])
-@pytest.mark.parametrize("ui_locale_param", [LocaleConsts.ENGLISH_US])
+@pytest.mark.parametrize("ui_locale_param", [LocaleConsts.SPANISH])
 @pytest.mark.usefixtures("cleanup_delete_users_by_suffix")
 def test_upload_a_correct_spreadsheet(page: Page,
                                       admin_excel_import_page: ExcelImportPage,
@@ -128,37 +132,39 @@ def test_upload_a_correct_spreadsheet(page: Page,
         username = f"ui-test-{suffix}-{num}"
         email = f"{username}@test.com"
     """
+    admin_excel_import_page.ensure_locale(ui_locale_param)
     admin_excel_import_page.assert_loaded()
     admin_excel_import_page.import_excel_file_success("test_data/excel_import/import_template_test_50_users.xlsx")
     # Let's check the success message title
     actual = admin_excel_import_page.success_msg.text_content()
     expected = "Import completed successfully"
-    admin_excel_import_page.assert_text_localization(ui_locale_param, actual, expected, "contains")
+    admin_excel_import_page.assert_text_localization(ui_locale_param, actual, expected, None, "contains")
     actual = admin_excel_import_page.success_title.text_content()
     expected = "Result"
     admin_excel_import_page.assert_text_localization(ui_locale_param, actual, expected)
     # Verifying number of created users is 50 on the success message
     users_table_page = UsersTablePage(page)
     actual = admin_excel_import_page.success_body.text_content()
-    expected = "Processed: 50"
-    users_table_page.assert_text_localization(ui_locale_param, actual, expected, "contains")
-    expected = "Created: 50"
-    users_table_page.assert_text_localization(ui_locale_param, actual, expected, "contains")
-    expected = "Updated: 0"
-    users_table_page.assert_text_localization(ui_locale_param, actual, expected, "contains")
+    expected = "Processed:"
+    users_table_page.assert_text_localization(ui_locale_param, actual, expected, " 50", "contains")
+    expected = "Created:"
+    users_table_page.assert_text_localization(ui_locale_param, actual, expected, " 50", "contains")
+    expected = "Updated:"
+    users_table_page.assert_text_localization(ui_locale_param, actual, expected, " 0", "contains")
     # Now let's go to the Users Table page and check if just imported users can be present in the table
     admin_excel_import_page.click_users_tab()
     users_table_page.search_and_wait_for_results(suffix)
     users_table_page.change_number_of_users_per_page_control_top(50)
     # Verifying number of users (expected = 50)
     actual = users_table_page.page_title.text_content()
-    expected = "People (50)"
-    users_table_page.assert_text_localization(ui_locale_param, actual, expected)
+    expected = "People"
+    users_table_page.assert_text_localization(ui_locale_param, actual, expected, " (50)", "strict")
 
 
 @pytest.mark.admin
+@pytest.mark.excel_import
 @pytest.mark.parametrize("suffix", ["watermelon"])
-@pytest.mark.parametrize("ui_locale_param", [LocaleConsts.ENGLISH_US])
+@pytest.mark.parametrize("ui_locale_param", [LocaleConsts.POLISH])
 @pytest.mark.usefixtures("cleanup_logout_currently_logged_in_user_on_ui")
 @pytest.mark.usefixtures("cleanup_delete_users_by_suffix")
 def test_check_full_name_updates_from_excel_are_applied(page: Page,
@@ -187,6 +193,7 @@ def test_check_full_name_updates_from_excel_are_applied(page: Page,
         username = f"excel-jack-1"
         email = f"{username}@{suffix}.com"
     """
+    admin_excel_import_page.ensure_locale(ui_locale_param)
     api_utils = get_api_utils()
     username = "excel-jack-1"
     email = f"{username}@{suffix}.com"
@@ -215,18 +222,18 @@ def test_check_full_name_updates_from_excel_are_applied(page: Page,
     # Let's check the success message title
     actual = admin_excel_import_page.success_msg.text_content()
     expected = "Import completed successfully"
-    admin_excel_import_page.assert_text_localization(ui_locale_param, actual, expected, "contains")
+    admin_excel_import_page.assert_text_localization(ui_locale_param, actual, expected, None, "contains")
     actual = admin_excel_import_page.success_title.text_content()
     expected = "Result"
     admin_excel_import_page.assert_text_localization(ui_locale_param, actual, expected)
     # Verifying number of created users is 1, and updated ones is 1 on the success message
     actual = admin_excel_import_page.success_body.text_content()
-    expected = "Processed: 2"
-    admin_excel_import_page.assert_text_localization(ui_locale_param, actual, expected, "contains")
-    expected = "Created: 1"
-    admin_excel_import_page.assert_text_localization(ui_locale_param, actual, expected, "contains")
-    expected = "Updated: 1"
-    admin_excel_import_page.assert_text_localization(ui_locale_param, actual, expected, "contains")
+    expected = "Processed:"
+    admin_excel_import_page.assert_text_localization(ui_locale_param, actual, expected, " 2", "contains")
+    expected = "Created:"
+    admin_excel_import_page.assert_text_localization(ui_locale_param, actual, expected, " 1", "contains")
+    expected = "Updated:"
+    admin_excel_import_page.assert_text_localization(ui_locale_param, actual, expected, " 1", "contains")
     # Now, let's login as the updated user
     admin_excel_import_page.click_logout_and_wait_for_login_page()
     login_page.submit_credentials_success(username, password)
@@ -243,8 +250,9 @@ def test_check_full_name_updates_from_excel_are_applied(page: Page,
 
 
 @pytest.mark.admin
+@pytest.mark.excel_import
 @pytest.mark.parametrize("suffix", ["watermelon"])
-@pytest.mark.parametrize("ui_locale_param", [LocaleConsts.ENGLISH_US])
+@pytest.mark.parametrize("ui_locale_param", [LocaleConsts.ESTONIAN])
 @pytest.mark.usefixtures("cleanup_logout_currently_logged_in_user_on_ui")
 @pytest.mark.usefixtures("cleanup_delete_users_by_suffix")
 def test_check_bio_updates_from_excel_are_applied(page: Page,
@@ -273,6 +281,7 @@ def test_check_bio_updates_from_excel_are_applied(page: Page,
         username = f"excel-jack-1"
         email = f"{username}@{suffix}.com"
     """
+    admin_excel_import_page.ensure_locale(ui_locale_param)
     api_utils = get_api_utils()
     username = "excel-jack-1"
     email = f"{username}@{suffix}.com"
@@ -301,18 +310,18 @@ def test_check_bio_updates_from_excel_are_applied(page: Page,
     # Let's check the success message title
     actual = admin_excel_import_page.success_msg.text_content()
     expected = "Import completed successfully"
-    admin_excel_import_page.assert_text_localization(ui_locale_param, actual, expected, "contains")
+    admin_excel_import_page.assert_text_localization(ui_locale_param, actual, expected, None, "contains")
     actual = admin_excel_import_page.success_title.text_content()
     expected = "Result"
     admin_excel_import_page.assert_text_localization(ui_locale_param, actual, expected)
     # Verifying number of created users is 1, and updated ones is 1 on the success message
     actual = admin_excel_import_page.success_body.text_content()
-    expected = "Processed: 2"
-    admin_excel_import_page.assert_text_localization(ui_locale_param, actual, expected, "contains")
-    expected = "Created: 1"
-    admin_excel_import_page.assert_text_localization(ui_locale_param, actual, expected, "contains")
-    expected = "Updated: 1"
-    admin_excel_import_page.assert_text_localization(ui_locale_param, actual, expected, "contains")
+    expected = "Processed:"
+    admin_excel_import_page.assert_text_localization(ui_locale_param, actual, expected, " 2", "contains")
+    expected = "Created:"
+    admin_excel_import_page.assert_text_localization(ui_locale_param, actual, expected, " 1", "contains")
+    expected = "Updated:"
+    admin_excel_import_page.assert_text_localization(ui_locale_param, actual, expected, " 1", "contains")
     # Now, let's login as a updated user
     admin_excel_import_page.click_logout_and_wait_for_login_page()
     login_page.submit_credentials_success(username, password)
@@ -329,8 +338,9 @@ def test_check_bio_updates_from_excel_are_applied(page: Page,
 
 
 @pytest.mark.admin
+@pytest.mark.excel_import
 @pytest.mark.parametrize("suffix", ["watermelon"])
-@pytest.mark.parametrize("ui_locale_param", [LocaleConsts.ENGLISH_US])
+@pytest.mark.parametrize("ui_locale_param", [LocaleConsts.FINNISH])
 @pytest.mark.usefixtures("cleanup_delete_users_by_suffix")
 def test_check_if_results_show_0_when_no_users_to_update_and_create(page: Page,
                                                                     admin_excel_import_page: ExcelImportPage,
@@ -343,24 +353,25 @@ def test_check_if_results_show_0_when_no_users_to_update_and_create(page: Page,
         username = {some_user_name_from_excel}
         email = f"{username}@{suffix}.com"
     """
+    admin_excel_import_page.ensure_locale(ui_locale_param)
     admin_excel_import_page.assert_loaded()
     admin_excel_import_page.import_excel_file_success("test_data/excel_import/import_template_update_test_2_users.xlsx")
     # Let's check the success message title
     actual = admin_excel_import_page.success_msg.text_content()
     expected = "Import completed successfully"
-    admin_excel_import_page.assert_text_localization(ui_locale_param, actual, expected, "contains")
+    admin_excel_import_page.assert_text_localization(ui_locale_param, actual, expected, None, "contains")
     actual = admin_excel_import_page.success_title.text_content()
     expected = "Result"
     admin_excel_import_page.assert_text_localization(ui_locale_param, actual, expected)
     # Verifying number of created users is 2 on the success message
     users_table_page = UsersTablePage(page)
     actual = admin_excel_import_page.success_body.text_content()
-    expected = "Processed: 2"
-    users_table_page.assert_text_localization(ui_locale_param, actual, expected, "contains")
-    expected = "Created: 2"
-    users_table_page.assert_text_localization(ui_locale_param, actual, expected, "contains")
-    expected = "Updated: 0"
-    users_table_page.assert_text_localization(ui_locale_param, actual, expected, "contains")
+    expected = "Processed:"
+    users_table_page.assert_text_localization(ui_locale_param, actual, expected, " 2", "contains")
+    expected = "Created:"
+    users_table_page.assert_text_localization(ui_locale_param, actual, expected, " 2", "contains")
+    expected = "Updated:"
+    users_table_page.assert_text_localization(ui_locale_param, actual, expected, " 0", "contains")
 
     # Now let's import the same Excel spreadsheet again
     admin_excel_import_page.import_excel_file_success("test_data/excel_import/import_template_update_test_2_users.xlsx")
@@ -371,9 +382,9 @@ def test_check_if_results_show_0_when_no_users_to_update_and_create(page: Page,
     # Verifying number of created users is 0 on the success message
     users_table_page = UsersTablePage(page)
     actual = admin_excel_import_page.success_body.text_content()
-    expected = "Processed: 0"
-    users_table_page.assert_text_localization(ui_locale_param, actual, expected, "contains")
-    expected = "Created: 0"
-    users_table_page.assert_text_localization(ui_locale_param, actual, expected, "contains")
-    expected = "Updated: 0"
-    users_table_page.assert_text_localization(ui_locale_param, actual, expected, "contains")
+    expected = "Processed:"
+    users_table_page.assert_text_localization(ui_locale_param, actual, expected, " 0", "contains")
+    expected = "Created:"
+    users_table_page.assert_text_localization(ui_locale_param, actual, expected, " 0", "contains")
+    expected = "Updated:"
+    users_table_page.assert_text_localization(ui_locale_param, actual, expected, " 0", "contains")

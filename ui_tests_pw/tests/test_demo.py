@@ -58,6 +58,8 @@ def _helper_login_page(page: Page, ui_theme_param: Theme, ui_locale_param: str) 
     login_page.ensure_theme(ui_theme_param)
     login_page.ensure_locale(ui_locale_param)
     login_page.reload()
+    # The background does not have time to change the styles before take a screenshot
+    login_page.wait_a_bit(FIXED_TIME_TO_WAIT)
     # Screenshot -> Cookie consent pop-up
     take_a_screenshot(page)
     # Accepting the cookie consent pop-up

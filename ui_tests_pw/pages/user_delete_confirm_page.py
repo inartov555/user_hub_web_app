@@ -58,5 +58,7 @@ class UserDeleteConfirmPage(BasePage):
         Clicking the top confirm delete button and ending up on the Confirm Delete page with an error
         """
         self.confirm_delete_top.click()
+        # UI logic: button becomes disabled after clicking and before getting a response
+        expect(self.confirm_delete_top).to_be_enabled()
         self.assert_confirm_delete_loaded()
         self.assert_error_visible()

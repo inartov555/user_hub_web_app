@@ -103,6 +103,7 @@ class BasePage:
                                  ui_locale_param: str,
                                  actual: str,
                                  expected: str,
+                                 expected_suffix: str = None,
                                  mode: str = "strict") -> None:
         """
         Check text localization
@@ -111,16 +112,19 @@ class BasePage:
             ui_locale_param (str): e.g., en-US
             actual (str): actual text localization retrieved from UI element
             expected (str): expected text localization, provide the text code to retrieve the localization with Django
+            expected_suffix (str): e.g., when some numbers added,
+                                   'Processed: 50' (expected = 'Processed:', expected_suffix = ' 50'), etc.
             mode (str): one of (contains, strict)
         """
         with translation.override(ui_locale_param.lower()):
             expected = translation.gettext(expected)
-        err_msg = f"Wrong text localization; actual '{actual}'; expected '{expected}'; mode '{mode}'"
+        _expected = expected + expected_suffix if expected_suffix else expected
+        err_msg = f"Wrong text localization; actual '{actual}'; expected '{_expected}'; mode '{mode}'"
         if mode.lower().strip() == "contains":
-            assert expected in actual, err_msg
+            assert _expected in actual, err_msg
         else:
             # strict
-            assert expected == actual, err_msg
+            assert _expected == actual, err_msg
 
     def wait_for_the_users_table_page_to_load(self) -> None:
         """
