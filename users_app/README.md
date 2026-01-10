@@ -12,10 +12,6 @@
 
 ---
 
-(List of automation tests)[./ui_tests_pw/LIST_OF_TESTS.md]
-
----
-
 ## 🔑 Admin credentials (dev)
 - `admin / changeme123`
 
