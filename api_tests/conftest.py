@@ -9,6 +9,9 @@ from configparser import ConfigParser, ExtendedInterpolation
 import pytest
 
 from core.app_config import AppConfig
+from utils.logger.logger import Logger
+
+log = Logger(__name__)
 
 
 DEFAULT_BASE_URL = "http://localhost:8000"
