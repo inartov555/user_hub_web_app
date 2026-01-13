@@ -5,6 +5,7 @@ This file contains API base classes to be derived later
 import json
 import time
 from pprint import pformat
+from typing import Any, Union
 
 import requests
 from requests import Response
@@ -413,30 +414,19 @@ class UsersAppApi(ApiJsonRequest):
         )
         return response
 
-    def import_excel_spreadsheet(self, access: str, file_name: str) -> dict:
+    def get_excel_spreadsheet(self, access: str) -> Union[dict[str, Any], list[Any], bytes]:
         """
         GET 200 /api/v1/import-excel/
 
         Only Admin user can call it.
 
         Returns:
-            dict, example: {created: 0, updated: 0, processed: 0}
+            Excel spreadsheet
         """
-        headers=self.get_authorization_token_dict(access)
-        with open(file_name, "rb") as _file:
-            multipart={
-                "file": (
-                    file_name,
-                    _file.read(),
-                    "multipart/form-data; boundary=----WebKitFormBoundary5ilIG8AS3AbGlqdB"
-                ),
-            }
-
         response = self.make_request(
             "get",
             "/api/v1/import-excel/",
-            headers=headers,
-            multipart=multipart
+            headers=self.get_authorization_token_dict(access)
         )
         return response
 
