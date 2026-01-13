@@ -13,7 +13,7 @@ from conftest import (
     DEFAULT_REGULAR_USERNAME,
     DEFAULT_REGULAR_PASSWORD,
 )
-from utils.api_utils import ApiError
+from api.api import ApiError
 
 
 @pytest.mark.admin

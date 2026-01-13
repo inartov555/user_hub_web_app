@@ -7,7 +7,7 @@ from configparser import ConfigParser, ExtendedInterpolation
 
 import pytest
 
-from api.api.UsersAppApi
+from api.api import UsersAppApi
 from core.app_config import AppConfig
 from utils.logger.logger import Logger
 
@@ -61,10 +61,10 @@ def app_config(pytestconfig) -> AppConfig:
     cfg = ConfigParser(interpolation=ExtendedInterpolation())
     cfg.read(ini_config_file)
     result_dict["base_url"] = cfg.get("pytest", "base_url", fallback=DEFAULT_BASE_URL)
-    result_dict["admin_user_login"] = cfg.get("pytest", "admin_user_login", fallback="admin")
-    result_dict["admin_user_password"] = cfg.get("pytest", "admin_user_password", fallback="changeme123")
-    result_dict["regular_user_login"] = cfg.get("pytest", "regular_user_login", fallback="test1")
-    result_dict["regular_user_password"] = cfg.get("pytest", "regular_user_password", fallback="changeme123")
+    result_dict["admin_user_login"] = cfg.get("pytest", "admin_user_login", fallback=DEFAULT_ADMIN_USERNAME)
+    result_dict["admin_user_password"] = cfg.get("pytest", "admin_user_password", fallback=DEFAULT_ADMIN_PASSWORD)
+    result_dict["regular_user_login"] = cfg.get("pytest", "regular_user_login", fallback=DEFAULT_REGULAR_USERNAME)
+    result_dict["regular_user_password"] = cfg.get("pytest", "regular_user_password", fallback=DEFAULT_REGULAR_PASSWORD)
     return AppConfig(**result_dict)
 
 
