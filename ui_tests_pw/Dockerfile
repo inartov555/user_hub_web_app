@@ -1,3 +1,5 @@
+# syntax=docker/dockerfile:1.7
+FROM python:3.12-slim AS builder
 FROM mcr.microsoft.com/playwright/python:v1.57.0-jammy
 
 ARG PW_BROWSER=chromium
@@ -9,19 +11,25 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
     PIP_NO_CACHE_DIR=1
 
 WORKDIR /tests
-COPY . /tests
 
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    python3 python3-pip python-is-python3 \
-    && rm -rf /var/lib/apt/lists/*
+# Install GNU gettext (provides msgfmt) in the runtime
+# Cache apt metadata + deb downloads across builds
+RUN --mount=type=cache,id=apt-lists,target=/var/lib/apt/lists,sharing=locked \
+    --mount=type=cache,id=apt-cache,target=/var/cache/apt,sharing=locked \
+    apt-get update && \
+    apt-get install -y --no-install-recommends gettext gosu
 
-RUN apt-get update \
- && apt-get install -y --no-install-recommends gettext gosu \
- && rm -rf /var/lib/apt/lists/*
+RUN set -eux; \
+    if ! getent group pwuser >/dev/null; then addgroup --system pwuser; fi; \
+    if ! id -u pwuser >/dev/null 2>&1; then \
+      adduser --system --ingroup pwuser --disabled-password --home /home/pwuser pwuser; \
+    fi
 
-RUN --mount=type=cache,target=.cache/pip \
-    python -m pip install -U pip && \
+COPY ./requirements*.txt /tests/
+RUN --mount=type=cache,target=/root/.cache/pip \
     pip install -r requirements.txt
+
+COPY . /tests
 
 # PW_BROWSER is set in the run_tests.sh file
 # Install branded browser channels only when requested (msedge/chrome)
@@ -32,9 +40,6 @@ RUN set -eux; \
       python -m playwright install --with-deps "$PW_BROWSER" && \
       rm -rf /var/lib/apt/lists/*; \
   fi
-
-RUN chown -R pwuser:pwuser /tests
-USER pwuser
 
 # Validate .po syntax (correct paths: /tests/locale/**)
 RUN sh -c 'set -eu; \
@@ -58,6 +63,9 @@ RUN sh -c 'set -eu; \
     echo "Found compiled catalog: $MO"; \
     ls -l "$MO"; \
   done'
+
+RUN chown -R pwuser:pwuser /tests
+USER pwuser
 
 # TEST_GREP is set in the run_tests.sh file
 CMD bash -lc "python -m pytest -v --tb=short -s --html='$HOST_ARTIFACTS/test_report_$(date +%Y-%m-%d_%H-%M-%S).html' $TEST_GREP"
