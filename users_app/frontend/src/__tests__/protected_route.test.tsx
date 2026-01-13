@@ -10,7 +10,7 @@ function Secret() { return <div>Secret Page</div>; }
 
 describe("ProtectedRoute", () => {
   it("redirects to /login when no token", async () => {
-    // Clear any auth
+    // Clear any authentication
     useAuthStore.setState({ access: null, refresh: null, me: null, setTokens: () => {}, signOut: () => {} } as any);
 
     render(
