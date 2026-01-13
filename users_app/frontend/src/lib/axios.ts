@@ -35,7 +35,7 @@ function startRefresh(): Promise<{ access: string; refresh?: string }> {
     }
     return { access, refresh };
   })().finally(() => {
-    // allow next refresh to start anew
+    // Allow next refresh to start anew
     refreshPromise = null;
   });
   return refreshPromise;
@@ -51,7 +51,7 @@ api.interceptors.request.use((config: InternalAxiosRequestConfig) => {
 });
 
 api.interceptors.request.use(async (config) => {
-  // allow explicitly skipping client-side checks for bootstrap calls
+  // Allow explicitly skipping client-side checks for bootstrap calls
   const skip = (config.headers as any)?.["X-Skip-Auth-Checks"];
   if (skip) {
     const { accessToken } = useAuthStore.getState();
@@ -85,7 +85,7 @@ api.interceptors.request.use(async (config) => {
         const { access, refresh } = await startRefresh();
         // headers will be set below from store/localStorage
       } catch {
-        // Do NOT logout here - let the request go and the response 401 handler decide
+        // Do NOT log out here - let the request go, and the response 401 handler decide
       }
     }
   }
@@ -129,7 +129,7 @@ api.interceptors.response.use(
       return Promise.reject(error);
     }
 
-    // Only take over if there are tokens; otherwise, let caller handle (public pages).
+    // Only take over if there are tokens; otherwise, let the caller handle (public pages).
     const hadAccess = !!(useAuthStore.getState().accessToken || localStorage.getItem("access"));
     const hadRefresh = !!localStorage.getItem("refresh");
     const hadAnyToken = hadAccess || hadRefresh;
