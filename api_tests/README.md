@@ -42,7 +42,7 @@ The tests cover authentication (JWT), user management, profile endpoints, system
 
 ---
 
-## What’s in this repo
+## 🗂️ What’s in this repo
 
 - **`tests/`** – pytest test cases
 - **`api/`** – a small API client (`UsersAppApi`) used by tests
@@ -53,7 +53,7 @@ The tests cover authentication (JWT), user management, profile endpoints, system
 
 ---
 
-## Credentials used by tests
+## 🔑 Credentials used by tests
 
 Defaults are defined in `conftest.py`:
 
