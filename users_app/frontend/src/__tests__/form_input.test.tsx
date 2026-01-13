@@ -3,7 +3,7 @@ import userEvent from "@testing-library/user-event";
 import FormInput from "../components/FormInput";
 
 describe("FormInput", () => {
-  it("renders a label and shows validation message", async () => {
+  it("Renders a label and shows validation message", async () => {
     const onChange = vi.fn();
     render(
       <FormInput
@@ -11,7 +11,7 @@ describe("FormInput", () => {
         id="email"
         value=""
         onChange={onChange}
-        placeholder="Enter email"
+        placeholder="Email"
         error="Required"
       />
     );
