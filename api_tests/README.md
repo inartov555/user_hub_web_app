@@ -27,12 +27,12 @@ This is a test website + automation framework
 - 🛠️ **Fixed in `ui_tests_pw`:** Excel Import: corrected counting of the updated users
 - 🛠️ **Fixed in `users_app`:** Excel: user could press the import button, and the process was started from scratch without waiting to finish the previous one
 - 🛠️ **Fixed in `users_app`:** NavBar: Tabs were messed up when localization changed to, e.g., Spanish
-==============================
+- - -
 - ✨ **Improved in `ui_tests_pw`:** Smart browser install (only selected one instead of all supported to preserve time)
 - ✨ **Improved in `ui_tests_pw`:** Existing test structure, lite refactoring
 - ✨ **Improved in `users_app`:** Page styles such as background, etc.
 - ✨ **Improved in `users_app`:** Localization (removed unused, updated existing, localized not localized text)
-==============================
+- - -
 - 🆕 **Added in `ui_tests_pw`:** New tests to test_change_password_page.py
 - 🆕 **Added in `ui_tests_pw`:** New tests to test_settings_page.py
 - 🆕 **Added in `ui_tests_pw`:** New tests to test_excel_import_page.py
