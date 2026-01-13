@@ -49,7 +49,7 @@ class UsersViewSet(viewsets.ReadOnlyModelViewSet):
 
     # POST /bulk-delete
     @action(detail=False, methods=["post"], url_path="bulk-delete",
-            permission_classes=[permissions.IsAuthenticated])
+            permission_classes=[permissions.IsAdminUser])
     def bulk_delete(self, request) -> Response:
         """
         Delete multiple users by id list: { "ids": [1,2,3] }
@@ -71,7 +71,7 @@ class UsersViewSet(viewsets.ReadOnlyModelViewSet):
 
     # DELETE /users/<id>/delete-user
     @action(detail=True, methods=["delete"], url_path="delete-user",
-            permission_classes=[permissions.IsAuthenticated])
+            permission_classes=[permissions.IsAdminUser])
     def delete_user(self, request, pk=None) -> Response:  # pylint: disable=unused-argument
         """
         Delete a user by id
