@@ -14,7 +14,7 @@
 #
 #     !!! Clearing Docker data (ALL Docker images, Docker network settings, etc.), and restarting the Docker service
 #   - $3 - true - clearing all docker data (network, images, etc.)
-#          false - docker starts with new data
+#          false - Docker starts with new data
 #          default = false
 #
 # Exported variables in the setup.sh file: HOST_ARTIFACTS, ROOT_VENV, TEST_VENV, COPIED_PROJECT_PATH
@@ -121,7 +121,7 @@ PY
 echo "Starting the service"
 docker compose up
 
-# If you need to to start the web site as a daemon and independent on the terminal closing
+# If you need to start the website as a daemon and be independent of the terminal closing
 # echo "Starting Postgres..."
 # docker compose up -d db
 
