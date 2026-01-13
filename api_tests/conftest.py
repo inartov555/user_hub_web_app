@@ -2,13 +2,15 @@
 conftest.py
 """
 
+import os
 from configparser import ConfigParser, ExtendedInterpolation
 
 import pytest
 
-from api.api import UsersAppApi
+from api.api import UsersAppApi, ApiError
 from core.app_config import AppConfig
 from utils.logger.logger import Logger
+from utils.file_utils import FileUtils
 
 
 log = Logger(__name__)
@@ -20,6 +22,42 @@ DEFAULT_ADMIN_PASSWORD = "changeme123"
 DEFAULT_REGULAR_USERNAME = "test1"
 DEFAULT_REGULAR_EMAIL = "test1@test.com"
 DEFAULT_REGULAR_PASSWORD = "changeme123"
+
+
+@pytest.fixture(scope="session", autouse=True)
+def add_loggers() -> None:
+    """
+    The fixture to configure loggers
+    It uses built-in pytest arguments to configure loggigng level and files
+
+    Parameters:
+        log_level or --log-level general log level for capturing
+        log_file_level or --log-file-level  level of log to be stored to a file. Usually lower than general log
+        log_file or --log-file  path where logs will be saved
+    """
+    artifacts_folder_default = os.getenv("HOST_ARTIFACTS")
+    log_level = "DEBUG"
+    log_file_level = "DEBUG"
+    log_file = os.path.join(FileUtils.timestamped_path("pytest", "log", artifacts_folder_default))
+    log.setup_cli_handler(level=log_level)
+    log.setup_filehandler(level=log_file_level, file_name=log_file)
+    log.info(f"General loglevel: '{log_level}', File: '{log_file_level}'")
+
+
+@pytest.fixture(scope="session")
+def app_config(pytestconfig) -> AppConfig:
+    """
+    Set and get AppConfig from ini config
+    """
+    ini_config_file = pytestconfig.getoption("--ini-config")
+    log.info(f"Reading config properties from '{ini_config_file}' and storing to a data class")
+    result_dict = {}
+    cfg = ConfigParser(interpolation=ExtendedInterpolation())
+    cfg.read(ini_config_file)
+    result_dict["base_url"] = cfg.get("pytest", "base_url", fallback=DEFAULT_BASE_URL)
+    result_dict["base_port"] = cfg.get("pytest", "base_port", fallback=DEFAULT_BASE_PORT)
+    result_dict["base_api_uri"] = cfg.get("pytest", "base_api_uri", fallback=DEFAULT_API_URI)
+    return AppConfig(**result_dict)
 
 
 def get_api_utils() -> UsersAppApi:
@@ -52,22 +90,6 @@ def get_api_utils() -> UsersAppApi:
     return api_utils
 
 
-@pytest.fixture(scope="session")
-def app_config(pytestconfig) -> AppConfig:
-    """
-    Set and get AppConfig from ini config
-    """
-    ini_config_file = pytestconfig.getoption("--ini-config")
-    log.info(f"Reading config properties from '{ini_config_file}' and storing to a data class")
-    result_dict = {}
-    cfg = ConfigParser(interpolation=ExtendedInterpolation())
-    cfg.read(ini_config_file)
-    result_dict["base_url"] = cfg.get("pytest", "base_url", fallback=DEFAULT_BASE_URL)
-    result_dict["base_port"] = cfg.get("pytest", "base_port", fallback=DEFAULT_BASE_PORT)
-    result_dict["base_api_uri"] = cfg.get("pytest", "base_api_uri", fallback=DEFAULT_API_URI)
-    return AppConfig(**result_dict)
-
-
 @pytest.fixture(scope="session", autouse=True)
 def before_tests() -> None:
     """
@@ -75,7 +97,11 @@ def before_tests() -> None:
         1. Creating a regular user
     """
     api_utils = get_api_utils()
-    api_utils.create_user(DEFAULT_REGULAR_USERNAME, DEFAULT_REGULAR_EMAIL, DEFAULT_REGULAR_PASSWORD)
+    try:
+        api_utils.create_user(DEFAULT_REGULAR_USERNAME, DEFAULT_REGULAR_EMAIL, DEFAULT_REGULAR_PASSWORD)
+    except ApiError as ex:
+        # Usually, it means that user exists
+        log.warning(f"before_tests fixture failed with: {ex}")
 
 
 @pytest.fixture(name="base_url", scope="session")
@@ -85,3 +111,10 @@ def base_url_fixture(request) -> str:
     """
     _app_config = request.getfixturevalue("app_config")
     return f"{_app_config.base_url}:{_app_config.base_port}{_app_config.base_api_uri}"
+
+
+def pytest_addoption(parser) -> None:
+    """
+    Supported options
+    """
+    parser.addoption("--ini-config", action="store", default="pytest.ini", help="The path to the *.ini config file")
