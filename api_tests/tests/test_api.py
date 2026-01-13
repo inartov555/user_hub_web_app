@@ -16,15 +16,6 @@ from conftest import (
 from api.api import ApiError
 
 
-def test_one():
-    """
-    Test one
-    """
-    api_utils = get_api_utils()
-    login_info = api_utils.api_login(DEFAULT_REGULAR_USERNAME, DEFAULT_REGULAR_PASSWORD)
-    api_utils.verify_token(login_info.get("access"))
-
-
 @pytest.mark.admin
 @pytest.mark.regular_user
 @pytest.mark.parametrize("username, password",
