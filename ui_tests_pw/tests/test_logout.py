@@ -13,6 +13,7 @@ from config import (
     DEFAULT_REGULAR_PASSWORD,
 )
 from utils.auth import get_api_utils
+from utils.api_utils import ApiError
 
 
 @pytest.mark.admin
@@ -38,7 +39,7 @@ def test_access_token_invalidated_after_logging_out_admin(username: str, passwor
     # Verify that now request that requires access token fails when calling it with invalidated access token
     try:
         api_utils.get_profile_details(access=access_token)
-    except Exception:  # pylint: disable=broad-exception-caught
+    except ApiError:
         did_invalidated_token_work = False
     if did_invalidated_token_work:
         raise AssertionError("/api/v1/auth/jwt/logout/ did not invalidate the access token")
