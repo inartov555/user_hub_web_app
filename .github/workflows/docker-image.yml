@@ -62,3 +62,21 @@ jobs:
           tags: ${{ github.repository }}-frontend:ci,${{ github.repository }}-frontend:sha-${{ github.sha }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
+
+  api_tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build api_tests (no push)
+        uses: docker/build-push-action@v6
+        with:
+          context: api_tests
+          file: api_tests/Dockerfile
+          push: false
+          tags: ${{ github.repository }}-frontend:ci,${{ github.repository }}-frontend:sha-${{ github.sha }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
