@@ -16,8 +16,11 @@ RUN --mount=type=cache,id=apt-lists,target=/var/lib/apt/lists,sharing=locked \
     apt-get update && \
     apt-get install -y --no-install-recommends gettext gosu
 
-RUN addgroup --system pwuser \
- && adduser  --system --ingroup pwuser --disabled-password --home /home/pwuser pwuser
+RUN set -eux; \
+    if ! getent group pwuser >/dev/null; then addgroup --system pwuser; fi; \
+    if ! id -u pwuser >/dev/null 2>&1; then \
+      adduser --system --ingroup pwuser --disabled-password --home /home/pwuser pwuser; \
+    fi
 
 # RUN pip install --upgrade pip && \
 #    if [ -f requirements.txt ]; then pip install -r requirements.txt; fi && \

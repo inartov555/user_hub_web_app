@@ -242,7 +242,7 @@ export default function Navbar() {
               <option value="et-EE">Eesti</option>
               <option value="fi-FI">Suomi</option>
               <option value="cs-CZ">Čeština</option>
-              <option value="pl-PL">Polszczyzna</option>
+              <option value="pl-PL">Polski</option>
               <option value="es-ES">Español</option>
             </select>
             <DarkModeToggle />

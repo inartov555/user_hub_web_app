@@ -22,7 +22,7 @@ export default function Brand({ title }: { title?: string }) {
               bg-gradient-to-br from-brand-600/85 to-indigo-600/60
             "
       >
-        v1.5
+        v1.6
       </span>
       <span id="brandText" className="drop-shadow-[0_1px_0_rgba(255,255,255,0.08)]">
         {title}
