@@ -2,7 +2,6 @@
 conftest.py
 """
 
-import os
 from configparser import ConfigParser, ExtendedInterpolation
 
 import pytest
@@ -31,7 +30,7 @@ def get_api_utils() -> UsersAppApi:
     ind_protocol = base_url.find("://")
     protocol = "http"
     host = base_url
-    port = UI_BASE_PORT
+    port = DEFAULT_BASE_PORT
     if ind_protocol > 0:
         protocol = base_url[0:ind_protocol]
         host = base_url[ind_protocol + 3:]
