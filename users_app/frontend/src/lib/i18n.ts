@@ -13,7 +13,7 @@ import pl_PL from "../locale/pl_PL.json";
 import es_ES from "../locale/es_ES.json";
 
 i18n
-  .use(LanguageDetector) // detects from localStorage, navigator, querystring, etc.
+  .use(LanguageDetector) 
   .use(initReactI18next)
   .init({
     resources: {
