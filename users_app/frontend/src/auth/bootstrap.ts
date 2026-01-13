@@ -9,9 +9,9 @@ export async function bootstrapAuth(): Promise<boolean> {
   const refresh = localStorage.getItem("refresh");
   if (!access || !refresh) return false;
   setTokens?.(access, refresh);
-  // Always validate with the server. If access is expired, the axios
-  // interceptor will attempt a refresh; if refresh is also expired,
-  // it will logout and we return false.
+  // Always validate with the server. If access has expired, the axios
+  // interceptor will attempt a refresh; if the refresh is also expired,
+  // it will log out, and we return false.
   try {
     const { data } = await api.get("/auth/users/me/");
     setUser(data); // keep user store in sync
