@@ -21,7 +21,6 @@ from utils.theme import Theme
 @pytest.mark.localization
 @pytest.mark.parametrize("ui_theme_param", ThemeConsts.ALL_SUPPORTED_THEMES)
 @pytest.mark.parametrize("ui_locale_param", LocaleConsts.ALL_SUPPORTED_LOCALES)
-@pytest.mark.usefixtures("cleanup_set_default_theme_and_locale")
 def test_admin_can_open_change_password_for_user(ui_theme_param: Theme,
                                                  ui_locale_param: str,
                                                  page: Page,

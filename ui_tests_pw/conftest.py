@@ -416,18 +416,6 @@ def cleanup_delete_users_by_suffix(suffix: str) -> None:
 
 
 @pytest.fixture(scope="function")
-def cleanup_set_default_theme_and_locale(page: Page) -> None:
-    """
-    Cleanup. Default theme is ThemeConsts.LIGHT and default locale is LocaleConsts.ENGLISH_US.
-    """
-    yield
-
-    log.info("Cleanup. Defaulting to light theme and en-US locale")
-    set_theme(page, ThemeConsts.LIGHT)
-    set_locale(page, LocaleConsts.ENGLISH_US)
-
-
-@pytest.fixture(scope="function")
 def setup_create_users_by_suffix(suffix: str) -> None:
     """
     Delete users by passed suffix.

@@ -65,7 +65,7 @@ esac
 echo "Starting the tests..."
 TEST_GREP=""
 
-# TEST_GREP="$TEST_GREP --reruns 2 --reruns-delay 2"
+TEST_GREP="$TEST_GREP --reruns 2 --reruns-delay 2"
 
 # Uncomment if you need tests to be run in parallel (set number or auto).
 # TEST_GREP="$TEST_GREP -n auto"
@@ -73,7 +73,7 @@ TEST_GREP=""
 # If you need to run particular test(s), then set it as shown in the line below (TEST_GREP);
 # to run all tests, just set TEST_GREP="$TEST_GREP" (to preserve base settings)
 
-TEST_GREP="$TEST_GREP -k 'test_get_excel_spreadsheet_admin'"
+# TEST_GREP="$TEST_GREP -k 'test_get_excel_spreadsheet_admin'"
 
 docker compose run -e TEST_GREP="$TEST_GREP" --rm api_tests
 

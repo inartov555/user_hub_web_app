@@ -21,7 +21,6 @@ from utils.theme import Theme
 @pytest.mark.parametrize("suffix", ["tomato"])
 @pytest.mark.usefixtures("setup_create_users_by_suffix")
 @pytest.mark.usefixtures("cleanup_delete_users_by_suffix")
-@pytest.mark.usefixtures("cleanup_set_default_theme_and_locale")
 def test_admin_can_navigate_to_delete_confirm(page: Page,
                                               admin_users_page: UsersTablePage,
                                               ui_locale_param: str,
