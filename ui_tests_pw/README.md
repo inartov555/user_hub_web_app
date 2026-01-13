@@ -5,10 +5,6 @@
 
 ---
 
-[List of automation tests](./LIST_OF_TESTS.md)
-
----
-
 ## 🧰 Stack
 
 - **Python** + **Pytest**
