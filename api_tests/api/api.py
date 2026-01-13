@@ -227,7 +227,8 @@ class ApiJsonRequest(ApiBase):
             return response_obj
         resp_text = response_obj.text
         response_json = None
-        if response_obj.status_code != 204:
+        if response_obj.status_code != 204 and response_obj.headers and \
+           str(response_obj.headers.get("Content-Type")) != "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet":
             response_json = json.loads(resp_text)
         # Response validation can be added here.
         # Use raise_error_if_failed and raise AssertionError if validation failed and raise_error_if_failed is True

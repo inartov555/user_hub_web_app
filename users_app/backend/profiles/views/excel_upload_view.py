@@ -33,8 +33,8 @@ class ExcelUploadView(APIView):
         """
         Getting permissions needed for requests
         """
-        if self.request.method == "GET":
-            return [permissions.AllowAny()]
+        # if self.request.method == "GET":
+        #    return [permissions.AllowAny()]
         return [permissions.IsAuthenticated(), permissions.IsAdminUser()]
 
     def get(self, request, *args, **kwargs) -> HttpResponse:  # pylint: disable=unused-argument
@@ -88,7 +88,7 @@ class ExcelUploadView(APIView):
 
         resp = HttpResponse(
             buf.read(),
-            content_type="multipart/form-data",
+            content_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
             headers={"Content-Disposition": f'attachment; filename="{filename}"'},
         )
         resp["Content-Disposition"] = f'attachment; filename="{filename}"'

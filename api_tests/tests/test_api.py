@@ -305,7 +305,7 @@ def test_get_excel_spreadsheet_admin():
     api_utils = get_api_utils()
     login_info = api_utils.api_login(DEFAULT_ADMIN_USERNAME, DEFAULT_ADMIN_PASSWORD)
     import_excel = api_utils.get_excel_spreadsheet(login_info.get("access"))
-    if not import_excel:
+    if not str(import_excel):
         raise AssertionError("GET 200 /api/v1/import-excel/ did not return Excel import template file")
 
 
