@@ -8,7 +8,7 @@ export type AuthSettings = {
 };
 
 function storeSettingsToLocalStorage(data) {
-  // Let's also update the values in localStorage to have the settings accross all pages
+  // Let's also update the values in localStorage to have the settings across all pages
   localStorage.setItem("JWT_RENEW_AT_SECONDS", String(Number(data.JWT_RENEW_AT_SECONDS) * 1000)); // in milliseconds
   localStorage.setItem("IDLE_TIMEOUT_SECONDS", String(Number(data.IDLE_TIMEOUT_SECONDS) * 1000)); // in milliseconds
   localStorage.setItem("ACCESS_TOKEN_LIFETIME", data.ACCESS_TOKEN_LIFETIME);
