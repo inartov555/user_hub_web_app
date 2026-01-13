@@ -13,10 +13,13 @@ from utils.logger.logger import Logger
 
 
 log = Logger(__name__)
-DEFAULT_BASE_URL = "http://host.docker.internal:5173"
+DEFAULT_BASE_URL = "http://host.docker.internal"
+DEFAULT_BASE_PORT = "5173"
+DEFAULT_API_URI = "/api/v1/"
 DEFAULT_ADMIN_USERNAME = "admin"
 DEFAULT_ADMIN_PASSWORD = "changeme123"
 DEFAULT_REGULAR_USERNAME = "test1"
+DEFAULT_REGULAR_EMAIL = "test1@test.com"
 DEFAULT_REGULAR_PASSWORD = "changeme123"
 
 
@@ -24,7 +27,7 @@ def get_api_utils() -> UsersAppApi:
     """
     Get API Utils
     """
-    base_url = BACKEND_API_BASE
+    base_url = DEFAULT_BASE_URL
     ind_protocol = base_url.find("://")
     protocol = "http"
     host = base_url
@@ -61,26 +64,25 @@ def app_config(pytestconfig) -> AppConfig:
     cfg = ConfigParser(interpolation=ExtendedInterpolation())
     cfg.read(ini_config_file)
     result_dict["base_url"] = cfg.get("pytest", "base_url", fallback=DEFAULT_BASE_URL)
-    result_dict["admin_user_login"] = cfg.get("pytest", "admin_user_login", fallback=DEFAULT_ADMIN_USERNAME)
-    result_dict["admin_user_password"] = cfg.get("pytest", "admin_user_password", fallback=DEFAULT_ADMIN_PASSWORD)
-    result_dict["regular_user_login"] = cfg.get("pytest", "regular_user_login", fallback=DEFAULT_REGULAR_USERNAME)
-    result_dict["regular_user_password"] = cfg.get("pytest", "regular_user_password", fallback=DEFAULT_REGULAR_PASSWORD)
+    result_dict["base_port"] = cfg.get("pytest", "base_port", fallback=DEFAULT_BASE_PORT)
+    result_dict["base_api_uri"] = cfg.get("pytest", "base_api_uri", fallback=DEFAULT_API_URI)
     return AppConfig(**result_dict)
 
 
 @pytest.fixture(scope="session", autouse=True)
-def before_tests(app_config: AppConfig) -> None:
+def before_tests() -> None:
     """
     Actions to be done before running tests.
         1. Creating a regular user
     """
     api_utils = get_api_utils()
-    api_utils.create_user(username, email, password)
+    api_utils.create_user(DEFAULT_REGULAR_USERNAME, DEFAULT_REGULAR_EMAIL, DEFAULT_REGULAR_PASSWORD)
 
 
 @pytest.fixture(name="base_url", scope="session")
-def base_url_fixture() -> str:
+def base_url_fixture(request) -> str:
     """
-    Get base URL
+    Get base API URL
     """
-    return os.getenv("API_BASE_URL", DEFAULT_BASE_URL).rstrip("/")
+    _app_config = request.getfixturevalue("app_config")
+    return f"{_app_config.base_url}:{_app_config.base_port}{_app_config.base_api_uri}"
