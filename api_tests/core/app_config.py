@@ -11,3 +11,7 @@ class AppConfig:
     App config from ini config file
     """
     base_url: str
+    admin_user_login: str
+    admin_user_password: str
+    regular_user_login: str
+    regular_user_password: str

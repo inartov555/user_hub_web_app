@@ -401,20 +401,6 @@ class UsersAppApi(ApiJsonRequest):
                                      headers=self.get_authorization_token_dict(access))
         return response
 
-    def create_user_and_login(self, username: str, email: str, password: str) -> dict:
-        """
-        1. Create user
-        2. Log in as a just created user
-        3. Return login info like access token
-
-        Returns:
-            dict, e.g. {"refresh":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
-                        "access":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9"}
-        """
-        self.create_user(username, email, password)
-        login_info = self.api_login(username, password)
-        return login_info
-
     def update_user(self,
                     access: str,
                     user_id: int,
@@ -445,3 +431,17 @@ class UsersAppApi(ApiJsonRequest):
                                      payload=payload,
                                      headers=self.get_authorization_token_dict(access))
         return response
+
+    def create_user_and_login(self, username: str, email: str, password: str) -> dict:
+        """
+        1. Create user
+        2. Log in as a just created user
+        3. Return login info like access token
+
+        Returns:
+            dict, e.g. {"refresh":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
+                        "access":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9"}
+        """
+        self.create_user(username, email, password)
+        login_info = self.api_login(username, password)
+        return login_info
