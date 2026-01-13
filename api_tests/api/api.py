@@ -514,6 +514,22 @@ class UsersAppApi(ApiJsonRequest):
                                      headers=self.get_authorization_token_dict(access))
         return response
 
+    def set_password(self, access: str, user_id: str, password: str, confirm_password: str) -> dict:
+        """
+        POST 200 /api/v1/users/{user_id}/set-password/
+
+        Only an authorized user can call it.
+
+        Returns:
+            dict, e.g., {"detail":"Password updated."}
+        """
+        payload = {"password": password, "confirm_password": confirm_password}
+        response = self.make_request("post",
+                                     f"/api/v1/users/{user_id}/set-password/",
+                                     payload=payload,
+                                     headers=self.get_authorization_token_dict(access))
+        return response
+
     def update_user(self,
                     access: str,
                     user_id: int,
