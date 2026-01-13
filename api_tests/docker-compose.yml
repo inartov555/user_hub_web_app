@@ -1,0 +1,23 @@
+services:
+
+  api_tests:
+    shm_size: "1gb"
+    build: { context: ., dockerfile: ./Dockerfile }
+    dns: [8.8.8.8, 1.1.1.1]
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    environment:
+      HOST_ARTIFACTS: /tests/artifacts
+      UI_BASE_URL: "http://host.docker.internal"
+      UI_BASE_PORT: "5173"
+      API_BASE_PORT: "8000"
+    ports: ["8001:8001"]
+    volumes:
+      - media_data:/app/media
+      - ${HOST_ARTIFACTS}:/tests/artifacts
+    stop_signal: SIGINT
+    stop_grace_period: 5s
+
+volumes:
+  pgdata:
+  media_data:

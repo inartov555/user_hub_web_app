@@ -3,7 +3,6 @@ conftest.py
 """
 
 import os
-import httpx
 from configparser import ConfigParser, ExtendedInterpolation
 
 import pytest
@@ -11,9 +10,8 @@ import pytest
 from core.app_config import AppConfig
 from utils.logger.logger import Logger
 
+
 log = Logger(__name__)
-
-
 DEFAULT_BASE_URL = "http://host.docker.internal:5173"
 
 
