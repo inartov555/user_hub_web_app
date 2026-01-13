@@ -333,6 +333,18 @@ class UsersAppApi(ApiJsonRequest):
                                      headers=self.get_authorization_token_dict(access))
         return response
 
+    def single_user_delete(self, access: str, user_id: str) -> dict:
+        """
+        DELETE 200 /api/v1/users/bulk-delete/
+
+        Returns:
+            dict, {"deleted": $number}
+        """
+        response = self.make_request("delete",
+                                     f"/api/v1/users/{user_id}/delete-user/",
+                                     headers=self.get_authorization_token_dict(access))
+        return response
+
     def create_user(self, username: str, email: str, password: str) -> dict:
         """
         POST 200 /api/v1/auth/users/
@@ -430,7 +442,7 @@ class UsersAppApi(ApiJsonRequest):
         )
         return response
 
-    def get_profile_details(self, access: str) -> dict:
+    def get_currently_logged_in_user_details(self, access: str) -> dict:
         """
         GET 200 /api/v1/auth/users/me/
 
@@ -443,6 +455,60 @@ class UsersAppApi(ApiJsonRequest):
                                      "/api/v1/auth/users/me/",
                                      headers=self.get_authorization_token_dict(access))
         return response
+
+    def get_profile_details(self, access: str) -> dict:
+        """
+        GET 200 /api/v1/me/profile/
+        Getting profile details of the currently logged in user.
+
+        Only logged in user can call it.
+
+        Returns:
+            dict
+        """
+        response = self.make_request("get",
+                                     "/api/v1/me/profile/",
+                                     headers=self.get_authorization_token_dict(access))
+
+    def edit_profile_details(self,
+                             access: str,
+                             username: str,
+                             email: str,
+                             first_name: str,
+                             last_name: str,
+                             bio: str) -> dict:
+        """
+        PUT 200 /api/v1/me/profile/
+        Updating profile of the currently logged in user.
+
+        Only logged in user can call it.
+
+        Returns:
+            dict
+        """
+        payload = {"username": username,
+                   "email": email,
+                   "first_name": first_name,
+                   "last_name": last_name,
+                   "bio": bio}
+        response = self.make_request("put",
+                                     "/api/v1/me/profile/",
+                                     payload=payload,
+                                     headers=self.get_authorization_token_dict(access))
+        return response
+
+    def get_online_user_stats(self, access: str) -> dict:
+        """
+        GET 200 /api/v1/stats/online-users/
+
+        Only admin users can call it.
+
+        Returns:
+            dict
+        """
+        response = self.make_request("get",
+                                     "/api/v1/stats/online-users/",
+                                     headers=self.get_authorization_token_dict(access))
 
     def update_user(self,
                     access: str,
@@ -457,7 +523,7 @@ class UsersAppApi(ApiJsonRequest):
         """
         PUT 200 /api/v1/auth/users/${id}/
 
-        Updating existing users.
+        Updating existing users. Only authenticated users can do that.
 
         Returns:
             dict
