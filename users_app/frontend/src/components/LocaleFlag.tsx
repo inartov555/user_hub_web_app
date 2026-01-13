@@ -1,4 +1,3 @@
-// src/components/LocaleFlag.tsx
 import React from "react";
 import CountryFlag from "react-country-flag";
 
