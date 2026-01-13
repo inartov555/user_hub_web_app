@@ -13,3 +13,4 @@ class AppConfig:
     base_url: str
     base_port: str
     base_api_uri: str
+    one: str

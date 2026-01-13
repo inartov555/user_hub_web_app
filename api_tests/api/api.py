@@ -252,7 +252,7 @@ class UsersAppApi(ApiJsonRequest):
 
     def api_login(self, username, password) -> dict:
         """
-        POST 200 /api/v1/auth/jwt/create
+        POST /api/v1/auth/jwt/create
 
         Returns:
             dict, e.g. {"refresh":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
@@ -266,36 +266,11 @@ class UsersAppApi(ApiJsonRequest):
 
     def logout(self, access: str) -> dict:
         """
-        POST 200 /api/v1/auth/jwt/logout/
+        POST /api/v1/auth/jwt/logout/
         """
         response = self.make_request("post",
                                      "/api/v1/auth/jwt/logout/",
                                      headers=self.get_authorization_token_dict(access))
-        return response
-
-    def refresh_token(self, refresh: str) -> dict:
-        """
-        POST 200 /api/v1/auth/jwt/refresh/
-    
-        Returns:
-            dict, e.g., {access: aksjddflkj, refresh: adslfja}
-        """
-        payload = {"refresh": refresh}
-        response = self.make_request("post",
-                                     "/api/v1/auth/jwt/refresh/",
-                                     payload=payload)
-
-    def verify_token(self, access: str) -> dict:
-        """
-        POST 200 /api/v1/auth/jwt/verify/
-
-        Returns:
-            dict, empty dict
-        """
-        payload = {"token": access}
-        response = self.make_request("post",
-                                     "/api/v1/auth/jwt/verify/",
-                                     payload=payload)
         return response
 
     def get_users(self,
@@ -305,7 +280,7 @@ class UsersAppApi(ApiJsonRequest):
                   page_size: int = 1000000,
                   ordering: str = "id") -> dict:
         """
-        GET 200 /api/v1/users
+        GET /api/v1/users
 
         Returns:
             dict
@@ -319,7 +294,7 @@ class UsersAppApi(ApiJsonRequest):
 
     def bulk_user_delete(self, access: str, user_id_list: list) -> dict:
         """
-        POST 200 /api/v1/users/bulk-delete/
+        POST /api/v1/users/bulk-delete/
 
         Returns:
             dict, {"deleted": $number}
@@ -333,7 +308,7 @@ class UsersAppApi(ApiJsonRequest):
 
     def create_user(self, username: str, email: str, password: str) -> dict:
         """
-        POST 200 /api/v1/auth/users/
+        POST /api/v1/auth/users/
 
         Returns:
             dict
@@ -346,7 +321,7 @@ class UsersAppApi(ApiJsonRequest):
 
     def get_system_settings(self, access: str) -> dict:
         """
-        GET 200 /api/v1/system/settings/
+        GET /api/v1/system/settings/
 
         Only Admin user can call it.
 
@@ -365,7 +340,7 @@ class UsersAppApi(ApiJsonRequest):
 
     def update_system_settings(self, access: str, payload: dict) -> dict:
         """
-        PUT 200 /api/v1/system/settings/
+        PUT /api/v1/system/settings/
 
         Only Admin user can call it.
 
@@ -387,7 +362,7 @@ class UsersAppApi(ApiJsonRequest):
 
     def import_excel_spreadsheet(self, access: str, file_name: str) -> dict:
         """
-        PUT 200 /api/v1/import-excel/
+        PUT /api/v1/import-excel/
 
         Only Admin user can call it.
 
@@ -414,7 +389,7 @@ class UsersAppApi(ApiJsonRequest):
 
     def get_profile_details(self, access: str) -> dict:
         """
-        GET 200 /api/v1/auth/users/me/
+        GET /api/v1/auth/users/me/
 
         Only logged in user can call it.
 
@@ -437,7 +412,7 @@ class UsersAppApi(ApiJsonRequest):
                     is_staff: bool = False,
                     is_superuser: bool = False) -> dict:
         """
-        PUT 200 /api/v1/auth/users/${id}/
+        PUT /api/v1/auth/users/${id}/
 
         Updating existing users.
 
