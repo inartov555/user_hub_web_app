@@ -6,13 +6,13 @@ from __future__ import annotations
 
 import pytest
 
-from config import (
+from conftest import (
+    get_api_utils,
     DEFAULT_ADMIN_USERNAME,
     DEFAULT_ADMIN_PASSWORD,
     DEFAULT_REGULAR_USERNAME,
     DEFAULT_REGULAR_PASSWORD,
 )
-from utils.auth import get_api_utils
 from utils.api_utils import ApiError
 
 
