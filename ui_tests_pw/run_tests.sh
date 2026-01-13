@@ -104,7 +104,7 @@ esac
 echo "Starting the tests..."
 TEST_GREP=""
 
-# TEST_GREP="$TEST_GREP --reruns 2 --reruns-delay 2"
+TEST_GREP="$TEST_GREP --reruns 2 --reruns-delay 2"
 
 # Uncomment if you need tests to be run in parallel (set number or auto).
 # Note: there are some tests that change settings, so you can run tests in parallel only when
@@ -116,7 +116,7 @@ TEST_GREP=""
 # to run all tests, just set TEST_GREP="$TEST_GREP" (to preserve base settings)
 
 # TEST_GREP="$TEST_GREP -k 'test_base_demo or test_locale_demo'"
-TEST_GREP="$TEST_GREP -m 'not longrun'"
+# TEST_GREP="$TEST_GREP -m 'not longrun'"
 
 docker compose run -e TEST_GREP="$TEST_GREP" --rm ui_tests_pw
 
