@@ -8,7 +8,11 @@ const BACKEND = process.env.VITE_BACKEND_URL || "http://backend:8000";
 export default defineConfig({
   plugins: [react()],
   base: "/",
-  
+  server: {
+    proxy: {
+      "/api/v1": { target: "http://localhost:8000", changeOrigin: true },
+    },
+  },
   test: {
     environment: "jsdom",
     globals: true,
