@@ -3,6 +3,7 @@ FROM mcr.microsoft.com/playwright/python:v1.57.0-jammy
 ARG PW_BROWSER=chromium
 ENV PW_BROWSER=${PW_BROWSER}
 
+FROM python:3.12-slim AS builder
 # Python & pip defaults
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \

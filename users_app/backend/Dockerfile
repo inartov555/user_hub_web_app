@@ -1,37 +1,33 @@
-# --- Builder: install deps into a venv (layer-cached by requirements hash)
-
+# syntax=docker/dockerfile:1.7
 FROM python:3.12-slim AS builder
-ENV VIRTUAL_ENV=/home/pwuser/venv \
-    PYTHONDONTWRITEBYTECODE=1 \
+
+# Python & pip defaults
+ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
-    PIP_NO_CACHE_DIR=1
+    PIP_DISABLE_PIP_VERSION_CHECK=1 \
+    PIP_CACHE_DIR=/root/.cache/pip
+
+WORKDIR /app
 
 # Install GNU gettext (provides msgfmt) in the runtime
-RUN apt-get update \
- && apt-get install -y --no-install-recommends gettext gosu \
- && rm -rf /var/lib/apt/lists/*
+# Cache apt metadata + deb downloads across builds
+RUN --mount=type=cache,id=apt-lists,target=/var/lib/apt/lists,sharing=locked \
+    --mount=type=cache,id=apt-cache,target=/var/cache/apt,sharing=locked \
+    apt-get update && \
+    apt-get install -y --no-install-recommends gettext gosu
 
 RUN addgroup --system pwuser \
  && adduser  --system --ingroup pwuser --disabled-password --home /home/pwuser pwuser
-
-# Now copy the app code (doesn't bust dependency layer unless reqs changed)
-COPY backend/ /app/
-WORKDIR /app
-
-RUN chown -R pwuser:pwuser /app
-USER pwuser
-
-RUN python -m venv "$VIRTUAL_ENV" \
- && chown -R pwuser:pwuser /app /home/pwuser
-ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 
 # RUN pip install --upgrade pip && \
 #    if [ -f requirements.txt ]; then pip install -r requirements.txt; fi && \
 #    if [ -f requirements-dev.txt ]; then pip install -r requirements-dev.txt; fi
 
-RUN --mount=type=cache,target=.cache/pip \
-    python -m pip install -U pip && \
+COPY backend/requirements*.txt /app/
+RUN --mount=type=cache,target=/root/.cache/pip \
     pip install -r requirements.txt
+
+COPY backend/ /app/
 
 # Validate .po syntax (correct paths: /app/locale/**)
 RUN sh -c 'set -eu; \
@@ -56,8 +52,10 @@ RUN sh -c 'set -eu; \
     ls -l "$MO"; \
   done'
 
+RUN chown -R pwuser:pwuser /app
 RUN mkdir -p /app/media
 RUN chown -R pwuser:pwuser /app/media
+USER pwuser
 
 EXPOSE 8000
 
