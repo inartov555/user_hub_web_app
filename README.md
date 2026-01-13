@@ -24,6 +24,7 @@ This is a test website + automation framework
 ## 📌 Changelog v1.6 vs. v1.5
 
 - 🛠️ **Fixed in `users_app`:** Cache of previously installed Python was not used, so website started a bit longer
+- 🛠️ **Fixed in `users_app`:** Admin & regular user priviliges for a few backend requests
 - ✨ **Improved in `ui_tests_pw`:** Lite updates
 - 🆕 **Added in `api_tests`:** API tests added
 
