@@ -22,27 +22,27 @@ This is a test website + automation framework
 
 ## 📌 Changelog v1.5 vs. v1.4
 
-|  | In Module                                   | Change Description                                              |
-|-------:|----------------------------------------|------------------------------------------------------|
-| 🛠️ | **Fixed in `ui_tests_pw`:** | Safari: white text on the white background in the select element was displayed when the dark theme was on |
-| 🛠️ | **Fixed in `ui_tests_pw`:** | Firefox: sometimes, a test failed to click the Save button on the App Settings page |
-| 🛠️ | **Fixed in `ui_tests_pw`:** | Excel Import: corrected counting of the updated users |
-| 🛠️ | **Fixed in `users_app`:** | Excel: user could press the import button, and the process was started from scratch without waiting to finish the previous one |
-| 🛠️ | **Fixed in `users_app`:** | NavBar: Tabs were messed up when localization changed to, e.g., Spanish |
-| ✨ | **Improved in `ui_tests_pw`:** | Smart browser install (only selected one instead of all supported to preserve time) |
-| ✨ | **Improved in `ui_tests_pw`:** | Existing test structure, lite refactoring |
-| ✨ | **Improved in `users_app`:** | Page styles such as background, etc. |
-| ✨ | **Improved in `users_app`:** | Localization (removed unused, updated existing, localized not localized text) |
-| 🆕 | **Added in `ui_tests_pw`:** | New tests to test_change_password_page.py |
-| 🆕 | **Added in `ui_tests_pw`:** | New tests to test_settings_page.py |
-| 🆕 | **Added in `ui_tests_pw`:** | New tests to test_excel_import_page.py |
-| 🆕 | **Added in `ui_tests_pw`:** | New tests to test_stats_page.py |
-| 🆕 | **Added in `ui_tests_pw`:** | New tests to test_profile_edit_page.py |
-| 🆕 | **Added in `ui_tests_pw`:** | New tests to test_about_website_page.py |
-| 🆕 | **Added in `ui_tests_pw`:** | New tests to test_logout.py |
-| 🆕 | **Added in `ui_tests_pw`:** | New tests to test_about_website_page.py |
-| 🆕 | **Added in `users_app`:** | Logout backend service (invalidating the access token, so it cannot be used when the user clicks Logout, but the token itself is still alive) |
-| 🆕 | **Added in `users_app`:** | About website page |
+- 🛠️ **Fixed in `ui_tests_pw`:** Safari: white text on the white background in the select element was displayed when the dark theme was on
+- 🛠️ **Fixed in `ui_tests_pw`:** Firefox: sometimes, a test failed to click the Save button on the App Settings page
+- 🛠️ **Fixed in `ui_tests_pw`:** Excel Import: corrected counting of the updated users
+- 🛠️ **Fixed in `users_app`:** Excel: user could press the import button, and the process was started from scratch without waiting to finish the previous one
+- 🛠️ **Fixed in `users_app`:** NavBar: Tabs were messed up when localization changed to, e.g., Spanish
+|--------------------------------------------------------------------|
+- ✨ **Improved in `ui_tests_pw`:** Smart browser install (only selected one instead of all supported to preserve time)
+- ✨ **Improved in `ui_tests_pw`:** Existing test structure, lite refactoring
+- ✨ **Improved in `users_app`:** Page styles such as background, etc.
+- ✨ **Improved in `users_app`:** Localization (removed unused, updated existing, localized not localized text)
+|--------------------------------------------------------------------|
+- 🆕 **Added in `ui_tests_pw`:** New tests to test_change_password_page.py
+- 🆕 **Added in `ui_tests_pw`:** New tests to test_settings_page.py
+- 🆕 **Added in `ui_tests_pw`:** New tests to test_excel_import_page.py
+- 🆕 **Added in `ui_tests_pw`:** New tests to test_stats_page.py
+- 🆕 **Added in `ui_tests_pw`:** New tests to test_profile_edit_page.py
+- 🆕 **Added in `ui_tests_pw`:** New tests to test_about_website_page.py
+- 🆕 **Added in `ui_tests_pw`:** New tests to test_logout.py
+- 🆕 **Added in `ui_tests_pw`:** New tests to test_about_website_page.py
+- 🆕 **Added in `users_app`:** Logout backend service (invalidating the access token, so it cannot be used when the user clicks Logout, but the token itself is still alive)
+- 🆕 **Added in `users_app`:** About website page
 
 ---
 
