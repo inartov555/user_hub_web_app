@@ -3,7 +3,7 @@ import userEvent from "@testing-library/user-event";
 import PasswordInput from "../components/PasswordInput";
 
 describe("PasswordInput", () => {
-  it("toggles visibility", async () => {
+  it("Toggles visibility", async () => {
     render(<PasswordInput label="Password" id="pwd" value="secret" onChange={() => {}} />);
     const reveal = screen.getByRole("button");
     const input = screen.getByLabelText(/password/i, { selector: 'input' }) as HTMLInputElement;
