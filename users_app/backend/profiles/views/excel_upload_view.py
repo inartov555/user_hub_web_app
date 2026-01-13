@@ -24,7 +24,7 @@ class ExcelUploadView(APIView):
     """
     DRF endpoint that lets an admin upload an Excel file to bulk create/update users (and their profiles).
     """
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAdminUser]
     parser_classes = [MultiPartParser]
     serializer_class = UserSerializer
     user = get_user_model()

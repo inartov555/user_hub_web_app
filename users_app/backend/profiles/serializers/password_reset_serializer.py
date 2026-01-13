@@ -16,6 +16,7 @@ class CustomPasswordResetSerializer(SendEmailResetSerializer):
     """
     Custom password reset email serializer with strict email validation.
     """
+
     def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
 
