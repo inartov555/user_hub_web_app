@@ -388,7 +388,7 @@ class UsersAppApi(ApiJsonRequest):
 
     def import_excel_spreadsheet(self, access: str, file_name: str) -> dict:
         """
-        PUT 200 /api/v1/import-excel/
+        POST 200 /api/v1/import-excel/
 
         Only Admin user can call it.
 
@@ -407,6 +407,33 @@ class UsersAppApi(ApiJsonRequest):
 
         response = self.make_request(
             "post",
+            "/api/v1/import-excel/",
+            headers=headers,
+            multipart=multipart
+        )
+        return response
+
+    def import_excel_spreadsheet(self, access: str, file_name: str) -> dict:
+        """
+        GET 200 /api/v1/import-excel/
+
+        Only Admin user can call it.
+
+        Returns:
+            dict, example: {created: 0, updated: 0, processed: 0}
+        """
+        headers=self.get_authorization_token_dict(access)
+        with open(file_name, "rb") as _file:
+            multipart={
+                "file": (
+                    file_name,
+                    _file.read(),
+                    "multipart/form-data; boundary=----WebKitFormBoundary5ilIG8AS3AbGlqdB"
+                ),
+            }
+
+        response = self.make_request(
+            "get",
             "/api/v1/import-excel/",
             headers=headers,
             multipart=multipart
