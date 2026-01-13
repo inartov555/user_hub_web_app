@@ -69,8 +69,8 @@
   - Dark/light theme behavior
   - Localization (English + at least one non-English locale)
   - Access control for:
-    - Regular user: `test1 / changeme123` (automation framework creates it before running the tests)
-    - Admin: `admin / changeme123` (it's created automatically during the first start of the website)
+    - Admin: `admin / changeme123` (created automatically after first website start)
+    - Regular user: `test1 / changeme123` (created automatically by the automation framework before starting the tests)
 - The Users table page gets additional coverage for:
   - Multi-column sorting state & indicators
   - Admin-only controls (`Delete users`, `Change password` column)
