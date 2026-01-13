@@ -9,6 +9,7 @@ from configparser import ConfigParser, ExtendedInterpolation
 import pytest
 from playwright.sync_api import Page, Browser, expect
 
+from core.app_config import AppConfig
 from core.constants import LocaleConsts, ThemeConsts
 from config import (
     frontend_url,
@@ -23,7 +24,6 @@ from utils.theme import set_theme
 from utils.localization import set_locale
 from utils.auth import ensure_regular_user, login_via_ui, get_api_utils
 from utils.file_utils import FileUtils
-from utils.app_config import AppConfig
 from utils.logger.logger import Logger
 from utils.django_localization import init_django
 from pages.login_page import LoginPage
@@ -115,16 +115,6 @@ def take_a_screenshot(page: Page) -> str:
     return screenshot_path
 
 
-def validate_app_config_params(**kwargs) -> None:
-    """
-    Validation of the config parameters
-    """
-    if not kwargs.get("username"):
-        raise ValueError("username parameter is required for tests")
-    if not kwargs.get("password"):
-        raise ValueError("password parameter is required for tests")
-
-
 @pytest.fixture(scope="session")
 def app_config(pytestconfig) -> AppConfig:
     """
@@ -135,9 +125,6 @@ def app_config(pytestconfig) -> AppConfig:
     result_dict = {}
     cfg = ConfigParser(interpolation=ExtendedInterpolation())
     cfg.read(ini_config_file)
-    result_dict["wait_to_handle_capture_manually"] = cfg.getboolean("pytest",
-                                                                    "wait_to_handle_capture_manually",
-                                                                    fallback=False)
     result_dict["action_timeout"] = cfg.getfloat("pytest", "action_timeout", fallback=15000.0)
     result_dict["navigation_timeout"] = cfg.getfloat("pytest", "navigation_timeout", fallback=15000.0)
     result_dict["assert_timeout"] = cfg.getfloat("pytest", "assert_timeout", fallback=15000.0)
@@ -149,10 +136,6 @@ def app_config(pytestconfig) -> AppConfig:
     result_dict["is_headless"] = cfg.getboolean("pytest", "is_headless", fallback=False)
     result_dict["width"] = cfg.getint("pytest", "width", fallback=1920)
     result_dict["height"] = cfg.getint("pytest", "height", fallback=1080)
-    result_dict["username"] = cfg.get("pytest", "username")
-    result_dict["password"] = cfg.get("pytest", "password")
-    validate_app_config_params(**result_dict)
-    result_dict["password"] = result_dict.get("password")
     return AppConfig(**result_dict)
 
 
