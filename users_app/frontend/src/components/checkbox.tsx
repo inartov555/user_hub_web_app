@@ -31,7 +31,7 @@ export function Checkbox({
   const boxSize = size === "sm" ? "h-3.5 w-3.5" : "";
 
   return (
-    <label className="inline-flex items-center gap-2 cursor-pointer">
+    <label className="inline-flex items-center ">
       <input
         ref={ref}
         type="checkbox"
