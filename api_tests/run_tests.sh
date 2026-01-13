@@ -51,54 +51,15 @@ if [ $? -ne 0 ]; then
   exit 1
 fi
 
-# chromium chrome msedge firefox webkit
-
-# Read browser parameter from pytest.ini and pass the value to Docker to install on the needed browser.
-# If parameter is not present, then default value is taken - 'chromium'.
-readFromPyestIni() {
-  # Input parameters:
-  # 	1. pytest.ini file path
-  # 	2. Section in the pytest.ini file, e.g., pytest
-  #	3. Parameter name, in this case, 'browser'
-  local ini_file1="$1" section1="$2" key1="$3"
-  awk -F'=' -v section="$section1" -v key="$key1" '
-    $0 ~ "^[[:space:]]*\\[" section "\\][[:space:]]*$" { in_section=1; next }
-    $0 ~ "^[[:space:]]*\\[.*\\][[:space:]]*$"          { in_section=0 }  # any other section
-    in_section && $0 ~ "^[[:space:]]*" key "[[:space:]]*=" {
-      val=$2
-      sub(/^[[:space:]]*/, "", val)
-      sub(/[[:space:]]*([;#].*)?$/, "", val)
-      print val
-      found=1
-      exit 0
-    }
-    END { if (!found) exit 2 }
-  ' "$ini_file1"
-}
-
-if BROWSER="$(readFromPyestIni "$INI_CONFIG_FILE" pytest browser)"; then
-  if [ -z $BROWSER ]; then
-    echo "browser addopt found, but it's empty, so taking default value - chromium"
-    # Default value when an empty parameter is found
-    BROWSER="chromium"
-  else
-    echo "Found browser addopt: '$BROWSER'"
-  fi
-else
-  echo "browser addopt was not found, taking default value - chromium"
-  # Default value when parameter not found
-  BROWSER="chromium"
-fi
-
 echo "Building images..."
 case "$clear_cache" in
   true)
     echo "Cache will be cleared when starting the service"
-    docker compose build --build-arg "PW_BROWSER=$BROWSER" ui_tests_pw --no-cache
+    docker compose build api_tests --no-cache
     ;;
   *)
     echo "Cache will be preserved when starting the service"
-    docker compose build --build-arg "PW_BROWSER=$BROWSER" ui_tests_pw
+    docker compose build api_tests
 esac
 
 echo "Starting the tests..."
@@ -107,18 +68,15 @@ TEST_GREP=""
 # TEST_GREP="$TEST_GREP --reruns 2 --reruns-delay 2"
 
 # Uncomment if you need tests to be run in parallel (set number or auto).
-# Note: there are some tests that change settings, so you can run tests in parallel only when
-#       you disable them (settings are applied globally, not for a particular user, also
-#       excel tests, they work with users which are saved/deleted from the same database)
 # TEST_GREP="$TEST_GREP -n auto"
 
 # If you need to run particular test(s), then set it as shown in the line below (TEST_GREP);
 # to run all tests, just set TEST_GREP="$TEST_GREP" (to preserve base settings)
 
-TEST_GREP="$TEST_GREP -k 'test_base_demo or test_locale_demo'"
+# TEST_GREP="$TEST_GREP -k 'test_base_demo or test_locale_demo'"
 # TEST_GREP="$TEST_GREP -m 'not longrun'"
 
-docker compose run -e TEST_GREP="$TEST_GREP" --rm ui_tests_pw
+docker compose run -e TEST_GREP="$TEST_GREP" --rm api_tests
 
 #
 #
