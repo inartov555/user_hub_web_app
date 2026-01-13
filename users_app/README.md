@@ -125,23 +125,23 @@ user_hub_web_app/
 
 **API documentation:** [http://localhost:5173/api/v1/docs/](http://localhost:5173/api/v1/docs/)
 
-| Method | Path                                   | Purpose |
-|-------:|----------------------------------------|---------|
-| GET    | `/api/v1/users/`                       | List/search users (DRF router) |
-| POST   | `/api/v1/users/`                       | Create user |
-| GET    | `/api/v1/users/:id/`                   | Retrieve user |
-| PUT    | `/api/v1/users/:id/`                   | Update user |
-| DELETE | `/api/v1/users/:id/`                   | Delete user |
-| GET    | `/api/v1/me/profile/`                  | Current user profile |
-| POST   | `/api/v1/import-excel/`                | Excel import (xlsx based on template) |
-| GET    | `/api/v1/stats/online-users/`          | Users active in the last 5 minutes |
-| GET/PUT| `/api/v1/system/settings/`             | Read/update effective auth timings |
-| GET    | `/api/v1/system/runtime-auth/`         | Read runtime‑computed auth config |
-| POST   | `/api/v1/auth/jwt/create`              | Obtain access/refresh (Djoser) |
-| POST   | `/api/v1/auth/jwt/refresh/`            | Refresh access (runtime‑aware) |
+| Method | Path                                   | Purpose                                              |
+|-------:|----------------------------------------|------------------------------------------------------|
+| GET    | `/api/v1/users/`                       | List/search users (DRF router)                       |
+| POST   | `/api/v1/users/`                       | Create user                                          |
+| GET    | `/api/v1/users/:id/`                   | Retrieve user                                        |
+| PUT    | `/api/v1/users/:id/`                   | Update user                                          |
+| DELETE | `/api/v1/users/:id/`                   | Delete user                                          |
+| GET    | `/api/v1/me/profile/`                  | Current user profile                                 |
+| POST   | `/api/v1/import-excel/`                | Excel import (xlsx based on template)                |
+| GET    | `/api/v1/stats/online-users/`          | Users active in the last 5 minutes                   |
+| GET/PUT| `/api/v1/system/settings/`             | Read/update effective auth timings                   |
+| GET    | `/api/v1/system/runtime-auth/`         | Read runtime‑computed auth config                    |
+| POST   | `/api/v1/auth/jwt/create`              | Obtain access/refresh (Djoser)                       |
+| POST   | `/api/v1/auth/jwt/refresh/`            | Refresh access (runtime‑aware)                       |
 | POST   | `/api/v1/auth/jwt/logout/`             | Invalidate access token when user logs out on UI/API |
-| GET    | `/api/v1/schema/`                      | OpenAPI schema |
-| GET    | `/api/v1/docs/`                        | Swagger UI |
+| GET    | `/api/v1/schema/`                      | OpenAPI schema                                       |
+| GET    | `/api/v1/docs/`                        | Swagger UI                                           |
 
 ---
 
