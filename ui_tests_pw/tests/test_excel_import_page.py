@@ -77,6 +77,7 @@ def _helper_update_profile_via_regular_user(authorized_admin_page: Page,
 @pytest.mark.excel_import
 @pytest.mark.parametrize("ui_theme_param", ThemeConsts.ALL_SUPPORTED_THEMES)
 @pytest.mark.parametrize("ui_locale_param", LocaleConsts.ALL_SUPPORTED_LOCALES)
+@pytest.mark.usefixtures("cleanup_set_default_theme_and_locale")
 def test_excel_import_page_renders_for_admin(ui_theme_param: Theme,
                                              ui_locale_param: str,
                                              admin_excel_import_page: ExcelImportPage) -> None:

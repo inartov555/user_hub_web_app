@@ -22,6 +22,7 @@ from utils.theme import Theme
 @pytest.mark.admin
 @pytest.mark.parametrize("ui_theme_param", ThemeConsts.ALL_SUPPORTED_THEMES)
 @pytest.mark.parametrize("ui_locale_param", LocaleConsts.ALL_SUPPORTED_LOCALES)
+@pytest.mark.usefixtures("cleanup_set_default_theme_and_locale")
 def test_profile_edit_renders_and_can_save(profile_edit_page_regular: ProfileEditPage,
                                            page: Page,
                                            ui_theme_param: Theme,

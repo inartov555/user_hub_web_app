@@ -22,6 +22,7 @@ from utils.theme import Theme
 @pytest.mark.unauthorized
 @pytest.mark.parametrize("ui_theme_param", ThemeConsts.ALL_SUPPORTED_THEMES)
 @pytest.mark.parametrize("ui_locale_param", LocaleConsts.ALL_SUPPORTED_LOCALES)
+@pytest.mark.usefixtures("cleanup_set_default_theme_and_locale")
 def test_verify_there_are_login_and_signup_links_for_logged_in_user(about_website_page: AboutWebsitePage,
                                                                     login_page: LoginPage,
                                                                     ui_theme_param: Theme,
@@ -46,6 +47,7 @@ def test_verify_there_are_login_and_signup_links_for_logged_in_user(about_websit
 @pytest.mark.authorized
 @pytest.mark.parametrize("ui_theme_param", ThemeConsts.ALL_SUPPORTED_THEMES)
 @pytest.mark.parametrize("ui_locale_param", LocaleConsts.ALL_SUPPORTED_LOCALES)
+@pytest.mark.usefixtures("cleanup_set_default_theme_and_locale")
 def test_verify_that_there_s_no_login_and_signup_links_for_logged_in_user(about_website_page: AboutWebsitePage,
                                                                           login_page: LoginPage,
                                                                           ui_theme_param: Theme,
