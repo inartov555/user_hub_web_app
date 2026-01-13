@@ -20,7 +20,6 @@ from utils.auth import get_api_utils
 @pytest.mark.localization
 @pytest.mark.parametrize("ui_theme_param", ThemeConsts.ALL_SUPPORTED_THEMES)
 @pytest.mark.parametrize("ui_locale_param", LocaleConsts.ALL_SUPPORTED_LOCALES)
-@pytest.mark.usefixtures("cleanup_set_default_theme_and_locale")
 def test_stats_page_renders_for_admin(user_stats_page: UsersTablePage,
                                       ui_theme_param: Theme,
                                       ui_locale_param: str) -> None:
