@@ -323,8 +323,6 @@ class UsersAppApi(ApiJsonRequest):
         """
         POST 200 /api/v1/users/bulk-delete/
 
-        Only admin users can call this method.
-
         Returns:
             dict, {"deleted": $number}
         """
@@ -335,11 +333,12 @@ class UsersAppApi(ApiJsonRequest):
                                      headers=self.get_authorization_token_dict(access))
         return response
 
-    def single_user_delete(self, access: str, user_id: str) -> None:
+    def single_user_delete(self, access: str, user_id: str) -> dict:
         """
-        DELETE 204 /users/${id}/delete-user/
+        DELETE 200 /api/v1/users/bulk-delete/
 
-        Only admin users can call this method.
+        Returns:
+            dict, {"deleted": $number}
         """
         response = self.make_request("delete",
                                      f"/api/v1/users/{user_id}/delete-user/",
@@ -348,10 +347,10 @@ class UsersAppApi(ApiJsonRequest):
 
     def create_user(self, username: str, email: str, password: str) -> dict:
         """
-        POST 201 /api/v1/auth/users/
+        POST 200 /api/v1/auth/users/
 
         Returns:
-            dict, e.g., {"id":227,"email":"test@test.com","username":"test"}
+            dict
         """
         payload = {"username": username, "email": email, "password": password}
         response = self.make_request("post",
@@ -470,7 +469,6 @@ class UsersAppApi(ApiJsonRequest):
         response = self.make_request("get",
                                      "/api/v1/me/profile/",
                                      headers=self.get_authorization_token_dict(access))
-        return response
 
     def edit_profile_details(self,
                              access: str,
