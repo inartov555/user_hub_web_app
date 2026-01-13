@@ -1,4 +1,4 @@
-# 💡 API Tests (UsersApp)
+## 💡 API Tests (UsersApp)
 
 A lightweight **API test suite** for the UsersApp backend, built with **pytest** + **requests**.
 
