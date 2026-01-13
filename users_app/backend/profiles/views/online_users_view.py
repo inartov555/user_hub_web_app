@@ -15,7 +15,7 @@ class OnlineUsersView(generics.ListAPIView):
     Active user
     """
     serializer_class = UserSerializer
-    permission_classes = [permissions.IsAdminUser]
+    permission_classes = [permissions.IsAuthenticated]
     user = get_user_model()
 
     def get_queryset(self) -> QuerySet["User"]:

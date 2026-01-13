@@ -114,7 +114,12 @@ export default function UserDeleteConfirm() {
       <CardHeader icon=<UserX className="h-4 w-4" /> title={t("userDeleteConfirm.confirmDelete")} />
       <CardBody className="space-y-4">
         <SimpleInfoMessage
-          message={`${t("userDeleteConfirm.youAboutToDelete")} ${remainingUsers.length} ${t("userDeleteConfirm.cannotBeUndone")}`}
+          message=""
+          block={
+            <p className="text-sm text-slate-700 dark:text-slate-100">
+              {t("userDeleteConfirm.youAboutToDelete")} <strong>{remainingUsers.length}</strong> {t("userDeleteConfirm.cannotBeUndone")}
+            </p>
+          }
         />
 
         {/* Top button pair */}
