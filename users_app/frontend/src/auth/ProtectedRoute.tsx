@@ -56,7 +56,7 @@ export default function ProtectedRoute() {
     };
   }, [location.pathname, location.search, location.hash]);
 
-  // While not ready, never decide to redirect — just render children.
+  // While not ready, never decide to redirect - just render children.
   if (!ready) {
     return <Outlet />;
   }
