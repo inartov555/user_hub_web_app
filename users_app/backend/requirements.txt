@@ -13,3 +13,4 @@ djangorestframework-simplejwt
 # Excel
 openpyxl
 pandas
+requests
