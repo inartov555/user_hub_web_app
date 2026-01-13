@@ -1,5 +1,5 @@
 """
-Init module
+Serializer init module
 """
 
 from .change_password_serializer import ChangePasswordSerializer

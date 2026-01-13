@@ -1,5 +1,5 @@
 """
-Init file
+Model init file
 """
 
 from .app_settings import AppSetting
