@@ -18,9 +18,6 @@ BACKEND_API_BASE: Final[str] = os.environ.get("BACKEND_API_BASE", "http://host.d
 DEFAULT_ADMIN_USERNAME: Final[str] = os.environ.get("ADMIN_USERNAME", "admin")
 DEFAULT_ADMIN_PASSWORD: Final[str] = os.environ.get("ADMIN_PASSWORD", "changeme123")
 
-DEFAULT_API_ADMIN_USERNAME: Final[str] = os.environ.get("API_ADMIN_USERNAME", "api_super_user")
-DEFAULT_API_ADMIN_PASSWORD: Final[str] = os.environ.get("API_ADMIN_PASSWORD", "changeme123")
-
 DEFAULT_REGULAR_USERNAME: Final[str] = os.environ.get("REGULAR_USERNAME", "test1")
 DEFAULT_REGULAR_PASSWORD: Final[str] = os.environ.get("REGULAR_PASSWORD", "changeme123")
 
