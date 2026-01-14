@@ -17,10 +17,13 @@ from config import (
     UI_BASE_PORT,
     DEFAULT_ADMIN_USERNAME,
     DEFAULT_ADMIN_PASSWORD,
+    DEFAULT_API_ADMIN_USERNAME,
+    DEFAULT_API_ADMIN_PASSWORD,
     DEFAULT_REGULAR_USERNAME,
     DEFAULT_REGULAR_PASSWORD,
 )
 from utils.auth import ensure_regular_user, login_via_ui, get_api_utils
+from utils.api_utils import ApiError
 from utils.file_utils import FileUtils
 from utils.logger.logger import Logger
 from utils.django_localization import init_django
@@ -77,6 +80,26 @@ def before_tests() -> None:
         1. Creating a regular user
     """
     ensure_regular_user()
+    # Creating another admin user to work with it via API
+    api_utils = get_api_utils()
+    try:
+        email = f"{DEFAULT_API_ADMIN_USERNAME}@super.com"
+        created_user = api_utils.create_user(DEFAULT_API_ADMIN_USERNAME,
+                                             email,
+                                             DEFAULT_API_ADMIN_PASSWORD)
+        # Just created user is still a regular user, let's make it an admin one
+        login_info = api_utils.api_login(DEFAULT_ADMIN_USERNAME, DEFAULT_ADMIN_PASSWORD)
+        api_utils.update_user(access=login_info.get("access"),
+                              user_id=created_user.get("id"),
+                              username=DEFAULT_API_ADMIN_USERNAME,
+                              email=email,
+                              first_name=DEFAULT_API_ADMIN_USERNAME,
+                              last_name=DEFAULT_API_ADMIN_USERNAME,
+                              is_active=True,
+                              is_staff=True,
+                              is_superuser=True)
+    except ApiError:
+        pass  # it means that user exists and we are ok with it
 
 
 @pytest.fixture(scope="session", autouse=True)
@@ -388,7 +411,7 @@ def delete_users_by_suffix_via_api(suffix: str) -> None:
     """
     api_utils = get_api_utils()
     user_id_list = []
-    login_info = api_utils.api_login(DEFAULT_ADMIN_USERNAME, DEFAULT_ADMIN_PASSWORD)
+    login_info = api_utils.api_login(DEFAULT_API_ADMIN_USERNAME, DEFAULT_API_ADMIN_PASSWORD)
     access_token = login_info.get("access")
     users = api_utils.get_users(access=access_token, search=suffix)
     if users and users.get("results"):
@@ -441,14 +464,14 @@ def setup_cleanup_update_app_settings() -> None:
     """
     log.info("Setup. Set App Settings for a test")
     api_utils = get_api_utils()
-    login_info = api_utils.api_login(DEFAULT_ADMIN_USERNAME, DEFAULT_ADMIN_PASSWORD)
+    login_info = api_utils.api_login(DEFAULT_API_ADMIN_USERNAME, DEFAULT_API_ADMIN_PASSWORD)
     access_token = login_info.get("access")
     old_settings = api_utils.get_system_settings(access_token)
 
     yield
 
     log.info("Cleanup. Returning old App Settings' values")
-    login_info = api_utils.api_login(DEFAULT_ADMIN_USERNAME, DEFAULT_ADMIN_PASSWORD)
+    login_info = api_utils.api_login(DEFAULT_API_ADMIN_USERNAME, DEFAULT_API_ADMIN_PASSWORD)
     access_token = login_info.get("access")
     api_utils.update_system_settings(access_token, old_settings)
 
