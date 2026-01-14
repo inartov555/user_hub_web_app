@@ -3,6 +3,8 @@ Tests related to API.
 Check requests without authentication token.
 """
 
+# pylint: disable=duplicate-code
+
 from __future__ import annotations
 import random
 
