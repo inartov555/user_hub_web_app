@@ -569,8 +569,12 @@ class UsersAppApi(ApiJsonRequest):
 
         Returns:
             dict, e.g. {"refresh":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
-                        "access":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9"}
+                        "access":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
+                        "id":227,
+                        "email":"test@test.com",
+                        "username":"test"}
         """
-        self.create_user(username, email, password)
+        created_user = self.create_user(username, email, password)
         login_info = self.api_login(username, password)
+        login_info.update(created_user)
         return login_info
