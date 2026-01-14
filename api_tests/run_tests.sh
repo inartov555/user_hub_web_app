@@ -73,7 +73,7 @@ TEST_GREP="$TEST_GREP --reruns 2 --reruns-delay 2"
 # If you need to run particular test(s), then set it as shown in the line below (TEST_GREP);
 # to run all tests, just set TEST_GREP="$TEST_GREP" (to preserve base settings)
 
-# TEST_GREP="$TEST_GREP -k 'test_update_user_regular_user'"
+# TEST_GREP="$TEST_GREP -k 'test_old_access_token_invalidated_after_logging_in_in_other_browser'"
 
 docker compose run -e TEST_GREP="$TEST_GREP" --rm api_tests
 

@@ -5,6 +5,7 @@ Check request permissions (authorized user regular user, authorized admin user)
 
 from __future__ import annotations
 import random
+import time
 
 import pytest
 
@@ -57,7 +58,7 @@ def test_access_token_invalidated_after_logging_out_admin(username: str, passwor
     """
     Test POST 200 /api/v1/auth/jwt/logout/
 
-    1. Login via API as an admin
+    1. Log in via API
     2. Preserve the access token
     3. Do some actions to simulate real website activity, e.g. call /api/v1/auth/users/me/
     4. Log out /api/v1/auth/jwt/logout/
@@ -65,17 +66,48 @@ def test_access_token_invalidated_after_logging_out_admin(username: str, passwor
     """
     api_utils = get_api_utils()
     login_info = api_utils.api_login(username, password)
-    api_utils.get_profile_details(login_info.get("access"))
+    api_utils.get_currently_logged_in_user_details(login_info.get("access"))
     # Now, let's logout
     api_utils.logout(login_info.get("access"))
     did_invalidated_token_work = True
     # Verify that now request that requires access token fails when calling it with invalidated access token
     try:
-        api_utils.get_profile_details(login_info.get("access"))
+        api_utils.get_currently_logged_in_user_details(login_info.get("access"))
     except ApiError:
         did_invalidated_token_work = False
     if did_invalidated_token_work:
         raise AssertionError("/api/v1/auth/jwt/logout/ did not invalidate the access token")
+
+
+@pytest.mark.parametrize("username, password",
+                         [(DEFAULT_ADMIN_USERNAME, DEFAULT_ADMIN_PASSWORD),
+                          (DEFAULT_REGULAR_USERNAME, DEFAULT_REGULAR_PASSWORD)])
+def test_old_access_token_invalidated_after_logging_in_in_other_browser(username: str, password: str) -> None:
+    """
+    Test POST 200 /api/v1/auth/jwt/logout/
+
+    1. Log in via API
+    2. Preserve the access token
+    3. Do some actions to simulate real website activity, e.g. call /api/v1/auth/users/me/
+    4. Now try to do a new log in while previous one is still valid (no logging out)
+    5. Try to call some requests that require access token with value from step #2
+    """
+    api_utils = get_api_utils()
+    login_info_1 = api_utils.api_login(username, password)
+    api_utils.get_currently_logged_in_user_details(login_info_1.get("access"))
+    # Now, let's do a new log in
+    time.sleep(6)  # waiting for the token to become invalidated
+    login_info_2 = api_utils.api_login(username, password)
+    # And let's become online in the website with new access token
+    api_utils.get_currently_logged_in_user_details(login_info_2.get("access"))
+    was_failed = False
+    # Verify that now request that requires access token fails when calling it with invalidated access token
+    try:
+        api_utils.get_currently_logged_in_user_details(login_info_1.get("access"))
+    except ApiError:
+        was_failed = True
+    if not was_failed:
+        raise AssertionError("Old token did not become invalid after new logging in")
 
 
 def test_get_users():

@@ -481,7 +481,7 @@ class UsersAppApi(ApiJsonRequest):
         """
         GET 200 /api/v1/auth/users/me/
 
-        Only logged in user can call it.
+        Only logged in user can call it. You use it to simulate being online after logging in.
 
         Returns:
             dict
