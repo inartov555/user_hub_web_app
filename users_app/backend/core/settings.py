@@ -304,8 +304,7 @@ DJOSER = {
         "jwt_create": ["rest_framework.permissions.AllowAny"],
         "jwt_refresh": ["rest_framework.permissions.AllowAny"],
         "user_list": ["rest_framework.permissions.IsAuthenticated"],
-        # Allow GET for authenticated, but PUT/PATCH only for admins
-        "user": ["core.custom_djoser_user_permissions.AuthenticatedReadOnlyOrAdminWrite"],
+        "user": ["rest_framework.permissions.IsAuthenticated"],
         "current_user": ["rest_framework.permissions.IsAuthenticated"],
     },
 }
