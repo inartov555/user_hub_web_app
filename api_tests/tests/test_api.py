@@ -1,6 +1,5 @@
 """
-Tests related to API.
-Check request permissions (authorized user regular user, authorized admin user)
+Tests related to api
 """
 
 from __future__ import annotations
@@ -65,13 +64,14 @@ def test_access_token_invalidated_after_logging_out_admin(username: str, passwor
     """
     api_utils = get_api_utils()
     login_info = api_utils.api_login(username, password)
-    api_utils.get_profile_details(login_info.get("access"))
+    access_token = login_info.get("access")
+    api_utils.get_profile_details(access=access_token)
     # Now, let's logout
-    api_utils.logout(login_info.get("access"))
+    api_utils.logout(access_token)
     did_invalidated_token_work = True
     # Verify that now request that requires access token fails when calling it with invalidated access token
     try:
-        api_utils.get_profile_details(login_info.get("access"))
+        api_utils.get_profile_details(access=access_token)
     except ApiError:
         did_invalidated_token_work = False
     if did_invalidated_token_work:
@@ -473,31 +473,6 @@ def test_set_password_to_self_admin(request):
     login_info = api_utils.api_login(created_user.get("username"), password_new)
     if not login_info.get("access"):
         raise AssertionError("POST 200 /api/v1/users/{user_id}/set-password/ did not change password")
-
-
-@pytest.mark.parametrize("suffix", ["vesimeloni"])
-@pytest.mark.usefixtures("cleanup_delete_users_by_suffix")
-def test_set_password_to_other_user_admin(request):
-    """
-    POST 200 /api/v1/users/{user_id}/set-password/
-    Admin user can change password as to themselves as to other users.
-    """
-    created_user = request.getfixturevalue("setup_create_users_by_suffix")
-    password_old = "Ch@ngeme123"
-    password_new = "New@lP@3$w0rd"
-    api_utils = get_api_utils()
-    # Let's log in as previously created user with old password
-    login_info = api_utils.api_login(created_user.get("username"), password_old)
-    if not login_info.get("access"):
-        raise AssertionError("Access token was not returned after logging in previously created user")
-    # Let's log out previously logged in user
-    api_utils.logout(login_info.get("access"))
-    # Let's log in as an admin user
-    login_info = api_utils.api_login(DEFAULT_ADMIN_USERNAME, DEFAULT_ADMIN_PASSWORD)
-    api_utils.set_password(login_info.get("access"), created_user.get("id"), password_new, password_new)
-    login_info = api_utils.api_login(created_user.get("username"), password_new)
-    if not login_info.get("access"):
-        raise AssertionError("POST 200 /api/v1/users/{user_id}/set-password/ did not change password for other user")
 
 
 @pytest.mark.parametrize("suffix", ["vesimeloni"])

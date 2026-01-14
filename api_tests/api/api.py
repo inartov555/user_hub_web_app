@@ -190,8 +190,7 @@ class ApiJsonRequest(ApiBase):
                      query_params: dict = None,
                      headers: dict = None,
                      is_return_resp_obj: bool = False,
-                     raise_error_if_failed: bool = None,
-                     use_authentication_header: bool = True) -> Response | dict | list | None:
+                     raise_error_if_failed: bool = None) -> Response | dict | list | None:
         """
         Args:
             method (str): one of ("get", "post", "put", "delete")
@@ -204,8 +203,6 @@ class ApiJsonRequest(ApiBase):
                                           TODO: needs to be implemented
             is_return_resp_obj (bool): True - returns the Response object, False - returns JSON;
                                        Note: it's needed for API testing
-            use_authentication_header (bool): True - adding authentication token to headers;
-                                              False - authentication token will not be added to headers
 
         Returns:
             json, (list/dict)
@@ -220,10 +217,6 @@ class ApiJsonRequest(ApiBase):
             headers = {}
         if multipart and self.headers.get("Content-Type"):
             self.headers.pop("Content-Type")
-        if multipart and headers.get("Content-Type"):
-            headers.pop("Content-Type")
-        if not use_authentication_header and headers.get("Authorization"):
-            headers.pop("Authorization")
         response_obj = super().make_request(method=method,
                                             uri=uri,
                                             payload=payload,
@@ -273,14 +266,13 @@ class UsersAppApi(ApiJsonRequest):
                                      payload=payload)
         return response
 
-    def logout(self, access: str, use_authentication_header: bool = True) -> dict:
+    def logout(self, access: str) -> dict:
         """
         POST 200 /api/v1/auth/jwt/logout/
         """
         response = self.make_request("post",
                                      "/api/v1/auth/jwt/logout/",
-                                     headers=self.get_authorization_token_dict(access),
-                                     use_authentication_header=use_authentication_header)
+                                     headers=self.get_authorization_token_dict(access))
         return response
 
     def refresh_token(self, refresh: str) -> dict:
@@ -314,8 +306,7 @@ class UsersAppApi(ApiJsonRequest):
                   search: str = "",
                   page_num: int = 1,
                   page_size: int = 1000000,
-                  ordering: str = "id",
-                  use_authentication_header: bool = True) -> dict:
+                  ordering: str = "id") -> dict:
         """
         GET 200 /api/v1/users
 
@@ -326,14 +317,10 @@ class UsersAppApi(ApiJsonRequest):
         response = self.make_request("get",
                                      "/api/v1/users",
                                      query_params=params,
-                                     headers=self.get_authorization_token_dict(access),
-                                     use_authentication_header=use_authentication_header)
+                                     headers=self.get_authorization_token_dict(access))
         return response
 
-    def bulk_user_delete(self,
-                         access: str,
-                         user_id_list: list,
-                         use_authentication_header: bool = True) -> dict:
+    def bulk_user_delete(self, access: str, user_id_list: list) -> dict:
         """
         POST 200 /api/v1/users/bulk-delete/
 
@@ -346,14 +333,10 @@ class UsersAppApi(ApiJsonRequest):
         response = self.make_request("post",
                                      "/api/v1/users/bulk-delete/",
                                      payload=payload,
-                                     headers=self.get_authorization_token_dict(access),
-                                     use_authentication_header=use_authentication_header)
+                                     headers=self.get_authorization_token_dict(access))
         return response
 
-    def single_user_delete(self,
-                           access: str,
-                           user_id: str,
-                           use_authentication_header: bool = True) -> None:
+    def single_user_delete(self, access: str, user_id: str) -> None:
         """
         DELETE 204 /users/${id}/delete-user/
 
@@ -361,14 +344,10 @@ class UsersAppApi(ApiJsonRequest):
         """
         response = self.make_request("delete",
                                      f"/api/v1/users/{user_id}/delete-user/",
-                                     headers=self.get_authorization_token_dict(access),
-                                     use_authentication_header=use_authentication_header)
+                                     headers=self.get_authorization_token_dict(access))
         return response
 
-    def create_user(self,
-                    username: str,
-                    email: str,
-                    password: str) -> dict:
+    def create_user(self, username: str, email: str, password: str) -> dict:
         """
         POST 201 /api/v1/auth/users/
 
@@ -381,7 +360,7 @@ class UsersAppApi(ApiJsonRequest):
                                      payload=payload)
         return response
 
-    def get_system_settings(self, access: str, use_authentication_header: bool = True) -> dict:
+    def get_system_settings(self, access: str) -> dict:
         """
         GET 200 /api/v1/system/settings/
 
@@ -397,14 +376,10 @@ class UsersAppApi(ApiJsonRequest):
         response = self.make_request("get",
                                      "/api/v1/system/settings/",
                                      payload={},
-                                     headers=self.get_authorization_token_dict(access),
-                                     use_authentication_header=use_authentication_header)
+                                     headers=self.get_authorization_token_dict(access))
         return response
 
-    def update_system_settings(self,
-                               access: str,
-                               payload: dict,
-                               use_authentication_header: bool = True) -> dict:
+    def update_system_settings(self, access: str, payload: dict) -> dict:
         """
         PUT 200 /api/v1/system/settings/
 
@@ -423,14 +398,10 @@ class UsersAppApi(ApiJsonRequest):
         response = self.make_request("put",
                                      "/api/v1/system/settings/",
                                      payload=payload,
-                                     headers=self.get_authorization_token_dict(access),
-                                     use_authentication_header=use_authentication_header)
+                                     headers=self.get_authorization_token_dict(access))
         return response
 
-    def import_excel_spreadsheet(self,
-                                 access: str,
-                                 file_name: str,
-                                 use_authentication_header: bool = True) -> dict:
+    def import_excel_spreadsheet(self, access: str, file_name: str) -> dict:
         """
         POST 200 /api/v1/import-excel/
 
@@ -453,14 +424,11 @@ class UsersAppApi(ApiJsonRequest):
             "post",
             "/api/v1/import-excel/",
             headers=headers,
-            multipart=multipart,
-            use_authentication_header=use_authentication_header
+            multipart=multipart
         )
         return response
 
-    def get_excel_spreadsheet(self,
-                              access: str,
-                              use_authentication_header: bool = True) -> Union[dict[str, Any], list[Any], bytes]:
+    def get_excel_spreadsheet(self, access: str) -> Union[dict[str, Any], list[Any], bytes]:
         """
         GET 200 /api/v1/import-excel/
 
@@ -472,12 +440,11 @@ class UsersAppApi(ApiJsonRequest):
         response = self.make_request(
             "get",
             "/api/v1/import-excel/",
-            headers=self.get_authorization_token_dict(access),
-            use_authentication_header=use_authentication_header
+            headers=self.get_authorization_token_dict(access)
         )
         return response
 
-    def get_currently_logged_in_user_details(self, access: str, use_authentication_header: bool = True) -> dict:
+    def get_currently_logged_in_user_details(self, access: str) -> dict:
         """
         GET 200 /api/v1/auth/users/me/
 
@@ -488,11 +455,10 @@ class UsersAppApi(ApiJsonRequest):
         """
         response = self.make_request("get",
                                      "/api/v1/auth/users/me/",
-                                     headers=self.get_authorization_token_dict(access),
-                                     use_authentication_header=use_authentication_header)
+                                     headers=self.get_authorization_token_dict(access))
         return response
 
-    def get_profile_details(self, access: str, use_authentication_header: bool = True) -> dict:
+    def get_profile_details(self, access: str) -> dict:
         """
         GET 200 /api/v1/me/profile/
         Getting profile details of the currently logged in user.
@@ -504,8 +470,7 @@ class UsersAppApi(ApiJsonRequest):
         """
         response = self.make_request("get",
                                      "/api/v1/me/profile/",
-                                     headers=self.get_authorization_token_dict(access),
-                                     use_authentication_header=use_authentication_header)
+                                     headers=self.get_authorization_token_dict(access))
         return response
 
     def edit_profile_details(self,
@@ -514,8 +479,7 @@ class UsersAppApi(ApiJsonRequest):
                              email: str,
                              first_name: str,
                              last_name: str,
-                             bio: str,
-                             use_authentication_header: bool = True) -> dict:
+                             bio: str) -> dict:
         """
         PUT 200 /api/v1/me/profile/
         Updating profile of the currently logged in user.
@@ -533,11 +497,10 @@ class UsersAppApi(ApiJsonRequest):
         response = self.make_request("put",
                                      "/api/v1/me/profile/",
                                      payload=payload,
-                                     headers=self.get_authorization_token_dict(access),
-                                     use_authentication_header=use_authentication_header)
+                                     headers=self.get_authorization_token_dict(access))
         return response
 
-    def get_online_user_stats(self, access: str, use_authentication_header: bool = True) -> dict:
+    def get_online_user_stats(self, access: str) -> dict:
         """
         GET 200 /api/v1/stats/online-users/
 
@@ -548,15 +511,10 @@ class UsersAppApi(ApiJsonRequest):
         """
         response = self.make_request("get",
                                      "/api/v1/stats/online-users/",
-                                     headers=self.get_authorization_token_dict(access),
-                                     use_authentication_header=use_authentication_header)
+                                     headers=self.get_authorization_token_dict(access))
         return response
 
-    def set_password(self,
-                     access: str,
-                     user_id: str, password: str,
-                     confirm_password: str,
-                     use_authentication_header: bool = True) -> dict:
+    def set_password(self, access: str, user_id: str, password: str, confirm_password: str) -> dict:
         """
         POST 200 /api/v1/users/{user_id}/set-password/
 
@@ -569,8 +527,7 @@ class UsersAppApi(ApiJsonRequest):
         response = self.make_request("post",
                                      f"/api/v1/users/{user_id}/set-password/",
                                      payload=payload,
-                                     headers=self.get_authorization_token_dict(access),
-                                     use_authentication_header=use_authentication_header)
+                                     headers=self.get_authorization_token_dict(access))
         return response
 
     def update_user(self,
@@ -582,12 +539,11 @@ class UsersAppApi(ApiJsonRequest):
                     last_name: str,
                     is_active: bool = True,
                     is_staff: bool = False,
-                    is_superuser: bool = False,
-                    use_authentication_header: bool = True) -> dict:
+                    is_superuser: bool = False) -> dict:
         """
         PUT 200 /api/v1/auth/users/${id}/
 
-        Updating existing users. Only admin users can do that.
+        Updating existing users. Only authenticated users can do that.
 
         Returns:
             dict
@@ -602,8 +558,7 @@ class UsersAppApi(ApiJsonRequest):
         response = self.make_request("put",
                                      f"/api/v1/auth/users/{user_id}/",
                                      payload=payload,
-                                     headers=self.get_authorization_token_dict(access),
-                                     use_authentication_header=use_authentication_header)
+                                     headers=self.get_authorization_token_dict(access))
         return response
 
     def create_user_and_login(self, username: str, email: str, password: str) -> dict:

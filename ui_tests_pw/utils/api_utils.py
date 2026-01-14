@@ -432,7 +432,7 @@ class UsersAppApi(ApiJsonRequest):
         """
         PUT /api/v1/auth/users/${id}/
 
-        Update existing users. Only admin users can call this method.
+        Updating existing users.
 
         Returns:
             dict
