@@ -73,7 +73,7 @@
   - Admin-only controls (`Delete users`, `Change password` column)
   - Non-admin restrictions
 
-Note: Admin 2 user is needed to avoid logging in as admin from UI and from API with the same user, because previous session will become invalidated in 5 seconds after new login
+**Note:** Admin 2 user is needed to avoid logging in as admin from UI and from API with the same user, because the previous session will become invalidated in 5 seconds after a new login
 
 ## ✨ Where Django is used in tests
 
