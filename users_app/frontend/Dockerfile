@@ -5,12 +5,16 @@ WORKDIR /app
 
 RUN addgroup --system pwuser \
  && adduser  --system --ingroup pwuser --disabled-password --home /home/pwuser pwuser
-RUN chown -R pwuser:pwuser /app
-USER pwuser
 
 COPY frontend/package.json frontend/package-lock.json* ./
 
 COPY frontend/ /app/
+
+RUN set -eux; \
+    if ! getent group pwuser >/dev/null; then addgroup --system pwuser; fi; \
+    if ! id -u pwuser >/dev/null 2>&1; then \
+      adduser --system --ingroup pwuser --disabled-password --home /home/pwuser pwuser; \
+    fi
 
 # Network-resilient npm settings
 # - fewer network calls (no audit/fund)
@@ -27,6 +31,9 @@ ARG VITE_API_URL
 ENV VITE_API_URL=$VITE_API_URL
 
 RUN npm run build
+
+RUN chown -R pwuser:pwuser /app
+USER pwuser
 
 # Runtime
 FROM nginx:1.27-alpine AS runtime
