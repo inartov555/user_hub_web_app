@@ -66,11 +66,14 @@
   - Localization (English + at least one non-English locale)
   - Access control for:
     - Admin: `admin / changeme123` (created automatically after first website start)
+    - Admin 2: `api_super_user / changeme123` (created automatically by the automation framework before starting the tests)
     - Regular user: `test1 / changeme123` (created automatically by the automation framework before starting the tests)
 - The Users table page gets additional coverage for:
   - Multi-column sorting state & indicators
   - Admin-only controls (`Delete users`, `Change password` column)
   - Non-admin restrictions
+
+Note: Admin 2 user is needed to avoid logging in as admin from UI and from API with the same user, because previous session will become invalidated in 5 seconds after new login
 
 ## ✨ Where Django is used in tests
 
