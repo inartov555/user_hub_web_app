@@ -7,6 +7,7 @@ This is a test website + automation framework
 - ✅ [**API tests - Stable version #1.6**](./api_tests)
 - ℹ️ `users_app` module created on Oct-10-2025
 - ℹ️ `ui_tests_pw` module created on Nov-05-2025
+- ℹ️ `api_tests` module created on Jan-13-2026
 
 ---
 
@@ -24,9 +25,9 @@ This is a test website + automation framework
 
 ## 📌 Changelog v1.6 vs. v1.5
 
-- 🛠️ **Fixed in `users_app`:** Cache of previously installed Python was not used, so website started a bit longer
+- 🛠️ **Fixed in `users_app`:** Cache of previously installed Python was not used, so the website started a bit longer
 - 🛠️ **Fixed in `users_app`:** Admin & regular user priviliges for a few backend requests
-- 🛠️ **Fixed in `users_app`:** Previous session is invalidated when user starts a new session in other browser or other devices
+- 🛠️ **Fixed in `users_app`:** Previous session is invalidated when the user starts a new session in another browser or on other devices
 - ✨ **Improved in `ui_tests_pw`:** Lite updates
 - 🆕 **Added in `api_tests`:** API tests module added
 
