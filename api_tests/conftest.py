@@ -160,16 +160,17 @@ def setup_create_users_by_suffix(suffix: str) -> None:
     Delete users by passed suffix.
 
     Username & email are created with this logic:
-        username = f"ui-test-{suffix}"
+        username = f"api-test-{suffix}"
         email = f"{username}@test.com"
         password = "Ch@ngeme123"
     """
     log.info("Setup. Creating users before running a test")
     api_utils = get_api_utils()
-    username = f"ui-test-{suffix}"
+    username = f"api-test-{suffix}"
     email = f"{username}@test.com"
     password = "Ch@ngeme123"
-    api_utils.create_user(username, email, password)
+    created_user = api_utils.create_user(username, email, password)
+    yield created_user
 
 
 @pytest.fixture(scope="function")

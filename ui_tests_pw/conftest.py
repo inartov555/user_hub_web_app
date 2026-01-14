@@ -428,7 +428,8 @@ def setup_create_users_by_suffix(suffix: str) -> None:
     username = f"ui-test-{suffix}"
     email = f"{username}@test.com"
     password = "Ch@ngeme123"
-    api_utils.create_user(username, email, password)
+    created_user = api_utils.create_user(username, email, password)
+    yield created_user
 
 
 @pytest.fixture(scope="function")
