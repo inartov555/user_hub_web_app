@@ -422,10 +422,13 @@ def test_set_password_to_other_user_regular_user(request):
     password_old = "Ch@ngeme123"
     password_new = "New@lP@3$w0rd"
     api_utils = get_api_utils()
+    # Let's log in as previously created user with old password
     login_info = api_utils.api_login(created_user.get("username"), password_old)
     if not login_info.get("access"):
         raise AssertionError("Access token was not returned after logging in previously created user")
+    # Let's log out previously logged in user
     api_utils.logout(login_info.get("access"))
+    # Let's log in as a regular user
     login_info = api_utils.api_login(DEFAULT_REGULAR_USERNAME, DEFAULT_REGULAR_PASSWORD)
     was_failed = False
     try:
@@ -448,7 +451,7 @@ def test_set_password_to_self_admin(request):
     password_old = "Ch@ngeme123"
     password_new = "New@lP@3$w0rd"
     api_utils = get_api_utils()
-    # login_info = api_utils.create_user_and_login(username, email, password_old)
+    # Let's login as an admin user and update previously created user, let's make they a new admin
     login_info = api_utils.api_login(DEFAULT_ADMIN_USERNAME, DEFAULT_ADMIN_PASSWORD)
     api_utils.update_user(login_info.get("access"),
                           user_id=created_user.get("id"),
@@ -459,9 +462,13 @@ def test_set_password_to_self_admin(request):
                           is_active=True,
                           is_staff=True,
                           is_superuser=True)
+    # Logging out admin
     api_utils.logout(login_info.get("access"))
+    # Now, let's log in as updated user with old passwrod
     login_info = api_utils.api_login(created_user.get("username"), password_old)
+    # And change the password for themselves
     api_utils.set_password(login_info.get("access"),created_user.get("id"),  password_new, password_new)
+    # And log in with just changed password
     api_utils.logout(login_info.get("access"))
     login_info = api_utils.api_login(created_user.get("username"), password_new)
     if not login_info.get("access"):

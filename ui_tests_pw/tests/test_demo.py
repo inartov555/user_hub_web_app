@@ -307,7 +307,7 @@ def __create_and_login_user_for_user_stats_page() -> None:
     for username in username_list:
         email = f"{username}@watermelon.com"
         access_token = api_utils.create_user_and_login(username, email, password).get("access")
-        api_utils.get_profile_details(access=access_token)
+        api_utils.get_currently_logged_in_user_details(access=access_token)
 
 
 def _helper_user_stats_page_admin_user(page: Page, ui_theme_param: Theme, ui_locale_param: str) -> None:

@@ -387,7 +387,7 @@ class UsersAppApi(ApiJsonRequest):
         )
         return response
 
-    def get_profile_details(self, access: str) -> dict:
+    def get_currently_logged_in_user_details(self, access: str) -> dict:
         """
         GET /api/v1/auth/users/me/
 
@@ -409,10 +409,14 @@ class UsersAppApi(ApiJsonRequest):
 
         Returns:
             dict, e.g. {"refresh":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
-                        "access":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9"}
+                        "access":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
+                        "id":227,
+                        "email":"test@test.com",
+                        "username":"test"}
         """
-        self.create_user(username, email, password)
+        created_user = self.create_user(username, email, password)
         login_info = self.api_login(username, password)
+        login_info.update(created_user)
         return login_info
 
     def update_user(self,

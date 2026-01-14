@@ -64,7 +64,7 @@ def test_deleted_user_is_no_longer_shown(user_stats_page: StatsPage,
     password = "Ch@ngeme123"
     login_info = api_utils.create_user_and_login(username, email, password)
     # Let's get profile details to simulate UI behavior, so the user becomes shown on the User Stats page
-    api_utils.get_profile_details(login_info.get("access"))
+    api_utils.get_currently_logged_in_user_details(login_info.get("access"))
     # Now let's check if user is shown on the User Stats page
     user_stats_page.reload()
     user_stats_page.assert_user_was_online_during_last_5_mins(username)
@@ -95,7 +95,7 @@ def test_user_disappears_from_user_stats_if_not_active_more_than_5_mins(user_sta
     password = "Ch@ngeme123"
     login_info = api_utils.create_user_and_login(username, email, password)
     # Let's get profile details to simulate UI behavior, so the user becomes shown on the User Stats page
-    api_utils.get_profile_details(login_info.get("access"))
+    api_utils.get_currently_logged_in_user_details(login_info.get("access"))
     # Now let's check if user is shown on the User Stats page
     user_stats_page.reload()
     user_stats_page.assert_user_was_online_during_last_5_mins(username)
@@ -126,14 +126,14 @@ def test_user_is_present_in_user_stats_if_active_more_than_5_mins(user_stats_pag
     password = "Ch@ngeme123"
     login_info = api_utils.create_user_and_login(username, email, password)
     # Let's get profile details to simulate UI behavior, so the user becomes shown on the User Stats page
-    api_utils.get_profile_details(login_info.get("access"))
+    api_utils.get_currently_logged_in_user_details(login_info.get("access"))
     # Now let's check if user is shown on the User Stats page
     user_stats_page.reload()
     user_stats_page.assert_user_was_online_during_last_5_mins(username)
-    # Let's wait 5 minus + a bit more + call get_profile_details() to simulate user activity
+    # Let's wait 5 minus + a bit more + call get_currently_logged_in_user_details() to simulate user activity
     for _ in range(11):
         user_stats_page.wait_a_bit(30)
-        api_utils.get_profile_details(login_info.get("access"))
+        api_utils.get_currently_logged_in_user_details(login_info.get("access"))
     # Let's reload the page and check the results
     user_stats_page.reload()
     user_stats_page.assert_user_was_online_during_last_5_mins(username)
@@ -158,7 +158,7 @@ def test_user_is_present_in_user_stats_after_logging_out(user_stats_page: StatsP
     password = "Ch@ngeme123"
     login_info = api_utils.create_user_and_login(username, email, password)
     # Let's get profile details to simulate UI behavior, so the user becomes shown on the User Stats page
-    api_utils.get_profile_details(login_info.get("access"))
+    api_utils.get_currently_logged_in_user_details(login_info.get("access"))
     # Now let's check if user is shown on the User Stats page
     user_stats_page.reload()
     user_stats_page.assert_user_was_online_during_last_5_mins(username)
