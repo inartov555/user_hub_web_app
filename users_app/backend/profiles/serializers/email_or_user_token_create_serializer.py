@@ -31,6 +31,9 @@ class EmailOrUsernameTokenCreateSerializer(TokenObtainPairSerializer):
         We’ll customize claims & lifetimes inside validate(), where we can
         set both refresh and access consistently.
         """
+        now = timezone.now()
+        user.last_login = now
+        user.save(update_fields=["last_login"])
         return RefreshToken.for_user(user)
 
     def _resolve_login_field(self) -> str:

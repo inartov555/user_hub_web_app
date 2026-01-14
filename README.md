@@ -25,8 +25,9 @@ This is a test website + automation framework
 
 - 🛠️ **Fixed in `users_app`:** Cache of previously installed Python was not used, so website started a bit longer
 - 🛠️ **Fixed in `users_app`:** Admin & regular user priviliges for a few backend requests
+- 🛠️ **Fixed in `users_app`:** Previous session is invalidated when user starts a new session in other browser or other devices
 - ✨ **Improved in `ui_tests_pw`:** Lite updates
-- 🆕 **Added in `api_tests`:** API tests added
+- 🆕 **Added in `api_tests`:** API tests module added
 
 ---
 

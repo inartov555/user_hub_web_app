@@ -32,6 +32,12 @@ class CustomTokenRefreshSerializer(TokenRefreshSerializer):
         eff = get_effective_auth_settings()  # pulls DB overrides live
         raw = attrs.get("refresh")
         rt = RefreshToken(raw)
+        user = self._user_from_token(rt)
+        iat = int(rt.get("iat", 0))
+        if user.last_login:
+            last_login_ts = int(user.last_login.timestamp())
+            if iat + 5 < last_login_ts:
+                raise ValidationError("Logged in from another device.")
 
         # Enforce idle on refresh even if token's original exp is longer
         iat = datetime.fromtimestamp(int(rt["iat"]), tz=timezone.utc)

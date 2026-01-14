@@ -61,6 +61,11 @@ class JWTAuthentication(BaseAuthentication):
         try:
             access_token = self.get_validated_token(raw_access)
             user = self._user_from_token(access_token)
+            iat = int(access_token.get("iat", 0))
+            if user.last_login:
+                last_login_ts = int(user.last_login.timestamp())
+                if iat + 5 < last_login_ts:
+                    raise AuthenticationFailed("Logged in from another device.", code="token_not_valid")
 
             # Flag near-expiry (no auto-renew)
             seconds_left = self._seconds_to_expiry(access_token)
