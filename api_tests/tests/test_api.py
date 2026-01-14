@@ -473,3 +473,52 @@ def test_set_password_to_self_admin(request):
     login_info = api_utils.api_login(created_user.get("username"), password_new)
     if not login_info.get("access"):
         raise AssertionError("POST 200 /api/v1/users/{user_id}/set-password/ did not change password")
+
+
+@pytest.mark.parametrize("suffix", ["vesimeloni"])
+@pytest.mark.usefixtures("cleanup_delete_users_by_suffix")
+def test_update_user_regular_user(request):
+    """
+    PUT 200 /api/v1/auth/users/${id}/
+    The operation is not allowed for a regular user, so the request is expected to fail
+    """
+    created_user = request.getfixturevalue("setup_create_users_by_suffix")
+    api_utils = get_api_utils()
+    login_info = api_utils.api_login(DEFAULT_REGULAR_USERNAME, DEFAULT_REGULAR_PASSWORD)
+    was_failed = False
+    try:
+        api_utils.update_user(login_info.get("access"),
+                              user_id=created_user.get("id"),
+                              username=created_user.get("username"),
+                              email=created_user.get("email"),
+                              first_name=created_user.get("username"),
+                              last_name=created_user.get("username"),
+                              is_active=True,
+                              is_staff=True,
+                              is_superuser=True)
+    except ApiError:
+        was_failed = True
+    if not was_failed:
+        raise AssertionError("PUT 200 /api/v1/auth/users/${id}/ was successfully called for a regular user")
+
+
+@pytest.mark.parametrize("suffix", ["vesimeloni"])
+@pytest.mark.usefixtures("cleanup_delete_users_by_suffix")
+def test_update_user_admin(request):
+    """
+    PUT 200 /api/v1/auth/users/${id}/
+    """
+    created_user = request.getfixturevalue("setup_create_users_by_suffix")
+    api_utils = get_api_utils()
+    login_info = api_utils.api_login(DEFAULT_ADMIN_USERNAME, DEFAULT_ADMIN_PASSWORD)
+    updated_user = api_utils.update_user(login_info.get("access"),
+                                         user_id=created_user.get("id"),
+                                         username=created_user.get("username"),
+                                         email=created_user.get("email"),
+                                         first_name=created_user.get("username"),
+                                         last_name=created_user.get("username"),
+                                         is_active=True,
+                                         is_staff=True,
+                                         is_superuser=True)
+    if not updated_user:
+        raise AssertionError("PUT 200 /api/v1/auth/users/${id}/ did not return updated user details")
