@@ -25,9 +25,9 @@ This is a test website + automation framework
 
 ## 📌 Changelog v1.6 vs. v1.5
 
-- 🛠️ **Fixed in `users_app`:** Cache of previously installed Python was not used, so the website started a bit longer
+- 🛠️ **Fixed in `users_app`:** Cache of previously installed Python was not used, so the website started a bit longer (Docker cache)
 - 🛠️ **Fixed in `users_app`:** Admin & regular user priviliges for a few backend requests
-- 🛠️ **Fixed in `users_app`:** Previous session is invalidated when the user starts a new session in another browser or on other devices
+- 🛠️ **Fixed in `users_app`:** Previous session was not invalidated when the user started a new session in another browser or on other devices
 - ✨ **Improved in `ui_tests_pw`:** Lite updates
 - 🆕 **Added in `api_tests`:** API tests module added
 
