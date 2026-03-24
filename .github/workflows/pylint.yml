@@ -22,7 +22,7 @@ jobs:
         python-version: ${{ matrix.python-version }}
         cache: 'pip'
         cache-dependency-path: |
-          ui_tests_pw/requirements.txt
+          ./requirements.txt
 
     - name: Install dependencies
       run: |
@@ -30,7 +30,7 @@ jobs:
         pip install "pylint>=3,<4"
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 
-    - name: Analyse code in ui_tests_pw with pylint
+    - name: Analyse code with pylint
       env:
         PYTHONPATH: .
       run: |
