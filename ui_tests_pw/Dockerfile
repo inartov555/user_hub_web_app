@@ -19,15 +19,13 @@ RUN apt-get update \
  && apt-get install -y --no-install-recommends gettext gosu \
  && rm -rf /var/lib/apt/lists/*
 
-RUN python -m pip install --no-cache-dir playwright \
- && python -m playwright install --with-deps chromium chrome msedge firefox webkit
+RUN --mount=type=cache,target=/root/.cache/pip \
+     python -m pip install -U pip && \
+     pip install -r requirements.txt && \
+     python -m playwright install --with-deps chromium chrome msedge firefox webkit
 
 RUN chown -R pwuser:pwuser /tests
 USER pwuser
-
-RUN --mount=type=cache,target=.cache/pip \
-    python -m pip install -U pip && \
-    pip install -r requirements.txt
 
 # Validate .po syntax (correct paths: /tests/locale/**)
 RUN sh -c 'set -eu; \
