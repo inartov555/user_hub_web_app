@@ -103,7 +103,7 @@ This is a test website + automation framework
 - ✨ **Improved in `users_app`:** Behavior for the Cancel button in View/Edit Profile, Change Password pages (small area in the middle of the button was clickable)
 - ✨ **Improved in `users_app`:** Validation in App Settings
 - ✨ **Improved in `users_app`:** Button disabled state color now is more obvious
-- ✨ **Improved in `ui_tests_pw`:** Now regular user, which is required by tests, is automatically created if not present
+- ✨ **Improved in `ui_tests_pw`:** Now, a regular user, which is required by tests, is automatically created if not present
 
 =========================
 
